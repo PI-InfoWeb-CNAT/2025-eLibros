@@ -1,4 +1,4 @@
-# Elibros
+# eLibros
 
 Um site de vendas de livros e ebooks com acervo 100% nacional
 
