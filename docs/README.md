@@ -9,15 +9,14 @@
 | 11/03/2024 | **1.10** | Adição de requisitos  | Os Yntegradores |
 
 ## 1. Objetivo do Projeto 
-**Projeto**: Plataforma de venda de livros (yLibros)
+**Projeto:** Plataforma de venda de livros (yLibros)
  
 ## 2. Descrição do problema 
 | | |
 |:-|:-|
 | **_O problema_**    | Distribuição e venda de livros de nossa loja no país  |
 | **_afetando_**      | Consumidores dessas mídias (Leitores) |
-| **_cujo impacto é_**| Para adquirir um livro, o cliente é obrigado a ir presencialmente à uma loja.
-Assim, potenciais vendas são perdidas. |
+| **_cujo impacto é_**| Para adquirir um livro, o cliente é obrigado a ir presencialmente à uma loja. Assim, potenciais vendas são perdidas. |
 | **_uma boa solução seria_** | Criação de uma plataforma (site) de venda de livros físicos |
 | | |
 
