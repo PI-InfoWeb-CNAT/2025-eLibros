@@ -6,7 +6,7 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 11/03/2024 | **1.00** | Primeira versão do documento  | Os Yntregadores |
-| 11/03/2024 | **1.10** | <breve descrição da revisão>  | <autores da revisão> |
+| 11/03/2024 | **1.10** | Adição de requisitos  | Os Yntegradores |
 
 ## 1. Objetivo do Projeto 
 **Projeto**: Plataforma de venda de livros (yLibros)
