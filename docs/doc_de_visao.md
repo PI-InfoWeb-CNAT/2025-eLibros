@@ -1,24 +1,15 @@
-### Histórico da Revisão 
-|  Data  | Versão | Descrição | Autor |
-|:-------|:-------|:----------|:------|
-| 01/06/2021 | **1.00** | Versão Inicial  | George Azevedo |
-| 11/03/2024 | **1.00** | Primeira versão do documento  | Os Intregadores |
+| 11/03/2024 | **1.10** | Adição de requisitos  | Os Yntegradores |
 
 ## 1. Objetivo do Projeto 
-`A ser desenvolvido pelo aluno.` Este projeto tem objetivo de desenvolver um site que implemente as funcionalidades de uma loja on-line.
-**Projeto**: Plataforma de venda de livros (eLibros)
+**Projeto**: Plataforma de venda de livros (yLibros)
+**Projeto:** Plataforma de venda de livros (yLibros)
 
 ## 2. Descrição do problema 
 | | |
 |:-|:-|
-| **_O problema_**    | O lojista que atua no comércio convencional deseja resolver o problema de volume reduzido de vendas de seus produtos agravado pela situação de Pandemia  |
-| **_afetando_**      | a capacidade de venda da loja                      |
-| **_cujo impacto é_**| expansão ou até capacidade de existência da loja                                    |
-| **_uma boa solução seria_** | Realizar vendas via internet e gerenciar o processo de entrega dos produtos |
 | **_O problema_**    | Distribuição e venda de livros de nossa loja no país  |
 | **_afetando_**      | Consumidores dessas mídias (Leitores) |
-| **_cujo impacto é_**| Para adquirir um livro, o cliente é obrigado a ir presencialmente à uma loja.
-Assim, potenciais vendas são perdidas. |
+| **_cujo impacto é_**| Para adquirir um livro, o cliente é obrigado a ir presencialmente à uma loja. Assim, potenciais vendas são perdidas. |
 | **_uma boa solução seria_** | Criação de uma plataforma (site) de venda de livros físicos |
 | | |
 
@@ -36,9 +27,9 @@ O usuário cliente irá acessar o site utilizando  um computador ou celular e re
 Considerando o pronto de vista do lojista, administrador do site, sua principal necessidade é aumentar o volume de vendas de sua loja incorporando em seu negócio a possibilidade de realização de vendas via internet. 
 Considerando o pronto de vista do cliente, ele deseja ter acesso a um site com interface amigável que permita obter informações sobre os produtos comercializados e, caso identifique que estes atendam às suas necessidades, ele possa montar sua relação de compra confirmando a aquisição. Após essa etapa ele desejará visualizar o processo de entrega dos produtos adquiridos.
 ## 6. Alternativas concorrentes
-Uma alternativa ao comércio eletrônico desenvolvido é a lojas Americanas, que apresenta pesquisa por meio de nome ou categoria do produto, tem o sistema de carrinho de compras, que permite adicionar os produtos selecionados, deixando o pagamento somente para o final quando o cliente tiver selecionado todos os produtos desejados. Também tem o sistema de login, o qual o usuário se cadastra, o que facilita as próximas compras. Além disso em cada produto tem sua descrição, produto similares ao selecionado e uma seção destinada à avaliação dos consumidores. 
+Saraiva, Livraria Leitura, Amazon livros…
 ## 7.	Visão geral do produto
-Esse projeto consiste em um site voltado para vendas de produtos que pretende funcionar de forma rápida e eficiente, disponibilizando um ambiente acessível a diversos tipos de usuários e possuindo um design confortável. Para tal, o site irá disponibilizar diferentes mecanismos de busca permitindo que o usuário encontre de forma eficiente o que ele precisa. Após a aquisição, o usuário poderá acompanhar o produto comprado, avaliar produtos da loja, comentar e marcar produtos como favoritos. 
+Esse projeto consiste em um site voltado para vendas de livros que pretende funcionar de forma rápida e eficiente, disponibilizando um ambiente acessível a diversos tipos de usuários e possuindo um design confortável. Para tal, o site irá disponibilizar diferentes mecanismos de busca permitindo que o usuário encontre de forma eficiente o que ele precisa. Após a aquisição, o usuário poderá acompanhar o produto comprado, avaliar produtos da loja, comentar e marcar produtos como favoritos. 
 ## 8.	Requisitos funcionais
 | Código | Nome | Descrição |
 |:---  |:--- |:--- |
