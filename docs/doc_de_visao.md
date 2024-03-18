@@ -2,7 +2,6 @@
 
 ## 1. Objetivo do Projeto 
 **Projeto**: Plataforma de venda de livros (yLibros)
-**Projeto:** Plataforma de venda de livros (yLibros)
 
 ## 2. Descrição do problema 
 | | |
