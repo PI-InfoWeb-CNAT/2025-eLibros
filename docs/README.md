@@ -5,18 +5,20 @@
 ### Histórico da Revisão 
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
-| 01/06/2021 | **1.00** | Versão Inicial  | George Azevedo |
+| 11/03/2024 | **1.00** | Primeira versão do documento  | Os Yntregadores |
+| 11/03/2024 | **1.10** | <breve descrição da revisão>  | <autores da revisão> |
 
 ## 1. Objetivo do Projeto 
-`A ser desenvolvido pelo aluno.` Este projeto tem objetivo de desenvolver um site que implemente as funcionalidades de uma loja on-line.
+**Projeto**: Plataforma de venda de livros (yLibros)
  
 ## 2. Descrição do problema 
 | | |
 |:-|:-|
-| **_O problema_**    | O lojista que atua no comércio convencional deseja resolver o problema de volume reduzido de vendas de seus produtos agravado pela situação de Pandemia  |
-| **_afetando_**      | a capacidade de venda da loja                      |
-| **_cujo impacto é_**| expansão ou até capacidade de existência da loja                                    |
-| **_uma boa solução seria_** | Realizar vendas via internet e gerenciar o processo de entrega dos produtos |
+| **_O problema_**    | Distribuição e venda de livros de nossa loja no país  |
+| **_afetando_**      | Consumidores dessas mídias (Leitores) |
+| **_cujo impacto é_**| Para adquirir um livro, o cliente é obrigado a ir presencialmente à uma loja.
+Assim, potenciais vendas são perdidas. |
+| **_uma boa solução seria_** | Criação de uma plataforma (site) de venda de livros físicos |
 | | |
 
 ## 3. Descrição dos usuários
