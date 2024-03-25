@@ -17,7 +17,7 @@ Pós-condições:
 O usuário deve possuir uma conta no sistema
 
 Fluxo de evento:
-Fluxo principal
+- Fluxo principal
 
 |Ator| Sistema |
 |--|--|
@@ -26,19 +26,19 @@ Fluxo principal
 | | O sistema cria uma conta para o usuário com as informações fornecidas.|
 || O sistema exibe uma mensagem de confirmação de sucesso e redireciona o usuário para a página inicial.|
 
-Fluxo de exceção
+- Fluxo de exceção
 
 
-Se algum campo obrigatório não for preenchido corretamente, o sistema exibe uma mensagem de erro e solicita ao usuário que corrija o problema.
+	Se algum campo obrigatório não for preenchido corretamente, o sistema exibe uma mensagem de erro e solicita ao usuário que corrija o problema.
+		
+	Se o email fornecido pelo usuário já estiver associado a uma conta existente, o sistema exibe uma mensagem de erro indicando que o email já está em uso.	
 	
-Se o email fornecido pelo usuário já estiver associado a uma conta existente, o sistema exibe uma mensagem de erro indicando que o email já está em uso.	
-
-Se ocorrer algum erro durante o processo de criação da conta, o sistema exibe uma mensagem de erro genérica e instrui o usuário a tentar novamente mais tarde.
+	Se ocorrer algum erro durante o processo de criação da conta, o sistema exibe uma mensagem de erro genérica e instrui o usuário a tentar novamente mais tarde.
 
 
 
 	
-UC0x- Adicionar item ao carrinho
+# UC0x- Adicionar item ao carrinho
 Descrição:
 O 
 
