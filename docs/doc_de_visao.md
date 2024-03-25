@@ -1,7 +1,7 @@
 | 11/03/2024 | **1.10** | Adição de requisitos  | Os Entegradores |
 
 ## 1. Objetivo do Projeto 
-**Projeto**: Plataforma de venda de livros (ELibros)
+**Projeto**: Plataforma de venda de livros (eLibros)
 
 ## 2. Descrição do problema 
 | | |
