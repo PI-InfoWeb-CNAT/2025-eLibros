@@ -1,4 +1,8 @@
+### Histórico da Revisão 
+|  Data  | Versão | Descrição | Autor |
+|:-------|:-------|:----------|:------|
 | 11/03/2024 | **1.10** | Adição de requisitos  | Os Entegradores |
+| 11/03/2024 | **1.10** | Correção tabela de versões  | Os Entegradores/Cortez |
 
 ## 1. Objetivo do Projeto 
 **Projeto**: Plataforma de venda de livros (eLibros)
@@ -10,7 +14,7 @@
 | **_afetando_**      | Consumidores dessas mídias (Leitores) |
 | **_cujo impacto é_**| Para adquirir um livro, o cliente é obrigado a ir presencialmente à uma loja. Assim, potenciais vendas são perdidas. |
 | **_uma boa solução seria_** | Criação de uma plataforma (site) de venda de livros físicos |
-| | |
+
 
 ## 3. Descrição dos usuários
 | Nome | Descrição | Responsabilidades |
@@ -48,7 +52,7 @@ Esse projeto consiste em um site voltado para vendas de livros que pretende func
 | F14	| Verificar o andamento do pedido	| Os clientes podem acompanhar o andamento da entrega dos pedidos realizados.
 | F15	| Avaliar o Produto	| Os clientes podem avaliar os produtos realizando um comentário e atribuindo uma nota
 | F16 	| Revisar dados cadastrais	| Os clientes podem alterar seus dados cadastrais permitindo assim que façam, por exemplo, alteração do endereço de entrega
-| | | | 
+
 ## 9.	Requisitos não-funcionais
 | Código | Nome | Descrição | Categoria | Classificação |
 |:---  |:--- |:--- |:--- |:--- |
@@ -56,4 +60,4 @@ Esse projeto consiste em um site voltado para vendas de livros que pretende func
 | NF02	| Acesso somente com internet	| É necessário um acesso contínuo à Internet para poder acessar os dados do site e suas funcionalidades, como comprar produtos.	| Disponibilidade	| Obrigatório
 | NF03	| Criptografia das informações sensíveis aos usuários	| Senhas do usuário devem ser gravadas de forma criptografada no banco de dados	| Segurança	| Obrigatório
 | NF04	| Organização do conteúdo de forma objetiva	| O site apresentará o conteúdo de forma objetiva, de modo que o usuário encontre o desejado com facilidade.	| Usabilidade	| Obrigatório
-| | | | 
+
