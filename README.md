@@ -1,6 +1,8 @@
 # eLibros
 
-Um site de vendas de livros e ebooks com acervo 100% nacional
+Projeto que consiste em um site de vendas de livros e ebooks somente brasileiros, com o intuito de valorizar a literatura local.
+
+## Artefatos do projeto
 
 ## Autores
 
@@ -9,3 +11,4 @@ Um site de vendas de livros e ebooks com acervo 100% nacional
 - [Gabriel Campos](https://www.github.com/gaiiiel)
 - [Rafael Ricco](https://www.github.com/rafaeltod)
 - [Vinícius Henrique](https://www.github.com/ViniluR)
+
