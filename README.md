@@ -4,6 +4,9 @@ Projeto que consiste em um site de vendas de livros e ebooks somente brasileiros
 
 ## Artefatos do projeto
 
+- [Documento de visão](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/doc_de_visao.md)
+- [Especificação de casos de uso](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/tree/main/docs/casos_de_uso)
+
 ## Autores
 
 - [Ana Júlia](https://www.github.com/Ana-Julia-06)
