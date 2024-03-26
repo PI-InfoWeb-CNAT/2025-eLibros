@@ -113,3 +113,26 @@ Após a execução deste caso de uso, espera que o sistema:
 |3. O leitor não insere o Idioma do livro e clica em "Cadastrar livro" | --- |
 |--- |4. O sistema não valida os dados inseridos pelo leitor e exibe uma mensagem de erro ("O campo 'Idioma' é obrigatório") |
 
+### 6. Protótipos de Interface
+imgs do site/figma referente a esse caso de uso
+
+### 7. Diagrama de classe de domínio beta
+
+
+### 8. Dicionário de dados
+REVISAR SE MANTEREMOS ASSIM
+- Capa - Arquivo de imagem (PNG, JPG, JPEG, SVG, WEBP)
+- Título - Uma cadeia de caracteres alfabéticos tamanho 50
+- Autor - Uma cadeia de caracteres alfabéticos tamanho 30
+- Descrição - Uma cadeia de caracteres alfanuméricos tamanho 1000
+- Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
+- Data de Publicação - Data do calendário em modelo DD/MM/AAAA
+- ISBN - Uma cadeia de 13 caracteres numéricos 
+- Editora - Uma cadeia de caracteres alfabéticos tamanho 30
+- Edição - Uma cadeia de caracteres numéricos tamanho 2
+- N° de Páginas - Uma cadeia de caracteres numéricos tamanho 4
+- Idioma - Uma cadeia de caracteres alfabéticos tamanho 15
+
+### 9. Regras de negócio
+REVISAR
+- Capa - Tamanho máximo de 2 MB
