@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "ViniluR",
+      "name": "ViniH",
+      "avatar_url": "https://avatars.githubusercontent.com/u/124372681?v=4",
+      "profile": "https://github.com/ViniluR",
+      "contributions": [
+        "design"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "2024-eLibros",
+  "projectOwner": "PI-InfoWeb-CNAT"
+}
