@@ -45,16 +45,15 @@ imgs do site/figma referente a esse caso de uso
 A ser desenvolvido pelo aluno.
 
 ### 8. Dicionário de dados
-Em linhas gerais, informa o tipo e/ou tamanho suportado para um atributo
-
-
-**Ex.:<br>**
 - Capa - Arquivo de imagem (PNG, JPG, JPEG, SVG, WEBP)
 - Título - Uma cadeia de caracteres alfabéticos tamanho 50
+- Autor - Uma cadeia de caracteres alfabéticos tamanho 30
+- Descrição - Uma cadeia de caracteres alfanuméricos tamanho 1000
+- Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
+- Data de Publicação - Data do calendário em modelo MM/AAAA
+- ISBN - Uma cadeia de 13 caracteres numéricos 
+- Editora - Uma cadeia de caracteres alfabéticos tamanho 30
+- Idioma - Uma cadeia de caracteres alfabéticos tamanho 30
 
 ### 9. Regras de negócio
-São "restrições específicas". <br>
-Por exemplo, o tamanho máximo da capa impacta diretamente no hardware necessário para gerenciar essas imagens, consequentemente, afetando o custo financeiro
-
-**ex.:**
 - Capa - Tamanho máximo de 2 MB
