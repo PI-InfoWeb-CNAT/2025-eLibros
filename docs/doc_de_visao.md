@@ -32,7 +32,24 @@ O usuário cliente irá acessar o site utilizando  um computador ou celular e re
 Considerando o pronto de vista do lojista, administrador do site, sua principal necessidade é aumentar o volume de vendas de sua loja incorporando em seu negócio a possibilidade de realização de vendas via internet. 
 Considerando o pronto de vista do cliente, ele deseja ter acesso a um site com interface amigável que permita obter informações sobre os produtos comercializados e, caso identifique que estes atendam às suas necessidades, ele possa montar sua relação de compra confirmando a aquisição. Após essa etapa ele desejará visualizar o processo de entrega dos produtos adquiridos.
 ## 6. Alternativas concorrentes
-Saraiva, Livraria Leitura, Amazon livros…
+
+**Saraiva**
+  Pontos fortes: ---
+  Pontos fracos: além de algumas características superficiais observadas, como subcategorias extremamente mal formatadas, o site é completamente inutilizável; absolutamente todos os links e botões do website estão quebrados mesmo sendo possível observar os livros.
+
+**Livraria Leitura**
+  Pontos fortes: eles entregam o propósito do sistema. As subcategorias são diversas e bem organizadas, tornando a navegação agradável e intuitiva.
+  Pontos fracos: não atende as expectativas de um website de livros bem organizado (a organização é muito extendida horizontalmente e assim apresenta pouca informação simultaneamente).
+  
+**Livraria Cultura**
+  Pontos fortes: visualmente o site parece agradável por ter definido largura nos itens da página inicial, mas não há elogios além disso.
+  Pontos fracos: além da péssima diagramação da aba de categorias, seu conteúdo semântico também deixa muito a desejar. As subcategorias são arranjadas de forma contraditória: algumas são extremamente específicas enquanto outras são extremamente abrangentes; o mesmo nicho se encontra em subcategorias diferentes e, a princípio, nem deveria estar em mais de uma. Ao tentar comprar um livro, o usuário se depara com uma tela extremamente mal formatada. O design é brusco e possui vários itens inúteis: um botão que te leva a descrição mesmo esta já estando na tela e um retângulo cinza aleatório no meio da tela que não incentiva nada nem enfatiza nada além de a si mesmo.
+
+**Loja Panini**
+  Pontos fortes: um website que realmente entrega seu conteúdo no quesito "quadrinhos". A aba de comprar um livro é realmente bem feita, a descrição do livro e sua aba de ver o volume anterior ajudam muito na compra. As categorias e subcategorais são bem divididas e tornam a navegação bastante intuitiva.
+  Pontos fracos: ---
+
+
 ## 7.	Visão geral do produto
 Esse projeto consiste em um site voltado para vendas de livros que pretende funcionar de forma rápida e eficiente, disponibilizando um ambiente acessível a diversos tipos de usuários e possuindo um design confortável. Para tal, o site irá disponibilizar diferentes mecanismos de busca permitindo que o usuário encontre de forma eficiente o que ele precisa. Após a aquisição, o usuário poderá acompanhar o produto comprado, avaliar produtos da loja, comentar e marcar produtos como favoritos. 
 ## 8.	Requisitos funcionais
