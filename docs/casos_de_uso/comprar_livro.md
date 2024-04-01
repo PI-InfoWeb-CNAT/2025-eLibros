@@ -28,7 +28,7 @@ Após a execução deste caso de uso, espera que o sistema:
 #### 5.1. Fluxo Principal 
 |  Ator  | Sistema |
 |:-------|:------- |
-|1. O leitor seleciona um ou mais itens  | --- |
+|1. O Leitor aperta no botão de "adicionar ao carrinho"  | --- |
 | ---                      | 2. Ação do sistema| 
 |e assim por diante| oi |
 
