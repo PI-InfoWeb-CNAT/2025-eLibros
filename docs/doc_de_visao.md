@@ -34,19 +34,27 @@ Considerando o pronto de vista do cliente, ele deseja ter acesso a um site com i
 ## 6. Alternativas concorrentes
 
 **Saraiva**
+
   Pontos fortes: ---
+  
   Pontos fracos: além de algumas características superficiais observadas, como subcategorias extremamente mal formatadas, o site é completamente inutilizável; absolutamente todos os links e botões do website estão quebrados mesmo sendo possível observar os livros.
 
 **Livraria Leitura**
+
   Pontos fortes: eles entregam o propósito do sistema. As subcategorias são diversas e bem organizadas, tornando a navegação agradável e intuitiva.
+  
   Pontos fracos: não atende as expectativas de um website de livros bem organizado (a organização é muito extendida horizontalmente e assim apresenta pouca informação simultaneamente).
   
 **Livraria Cultura**
+
   Pontos fortes: visualmente o site parece agradável por ter definido largura nos itens da página inicial, mas não há elogios além disso.
+  
   Pontos fracos: além da péssima diagramação da aba de categorias, seu conteúdo semântico também deixa muito a desejar. As subcategorias são arranjadas de forma contraditória: algumas são extremamente específicas enquanto outras são extremamente abrangentes; o mesmo nicho se encontra em subcategorias diferentes e, a princípio, nem deveria estar em mais de uma. Ao tentar comprar um livro, o usuário se depara com uma tela extremamente mal formatada. O design é brusco e possui vários itens inúteis: um botão que te leva a descrição mesmo esta já estando na tela e um retângulo cinza aleatório no meio da tela que não incentiva nada nem enfatiza nada além de a si mesmo.
 
 **Loja Panini**
+
   Pontos fortes: um website que realmente entrega seu conteúdo no quesito "quadrinhos". A aba de comprar um livro é realmente bem feita, a descrição do livro e sua aba de ver o volume anterior ajudam muito na compra. As categorias e subcategorais são bem divididas e tornam a navegação bastante intuitiva.
+  
   Pontos fracos: ---
 
 
