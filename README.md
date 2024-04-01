@@ -1,6 +1,6 @@
 # eLibros
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Projeto que consiste em um site de vendas de livros e ebooks somente brasileiros, com o intuito de valorizar a literatura local.
@@ -19,6 +19,7 @@ Projeto que consiste em um site de vendas de livros e ebooks somente brasileiros
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ViniluR"><img src="https://avatars.githubusercontent.com/u/124372681?v=4?s=100" width="100px;" alt="ViniH"/><br /><sub><b>ViniH</b></sub></a><br /><a href="#design-ViniluR" title="Design">🎨</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Ana-Julia-06"><img src="https://avatars.githubusercontent.com/u/93939810?v=4?s=100" width="100px;" alt="juju."/><br /><sub><b>juju.</b></sub></a><br /><a href="#design-Ana-Julia-06" title="Design">🎨</a> <a href="#ideas-Ana-Julia-06" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
   </tbody>
 </table>
