@@ -120,19 +120,15 @@ imgs do site/figma referente a esse caso de uso
 
 
 ### 8. Dicionário de dados
-REVISAR SE MANTEREMOS ASSIM
 - Capa - Arquivo de imagem (PNG, JPG, JPEG, SVG, WEBP)
 - Título - Uma cadeia de caracteres alfabéticos tamanho 50
 - Autor - Uma cadeia de caracteres alfabéticos tamanho 30
 - Descrição - Uma cadeia de caracteres alfanuméricos tamanho 1000
 - Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
-- Data de Publicação - Data do calendário em modelo DD/MM/AAAA
+- Data de Publicação - Data do calendário em modelo MM/AAAA
 - ISBN - Uma cadeia de 13 caracteres numéricos 
 - Editora - Uma cadeia de caracteres alfabéticos tamanho 30
-- Edição - Uma cadeia de caracteres numéricos tamanho 2
-- N° de Páginas - Uma cadeia de caracteres numéricos tamanho 4
-- Idioma - Uma cadeia de caracteres alfabéticos tamanho 15
+- Idioma - Uma cadeia de caracteres alfabéticos tamanho 30
 
 ### 9. Regras de negócio
-REVISAR
 - Capa - Tamanho máximo de 2 MB
