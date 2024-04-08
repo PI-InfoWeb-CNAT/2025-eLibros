@@ -3,8 +3,8 @@
 ### Histórico da Revisão 
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
-| 11/03/2024 | **1.10** | Adição de requisitos  | Os Entegradores |
-| 11/03/2024 | **1.10** | Correção tabela de versões  | Os Entegradores/Cortez |
+| 11/03/2024 | **1.10** | Adição de requisitos  | Os Entregadores |
+| 11/03/2024 | **1.10** | Correção tabela de versões  | Os Entregadores |
 
 ## 1. Objetivo do Projeto 
 **Projeto**: Plataforma de venda de livros (eLibros)
