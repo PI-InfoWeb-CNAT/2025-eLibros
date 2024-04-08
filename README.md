@@ -3,7 +3,9 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-Projeto que consiste em um site de vendas de livros e ebooks somente brasileiros, com o intuito de valorizar a literatura local.
+### Site de vendas de livros e ebooks somente brasileiros, com o intuito de valorizar a literatura local. <br>
+Trabalho feito por alunos do 3º ano de Informática para Internet no IFRN-CNAT para a disciplina 'Projeto Integrador'.
+
 
 ## Artefatos do projeto
 
