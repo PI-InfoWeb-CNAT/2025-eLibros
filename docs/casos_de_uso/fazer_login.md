@@ -1,0 +1,68 @@
+# Projeto eLibros - Especificação de caso de uso
+
+##  Fazer login
+
+### Histórico da Revisão 
+|  Data  | Versão | Descrição | Autor |
+|:-----|:-------|:----------|:------|
+| 08/04/2024 | **1.00** | Primeira versão  | Ana Júlia |
+
+
+### 1. Resumo 
+Esse caso de uso permite o usuário cadastrado fazer login.
+
+### 2. Atores 
+Leitor
+
+### 3. Pré-condições
+São pré-condições para iniciar este caso de uso:
+- O leitor estar cadastrado no sistema
+
+### 4. Pós-condições
+Após a execução deste caso de uso, espera que o sistema:
+- Permite ao leitor a autenticação e acesso às funcionalidades protegidas.
+
+### 5. Fluxos de evento
+
+#### 5.1. Fluxo Principal 
+|  Ator  | Sistema |
+|:-------|:------- |
+|1. Usuário clica no botão de login | --- |
+| --- |2. Sistema direciona usuário para a página de login |
+|3. Usuário insere dados de login | --- |
+| --- |4. Sistema valida os dados inseridos |
+|5. Usuário é autenticado | --- |
+
+#### 5.2. Fluxo de excessão
+
+##### 5.2.1 Email em branco
+|  Ator  | Sistema |
+|:-------|:------- |
+|3. Usuário não insere seu email e clica em "Login" | --- |
+|--- |4. O sistema não valida os dados inseridos pelo admin e exibe uma mensagem de erro ("O campo 'Email' é obrigatório") |
+
+##### 5.2.2 Senha em branco
+|  Ator  | Sistema |
+|:-------|:------- |
+|3. Usuário não insere sua senha e clica em "Login" | --- |
+|--- |4. O sistema não valida os dados inseridos pelo admin e exibe uma mensagem de erro ("O campo 'Senha' é obrigatório") |
+
+##### 5.2.3 Email e/ou senha incorretos
+|  Ator  | Sistema |
+|:-------|:------- |
+|3. Usuário erra algum dado de login | --- |
+|--- |4. O sistema não valida os dados inseridos pelo admin e exibe uma mensagem de erro ("Email e/ou senha inválido(s). Tente novamente") |
+
+### 6. Protótipos de Interface
+imgs do site/figma referente a esse caso de uso
+
+### 7. Diagrama de classe de domínio usados neste caso de uso
+A ser desenvolvido pelo aluno.
+
+### 8. Dicionário de dados
+- Email - Uma cadeia de caracteres alfanuméricos
+- Senha - Uma cadeia de caracteres alfanuméricos e especiais
+
+### 9. Regras de negócio
+- Email - Conjunto de caracteres alfanuméricos separando usuário de domínio por meio de um arroba@). São permitidos os caracteres especiais hífen(-) e ponto(.) antes do arroba(@).
+- Senha - Conjunto de caracteres alfanuméricos e especiais com mínimo de 6 caracteres
