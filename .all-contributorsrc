@@ -17,13 +17,19 @@
         "ideas"
       ]
     },
+
     {
 
       "login": "Artur-Cortez",
       "name": "Artur Cortez",
       "avatar_url": "https://avatars.githubusercontent.com/u/114093584?v=4",
       "profile": "https://github.com/Artur-Cortez",
-
+      "contributions": [
+        "doc",
+        "ideas"
+      ]
+    },
+  {
       "login": "rafaeltod",
       "name": "Rafael Ricco",
       "avatar_url": "https://avatars.githubusercontent.com/u/124226801?v=4",
