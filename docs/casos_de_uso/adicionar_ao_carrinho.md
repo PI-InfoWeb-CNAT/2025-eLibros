@@ -5,7 +5,8 @@
 ### Histórico da Revisão 
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
-| dd/mm/2024 | **1.00** | Primeira versão  | Cortez |
+| 01/04/2024 | **1.00** | Primeira versão  | Cortez |
+| 09/04/2024 | **1.01** | Correção do histórico de revisão  | Cortez |
 
 
 ### 1. Resumo 
