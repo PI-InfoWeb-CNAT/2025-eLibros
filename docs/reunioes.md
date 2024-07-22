@@ -15,3 +15,9 @@
 - Discussão sobre os rascunhos de casos de uso (Vamos manter de x forma?)
 - Explicação do bot de contributors
 - ...
+
+## 22/07/2024
+- Reorganização geral das issues
+- Finalizado casos de uso e reposto o resultado final
+- Diagrama ER em processo para o fim
+- Protótipo encaminhado
