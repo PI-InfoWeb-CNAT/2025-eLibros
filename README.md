@@ -11,7 +11,7 @@ Trabalho feito por alunos do 3º ano de Informática para Internet no IFRN-CNAT 
 
 - [Documento de visão](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/doc_de_visao.md)
 - [Especificação de casos de uso](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/tree/main/docs/casos_de_uso)
-- [Diagrama de casos de uso]([https://github.com/PI-InfoWeb-CNAT/2024-eLibros/tree/main/docs/casos_de_uso](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/eLibros%20-%20CDU.drawio.png))
+- [Diagrama de casos de uso]((https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/eLibros%20-%20CDU.drawio.png))
 
 ## Equipe
 
