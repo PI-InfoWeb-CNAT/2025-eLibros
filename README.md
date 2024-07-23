@@ -10,7 +10,7 @@ Trabalho feito por alunos do 3º ano de Informática para Internet no IFRN-CNAT 
 ## Artefatos do projeto
 
 - [Documento de visão](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/doc_de_visao.md)
-- [Diagrama de casos de uso](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/eLibros%20-%20CDU.png)
+- [Diagrama de casos de uso](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/eLibros%20-%20CDU.drawio.png)
 - [Diagrama ER Completo](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/DIAGRAMAS%20ER%20ELIBROS/eLibros%20-%20DER-DER%20completo.drawio.png)
 - [Mapa do site](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/mapa%20do%20site.png)
 
