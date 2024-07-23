@@ -3,7 +3,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-### Site de vendas de livros e ebooks somente brasileiros, com o intuito de valorizar a literatura local. <br>
+### Site de vendas de livros apenas nacionalmente brasileiros, com o intuito de valorizar a literatura local. <br>
 Trabalho feito por alunos do 3º ano de Informática para Internet no IFRN-CNAT para a disciplina 'Projeto Integrador'.
 
 
