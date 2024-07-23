@@ -11,7 +11,7 @@ Trabalho feito por alunos do 3º ano de Informática para Internet no IFRN-CNAT 
 
 - [Documento de visão](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/doc_de_visao.md)
 - [Diagrama de casos de uso](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/eLibros%20-%20CDU.png)
-- [Diagrama ER Completo](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/DER/eLibros%20-%20DER%20completo.png)
+- [Diagrama ER Completo](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/DIAGRAMAS%20ER%20ELIBROS/eLibros%20-%20DER-DER%20completo.drawio.png)
 - [Mapa do site](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/mapa%20do%20site.png)
 
 ## Equipe
