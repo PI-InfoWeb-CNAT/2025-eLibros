@@ -6,14 +6,15 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 01/04/2024 | **1.00** | Primeira versão  | Cortez |
-| 09/04/2024 | **1.01** | Correção do histórico de revisão  | Cortez |
+| 09/04/2024 | **1.1** | Correção do histórico de revisão  | Cortez |
+| 12/08/2024 | **1.2** | Correção de detalhes  | Gabriel Campos |
 
 
 ### 1. Resumo 
-Esse caso de uso permite o Leitor adicionar um produto à cesta de compras.
+Esse caso de uso permite o usuário adicionar um produto à cesta de compras.
 
 ### 2. Atores 
-- Leitor ou Visitante
+- Cliente ou Visitante
 
 ### 3. Pré-condições
 São pré-condições para iniciar este caso de uso:
@@ -28,7 +29,7 @@ Após a execução deste caso de uso, espera que o sistema:
 #### 5.1. Fluxo Principal 
 |  Ator  | Sistema |
 |:-------|:------- |
-|1. Na página de um produto, o Leitor clica no botão referente a adicionar ao carrinho| --- |
+|1. Na página de um produto, o usuário clica no botão referente a adicionar ao carrinho| --- |
 | --- |2. O sistema salva essa informação (nos cookies/session info no caso do visitante) e atualiza o icone de cesta de compras com a quantia atual | 
 
 
@@ -40,13 +41,13 @@ Após a execução deste caso de uso, espera que o sistema:
 |---|2. O sistema informa ao usuário que não há a quantia disponível requisitada de um item |
 
 ### 6. Protótipos de Interface
-imgs do site/figma referente a esse caso de uso
+A ser desenvolvido.
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-A ser desenvolvido pelo aluno.
+A ser desenvolvido.
 
 ### 8. Dicionário de dados
-- Capa - Arquivo de imagem (PNG, JPG, JPEG, SVG, WEBP)
+- Capa - Arquivo de imagem 
 - Título - Uma cadeia de caracteres alfabéticos tamanho 50
 - Autor - Uma cadeia de caracteres alfabéticos tamanho 30
 - Descrição - Uma cadeia de caracteres alfanuméricos tamanho 1000
@@ -57,4 +58,4 @@ A ser desenvolvido pelo aluno.
 - Idioma - Uma cadeia de caracteres alfabéticos tamanho 30
 
 ### 9. Regras de negócio
-- Capa - Tamanho máximo de 2 MB
+- Capa - Arquivo de imagem de amanho máximo de 2 MB em algum dos seguintes formatos: PNG, JPG, JPEG, SVG, WEBP
