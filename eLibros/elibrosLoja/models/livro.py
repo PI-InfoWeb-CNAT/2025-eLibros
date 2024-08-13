@@ -11,5 +11,9 @@ class Livro(models.Model):
     descricao = models.TextField(validators=[verificar_vazio])
     editora = models.CharField(max_length=100, validators=[verificar_vazio])
 
+    preco = models.DecimalField(max_digits=5, decimal_places=2, validators=[nao_negativo, nao_nulo])
+    desconto = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    estoque = models.IntegerField()
+
     def __str__(self):
         return self.titulo

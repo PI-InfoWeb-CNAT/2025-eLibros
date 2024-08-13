@@ -21,22 +21,30 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg menu">
+
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'home' %}">DjangoX</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="{% url 'home' %}">
+      <img src="{% static 'images/logoElibros.png' %}" alt="ELIBROS" class="d-inline-block align-top" style="margin-right: 5px;">
+      
+    </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+            <a class="nav-link" aria-current="page" href="{% url 'home' %}">Início</a>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'about' %}">About</a>
+            <a class="nav-link" href="{% url 'about' %}">Acervo</a>
           </li>
         </ul>
+
+
         {% if user.is_authenticated %}
         <div class="mr-auto">
           <ul class="navbar-nav">
@@ -57,10 +65,10 @@
           </ul>
         </div>
         {% else %}
-        <div class="mr-auto">
-          <form class="form d-flex">
-            <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">Log in</a>
-            <a href="{% url 'account_signup' %}" class="btn btn-primary ms-2">Sign up</a>
+        <div >
+          <form class="form d-flex cadastro-e-login-container">
+            <a href="{% url 'account_signup' %}" class="botao-link botao-cadastrar">Cadastrar</a>
+            <a href="{% url 'account_login' %}" class="botao-link botao-entrar">Entrar</a>
           </form>
         </div>
         {% endif %}

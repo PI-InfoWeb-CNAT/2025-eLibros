@@ -16,4 +16,4 @@ def verificar_vazio(string):
 
 
 def validar_data(data):
-    pass
+    if data

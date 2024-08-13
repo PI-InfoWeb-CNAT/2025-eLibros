@@ -4,8 +4,11 @@ from django.apps import apps
 
 CustomUser = apps.get_model('accounts', 'CustomUser')
 
+from .livro import Livro
+
 class Pedido(models.Model):
     cliente = models.ForeignKey(CustomUser, null=False, related_name="cliente_do_pedido", on_delete=models.SET_NULL)
+    livro = models.ForeignKey(Livro, null=False, related_name="livro_do_pedido", on_delete=models.SET_NULL)
     status = models.CharField(max_length=50)
     data_de_pedido = models.DateTimeField(auto_now_add=True)
     entrega_estimada = models.DateTimeField()
