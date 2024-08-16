@@ -160,7 +160,7 @@ DEFAULT_FROM_EMAIL = "root@localhost"
 INTERNAL_IPS = ["127.0.0.1"]
 
 
-AUTH_USER_MODEL = "accounts.CustomUser"
+AUTH_USER_MODEL = "accounts.Cliente"
 
 # django-allauth config
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id

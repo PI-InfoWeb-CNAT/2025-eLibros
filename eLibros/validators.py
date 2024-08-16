@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+import datetime
 
 def nao_negativo(valor):
     if valor < 0:
@@ -15,5 +16,12 @@ def verificar_vazio(string):
         raise ValidationError(f"Atributo de texto possui valor vazio")
 
 
-def validar_data(data):
-    if data
+#talvez não sejam usados
+
+def nao_e_no_futuro(data):
+    if data > datetime.datetime.now:
+        raise ValidationError(f"Data de evento passado não pode estar no futuro")
+
+def nao_e_no_passado(data):
+    if data < datetime.datetime.now:
+        raise ValidationError(f"Data de evento futuro não pode estar no passado")
