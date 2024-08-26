@@ -20,7 +20,7 @@ class Cliente(AbstractUser):
 
     '''
 
-    nome = models.CharField(null=True, validators=[nao_nulo])
+    nome = models.CharField(null=True, max_length=100, validators=[nao_nulo])
     CPF = models.CharField(null=True, max_length=15)
 
     genero_choices = (
