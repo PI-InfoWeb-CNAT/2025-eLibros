@@ -1,5 +1,5 @@
 from django.db import models
-
+from validators import *
 from django.apps import apps
 
 Cliente = apps.get_model('accounts', 'Cliente')
@@ -9,7 +9,7 @@ from .livro import Livro
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, null=False, related_name="cliente_do_pedido", on_delete=models.SET_NULL)
     livro = models.ForeignKey(Livro, null=False, related_name="livro_do_pedido", on_delete=models.SET_NULL)
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, validators=[nao_nulo], default="nao_confirmado/processando")
     data_de_pedido = models.DateTimeField(auto_now_add=True)
     entrega_estimada = models.DateTimeField()
 
