@@ -14,6 +14,7 @@ Trabalho feito por alunos do 3º ano de Informática para Internet no IFRN-CNAT 
 - [Diagrama ER Completo](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/DIAGRAMAS%20ER%20ELIBROS/eLibros%20-%20DER-DER%20completo.drawio.png)
 - [Mapa do site](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/mapa%20do%20site.png)
 - [Protótipo do site](https://www.figma.com/design/VjkAeOBZT5tL58llSvcPw0/Prot%C3%B3tipo-eLibros?node-id=0-1&t=saPmJma2oz2AsZpg-1)
+- [Dicionário de dados](https://docs.google.com/spreadsheets/d/1Sae3GtQEOF6cBtN1DYgQNbfudgTLN_z67z4mB-5L3oM/edit?usp=sharing)
 
 ## Equipe
 
