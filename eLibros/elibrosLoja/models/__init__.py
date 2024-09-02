@@ -1,4 +1,3 @@
-import imp
 from .endereco import Endereco
 from .livro import Livro
 from .livropedido import LivroPedido

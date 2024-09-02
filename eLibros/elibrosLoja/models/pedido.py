@@ -1,6 +1,5 @@
 from django.db import models
 from validators import *
-from django.apps import apps
 
 from accounts.models import Cliente
 
