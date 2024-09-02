@@ -1,7 +1,8 @@
 from django.db import models
 
-from models import GeneroTextual, Livro
+from elibrosLoja.models.generoTextual import GeneroTextual
+from elibrosLoja.models.livro import Livro
 
 class GeneroLivro(models.Model):
-    generoTextual = models.ForeignKey(GeneroTextual, on_delete=models.SET_NULL, primary_key=True)
-    livro = models.ForeignKey(Livro, on_delete=models.SET_NULL, primary_key=True)
+    generoTextual = models.OneToOneField(GeneroTextual, on_delete=models.CASCADE)
+    livro = models.OneToOneField(Livro, on_delete=models.CASCADE)

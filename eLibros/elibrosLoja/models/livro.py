@@ -9,7 +9,7 @@ class Livro(models.Model):
     data_de_publicacao = models.DateField(validators=[nao_e_no_futuro])
 
     capa = models.ImageField()
-    ISBN = models.CharField(unique=True, validators=[verificar_vazio])
+    ISBN = models.CharField(unique=True, max_length=15, validators=[verificar_vazio])
     sinopse = models.TextField(validators=[verificar_vazio])
     editora = models.CharField(max_length=100, validators=[verificar_vazio])
 

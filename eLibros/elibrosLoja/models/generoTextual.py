@@ -3,4 +3,4 @@ from validators import *
 
 
 class GeneroTextual(models.Model):
-    nome = models.TextField(unique=True, validators=[nao_nulo])
+    nome = models.CharField(unique=True, max_length=30, validators=[nao_nulo])

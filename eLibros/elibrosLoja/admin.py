@@ -1,8 +1,18 @@
 from django.contrib import admin
+from .models import *
 
-from models import *
+class EnderecoAdmin(admin.ModelAdmin):
+    model = Endereco
+    list_display = ['cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'uf',]
 
-from django.apps import apps
-Cliente = apps.get_model('accounts', 'Cliente')
+class LivroAdmin(admin.ModelAdmin):
+    model = Livro
 
-admin.register(Endereco, Livro, LivroPedido, Pedido, Cliente)
+class LivroPedidoAdmin(admin.ModelAdmin):
+    model = LivroPedido
+
+class PedidoAdmin(admin.ModelAdmin):
+    model = Pedido
+
+
+admin.register(Endereco, EnderecoAdmin, Livro, LivroPedido, Pedido)

@@ -1,3 +1,5 @@
+from distutils.archive_util import make_zipfile
+from re import T
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -20,7 +22,7 @@ class Cliente(AbstractUser):
 
     '''
 
-    nome = models.CharField(null=True, validators=[nao_nulo])
+    nome = models.CharField(null=True, max_length=100, validators=[nao_nulo])
     CPF = models.CharField(null=True, max_length=15)
 
     genero_choices = (
@@ -32,7 +34,7 @@ class Cliente(AbstractUser):
 
     genero = models.CharField(max_length=20, choices=genero_choices, default="F", null=True)
     outro_genero = models.CharField(max_length=50, blank=True, null=True)
-    dt_nasc = models.DateField()
+    dt_nasc = models.DateField(null=True)
 
 
 
