@@ -2,17 +2,27 @@ from django.contrib import admin
 from .models import *
 
 class EnderecoAdmin(admin.ModelAdmin):
-    model = Endereco
-    list_display = ['cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'uf',]
+    pass
+    # list_display = ['cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'uf',]
 
 class LivroAdmin(admin.ModelAdmin):
-    model = Livro
+    pass
 
 class LivroPedidoAdmin(admin.ModelAdmin):
-    model = LivroPedido
+    pass
 
 class PedidoAdmin(admin.ModelAdmin):
-    model = Pedido
+    pass
 
+class GeneroTextualAdmin(admin.ModelAdmin):
+    pass
 
-admin.register(Endereco, EnderecoAdmin, Livro, LivroPedido, Pedido)
+class GeneroLivroAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Endereco, EnderecoAdmin)
+admin.site.register(Livro, LivroAdmin)
+admin.site.register(Pedido, PedidoAdmin)
+admin.site.register(LivroPedido, LivroPedidoAdmin)
+admin.site.register(GeneroTextual, GeneroTextualAdmin)
+admin.site.register(GeneroLivro, GeneroLivroAdmin)

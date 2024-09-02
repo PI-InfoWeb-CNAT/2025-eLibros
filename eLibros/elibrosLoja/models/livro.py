@@ -1,6 +1,9 @@
+from turtle import ondrag
 from django.db import models
 
 from validators import *
+
+from elibrosLoja.models.generoTextual import GeneroTextual
 
 class Livro(models.Model):
     titulo = models.CharField(null=False, max_length=200, validators=[verificar_vazio])
@@ -16,6 +19,8 @@ class Livro(models.Model):
     preco = models.DecimalField(max_digits=5, decimal_places=2, validators=[nao_negativo, nao_nulo])
     desconto = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     quantidade = models.IntegerField(validators=[nao_negativo])
+
+    genero = models.ManyToManyField(GeneroTextual, related_name="Genero_do_Livro") #mais de um gênero em um livro
 
     def __str__(self):
         return self.titulo

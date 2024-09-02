@@ -8,6 +8,6 @@ class ClienteAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = Cliente
-    list_display = ['email', 'username',]
+    list_display = ['email', 'username', 'nome', 'CPF', 'genero', 'outro_genero', 'dt_nasc'] #OK
 
 admin.site.register(Cliente, ClienteAdmin)

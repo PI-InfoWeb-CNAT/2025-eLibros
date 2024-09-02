@@ -29,6 +29,7 @@ class Cliente(AbstractUser):
         ("F", "Feminino"),
         ("M", "Masculino"),
         ("NB", "Não-binário"),
+        ("PND", "Prefiro não dizer")
         ("OU", "Outro")
     )
 
@@ -40,7 +41,7 @@ class Cliente(AbstractUser):
 
     #sobreescrita do método save para essa classe
     def save(self, *args, **kwargs):
-        if self.genero != 'other':
+        if self.genero != 'Outro':
             self.outro_genero = ''
         super().save(*args, **kwargs)
 
