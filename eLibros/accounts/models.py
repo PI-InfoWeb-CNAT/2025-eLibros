@@ -1,7 +1,7 @@
-from distutils.archive_util import make_zipfile
-from re import T
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+from elibrosLoja.models.endereco import Endereco
 
 from validators import *
 
@@ -22,28 +22,22 @@ class Cliente(AbstractUser):
 
     '''
 
-    nome = models.CharField(null=True, max_length=100, validators=[nao_nulo])
-    CPF = models.CharField(null=True, max_length=15)
+    nome = models.CharField(blank=True, null=True, max_length=100, validators=[nao_nulo])
+    CPF = models.CharField(blank=True, null=True, max_length=15)
 
     genero_choices = (
         ("F", "Feminino"),
         ("M", "Masculino"),
         ("NB", "Não-binário"),
-        ("PND", "Prefiro não dizer")
+        ("PND", "Prefiro não dizer"),
         ("OU", "Outro")
     )
 
-    genero = models.CharField(max_length=20, choices=genero_choices, default="F", null=True)
-    outro_genero = models.CharField(max_length=50, blank=True, null=True)
-    dt_nasc = models.DateField(null=True)
+    genero = models.CharField(max_length=20, choices=genero_choices, default="F", null=True, blank=True, verbose_name="Gênero")
+    outro_genero = models.CharField(max_length=50, blank=True, null=True, verbose_name="Outro Gênero")
+    dt_nasc = models.DateField(blank=True, null=True, verbose_name="Data de Nascimento")
 
-
-
-    #sobreescrita do método save para essa classe
-    def save(self, *args, **kwargs):
-        if self.genero != 'Outro':
-            self.outro_genero = ''
-        super().save(*args, **kwargs)
+    enderecos = models.ManyToManyField(Endereco, related_name="enderecos_do_cliente", blank=True)
 
     def __str__(self):
         return self.username
