@@ -77,4 +77,5 @@ A ser desenvolvido.
 - Capa - Arquivo de imagem de amanho máximo de 8 MB em algum dos seguintes formatos: PNG, JPG, JPEG, SVG, WEBP
 
 #### 9.2 Cliente
+- Email - Um conjunto de caracteres (com exceção dos caracteres especiais, sendo permitido apenas o ponto) seguidos, respectivamente, por um arroba, outro conjunto de letras e um ou mais domínios de topo
 - Senha - Segredo deve ter no mínimo 8 caracteres alfanuméricos
