@@ -14,6 +14,65 @@
     <body>
         <header>
             <h1><a href="inicio.html"><img src="images/logo.svg"></a></h1>
+            {% if admin %}
+            <nav>
+                <ul class="navbar-ul">
+                    <li>
+                        <a class="nav-link-normal active" href="livro.html">Livros</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="cliente.html">Clientes</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="pedido.html">Pedidos</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="genero.html">Gêneros</a>
+                    </li>
+                    <li id="dropdown">
+                        <div>
+                            <div id="perfil">
+                                <img src="images/usuario.png">
+                            </div>
+                            <ul id="espacinho">
+                                <li>
+                                    <a id="sair" href="sair do sistema rs">Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            {% elif cliente %}
+            <nav>
+                <ul class="navbar-ul">
+                    <li>
+                        <a class="nav-link-normal active" href="inicio.html">Início</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="acervo.html">Acervo</a>
+                    </li>
+                    <li>
+                        <a id="carrinho" href="acervo.html"><img src="images/icons/carrinho.svg"></a>
+                    </li>
+                    <li id="dropdown">
+                        <div>
+                            <div id="perfil">
+                                <img src="images/usuario.png">
+                            </div>
+                            <ul id="espacinho">
+                                <li>
+                                    <a href="perfil.html">Meu perfil</a>
+                                </li>
+                                <li>
+                                    <a id="sair" href="sair do sistema rs">Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            {% else %}
             <nav>
                 <ul class="navbar-ul">
                     <li>
@@ -30,6 +89,7 @@
                     </li>
                 </ul>
             </nav>
+            {% endif %}
         </header>
     </body>
 </html>
