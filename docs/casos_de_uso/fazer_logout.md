@@ -6,6 +6,7 @@
 |  Data  | Versão | Descrição | Autor |
 |:-----|:-------|:----------|:------|
 | 12/08/2024 | **1.00** | Primeira versão  | Gabriel Campos |
+| 06/09/2024 | **1.01** | Atualização dicionário de dados | Cortez | 
 
 
 ### 1. Resumo 
@@ -41,6 +42,9 @@ A ser desenvolvido.
 A ser desenvolvido.
 
 ### 8. Dicionário de dados
+
+#### 8.1. Cliente
+- Username - Uma cadeia de caracteres alfabéticos tamanho 20
 
 
 ### 9. Regras de negócio

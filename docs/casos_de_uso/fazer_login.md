@@ -6,21 +6,22 @@
 |  Data  | Versão | Descrição | Autor |
 |:-----|:-------|:----------|:------|
 | 08/04/2024 | **1.00** | Primeira versão  | Ana Júlia |
+| 06/09/2024 | **1.01** | Atualização dicionário de dados e correção nomenclatura do ator | Cortez
 
 
 ### 1. Resumo 
-Esse caso de uso permite o usuário cadastrado fazer login.
+Esse caso de uso permite o usuário cadastrado (Cliente) fazer login.
 
 ### 2. Atores 
-Leitor
+Cliente
 
 ### 3. Pré-condições
 São pré-condições para iniciar este caso de uso:
-- O leitor estar cadastrado no sistema
+- O cliente estar cadastrado no sistema
 
 ### 4. Pós-condições
 Após a execução deste caso de uso, espera que o sistema:
-- Permite ao leitor a autenticação e acesso às funcionalidades protegidas.
+- Permite ao cliente a autenticação e acesso às funcionalidades protegidas, como salvar o estado do carrinho e realizar uma compra
 
 ### 5. Fluxos de evento
 
@@ -60,9 +61,9 @@ imgs do site/figma referente a esse caso de uso
 A ser desenvolvido pelo aluno.
 
 ### 8. Dicionário de dados
-- Email - Uma cadeia de caracteres alfanuméricos
-- Senha - Uma cadeia de caracteres alfanuméricos e especiais
+- Username - Uma cadeia de caracteres alfanuméricos tamanho 20
+- Senha - Uma cadeia de caracteres alfanuméricos e especiais tamanho 15
 
 ### 9. Regras de negócio
 - Email - Conjunto de caracteres alfanuméricos separando usuário de domínio por meio de um arroba@). São permitidos os caracteres especiais hífen(-) e ponto(.) antes do arroba(@).
-- Senha - Conjunto de caracteres alfanuméricos e especiais com mínimo de 6 caracteres
+- Senha - Conjunto de caracteres alfanuméricos e especiais com mínimo de 8 caracteres

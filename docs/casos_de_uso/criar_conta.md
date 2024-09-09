@@ -6,6 +6,7 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 15/08/2024 | **1.00** | Primeira versão  | Os Integradores |
+| 06/09/2024 | **1.01** | Atualização dicionário de dados | Cortez |
 
 
 ### 1. Resumo 
@@ -49,9 +50,17 @@ imgs do site/figma referente a esse caso de uso
 A ser desenvolvido pelo aluno.
 
 ### 8. Dicionário de dados
-Em linhas gerais, informa o tipo e/ou tamanho suportado para um atributo
+
+#### 8.1. Cliente
+- Id_cliente - Atributo identificador do Cliente
+- Username - Uma cadeia de caracteres alfabéticos tamanho 20
+- Senha - Uma cadeia de caracteres alfanuméricos tamano 15
+- Cpf - Uma cadeia de caracteres alfanuméricos tamanho 13
 - Email - Uma cadeia de caracteres alfanuméricos tamanho 320
-- Senha - Uma cadeia de caracteres alfanuméricos tamanho 70
+- Nome - Uma cadeia de caracteres alfanuméricos tamanho 100
+- Dt_nasc - Um objeto date
+- Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
+- Id_endereço - Código identificador de um Endereço do Cliente
 
 ### 9. Regras de negócio
 -   E-mail - Um conjunto de caracteres (com exceção dos caracteres especiais, sendo permitido apenas o ponto) seguidos, respectivamente, por um arroba, outro conjunto de letras e um ou mais domínios de topo
