@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% block styles %}{% endblock %}
+        <title>eLibros - {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    </head>
+    <body>
+        <header>
+            <h1><a href="inicio.html"><img src="{% static 'images/logo.svg' %}"></a></h1>
+            {% if admin %}
+            <nav>
+                <ul class="navbar-ul">
+                    <li>
+                        <a class="nav-link-normal active" href="livro.html">Livros</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="cliente.html">Clientes</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="pedido.html">Pedidos</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="genero.html">Gêneros</a>
+                    </li>
+                    <li id="dropdown">
+                        <div>
+                            <div id="perfil">
+                                <img src="images/usuario.png">
+                            </div>
+                            <ul id="espacinho">
+                                <li>
+                                    <a id="sair" href="sair do sistema rs">Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            {% elif cliente %}
+            <nav>
+                <ul class="navbar-ul">
+                    <li>
+                        <a class="nav-link-normal active" href="inicio.html">Início</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="acervo.html">Acervo</a>
+                    </li>
+                    <li>
+                        <a id="carrinho" href="acervo.html"><img src="images/icons/carrinho.svg"></a>
+                    </li>
+                    <li id="dropdown">
+                        <div>
+                            <div id="perfil">
+                                <img src="images/usuario.png">
+                            </div>
+                            <ul id="espacinho">
+                                <li>
+                                    <a href="perfil.html">Meu perfil</a>
+                                </li>
+                                <li>
+                                    <a id="sair" href="sair do sistema rs">Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            {% else %}
+            <nav>
+                <ul class="navbar-ul">
+                    <li>
+                        <a class="nav-link-normal active" href="inicio.html">Início</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="acervo.html">Acervo</a>
+                    </li>
+                    <li>
+                        <a id="cadastrar" class="nav-link-expand" href="cadastrar.html">Cadastrar</a>
+                    </li>
+                    <li>
+                        <a id="entrar" class="nav-link-expand" href="entrar.html">Entrar</a>
+                    </li>
+                </ul>
+            </nav>
+            {% endif %}
+        </header>
+        {% block content %}{% endblock %}
+        <footer >
+            <p>2024 Entregadores. Todos os direitos reservados</p>
+        </footer>
+        {% block scripts %}{% endblock %}
+    </body>
+</html>

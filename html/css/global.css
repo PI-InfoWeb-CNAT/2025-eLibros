@@ -112,4 +112,8 @@ nav .nav-link-normal:hover:before{visibility: visible;-webkit-transform: scaleX(
     color: rgb(172, 54, 0);
 }
 
+footer{
+    padding: 1em 5em;
+    background-color: #1C1607;    
+}
 
