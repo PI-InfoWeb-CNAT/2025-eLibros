@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/global.css" rel="stylesheet">
+    <title>Início - Admin</title>
+</head>
+<body>
+    <header>
+        <h1><a href="inicioAdmin.html"><img src="static/images/logo.png"></a></h1>
+            <nav>
+                <ul class="navbar-ul">
+                    <li>
+                        <a class="nav-link-normal" href="manterLivro.html">Livros</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="manterCliente.html">Clientes</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="manterPedido.html">Pedidos</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="manterGenero.html">Gêneros</a>
+                    </li>
+                    <li id="dropdown">
+                        <div>
+                            <div id="perfil">
+                                <img src="static/images/usuario.png">
+                            </div>
+                            <ul id="espacinho">
+                                <li>
+                                    <a id="sair" href="sair do sistema rs">Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+    </header>
+    <main class="admin">
+        <h1 id="adminHome">Bem vindo, admin!</h1>
+        <section id="adminHome">
+            <a href="manterLivro.html"><img src="static/images/manterlivro.png" width="90" style="margin-right: 5px;"><p> Manter Livros</p></a>
+            <a href="manterPedido.html"><img src="static/images/manterpedido.png" width="90" style="margin-right: 15px;"><p> Manter Pedidos</p></a>
+            <a href="manterCliente.html"><img src="static/images/mantercliente.png" width="90" style="margin-right: 5px;"><p> Manter Clientes</p></a>
+            <a href="manterGenero.html"><img src="static/images/mantergenero.png" width="90" style="margin-right: 15px;"><p> Manter Gêneros</p></a>
+        </section>
+    </main>
+    <footer class="admin">
+        <p>2024 Entregadores. Todos os direitos reservados</p>
+    </footer>
+</body>
+</html>

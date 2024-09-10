@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/global.css" rel="stylesheet">
+    <title>Manter clientes</title>
+</head>
+<body>
+    <header>
+        <h1><a href="inicioAdmin.html"><img src="static/images/logo.png"></a></h1>
+            <nav>
+                <ul class="navbar-ul">
+                    <li>
+                        <a class="nav-link-normal" href="manterLivro.html">Livros</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="manterCliente.html">Clientes</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal active" href="manterPedido.html">Pedidos</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="manterGenero.html">Gêneros</a>
+                    </li>
+                    <li id="dropdown">
+                        <div>
+                            <div id="perfil">
+                                <img src="static/images/usuario.png">
+                            </div>
+                            <ul id="espacinho">
+                                <li>
+                                    <a id="sair" href="sair do sistema rs">Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+    </header>
+    <main class="admin">
+        <section id="cabecalho">
+            <h1 id="manter">Pedidos</h1>
+        </section>
+        <section id="search">
+            <form id="search">
+                <div id="search">
+                    <img src="static/images/icons/lupa.svg.">
+                    <input type="text" name="pesquisa" placeholder="Pesquisa por código..." size="52">
+                </div>
+                <div id="filter">
+                    <div id="select">
+                        <img src="static/images/icons/filter.svg">                          
+                        <select>
+                            <option value="recente">Mais recentes</option>
+                            <option value="antigo">Mais antigos</option>
+                            <option value="maior">Maior quant.</option>
+                            <option value="menor">Menor quant.</option>
+                        </select>
+                    </div>
+                    <div id="status">
+                        <label><img src="static/images/icons/Bplus.svg"> Status</label>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <section style="margin-left: 3%; font-family: 'Poppins'; max-width: 48%; margin-top: 3em;">
+            <ul class="listagem">
+                <li>
+                    <span>123456789012</span>
+                    <ul class="crud">
+                        <li><a href="#">Ver</a></li>
+                        <li><a href="#">Editar</a></li>
+                        <li><a href="#">Excluir</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>210987654321</span>
+                    <ul class="crud">
+                        <li><a href="#">Ver</a></li>
+                        <li><a href="#">Editar</a></li>
+                        <li><a href="#">Excluir</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>112233445566</span>
+                    <ul class="crud">
+                        <li><a href="#">Ver</a></li>
+                        <li><a href="#">Editar</a></li>
+                        <li><a href="#">Excluir</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>665544332211</span>
+                    <ul class="crud">
+                        <li><a href="#">Ver</a></li>
+                        <li><a href="#">Editar</a></li>
+                        <li><a href="#">Excluir</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer class="admin">
+        <p>2024 Entregadores. Todos os direitos reservados</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/global.css" rel="stylesheet">
+    <title>Manter livros</title>
+</head>
+<body>
+    <header>
+        <h1><a href="inicioAdmin.html"><img src="static/images/logo.png"></a></h1>
+            <nav>
+                <ul class="navbar-ul">
+                    <li>
+                        <a class="nav-link-normal active" href="manterLivro.html">Livros</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="manterCliente.html">Clientes</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="manterPedido.html">Pedidos</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="manterGenero.html">Gêneros</a>
+                    </li>
+                    <li id="dropdown">
+                        <div>
+                            <div id="perfil">
+                                <img src="static/images/usuario.png">
+                            </div>
+                            <ul id="espacinho">
+                                <li>
+                                    <a id="sair" href="sair do sistema rs">Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+    </header>
+    <main class="admin">
+        <section id="cabecalho">
+            <h1 id="manter">Livros</h1>
+            <a href="#"><img src="static/images/icons/Wplus.svg" style="padding-right: 5px;">
+                 Adicionar livro</a>
+        </section>
+        <section id="search">
+            <form id="search">
+                <div id="search">
+                    <img src="static/images/icons/lupa.svg">
+                    <input type="text" name="pesquisa" placeholder="Pesquisa por título ou autor..." size="52">
+                </div>
+                <div id="filter">
+                    <div id="select">
+                        <img src="static/images/icons/filter.svg">                          
+                        <select>
+                            <option value="-1">A-Z</option>
+                            <option value="a">A</option>
+                            <option value="b">B</option>
+                            <option value="c">C</option>
+                        </select>
+                    </div>
+                    <div id="genero">
+                        <label><img src="static/images/icons/Bplus.svg"> Gênero</label>
+                    </div>
+                    <div id="data">
+                        <label><img src="static/images/icons/Bplus.svg"> Data de inclusão</label>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <section style="margin-left: 3%; font-family: 'Poppins'; max-width: 48%; margin-top: 3em;">
+            <ul class="listagem">
+                <li>
+                    <span>Corpos Secos</span>
+                    <ul class="crud">
+                        <li><a href="#">Ver</a></li>
+                        <li><a href="#">Editar</a></li>
+                        <li><a href="#">Excluir</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Dom Casmurro</span>
+                    <ul class="crud">
+                        <li><a href="#">Ver</a></li>
+                        <li><a href="#">Editar</a></li>
+                        <li><a href="#">Excluir</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Os Suicidas</span>
+                    <ul class="crud">
+                        <li><a href="#">Ver</a></li>
+                        <li><a href="#">Editar</a></li>
+                        <li><a href="#">Excluir</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Tudo é rio</span>
+                    <ul class="crud">
+                        <li><a href="#">Ver</a></li>
+                        <li><a href="#">Editar</a></li>
+                        <li><a href="#">Excluir</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer class="admin">
+        <p>2024 Entregadores. Todos os direitos reservados</p>
+    </footer>
+</body>
+</html>
