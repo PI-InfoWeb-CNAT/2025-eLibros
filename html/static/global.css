@@ -337,10 +337,7 @@ figure{
 }
 
 
-.pesquisa{
-    padding-top: 2em;
-}
-.pesquisa p{
+section#search p{
     color: #6A6A6A;
     font-weight: 500;
 }
@@ -381,9 +378,9 @@ section#cabecalho {
     align-items: center;
     font-family: 'Poppins';
     gap: 1em;
-    margin: 0 0 2em 3%; 
+    margin: 0 0 2em 0; 
 }
-h1#manter {
+h2#manter {
     font-family: 'Poppins';
     font-size: 2em;
     font-weight: 500;
@@ -399,7 +396,10 @@ section#cabecalho > a {
 }
 section#search {
     display: flex;
-    margin-left: 3%;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 2em;
+    margin-bottom: 1em;
 }
 form#search {
     display: flex;
@@ -443,10 +443,9 @@ div#select {
 }
 div#select select {
     background-color: transparent;
-    border: none;
+    border: 1px solid #FFFFF5;
 }
 div#select select:focus {
-    border: none;
     outline: none;
 }
 ul.listagem li{
@@ -465,6 +464,7 @@ ul.listagem ul {
 }
 ul.listagem ul a {
     border-radius: 50px;
+    height: fit-content;
 }
 ul.crud li:nth-child(1) a{
     background-color: transparent;
@@ -496,10 +496,4 @@ ul.crud2 li:last-child a {
     background-color: #FF4E4E;
     text-decoration: none;
     padding: 5px 3em;
-}
-footer.admin {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
 }

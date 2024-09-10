@@ -33,8 +33,30 @@
 
 
         <main>
-            <section class="pesquisa">
-                <!-- form -->
+            <section id="search">
+                <form id="search" action="pesquisa.html">
+                    <div id="search">
+                        <img src="static/images/icons/lupa.svg">
+                        <input type="search" name="pesquisa" placeholder="Pesquise por nome..." size="52">
+                    </div>
+                    <div id="filter">
+                        <div id="select">
+                            <img src="static/images/icons/filter.svg">                          
+                            <select>
+                                <option value="-1">A-Z</option>
+                                <option value="a">A</option>
+                                <option value="b">B</option>
+                                <option value="c">C</option>
+                            </select>
+                        </div>
+                        <div id="genero">
+                            <label><img src="static/images/icons/Bplus.svg"> Gênero</label>
+                        </div>
+                        <div id="data">
+                            <label><img src="static/images/icons/Bplus.svg"> Data de inclusão</label>
+                        </div>
+                    </div>
+                </form>
             </section>
             <section class="livros">
                 <div class="acervo">
