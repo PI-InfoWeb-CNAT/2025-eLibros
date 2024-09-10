@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+body{
+    background-color: #FFFFF5;
+}
 /* header */
 *{
     margin: 0;
     padding: 0;
     font-family: Poppins;
+    color: #1C1607;
 }
 header{
     padding: 1em 5em;
@@ -121,7 +125,7 @@ nav .nav-link-normal:hover:before{visibility: visible;-webkit-transform: scaleX(
 
 /* footer */
 footer{
-    margin-top: 1em;
+    margin-top: 5em;
     padding: 2em 5em;
     background-color: #1C1607;    
 }
@@ -136,11 +140,19 @@ footer p{
 
 /* paginas */
 
+h2{
+    color:#1C1607;
+    font-size: 1.6em;
+    font-weight: 500;
+}
 section{
     padding: 0 5em;
 }
 figure{
     display: flex;
+}
+.wrap{
+    flex-wrap: wrap;
 }
 .banner{
     background-image:url(images/banner.png);
@@ -149,16 +161,53 @@ figure{
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 5em; 
+    padding: 5em;
+    margin-bottom: 2em;
 }
 .banner p{
-    color: #FFFFF7;
+    color: #FFFFF5;
     text-align: left;
     font-size: 1em;
     font-weight: 300;
 }
+.sobre{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sobre figure img{
+    width: 20em;
+    margin-right: 2em;
+}
+.sobre div{
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+}
+.sobre h2, .sobre p{width: 100%;}
+.sobre > div > p{
+    padding: .8em 0 1.2em;
+}
+.sobre h3{
+    font-size: 1.2em;
+    font-weight: 500;
+    padding: .5em 0 .1em;
+}
+.sobre div div{
+    flex-direction: column;
+    width: 40%;
+    justify-content: flex-start;
+}
+.sobre div div img{
+    width: 1.2em;
+}
+.sobre div div p{
+    font-size: .84em;
+    font-weight: 300;
+}
+
 .info{
-    margin: 2em 0;
+    margin: 3em 0;
     display: flex;
     justify-content: space-evenly;
 }
@@ -166,14 +215,14 @@ figure{
     width: 22%;
     text-align: center;
 }
-.info div h2{
+.info div h3{
     color: #5B4F3D;
     font-size: 1.5em;
     font-weight: 600;
     margin-bottom: .2em;
 }
 .info div p{
-    color: #1C1607;
+    /* color: #1C1607; */
     text-align: center;
     font-size: .9em;
     font-weight: 400;   
@@ -184,15 +233,10 @@ figure{
     justify-content: space-between;
     align-items: center;
     margin: 2em 0;
-    padding: 1.5em 5em;
-}
-.contato h2{
-    color:#473b1d;
-    font-size: 1.6em;
-    font-weight: 500;
+    padding: 2em 5em;
 }
 .contato #divisor{
-    height: 3em;
+    height: 3.2em;
     background-color: #BF9D35;
     width: 2px;
 }
@@ -206,6 +250,9 @@ figure{
     font-size: 1.1rem;
     text-align: center;
 }
+.contato h2{
+    color: #574725;
+}
 .contato div figure{
     padding-right: .66em;
 }
@@ -214,12 +261,11 @@ figure{
     color: #574725;
 }
 .livros{
-    color: #1C1607;
+    padding: 1em 5em;
 }
 .livros h2{
     margin: 1em 0;
     font-size: 1.24em;
-    font-weight: 500;
 }
 .livros > div{
     margin: 0 auto;
@@ -232,6 +278,7 @@ figure{
 .livros .acervo{
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 2em 1em;
 }
 .livros > div > div{
     display: flex;
@@ -239,42 +286,43 @@ figure{
     justify-content: center;
     align-items: center;
 }
-.livros > .acervo > div{
-    min-width: 21%;
-    margin-right: 0;
-}
 .livros > div > div figure img{
-    height: 12.5em;
+    height: 10em;
     border-radius: 3px;
 }
 .livros > div > div h3{
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: 600;
-    width: 9em;
+    width: 8em;
     padding: 0 .5em;
     height: 3em;
+    line-height: 1.2em;
 }
 .livros > div > div h3 span{
-    font-size: 1em;
-    font-weight: 200;
+    font-size: .9em;
+    font-weight: 300;
 }
 .livros > div > div p{
     font-size: .8em;
+    margin: .5em 0;
+    font-weight: 400;
+}
+.livros > div > div p:nth-child(2){
+    font-size: .72em;
     font-style: italic;
-    margin: 1.5rem 0;
 }
 .livros > div > div a{
-    font-size: 1em;
+    font-size: .8em;
     color: #1C1607;
     text-decoration: none;
     background-color: #FFD147;
     border-radius: 10px;
-    padding: 0.3em 1.1em;
+    padding: 0.3em 1.2em;
     margin: 1em 0;
 }
 .livros > div .setinha{
     position: absolute;
-    right: 0px;
+    right: -1px;
     background: none;
     border: none;
 }
@@ -282,7 +330,16 @@ figure{
     color: #FFD147;
     font-size: 1em;
     font-weight: 400;
-    margin: 2em auto;
+    margin: 2em auto 0;
     display: block;
     text-align: center;
+}
+
+
+.pesquisa{
+    padding-top: 2em;
+}
+.pesquisa p{
+    color: #6A6A6A;
+    font-weight: 500;
 }
