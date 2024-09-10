@@ -1,17 +1,19 @@
-{% load static %}
+<!-- {% load static %} -->
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        {% block styles %}{% endblock %}
+        <!-- {% block styles %}{% endblock %} -->
         <title>eLibros - {% block title %}{% endblock %}</title>
-        <link rel="stylesheet" href="{% static 'css/global.css' %}">
+        <!-- <link rel="stylesheet" href="{% static 'global.css' %}"> -->
+        <link rel="stylesheet" href="static/global.css">
     </head>
     <body>
         <header>
-            <h1><a href="inicio.html"><img src="{% static 'images/logo.svg' %}"></a></h1>
-            {% if admin %}
+            <!-- <h1><a href="inicio.html"><img src="{% static 'images/logo.svg' %}"></a></h1> -->
+            <h1><a href="inicio.html"><img src="static/images/logo.png"></a></h1>
+            <!-- {% if admin %} -->
             <nav>
                 <ul class="navbar-ul">
                     <li>
@@ -29,7 +31,8 @@
                     <li id="dropdown">
                         <div>
                             <div id="perfil">
-                                <img src="images/usuario.png">
+                                <img src="static/images/usuario.png">
+                                <!-- <img src="{% static 'images/usuario.png' %}"> -->
                             </div>
                             <ul id="espacinho">
                                 <li>
@@ -40,7 +43,7 @@
                     </li>
                 </ul>
             </nav>
-            {% elif cliente %}
+            <!-- {% elif cliente %} -->
             <nav>
                 <ul class="navbar-ul">
                     <li>
@@ -50,12 +53,14 @@
                         <a class="nav-link-normal" href="acervo.html">Acervo</a>
                     </li>
                     <li>
-                        <a id="carrinho" href="acervo.html"><img src="images/icons/carrinho.svg"></a>
+                        <a id="carrinho" href="acervo.html"><img src="static/images/icons/carrinho.svg"></a>
+                        <!-- <a id="carrinho" href="acervo.html"><img src="{%  static 'images/icons/carrinho.svg' %}"></a> -->
                     </li>
                     <li id="dropdown">
                         <div>
                             <div id="perfil">
-                                <img src="images/usuario.png">
+                                <img src="static/images/usuario.png">
+                                <!-- <img src="{% static 'images/usuario.png' %}"> -->
                             </div>
                             <ul id="espacinho">
                                 <li>
@@ -69,7 +74,7 @@
                     </li>
                 </ul>
             </nav>
-            {% else %}
+            <!-- {% else %} -->
             <nav>
                 <ul class="navbar-ul">
                     <li>
@@ -86,12 +91,13 @@
                     </li>
                 </ul>
             </nav>
-            {% endif %}
+            <!-- {% endif %} -->
         </header>
-        {% block content %}{% endblock %}
+        pagina foda
+        <!-- {% block content %}{% endblock %} -->
         <footer >
             <p>2024 Entregadores. Todos os direitos reservados</p>
         </footer>
-        {% block scripts %}{% endblock %}
+        <!-- {% block scripts %}{% endblock %} -->
     </body>
 </html>
