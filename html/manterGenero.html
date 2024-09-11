@@ -40,7 +40,7 @@
     </header>
     <main class="admin">
         <section id="cabecalho">
-            <h1 id="manter">Gêneros</h1>
+            <h2 id="manter">Gêneros</h1>
             <a href="#"><img src="static/images/icons/Wplus.svg" style="padding-right: 5px;">
                  Adicionar gênero</a>
         </section>
@@ -50,14 +50,20 @@
                     <img src="static/images/icons/lupa.svg">
                     <input type="text" name="pesquisa" placeholder="Pesquise por nome..." size="52">
                 </div>
-                <div id="select">
-                    <img src="static/images/icons/filter.svg">                          
-                    <select>
-                        <option value="-1">A-Z</option>
-                        <option value="a">A</option>
-                        <option value="b">B</option>
-                        <option value="c">C</option>
-                    </select>
+                <div id="filter">
+                    <div id="select">
+                        <img src="static/images/icons/filter.svg">                          
+                        <select>
+                            <option value="-1">A-Z</option>
+                            <option value="a">Adicionado recentemente</option>
+                        </select>
+                    </div>
+                    <div id="genero">
+                        <label><img src="static/images/icons/Bplus.svg"> Gênero</label>
+                    </div>
+                    <div id="data">
+                        <label><img src="static/images/icons/Bplus.svg"> Data de inclusão</label>
+                    </div>
                 </div>
             </form>
         </section>
