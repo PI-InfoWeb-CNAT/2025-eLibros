@@ -32,7 +32,7 @@ Após a execução deste caso de uso, espera que o sistema:
 | 3. O Admin preenche os dados | --- |
 | --- | 4. Sistema salva as informações e redireciona para página de listagem de instâncias do modelo |
 
-#### 5.2. Fluxo de excessão
+#### 5.2. Fluxo de exceção
 
 
 ##### 5.2.1 Campo obrigatório em branco
