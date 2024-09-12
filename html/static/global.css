@@ -1,17 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-body{
+body {
     background-color: #FFFFF5;
     width: 100%;
 }
+
 /* header */
-*{
+* {
     margin: 0;
     padding: 0;
     font-family: Poppins;
     color: #1C1607;
 }
-header{
+
+header {
     padding: 1em 5em;
     border-bottom: 8px #FFD147 solid;
     display: flex;
@@ -19,69 +21,117 @@ header{
     justify-content: space-between;
     background-color: #1C1607;
 }
-header h1 a{
+
+header h1 a {
     display: flex;
 }
-header h1 a img{
+
+header h1 a img {
     width: 200px;
 }
-header nav{
+
+header nav {
     display: flex;
 }
-header nav ul{
+
+header nav ul {
     gap: 1em;
     list-style-type: none;
     display: flex;
     flex-direction: row;
 }
-header nav ul li{
+
+header nav ul li {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-header nav ul li a{
+
+header nav ul li a {
     color: #FFF;
     padding: 0 0.2em;
     text-decoration: none;
     display: flex;
 }
-header a.active{
+
+header a.active {
     border-bottom: #FFD147 1px solid;
     margin-bottom: -1px;
 }
 
 /* animação rs */
-.nav-link-normal{position: relative;}
-.nav-link-normal:before{content: "";position: absolute;width: 100%;height: 1px;bottom: -1px;left: 0;background-color: #FFD147;visibility: hidden;-webkit-transform: scaleX(0);transform: scaleX(0);-webkit-transition: all 0.17s ease-in-out 0s;transition: all 0.17s ease-in-out 0s;}
-nav .nav-link-normal:hover:before{visibility: visible;-webkit-transform: scaleX(1);transform: scaleX(1);}
+.nav-link-normal {
+    position: relative;
+}
+
+.nav-link-normal:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -1px;
+    left: 0;
+    background-color: #FFD147;
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.17s ease-in-out 0s;
+    transition: all 0.17s ease-in-out 0s;
+}
+
+nav .nav-link-normal:hover:before {
+    visibility: visible;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
 /* animação rs */
 
-#cadastrar{background-color: #FFF;}
-#cadastrar:hover{background-color: #ececec; transition: all 0.3s;}
-#entrar{background-color: #FFD147;}
-#entrar:hover{background-color: #fac423; transition: all 0.3s;}
-.nav-link-expand{
+#cadastrar {
+    background-color: #FFF;
+}
+
+#cadastrar:hover {
+    background-color: #ececec;
+    transition: all 0.3s;
+}
+
+#entrar {
+    background-color: #FFD147;
+}
+
+#entrar:hover {
+    background-color: #fac423;
+    transition: all 0.3s;
+}
+
+.nav-link-expand {
     padding: 0.3em 2em;
     color: #1C1607;
     border-radius: 3px;
 }
 
-#carrinho img{width: 24px;}
+#carrinho img {
+    width: 24px;
+}
 
-#perfil{
+#perfil {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-#perfil img{
+
+#perfil img {
     width: 40px;
     height: 40px;
     border-radius: 40px;
 }
-#dropdown{
+
+#dropdown {
     position: relative;
 }
-#dropdown ul{
+
+#dropdown ul {
     display: flex;
     visibility: hidden;
     position: absolute;
@@ -97,26 +147,32 @@ nav .nav-link-normal:hover:before{visibility: visible;-webkit-transform: scaleX(
     flex-direction: column;
     transition: all .2s;
 }
-#dropdown:hover ul{
+
+#dropdown:hover ul {
     visibility: visible;
     opacity: 1;
     transition: all .2s;
 }
-#dropdown ul li{
+
+#dropdown ul li {
     width: 100%;
 }
-#dropdown ul li a{
+
+#dropdown ul li a {
     padding: 0.4em;
     width: 100%;
 }
-#dropdown ul li a:hover{
-    color:#FFD147;
+
+#dropdown ul li a:hover {
+    color: #FFD147;
     transition: all .2s;
 }
-#sair{
+
+#sair {
     border-top: 1px solid #3B362B;
 }
-#dropdown ul li a#sair:hover{
+
+#dropdown ul li a#sair:hover {
     color: rgb(172, 54, 0);
 }
 
@@ -125,12 +181,13 @@ nav .nav-link-normal:hover:before{visibility: visible;-webkit-transform: scaleX(
 
 
 /* footer */
-footer{
+footer {
     margin-top: 5em;
     padding: 2em 5em;
     background-color: #1C1607;
 }
-footer p{
+
+footer p {
     color: #fff;
 }
 
@@ -141,23 +198,26 @@ footer p{
 
 /* paginas */
 
-h2{
-    color:#1C1607;
+h2 {
+    color: #1C1607;
     font-size: 1.6em;
     font-weight: 500;
 }
-section{
+
+section {
     padding: 0 5em;
 }
 
-figure{
+figure {
     display: flex;
 }
-.wrap{
+
+.wrap {
     flex-wrap: wrap;
 }
-.banner{
-    background-image:url(images/banner.png);
+
+.banner {
+    background-image: url(images/banner.png);
     background-size: cover;
     background-position: center top;
     display: flex;
@@ -166,70 +226,87 @@ figure{
     padding: 5em;
     margin-bottom: 2em;
 }
-.banner p{
+
+.banner p {
     color: #FFFFF5;
     text-align: left;
     font-size: 1em;
     font-weight: 300;
 }
-.sobre{
+
+.sobre {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.sobre figure img{
+
+.sobre figure img {
     width: 20em;
     margin-right: 2em;
 }
-.sobre div{
+
+.sobre div {
     display: flex;
     width: 60%;
     justify-content: space-between;
 }
-.sobre h2, .sobre p{width: 100%;}
-.sobre > div > p{
+
+.sobre h2,
+.sobre p {
+    width: 100%;
+}
+
+.sobre>div>p {
     padding: .8em 0 1.2em;
 }
-.sobre h3{
+
+.sobre h3 {
     font-size: 1.2em;
     font-weight: 500;
     padding: .5em 0 .1em;
 }
-.sobre div div{
+
+.sobre div div {
     flex-direction: column;
     width: 40%;
     justify-content: flex-start;
 }
-.sobre div div img{
+
+.sobre div div img {
     width: 1.2em;
 }
-.sobre div div p{
+
+.sobre div div p {
     font-size: .84em;
     font-weight: 300;
 }
 
-.info{
+.info {
     margin: 3em 0;
     display: flex;
     justify-content: space-evenly;
 }
-.info div{
+
+.info div {
     width: 22%;
     text-align: center;
 }
-.info div h3{
+
+.info div h3 {
     color: #5B4F3D;
     font-size: 1.5em;
     font-weight: 600;
     margin-bottom: .2em;
 }
-.info div p{
+
+.info div p {
     /* color: #1C1607; */
     text-align: center;
     font-size: .9em;
-    font-weight: 400;   
+    font-weight: 400;
 }
-.contato{
+
+.contato {
     background-color: #FFD147;
     display: flex;
     justify-content: space-between;
@@ -237,39 +314,48 @@ figure{
     margin: 2em 0;
     padding: 2em 5em;
 }
-.contato #divisor{
+
+.contato #divisor {
     height: 3.2em;
     background-color: #BF9D35;
     width: 2px;
 }
-.contato > div{
+
+.contato>div {
     gap: 3em;
 }
-.contato div{
+
+.contato div {
     display: flex;
     align-items: center;
     color: #473b1d;
     font-size: 1.1rem;
     text-align: center;
 }
-.contato h2{
+
+.contato h2 {
     color: #574725;
 }
-.contato div figure{
+
+.contato div figure {
     padding-right: .66em;
 }
-.contato div figure img{
+
+.contato div figure img {
     height: 1.2em;
     color: #574725;
 }
-.livros{
+
+.livros {
     padding: 1em 5em;
 }
-.livros h2{
+
+.livros h2 {
     margin: 1em 0;
     font-size: 1.24em;
 }
-.livros > div{
+
+.livros>div {
     margin: 0 auto;
     gap: 1em;
     display: flex;
@@ -277,22 +363,26 @@ figure{
     align-items: center;
     overflow: hidden;
 }
-.livros .acervo{
+
+.livros .acervo {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 2em 1em;
 }
-.livros > div > div{
+
+.livros>div>div {
     display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
 }
-.livros > div > div figure img{
+
+.livros>div>div figure img {
     height: 10em;
     border-radius: 3px;
 }
-.livros > div > div h3{
+
+.livros>div>div h3 {
     font-size: 1em;
     font-weight: 600;
     width: 8em;
@@ -300,20 +390,24 @@ figure{
     height: 3em;
     line-height: 1.2em;
 }
-.livros > div > div h3 span{
+
+.livros>div>div h3 span {
     font-size: .9em;
     font-weight: 300;
 }
-.livros > div > div p{
+
+.livros>div>div p {
     font-size: .8em;
     margin: .5em 0;
     font-weight: 400;
 }
-.livros > div > div p:nth-child(2){
+
+.livros>div>div p:nth-child(2) {
     font-size: .72em;
     font-style: italic;
 }
-.livros > div > div a{
+
+.livros>div>div a {
     font-size: .8em;
     color: #1C1607;
     text-decoration: none;
@@ -322,13 +416,15 @@ figure{
     padding: 0.3em 1.2em;
     margin: 1em 0;
 }
-.livros > div .setinha{
+
+.livros>div .setinha {
     position: absolute;
     right: -1px;
     background: none;
     border: none;
 }
-.livros > p a{
+
+.livros>p a {
     color: #FFD147;
     font-size: 1em;
     font-weight: 400;
@@ -338,7 +434,7 @@ figure{
 }
 
 
-section#search p{
+section#search p {
     color: #6A6A6A;
     font-weight: 500;
 }
@@ -358,7 +454,8 @@ section#search p{
 }
 
 .livro_info {
-    max-width: 600px; /* Limita o tamanho da descrição */
+    max-width: 600px;
+    /* Limita o tamanho da descrição */
 }
 
 .livro_info div.livro_header {
@@ -385,87 +482,92 @@ section#search p{
 .livro_descricao p {
     font-size: 16px;
     opacity: 0.65;
-    margin-bottom: 10px; /* Espaçamento entre os parágrafos */
+    margin-bottom: 10px;
+    /* Espaçamento entre os parágrafos */
 }
 
 /* Estilo da seção de compra */
 .livro .compra {
     border: solid #D9D9D9 10px;
     border-radius: 0.5em;
-    padding: 2em 1em; /* Aumenta o padding para dar mais espaço interno */
+    padding: 2em 1em;
+    /* Aumenta o padding para dar mais espaço interno */
 }
 
 /* Mantendo o conteúdo alinhado */
-.livro .compra > div {
+.livro .compra>div {
     padding: 2.5em 0em;
     border-top: solid #D9D9D9 1.9px;
     border-bottom: solid #D9D9D9 1.9px;
 }
 
 
-.livro .compra > div > div{
-    width: 190px; /* Aumenta a largura da div */
+.livro .compra>div>div {
+    width: 190px;
+    /* Aumenta a largura da div */
     display: flex;
     align-items: center;
 }
 
 
 /* Estilo para o preço principal */
-.livro .compra p .moeda {
+.moeda {
     font-size: 12px;
     opacity: 0.5;
-    vertical-align: top; /* Alinha o R$ no topo para que fique esteticamente mais agradável */
+    vertical-align: top;
+    /* Alinha o R$ no topo para que fique esteticamente mais agradável */
 }
 
-.livro .compra p .preco-maior {
+.preco-maior {
     font-size: 24px;
 }
 
-.livro .compra p .preco-menor {
+.preco-menor {
     font-size: 12px;
-    vertical-align: top; /* Para alinhar o preço menor próximo ao topo */
+    vertical-align: top;
+    /* Para alinhar o preço menor próximo ao topo */
 }
 
-.livro .compra p:nth-child(2){
+.livro .compra p:nth-child(2) {
     font-size: 12px;
     opacity: 0.5;
 }
 
-.livro .compra p:nth-child(3){
+.livro .compra p:nth-child(3) {
     font-size: 12px;
 }
 
-.livro .compra p:nth-child(3) span{
+.livro .compra p:nth-child(3) span {
     color: #5391AB;
 }
 
-.livro .compra p:nth-child(4){
+.livro .compra p:nth-child(4) {
     font-size: 12px;
 }
 
-.livro .compra p:nth-child(4) a{
+.livro .compra p:nth-child(4) a {
     margin-top: 1em;
     text-decoration: none;
     color: #5391AB;
 }
 
-.livro .compra p:nth-child(5){
+.livro .compra p:nth-child(5) {
     color: #3B362B;
     font-size: 16px;
 }
 
-.livro .compra p:nth-child(5) span{
+.livro .compra p:nth-child(5) span {
     font-size: 12px;
     font-weight: 100;
 }
 
-.livro .compra .botoes{
+.livro .compra .botoes {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.livro .compra .botoes button{
+.livro .compra .botoes button {
     display: flex;
     width: 190px;
     text-align: center;
@@ -477,53 +579,56 @@ section#search p{
     cursor: pointer;
 }
 
-.livro .compra .botoes button p{
+.livro .compra .botoes button p {
     font-size: 14px;
 }
 
-.livro .compra .botoes button img{
+.livro .compra .botoes button img {
     margin-right: 0.5em;
     margin-top: 0.2em;
 }
 
-.livro .compra .botoes button:nth-child(1){
+.livro .compra .botoes button:nth-child(1) {
     background-color: #3B362B;
 }
 
-.livro .compra .botoes button:nth-child(1) p{
+.livro .compra .botoes button:nth-child(1) p {
     color: #FFFFF5;
 }
 
-.livro .compra .botoes button:nth-child(2){
+.livro .compra .botoes button:nth-child(2) {
     background-color: #FFD147;
 }
 
-.livro .compra .botoes button:nth-child(2) p{
+.livro .compra .botoes button:nth-child(2) p {
     color: #585858;
 }
 
-.livro .compra .botoes button:nth-child(3){
+.livro .compra .botoes button:nth-child(3) {
     background-color: #FFFFF5;
     border: solid 1px #D9D9D9;
 }
 
-.livro .compra .botoes button:nth-child(3) p{
+.livro .compra .botoes button:nth-child(3) p {
     color: #000000;
 }
 
 .quantity-input {
     position: relative;
-    width: 100px; /* Largura maior para o input */
-    height: 30px; /* Altura do input */
+    width: 100px;
+    /* Largura maior para o input */
+    height: 30px;
+    /* Altura do input */
     display: flex;
     align-items: center;
-    border-radius: 13px; /* Borda redonda */
+    border-radius: 13px;
+    /* Borda redonda */
     overflow: hidden;
     border: 2px solid #D9D9D9;
     margin-bottom: 20px;
-  }
-  
-  .quantity-btn {
+}
+
+.quantity-btn {
     background-color: #D9D9D9;
     border: none;
     width: 20px;
@@ -534,60 +639,94 @@ section#search p{
     justify-content: center;
     align-items: center;
     color: #333;
-    border-radius: 30%; /* Para icones circulares */
+    border-radius: 30%;
+    /* Para icones circulares */
     margin: 0.3em;
-  }
-  
-  .minus {
+}
+
+.minus {
     position: absolute;
     left: 0;
-  }
-  
-  .plus {
+}
+
+.plus {
     position: absolute;
     right: 0;
-  }
-  
-  #quantity {
+}
+
+#quantity {
     width: 100%;
     height: 100%;
     text-align: center;
-    border: none; /* Remove a borda original */
+    border: none;
+    /* Remove a borda original */
     font-size: 18px;
-    padding: 0 40px; /* Espaço suficiente para os botões */
+    padding: 0 40px;
+    /* Espaço suficiente para os botões */
     box-sizing: border-box;
-    background-color: transparent; /* Para manter a cor uniforme */
-    outline: none; /* Remove a linha de foco */
-  }
-  
-  /* Estilos para remover as setas do input number */
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
+    background-color: transparent;
+    /* Para manter a cor uniforme */
+    outline: none;
+    /* Remove a linha de foco */
+}
+
+/* Estilos para remover as setas do input number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  }
-  
-  input[type="number"] {
-    -moz-appearance: textfield;
-  }
-  
+}
+
+
+.meucarrinho {
+    margin-top: 3em;
+}
+
+.meucarrinho h2{
+    margin-bottom: 1em;
+}
+
+.meucarrinho ul li {
+    display: flex;
+    gap: 5em;
+}
+
+.meucarrinho ul li h3{
+    font-size: 30px;
+    font-weight: 500;
+    border-bottom: 1px solid #D9D9D9
+}
+
+
+
+.meucarrinho ul li > div{
+    display: flex;
+    flex-direction: column;
+    gap: 4em;
+}
+
+/* Adicione seus estilos personalizados aqui */
+
 /* admin */
 
 main.admin {
     margin: 3em 0;
 }
+
 h1#adminHome {
     font-family: 'Poppins';
     font-weight: 500;
     margin: 1em 2em 0 20%;
 }
+
 section#adminHome {
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
     width: 65%;
 }
-section#adminHome > a {
+
+section#adminHome>a {
     display: flex;
     flex: 1 0 calc(50% - 200px);
     margin: 1.5em;
@@ -600,21 +739,24 @@ section#adminHome > a {
     text-decoration: none;
     color: black;
     font-family: 'Poppins';
-} 
+}
+
 /* manter */
 section#cabecalho {
     display: flex;
     align-items: center;
     font-family: 'Poppins';
     gap: 1em;
-    margin: 0 0 2em 0; 
+    margin: 0 0 2em 0;
 }
+
 h2#manter {
     font-family: 'Poppins';
     font-size: 2em;
     font-weight: 500;
 }
-section#cabecalho > a {
+
+section#cabecalho>a {
     font-family: 'Poppins';
     font-size: 0.9em;
     text-decoration: none;
@@ -623,6 +765,7 @@ section#cabecalho > a {
     color: white;
     padding: 5px 20px;
 }
+
 section#search {
     display: flex;
     flex-direction: column;
@@ -630,11 +773,13 @@ section#search {
     margin-top: 2em;
     margin-bottom: 1em;
 }
+
 form#search {
     display: flex;
     gap: 2em;
     font-family: 'Poppins';
 }
+
 div#search {
     display: flex;
     align-items: center;
@@ -643,83 +788,99 @@ div#search {
     padding: 0 15px;
     border-radius: 30px;
 }
+
 div#search input {
-    width: 100%; 
+    width: 100%;
     background-color: transparent;
     border: none;
     padding: 5px 0;
     font-size: 1em;
 }
-div#search input:focus{
+
+div#search input:focus {
     border: none;
     outline: none;
 }
-div#filter{
+
+div#filter {
     display: flex;
     align-items: center;
     gap: 1em;
 }
+
 div#filter label {
     display: flex;
     align-items: center;
     gap: 5px;
 }
+
 div#select {
     display: flex;
     align-items: center;
     gap: 5px;
     font-size: 1em;
 }
+
 div#select select {
     background-color: transparent;
     border: 1px solid #FFFFF5;
 }
+
 div#select select:focus {
     outline: none;
 }
-ul.listagem li{
+
+ul.listagem li {
     display: flex;
     gap: 5em;
     margin-bottom: 0.5em;
     justify-content: space-between;
 }
-ul.listagem span{
+
+ul.listagem span {
     font-size: 1.3em;
 }
+
 ul.listagem ul {
     display: flex;
     list-style: none;
     gap: 10px;
 }
+
 ul.listagem ul a {
     border-radius: 50px;
     height: fit-content;
 }
-ul.crud li:nth-child(1) a{
+
+ul.crud li:nth-child(1) a {
     background-color: transparent;
     border: 1px solid black;
     color: black;
     text-decoration: none;
     padding: 5px 3.5em;
 }
+
 ul.crud li:nth-child(2) a {
     text-decoration: none;
     color: black;
     background-color: #FFD147;
     padding: 5px 3em;
 }
+
 ul.crud li:nth-child(3) a {
     color: white;
     background-color: #FF4E4E;
     text-decoration: none;
     padding: 5px 3em;
 }
+
 ul.crud2 li:first-child a {
     text-decoration: none;
     color: black;
     background-color: #FFD147;
     padding: 5px 2em;
 }
+
 ul.crud2 li:last-child a {
     color: white;
     background-color: #FF4E4E;
