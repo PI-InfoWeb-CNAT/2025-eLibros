@@ -19,7 +19,10 @@ class LivroAdmin(admin.ModelAdmin):
         return ", ".join([genero.nome for genero in obj.genero.all()])
     get_generos.short_description = 'Gêneros'
 
-class LivroPedidoAdmin(admin.ModelAdmin):
+class CarrinhoAdmin(admin.ModelAdmin):
+    pass
+
+class ItemCarrinhoAdmin(admin.ModelAdmin):
     pass
 
 class PedidoAdmin(admin.ModelAdmin):
@@ -34,6 +37,7 @@ class GeneroLivroAdmin(admin.ModelAdmin):
 admin.site.register(Endereco, EnderecoAdmin)
 admin.site.register(Livro, LivroAdmin)
 admin.site.register(Pedido, PedidoAdmin)
-admin.site.register(LivroPedido, LivroPedidoAdmin)
+admin.site.register(Carrinho, CarrinhoAdmin)
+admin.site.register(ItemCarrinho, ItemCarrinhoAdmin)
 admin.site.register(GeneroTextual, GeneroTextualAdmin)
 admin.site.register(GeneroLivro, GeneroLivroAdmin)

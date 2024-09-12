@@ -19,9 +19,9 @@ def verificar_vazio(string):
 #talvez não sejam usados
 
 def nao_e_no_futuro(data):
-    if data > datetime.datetime.now:
+    if data > datetime.datetime.now().date():
         raise ValidationError(f"Data de evento passado não pode estar no futuro")
 
 def nao_e_no_passado(data):
-    if data < datetime.datetime.now:
+    if data < datetime.datetime.now().date():
         raise ValidationError(f"Data de evento futuro não pode estar no passado")

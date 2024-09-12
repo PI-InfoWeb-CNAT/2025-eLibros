@@ -8,11 +8,13 @@ from validators import *
 class Cliente(AbstractUser):
     
     '''
+    AUTOMATIC FIELDS
+    
     - username --> obrigatório por padrão
     - password --> obrigatório
 
 
-    CAMPOS OPCIONAIS:
+   OPTIONAL FIELDS
 
     - first_name
     - last_name
