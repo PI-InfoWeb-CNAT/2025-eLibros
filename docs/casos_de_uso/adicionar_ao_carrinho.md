@@ -9,6 +9,7 @@
 | 09/04/2024 | **1.1** | Correção do histórico de revisão  | Cortez |
 | 12/08/2024 | **1.2** | Correção de detalhes  | Gabriel Campos |
 | 06/09/2024 | **1.3** | Correção dicionário de dados | Cortez |
+| 12/09/2024 | **1.4** | Correção ortográfica | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -34,7 +35,7 @@ Após a execução deste caso de uso, espera que o sistema:
 | --- |2. O sistema salva essa informação (nos cookies/session info no caso do visitante) e atualiza o icone de cesta de compras com a quantia atual | 
 
 
-#### 5.2. Fluxo de excessão
+#### 5.2. Fluxo de exceção
 
 ##### 5.2.1 Loja não possui estoque
 |  Ator  | Sistema |
