@@ -1,9 +1,9 @@
-# Projeto eLibros - Especificação de caso de uso INCOMPLETO
+# Projeto eLibros - Especificação de caso de uso
 
 ##  Manter Itemcarrinho
 Esse caso de uso contém as seguintes operações:
 
-- [Ver](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/admin/casos_de_uso/CRUD/ver.md)
+- [Ver](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/casos_de_uso/admin/CRUD/ver.md)
 
 ### Dicionários de dados
 

@@ -1,15 +1,15 @@
-# Projeto eLibros - Especificação de caso de uso INCOMPLETO
+# Projeto eLibros - Especificação de caso de uso
 
-##  Manter cliente
+##  Editar
 
 ### Histórico da Revisão 
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
-| dd/mm/2024 | **1.00** | Primeira versão  | Os Integradores |
+| 12/09/2024 | **1.00** | Primeira versão  | Os Integradores |
 
 
 ### 1. Resumo 
-Este caso de uso permite ao administrador do sistema gerenciar dados e realizar operações relacionadas aos usuários cadastrados (leitores).
+Este caso de uso permite ao administrador do sistema editar atributos de uma classe
 
 ### 2. Atores 
 - Admin

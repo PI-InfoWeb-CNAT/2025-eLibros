@@ -1,12 +1,12 @@
-# Projeto eLibros - Especificação de caso de uso INCOMPLETO
+# Projeto eLibros - Especificação de caso de uso
 
 ##  Manter Livro
 Esse caso de uso contém as seguintes operações:
 
-- [Adicionar](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/admin/casos_de_uso/CRUD/criar.md)
-- [Ver](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/admin/casos_de_uso/CRUD/ver.md)
-- [Editar](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/admin/casos_de_uso/CRUD/editar.md)
-- [Excluir](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/admin/casos_de_uso/CRUD/excluir.md)
+- [Adicionar](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/casos_de_uso/admin/CRUD/criar.md)
+- [Ver](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/casos_de_uso/admin/CRUD/ver.md)
+- [Editar](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/casos_de_uso/admin/CRUD/editar.md)
+- [Excluir](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/casos_de_uso/admin/CRUD/excluir.md)
 
 ### Dicionários de dados
 
