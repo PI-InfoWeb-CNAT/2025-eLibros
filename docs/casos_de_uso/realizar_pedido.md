@@ -8,7 +8,7 @@
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 
 ### 1. Resumo 
-Esse caso de uso permite o usuário realiza o pedido dos itens que se encontram no seu carrinho.
+Esse caso de uso permite o usuário realizar o pedido dos itens que se encontram no seu carrinho.
 
 ### 2. Atores 
 - Cliente
