@@ -5,7 +5,7 @@
 ### Histórico da Revisão 
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
-| dd/mm/2024 | **1.00** | Primeira versão  | Os Integradores |
+| 12/09/2024 | **1.00** | Primeira versão  | Os Integradores |
 
 
 ### 1. Resumo 
