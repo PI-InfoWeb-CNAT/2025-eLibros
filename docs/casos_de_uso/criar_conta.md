@@ -33,7 +33,7 @@ Após a execução deste caso de uso, espera-se que:
 |3. Visitante fornece email e senha | --- |
 | --- | 4. Conta é criada com sucesso |
 
-#### 5.2. Fluxo de excessão
+#### 5.2. Fluxo de exceção
 
 **EX:**
 
