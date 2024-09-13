@@ -39,7 +39,6 @@
 - **home**
 - **acervo**
 - **explorar**
-- **pesquisa**
 - **livro**
 - **carrinho**
 - **compra**
