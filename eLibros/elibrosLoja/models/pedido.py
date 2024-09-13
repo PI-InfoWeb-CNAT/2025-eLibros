@@ -2,7 +2,7 @@ from django.db import models
 from validators import *
 
 
-from elibrosLoja.models.carrinho import Carrinho
+from elibrosLoja.models.itemcarrinho import ItemCarrinho
 from elibrosLoja.models.endereco import Endereco
 
 import random
@@ -18,7 +18,7 @@ class Pedido(models.Model):
     numero_pedido = models.CharField(max_length=12, primary_key=True, default=gerar_numero_pedido())
 
     cliente = models.ForeignKey('accounts.Cliente', null=False, related_name="cliente_do_pedido", on_delete=models.CASCADE)
-    carrinho = models.ForeignKey(Carrinho, null=False, related_name="carrinho_do_pedido", on_delete=models.CASCADE)
+    itens = models.ManyToManyField(ItemCarrinho, related_name="itens_do_pedido")
     # endereco = models.ForeignKey(Endereco, null=False, related_name="endereco_do_pedido", on_delete=models.CASCADE, default=cliente.enderecos.all()[0])
 
     status = models.CharField(max_length=50, validators=[nao_nulo], default="nao_confirmado/processando")
