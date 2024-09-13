@@ -1,7 +1,7 @@
 from django.db import models
 
 class Endereco(models.Model):
-    cep = models.IntegerField() 
+    cep = models.CharField(max_length=9)
     uf = models.CharField(max_length=2)
     cidade = models.CharField(max_length=30)
     bairro = models.CharField(max_length=50)
