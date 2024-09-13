@@ -63,7 +63,7 @@ A ser desenvolvido.
 - Cpf - Uma cadeia de caracteres alfanuméricos tamanho 13
 - Email - Uma cadeia de caracteres alfanuméricos tamanho 320
 - Nome - Uma cadeia de caracteres alfanuméricos tamanho 100
-- Dt_nasc - Um objeto date
+- Dt_nasc - Data do calendário em modelo DD/MM/AAAA
 - Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
 - Id_endereço - Código identificador da entidade Endereço
 
