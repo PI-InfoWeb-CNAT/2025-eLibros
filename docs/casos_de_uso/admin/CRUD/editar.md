@@ -77,8 +77,5 @@ Após a execução deste caso de uso, espera que o sistema:
 ### 8. Dicionário de dados
 
 
-
-
 ### 9. Regras de negócio
 
-- Capa - Tamanho máximo de 8 MB
