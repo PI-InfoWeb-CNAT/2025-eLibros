@@ -38,10 +38,11 @@
 ## Cliente (Front-end)
 - **home**
 - **acervo**
-- **pesquisa**
+- **explorar**
 - **livro**
 - **carrinho**
 - **compra**
 - **perfil**
   - **perfil-edit**
   - **meus-pedidos**
+    - **pedido**
