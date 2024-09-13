@@ -38,6 +38,7 @@
 ## Cliente (Front-end)
 - **home**
 - **acervo**
+- **explorar**
 - **pesquisa**
 - **livro**
 - **carrinho**
