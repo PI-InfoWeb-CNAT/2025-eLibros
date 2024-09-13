@@ -46,3 +46,4 @@
 - **perfil**
   - **perfil-edit**
   - **meus-pedidos**
+    - **pedido**
