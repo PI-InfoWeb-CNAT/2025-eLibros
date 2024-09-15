@@ -36,33 +36,66 @@
     <main>
         <section class="meucarrinho">
             <h2>Meu Carrinho</h2>
-
-            <input type="checkbox" id="selectAll"> Selecionar tudo
-
-            <ul id="itens">
+            <input type="checkbox" id="selectAll" class="custom-checkbox">
+            <label for="myCheckbox">
+                <input type="checkbox" id="myCheckbox" class="custom-checkbox">
+                <span class="checkbox-dot"></span>
+                Selecionar tudo
+            </label>
+            <ul>
                 <li>
-                    <input type="checkbox" class="itemCheckbox">
+                    <label for="myCheckbox1">
+                        <input type="checkbox" id="myCheckbox1" class="custom-checkbox">
+                        <span class="checkbox-dot"></span>
+                    </label>
                     <figure>
                         <img src="static/images/diasperfeitos.png" alt="Dias Perfeitos - Raphael Montes">
                     </figure>
                     <div>
-                        <h3>Título 1</h3>
+                        <h3><a href="livro.html">Dias Perfeitos</a></h3>
                         <p>
-                            <span class="moeda">R$</span>
-                            <b><span class="preco-maior">48</span><span class="preco-menor">84</span></b>
+                            <span class="moeda-cart">R$</span>
+                            <b><span class="preco-maior-cart">48,84</b>
                         </p>
-                        <div class="quantity-input">
-                            <button class="quantity-btn minus" onclick="decrease()">-</button>
-                            <input type="number" id="quantity" value="1" min="1" max="99">
-                            <button class="quantity-btn plus" onclick="increase()">+</button>
+                        <div>
+                            <p>Qnt:</p>
+                            <div class="quantity-input">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" id="quantity" value="1" min="1" max="99">
+                                <button class="quantity-btn plus" >+</button>
+                            </div>
                         </div>
-                    </div>  
+                    </div>
+                </li>
+                <li>
+                    <label for="myCheckbox2">
+                        <input type="checkbox" id="myCheckbox2" class="custom-checkbox">
+                        <span class="checkbox-dot"></span>
+                    </label>
+                    <figure>
+                        <img src="static/images/placeholder.png" alt="Família Feliz">
+                    </figure>
+                    <div>
+                        <h3><a href="#">Família Feliz</a></h3>
+                        <p>
+                            <span class="moeda-cart">R$</span>
+                            <b><span class="preco-maior-cart">50,00</span></b>
+                        </p>
+                        <div>
+                            <p>Qnt:</p>
+                            <div class="quantity-input">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" id="quantity" value="1" min="1" max="99">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             </ul>
-
-            <button>Continuar comprando</button>
-            <button>Finalizar compra</button>
-
+            <div class="botoes">
+                <button><a href="acervo.html">Continuar comprando</a></button>
+                <button><a href="#">Finalizar compra</a></button>
+            </div>
         </section>
     </main>
     <!-- {% block content %}{% endblock %} -->
