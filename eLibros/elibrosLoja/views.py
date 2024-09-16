@@ -89,30 +89,35 @@ def livro(request, titulo):
 @login_required
 def carrinho(request):
     
+    quantidade = request.GET.get('quantidade')
     cliente = request.user
     carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
 
     context = {
         'carrinho': carrinho,
         'cliente': cliente,
+        'quantidade': quantidade,
         }
 
     return render(request, 'elibrosLoja/carrinho.html', context=context)
 
 @login_required
 def comprar_agora(request, titulo):
+
     livro = get_object_or_404(Livro, titulo=titulo)
     cliente = request.user  # Assuming the user has a related Cliente object
 
     # Retrieve or create the cart for the logged-in user
     carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
 
+    quantidade = int(request.GET.get('quantity', 1))
+
     # Check if the item is already in the cart
     item_carrinho, item_created = ItemCarrinho.objects.get_or_create(livro=livro, defaults={'quantidade': 1, 'preco': livro.preco})
 
     if not item_created:
         # If the item already exists, increase the quantity
-        item_carrinho.quantidade += 1
+        item_carrinho.quantidade += quantidade
         item_carrinho.save()
 
     # Add the item to the cart

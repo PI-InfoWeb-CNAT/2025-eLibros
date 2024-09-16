@@ -52,9 +52,12 @@
                     <button><img src="{% static 'images/carrinho.png' %}">
                         <p>Adicionar</p>
                     </button>
-                    <button>
-                        <a href="{% url 'comprar_agora' titulo=livro.titulo %}">Comprar Agora</a>
-                    </button>
+
+                    <form method="get" action="{% url 'comprar_agora' titulo=livro.titulo %}">
+                        <input type="hidden" id="hidden_quantity" name="quantity" value="1">
+                        <button type="submit">Comprar Agora</button>
+                    </form>
+
                     <button><img src="{% static 'images/caminhao.png' %}">
                         <p>Calcular Frete</p>
                     </button>
@@ -214,3 +217,8 @@
     </section>
 </main>
 {% endblock content %}
+<script>
+    document.getElementById('quantity').addEventListener('input', function() {
+        document.getElementById('hidden_quantity').value = this.value;
+    });
+</script>
