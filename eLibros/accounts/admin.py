@@ -8,7 +8,7 @@ class ClienteAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = Cliente
-    list_display = ['email', 'username', 'nome', 'CPF', 'genero', 'outro_genero', 'dt_nasc', 'get_enderecos'] #OK
+    list_display = ['email', 'username', 'perfil_preview', 'nome', 'CPF', 'genero', 'outro_genero', 'dt_nasc', 'get_enderecos'] #OK
 
     def get_enderecos(self, obj):
         return ", ".join([endereco.cep for endereco in obj.enderecos.all()])

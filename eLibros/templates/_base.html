@@ -42,8 +42,11 @@
         <li id="dropdown">
           <div>
               <div id="perfil">
+                {% if cliente.foto_de_perfil %}  
                   <img src="{{ cliente.foto_de_perfil.url }}">
-                  <!-- <img src="{% static 'images/usuario.png' %}"> -->
+                {% else %}
+                  <img src="{% static 'images/usuario'%}">
+                {% endif %}
               </div>
               <ul id="espacinho">
                   <li>

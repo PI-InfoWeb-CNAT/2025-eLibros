@@ -2,7 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from elibrosLoja.models.endereco import Endereco
-
+from django.utils.html import mark_safe
+from django.conf import settings
 from validators import *
 
 class Cliente(AbstractUser):
@@ -45,3 +46,10 @@ class Cliente(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+    def perfil_preview(self):
+        if self.foto_de_perfil:
+            return mark_safe(f'<img src="{self.foto_de_perfil.url}" width="100">')
+        else:
+            foto_padrao_url = settings.STATIC_URL + 'images/usuario.png'
+            return mark_safe(f'<img src="{foto_padrao_url}" width="100">')
