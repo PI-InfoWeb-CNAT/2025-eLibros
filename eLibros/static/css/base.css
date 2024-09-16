@@ -73,10 +73,10 @@ header nav ul li a {
   display: flex;
 }
 
-header a.active {
+/* header a.active {
   border-bottom: #FFD147 1px solid;
   margin-bottom: -1px;
-}
+} */
 
 /* animação rs */
 .nav-link-normal {
