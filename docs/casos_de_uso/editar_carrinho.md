@@ -6,6 +6,7 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
+| 16/09/2024 | **1.10** | Pequenas correções  | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -16,7 +17,8 @@ Esse caso de uso permite ao Cliente editar seu carrinho de compras.
 
 ### 3. Pré-condições
 São pré-condições para iniciar este caso de uso:
-- O usuário possuir itens em seu carrinho
+- O cliente estar logado no sistema
+- O cliente possuir itens em seu carrinho
   
 ### 4. Pós-condições
 Após a execução deste caso de uso, espera que o sistema:
