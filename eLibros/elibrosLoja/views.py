@@ -87,22 +87,22 @@ def livro(request, titulo):
     return render(request, 'elibrosLoja/livro.html', context=context)
 
 @login_required
-def carrinho(request):
+def ver_carrinho(request): #show cart    
+    cliente = request.user # okay
     
-    quantidade = request.GET.get('quantidade')
-    cliente = request.user
     carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
+    print(cliente)
+    print(carrinho)
 
     context = {
         'carrinho': carrinho,
         'cliente': cliente,
-        'quantidade': quantidade,
         }
 
     return render(request, 'elibrosLoja/carrinho.html', context=context)
 
 @login_required
-def comprar_agora(request, titulo):
+def comprar_agora(request, titulo): #add_to_cart and redirect to cart
 
     livro = get_object_or_404(Livro, titulo=titulo)
     cliente = request.user  # Assuming the user has a related Cliente object

@@ -29,7 +29,22 @@ class LivroAdmin(admin.ModelAdmin):
     get_categorias.short_description = 'Categorias'
 
 class CarrinhoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['cliente', 'get_items', 'get_total']
+
+    def get_items(self, obj):
+        var = ''
+        for item in obj.items.all():
+            var += f'Quantidade: {item.quantidade} - {item.livro.titulo} - Preço: {item.preco}<br>'
+        return var
+    
+    def get_total(self, obj):
+        total = 0
+        for item in obj.items.all():
+            total += item.preco
+        return total
+            
+
+
 
 class ItemCarrinhoAdmin(admin.ModelAdmin):
     pass
