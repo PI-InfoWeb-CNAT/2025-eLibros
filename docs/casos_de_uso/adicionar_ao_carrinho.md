@@ -10,6 +10,7 @@
 | 12/08/2024 | **1.2** | Correção de detalhes  | Gabriel Campos |
 | 06/09/2024 | **1.3** | Correção dicionário de dados | Cortez |
 | 12/09/2024 | **1.4** | Correção ortográfica | Gabriel Campos |
+| 16/09/2024 | **1.5** | Apenas cliente adiciona ao carrinho | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -20,7 +21,7 @@ Esse caso de uso permite o usuário adicionar um livro a cesta de compras.
 
 ### 3. Pré-condições
 São pré-condições para iniciar este caso de uso:
-- Não há.
+- O cliente estar logado no sistema
 
 ### 4. Pós-condições
 Após a execução deste caso de uso, espera que o sistema:
