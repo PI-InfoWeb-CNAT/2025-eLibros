@@ -6,3 +6,4 @@ from .generoLiterario import GeneroLiterario
 from .carrinho import Carrinho
 from .itemcarrinho import ItemCarrinho
 from .categoria import Categoria
+from .uploadimage import UploadImage

@@ -2,5 +2,31 @@
 {% load static %}
 {% block title %}eLibros - Perfil{% endblock title %}
 {% block content %}
-<p>Página foda do perfil do usuário </p>
+
+
+<main>
+
+
+<p>Nome de usuário</p>
+<p>{{ cliente.nome }}</p>
+
+<p>E-mail</p>
+<p>{{ cliente.email }}</p>
+
+<p>Gênero</p>
+<p>{{ cliente.genero }}</p>
+
+<p>Telefone</p>
+<p>{{ cliente.telefone }}</p>
+
+<div class="senha_autenticacao">
+    <button>Alterar senha</button>
+    <hr>
+    <button>Desativar conta</button>
+    <button>Excluir conta</button>
+</div>
+
+</main>
+
+
 {% endblock content %}

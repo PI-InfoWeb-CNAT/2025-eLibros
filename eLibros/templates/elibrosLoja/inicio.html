@@ -66,7 +66,7 @@
             <div>
                 <figure>
                     {% if livro.capa %}
-                    <img src="{{ livro.capa.url }}" width="100px">
+                    <img src="{{ livro.capa.url }}">
                     {% else %}
                     <img src="{% static 'images/placeholder.png' %}" width="100px">
                     {% endif %}
@@ -74,7 +74,7 @@
                 <div>
                     <h3>
                         {{ livro.titulo }}
-                        {% if livro.subtiulo %}
+                        {% if livro.subtitulo %}
                         <br>
                         <span>{{ livro.subtitulo }}</span>
                         {% endif %}

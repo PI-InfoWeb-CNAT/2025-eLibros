@@ -1,10 +1,13 @@
 from django.views.generic import TemplateView
 from elibrosLoja.models import Livro, GeneroTextual, Categoria, Carrinho, ItemCarrinho
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 import random
 from django.contrib.auth.decorators import login_required
+from elibrosLoja.forms import UserImageForm  
+from elibrosLoja.models import UploadImage  
 
 def Inicio(request):
+    cliente = request.user
     livro = request.GET.get('livro')
     livros = Livro.objects.all()
     generos = GeneroTextual.objects.all()
@@ -20,13 +23,14 @@ def Inicio(request):
         if livros.filter(genero=genero).exists():
             livros_filtrados.append({
                 'genero': genero.nome,
-                'livros': livros.filter(genero=genero)
+                'livros': livros.filter(genero=genero),
             })
 
     context = {
         'livros': livros,
         'livros_indicacoes': livros.filter(categoria=Categoria.objects.get(nome='Indicações do eLibros')),
         'livros_filtrados_por_genero': livros_filtrados,
+        'cliente': cliente,
     }
 
     return render(request, 'elibrosLoja/inicio.html', context=context, status=200)
@@ -36,6 +40,7 @@ class AboutPageView(TemplateView):
     template_name = "elibrosLoja/about.html"
 
 def acervo(request):
+    cliente = request.user
     livro = request.GET.get('livro')
     livros = Livro.objects.all()
     generos = GeneroTextual.objects.all()
@@ -58,11 +63,13 @@ def acervo(request):
         'livros': livros,
         'livros_indicacoes': livros.filter(categoria=Categoria.objects.get(nome='Indicações do eLibros')),
         'livros_filtrados_por_genero': livros_filtrados,
+        'cliente': cliente,
     }
     return render(request, 'elibrosLoja/acervo.html', context=context, status=200)
 
 
 def livro(request, titulo):
+    cliente = request.user
     livros = Livro.objects.all()
     livro = livros.filter(titulo=titulo).first()
     preco_com_desconto = None
@@ -73,7 +80,10 @@ def livro(request, titulo):
     else:
         print('Livro não encontrado')
 
-    context = {'livro': livro, 'preco_com_desconto': preco_com_desconto}
+    context = {
+        'livro': livro,
+        'preco_com_desconto': preco_com_desconto,
+        'cliente': cliente,}
     return render(request, 'elibrosLoja/livro.html', context=context)
 
 @login_required
@@ -82,7 +92,10 @@ def carrinho(request):
     cliente = request.user
     carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
 
-    context = {'carrinho': carrinho}
+    context = {
+        'carrinho': carrinho,
+        'cliente': cliente,
+        }
 
     return render(request, 'elibrosLoja/carrinho.html', context=context)
 
@@ -107,11 +120,29 @@ def comprar_agora(request, titulo):
     carrinho.update_total()
     carrinho.save()
 
-    context = {'carrinho': carrinho}
+    context = {
+        'carrinho': carrinho,
+        'cliente': cliente,
+        }
     return render(request, 'elibrosLoja/carrinho.html', context=context)
 
 def carrinho_vazio(request):
     return render(request, 'elibrosLoja/carrinho_vazio.html', context={})
 
+@login_required
 def perfil(request):
-    return render(request, 'elibrosLoja/perfil.html', context={})
+    cliente = request.user
+    if request.method == 'POST':
+        form = UserImageForm(request.POST, request.FILES, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil')  # Redirect to the same page to see the changes
+    else:
+        form = UserImageForm(instance=cliente)
+    
+    context = {
+        'cliente': cliente,
+        'form': form,
+    }
+    return render(request, 'elibrosLoja/perfil.html', context=context)
+    

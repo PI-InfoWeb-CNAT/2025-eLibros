@@ -27,6 +27,8 @@ class Cliente(AbstractUser):
     nome = models.CharField(blank=True, null=True, max_length=100, validators=[nao_nulo])
     CPF = models.CharField(blank=True, null=True, max_length=15)
 
+    foto_de_perfil = models.ImageField(upload_to='fotos_de_perfil/', blank=True, null=True)
+
     genero_choices = (
         ("F", "Feminino"),
         ("M", "Masculino"),
@@ -35,10 +37,10 @@ class Cliente(AbstractUser):
         ("OU", "Outro")
     )
 
+    telefone = models.CharField(max_length=15, blank=True, null=True)
     genero = models.CharField(max_length=20, choices=genero_choices, default="F", null=True, blank=True, verbose_name="Gênero")
     outro_genero = models.CharField(max_length=50, blank=True, null=True, verbose_name="Outro Gênero")
     dt_nasc = models.DateField(blank=True, null=True, verbose_name="Data de Nascimento")
-
     enderecos = models.ManyToManyField(Endereco, related_name="enderecos_do_cliente", blank=True)
 
     def __str__(self):
