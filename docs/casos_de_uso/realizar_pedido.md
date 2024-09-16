@@ -15,6 +15,7 @@ Esse caso de uso permite o usuário realizar o pedido dos itens que se encontram
 
 ### 3. Pré-condições
 São pré-condições para iniciar este caso de uso:
+- O cliente estar logado no sistema
 - O cliente ter itens no carrinho de compra
   
 ### 4. Pós-condições
