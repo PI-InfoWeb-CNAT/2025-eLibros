@@ -32,7 +32,7 @@ Após a execução deste caso de uso, espera que o sistema:
 |  Ator  | Sistema |
 |:-------|:------- |
 |1. Na página de um livro, o usuário clica no botão referente a adicionar ao carrinho| --- |
-| --- |2. O sistema salva essa informação (nos cookies/session info no caso do visitante) e atualiza o icone de cesta de compras com a quantia atual | 
+| --- |2. O sistema salva essa informação e atualiza o icone de cesta de compras com a quantia atual | 
 
 
 #### 5.2. Fluxo de exceção
