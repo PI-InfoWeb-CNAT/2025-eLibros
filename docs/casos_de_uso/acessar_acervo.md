@@ -26,7 +26,7 @@ Após a execução deste caso de uso, espera que o sistema:
 #### 5.1. Fluxo Principal 
 |  Ator  | Sistema |
 |:-------|:------- |
-|1. Na página de inicial, o usuário clica no botão referente a "Ver mais" ou "Acervo"| --- |
+|1. Na página inicial, o usuário clica no botão referente a "Ver mais" ou "Acervo"| --- |
 | --- |2. O sistema manda o usuário para a página Acervo | 
 
 
