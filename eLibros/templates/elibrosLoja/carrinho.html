@@ -1,0 +1,54 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Carrinho{% endblock title %}
+{% block content %}
+<main>
+    <section class="meucarrinho">
+        {% if not carrinho.items.exists %}
+            <p id="carrinhovazio">Seu carrinho está vazio.</p>
+        
+        {% else %}
+            <h2>Meu Carrinho</h2>
+            <input type="checkbox" id="selectAll" class="custom-checkbox">
+            <label for="myCheckbox">
+                <input type="checkbox" id="myCheckbox" class="custom-checkbox">
+                <span class="checkbox-dot"></span>
+                Selecionar tudo
+            </label>
+            <ul>
+            
+            {% for item in carrinho.items.all %}
+                <li>
+                    <label for="myCheckbox1">
+                        <input type="checkbox" id="myCheckbox1" class="custom-checkbox">
+                        <span class="checkbox-dot"></span>
+                    </label>
+                    <figure>
+                        <img src="{{ item.livro.capa.url }}" alt="{{ item.livro.titulo }}">
+                    </figure>
+                    <div>
+                        <h3><a href="{% url 'livro' titulo=item.livro.titulo%}">{{ item.livro.titulo }}</a></h3>
+                        <p>
+                            <span class="moeda-cart">R$</span>
+                            <b><span class="preco-maior-cart">{{ item.livro.preco }}</b>
+                        </p>
+                        <div>
+                            <p>Qnt:</p>
+                            <div class="quantity-input">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" class="input_quantia_produtos" id="quantity{{ forloop.counter }}" value="{{ item.quantidade }}" min="1" max="99">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+            <div class="botoes">
+                <button><a href="acervo.html">Continuar comprando</a></button>
+                <button><a href="#">Finalizar compra</a></button>
+            </div>
+        {% endif %}
+    </section>
+</main>
+{% endblock content %}

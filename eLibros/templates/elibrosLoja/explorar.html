@@ -1,0 +1,46 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Explorar{% endblock title %}
+{% block content %}
+<main>
+    <section id="search">
+        <form id="search" action="pesquisa.html">
+            <div id="search">
+                <img src="static/images/icons/lupa.svg">
+                <input type="search" name="pesquisa" placeholder="Pesquise por nome..." size="52">
+            </div>
+            <div id="filter">
+                <div id="select">
+                    <img src="static/images/icons/filter.svg">
+                    <select>
+                        <option value="-1">A-Z</option>
+                        <option value="a">A</option>
+                        <option value="b">B</option>
+                        <option value="c">C</option>
+                    </select>
+                </div>
+                <div id="genero">
+                    <label><img src="static/images/icons/Bplus.svg"> Gênero</label>
+                </div>
+                <div id="data">
+                    <label><img src="static/images/icons/Bplus.svg"> Data de inclusão</label>
+                </div>
+            </div>
+        </form>
+        <p>Pesquisa por "perfeitos"</p>
+    </section>
+    <section class="livros">
+        <div class="acervo">
+            <div>
+                <figure><img src="static/images/diasperfeitos.png"></figure>
+                <div>
+                    <h3>Dias perfeitos</h3>
+                    <p>Raphael Montes</p>
+                    <p>R$48,84</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}

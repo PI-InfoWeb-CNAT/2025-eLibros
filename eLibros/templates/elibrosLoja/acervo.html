@@ -1,0 +1,517 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Acervo{% endblock title %}
+{% block content %}
+<main>
+    <section id="search">
+        <form id="search" action="explorar.html">
+            <div id="search">
+                <img src="{% static 'images/icons/lupa.svg' %}">
+                <input type="search" name="pesquisa" placeholder="Pesquise por nome..." size="52">
+            </div>
+            <div id="filter">
+                <div id="select">
+                    <img src="{% static 'images/icons/filter.svg' %}">                          
+                    <select>
+                        <option value="-1">A-Z</option>
+                        <option value="a">A</option>
+                        <option value="b">B</option>
+                        <option value="c">C</option>
+                    </select>
+                </div>
+                <div id="genero">
+                    <label><img src="{% static 'images/icons/Bplus.svg' %}"> Gênero</label>
+                </div>
+                <div id="data">
+                    <label><img src="{% static 'images/icons/Bplus.svg' %}"> Data de inclusão</label>
+                </div>
+            </div>
+        </form>
+</section>
+
+
+   
+    <section class="livros">
+        <h2>Indicações eLibros</h2>
+        <div>
+            {% for livro in livros_indicacoes %}
+            <div>
+                <figure>
+                    {% if livro.capa %}
+                    <img src="{{ livro.capa.url }}">
+                    {% else %}
+                    <img src="{% static 'images/placeholder.png' %}">
+                    {% endif %}
+                </figure>
+                <div>
+                    <h3>
+                        {{ livro.titulo }}
+                        {% if livro.subtiulo %}
+                        <br>
+                        <span>{{ livro.subtitulo }}</span>
+                        {% endif %}
+                    </h3>
+                    <p>{{ livro.autor }}</p>
+                    <p>{{ livro.preco }}</p>
+                    <a href="{% url 'livro' titulo=livro.titulo %}">Comprar</a>
+                </div>
+            </div>
+            {% endfor %}
+            <a href="#" class="setinha"><img src="{% static 'images/setinha.png' %}"></a>
+        </div>
+    </section>
+
+
+    <section class="livros">
+        <h2>Novas adições</h2>
+        <div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>A Queda dos Reinos</h3>
+                    <p>Morgan Rhodes</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Heartstopper<br><span>Volume I</span></h3>
+                    <p>Alice Oseman</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <a href="#" class="setinha"><img src="{% static 'images/setinha.png' %}"></a>
+        </div>
+    </section>
+    <section class="livros">
+        <h2>Categoria foda</h2>
+        <div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>A Queda dos Reinos</h3>
+                    <p>Morgan Rhodes</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Heartstopper<br><span>Volume I</span></h3>
+                    <p>Alice Oseman</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <a href="#" class="setinha"><img src="static/images/setinha.png"></a>
+        </div>
+    </section>
+    <section class="livros">
+        <h2>Indicações dos desenvolvedores</h2>
+        <div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>A Queda dos Reinos</h3>
+                    <p>Morgan Rhodes</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Heartstopper<br><span>Volume I</span></h3>
+                    <p>Alice Oseman</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/placeholder.png' %}"></figure>
+                <div>
+                    <h3>Conectadas</h3>
+                    <p>Clara Alves</p>
+                    <p>R$59,90</p>
+                    <a href="#">Comprar</a>
+                </div>
+            </div>
+            <a href="#" class="setinha"><img src="{% static 'images/setinha.png' %}"></a>
+        </div>
+        <p><a href="explorar.html">Ver mais</a></p>
+    </section>
+</main>
+{% endblock content %}
