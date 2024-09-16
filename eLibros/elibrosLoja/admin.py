@@ -12,12 +12,21 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = ['name','image_tag',]
 
 class LivroAdmin(admin.ModelAdmin):
-    readonly_fields = ['img_preview']
-    list_display = ['titulo','img_preview', 'autor', 'editora', 'preco', 'desconto', 'quantidade', 'ISBN', 'get_generos']
+    readonly_fields = ['img_preview', 'data_de_adicao']
+    
+    list_display = ['titulo','img_preview', 'autor', 'editora', 'preco', 'get_generos', 'get_generos_literarios', 'get_categorias']
 
     def get_generos(self, obj):
         return ", ".join([genero.nome for genero in obj.genero.all()])
-    get_generos.short_description = 'Gêneros'
+    get_generos.short_description = 'Gêneros Textuais'
+
+    def get_generos_literarios(self, obj):
+        return ", ".join([genero.nome for genero in obj.genero_literario.all()])
+    get_generos_literarios.short_description = 'Gêneros Literários'
+
+    def get_categorias(self, obj):
+        return ", ".join([categoria.nome for categoria in obj.categoria.all()])
+    get_categorias.short_description = 'Categorias'
 
 class CarrinhoAdmin(admin.ModelAdmin):
     pass
@@ -31,7 +40,10 @@ class PedidoAdmin(admin.ModelAdmin):
 class GeneroTextualAdmin(admin.ModelAdmin):
     pass
 
-class GeneroLivroAdmin(admin.ModelAdmin):
+class GeneroLiterarioAdmin(admin.ModelAdmin):
+    pass
+
+class CategoriaAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Endereco, EnderecoAdmin)
@@ -40,4 +52,5 @@ admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(Carrinho, CarrinhoAdmin)
 admin.site.register(ItemCarrinho, ItemCarrinhoAdmin)
 admin.site.register(GeneroTextual, GeneroTextualAdmin)
-admin.site.register(GeneroLivro, GeneroLivroAdmin)
+admin.site.register(GeneroLiterario, GeneroLiterarioAdmin)
+admin.site.register(Categoria, CategoriaAdmin)

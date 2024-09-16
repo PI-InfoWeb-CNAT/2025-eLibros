@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     # Local
     "accounts", #NÃO REMOVER
     "elibrosLoja",
+
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
