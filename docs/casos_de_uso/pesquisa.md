@@ -49,7 +49,11 @@ A ser desenvolvido.
 ### 8. Dicionário de dados
 
 #### 8.1. Livro
+- Capa - Arquivo de imagem
 - Título - Uma cadeia de caracteres alfabéticos tamanho 100
 - Autor - Uma cadeia de caracteres alfabéticos tamanho 100
 
 ### 9. Regras de negócio
+
+#### 9.1 Livro
+- Capa - Arquivo de imagem de amanho máximo de 8 MB em algum dos seguintes formatos: PNG, JPG, JPEG, SVG, WEBP
