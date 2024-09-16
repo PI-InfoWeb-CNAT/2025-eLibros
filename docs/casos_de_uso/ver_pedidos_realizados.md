@@ -15,7 +15,7 @@ Esse caso de uso permite o usuário consultar os pedidos realizados.
 
 ### 3. Pré-condições
 São pré-condições para iniciar este caso de uso:
-- O usuário estar cadastrado.
+- O cliente estar logado no sistema
   
 ### 4. Pós-condições
 Após a execução deste caso de uso, espera-se que o sistema:
