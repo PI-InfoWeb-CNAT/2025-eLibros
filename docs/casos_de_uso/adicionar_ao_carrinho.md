@@ -16,7 +16,7 @@
 Esse caso de uso permite o usuário adicionar um livro a cesta de compras.
 
 ### 2. Atores 
-- Cliente ou Visitante
+- Cliente
 
 ### 3. Pré-condições
 São pré-condições para iniciar este caso de uso:
