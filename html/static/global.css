@@ -5,6 +5,10 @@ body {
     width: 100%;
 }
 
+button a{
+    text-decoration: none;
+}
+
 /* header */
 * {
     margin: 0;
@@ -453,11 +457,6 @@ section#search p {
     height: 428px;
 }
 
-.livro_info {
-    max-width: 600px;
-    /* Limita o tamanho da descrição */
-}
-
 .livro_info div.livro_header {
     border-bottom: 1px solid black;
     padding-bottom: 10px;
@@ -504,28 +503,36 @@ section#search p {
 
 .livro .compra>div>div {
     width: 190px;
-    /* Aumenta a largura da div */
     display: flex;
     align-items: center;
 }
 
 
-/* Estilo para o preço principal */
+
 .moeda {
     font-size: 12px;
     opacity: 0.5;
     vertical-align: top;
-    /* Alinha o R$ no topo para que fique esteticamente mais agradável */
+}
+
+.moeda-cart {
+    font-size: 22px;
+    opacity: 0.5;
+    vertical-align: top;
 }
 
 .preco-maior {
     font-size: 24px;
 }
 
+.preco-maior-cart {
+    font-size: 32px;
+    font-weight: 500;
+}
+
 .preco-menor {
     font-size: 12px;
     vertical-align: top;
-    /* Para alinhar o preço menor próximo ao topo */
 }
 
 .livro .compra p:nth-child(2) {
@@ -682,30 +689,92 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-top: 3em;
 }
 
-.meucarrinho h2{
+.meucarrinho h2 {
     margin-bottom: 1em;
+}
+
+.meucarrinho ul {
+    border-top: solid black 1px;
+    margin-top: 1em;
 }
 
 .meucarrinho ul li {
     display: flex;
     gap: 5em;
+    border-bottom: solid black 1px;
+    padding: 2em 0em;
 }
 
-.meucarrinho ul li h3{
-    font-size: 30px;
+.meucarrinho ul li h3 {
+    font-size: 28px;
     font-weight: 500;
-    border-bottom: 1px solid #D9D9D9
+    border-bottom: 1px solid #D9D9D9;
 }
 
+.meucarrinho ul li h3 a {
+    text-decoration: none;
+}
 
-
-.meucarrinho ul li > div{
+.meucarrinho ul li>div {
     display: flex;
     flex-direction: column;
-    gap: 4em;
+    gap: 1.5em;
 }
 
-/* Adicione seus estilos personalizados aqui */
+.meucarrinho ul li label {
+    display: flex;
+    align-items: center;
+}
+
+.meucarrinho ul li figure img {
+    width: 180px;
+    height: auto;
+}
+
+.meucarrinho .botoes{
+    margin-top: 1em;
+    gap: 1em;
+    display: flex;
+    justify-content: end;
+}
+
+.meucarrinho .botoes button{
+    padding: 0.5em 1em;
+    border-radius: 3px;
+}
+
+.meucarrinho .botoes button:nth-child(1){
+    background-color: white;
+    border: #AFAFAF solid 3px;
+}
+
+.meucarrinho .botoes button:nth-child(2){
+    background-color: #FFD147;
+    border: none;
+}
+
+.meucarrinho .botoes button a{
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.custom-checkbox {
+    display: none;
+}
+
+.checkbox-dot {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border-radius: 3px;
+    background-color: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.custom-checkbox:checked + .checkbox-dot {
+    background-color: #ffdc71;
+}
 
 /* admin */
 
