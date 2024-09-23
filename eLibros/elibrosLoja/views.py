@@ -150,4 +150,14 @@ def perfil(request):
         'form': form,
     }
     return render(request, 'elibrosLoja/perfil.html', context=context)
+
+
+
+def admin(request):
+    cliente = request.user
+
+    context = {
+        'cliente': cliente,
+    }
+    return render(request, 'elibrosLoja/admin/home.html', context=context)
     
