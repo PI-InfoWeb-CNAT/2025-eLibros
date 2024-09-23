@@ -927,6 +927,68 @@ div#select select:focus {
   outline: none;
 }
 
+
+/* Administração eLibros */
+
+
+.paginasadmincontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4em;
+  /* gap: 2em; */
+}
+
+.paginasadmincontainer h1 {
+  width: 90%;
+  text-align: left;
+  font-size: 48px;
+  font-weight: 400;
+}
+
+.paginasadmingrid {
+  margin-top: 3em;
+  width: 90%;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 5em;
+  row-gap: 3.5em;
+}
+
+.paginasadmingrid > div {
+  width: auto;      
+  display: flex;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.paginasadmingrid div div {
+  display: flex;
+  align-items: center;
+  margin-left: 5em;
+}
+
+.paginasadmingrid > div:hover {
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+.paginasadmingrid div a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 5em 0em;
+}
+
+.paginasadmingrid div a * {
+  margin-right: 1em;
+}
+
+.paginasadmincontainer h2 {
+  font-size: 40px;
+  font-weight: 400;
+}
+
+
 ul.listagem li {
   display: flex;
   gap: 5em;
