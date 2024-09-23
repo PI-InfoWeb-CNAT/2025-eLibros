@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import AboutPageView, acervo, Inicio, livro, comprar_agora, perfil, ver_carrinho
+from .views import AboutPageView, acervo, Inicio, livro, comprar_agora, perfil, ver_carrinho, admin
 
 urlpatterns = [
     path("", Inicio, name="inicio"),
@@ -11,4 +11,6 @@ urlpatterns = [
     
     path("carrinho/<str:titulo>", comprar_agora, name="comprar_agora"),
     path("perfil/", perfil, name="perfil"),
+
+    path("admin/", admin, name="admin"),
 ]
