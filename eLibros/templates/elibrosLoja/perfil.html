@@ -8,12 +8,12 @@
 
 <form method="post" enctype="multipart/form-data">  
     {% csrf_token %}  
-    {{ form.as_p }}  
+    {{ form.as_p }}    <!-- puts -->
+  
     <button type="submit">Upload</button>  
 </form>  
 
-{% if cliente.foto_de_perfil %}  
-    <h3>Current Profile Picture:</h3>  
+{% if cliente.foto_de_perfil %}
     <img src="{{ cliente.foto_de_perfil.url }}" alt="Profile Picture" style="max-height:300px">  
 {% endif %} 
 
@@ -28,6 +28,14 @@
 
 <p>Telefone</p>
 <p>{{ cliente.telefone }}</p>
+
+<p>Endereço</p>
+{% if cliente.endereco %}
+    <p>{{ cliente.endereco }}</p>
+{% else %}
+    <!-- <p>Você não possui endereço(wrrw) cadastrado(s)</p> -->
+    <a href="">Cadastrar endereço</a>
+{% endif %}
 
 <div class="senha_autenticacao">
     <button>Alterar senha</button>
