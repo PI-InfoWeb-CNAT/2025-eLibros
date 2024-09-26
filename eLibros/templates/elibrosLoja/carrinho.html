@@ -41,10 +41,11 @@
                         </div>
                     </div>
                 </div>
-
-                <figure>
-                    <img src="{% static 'images/icons/lixeira.svg' %}" alt="Remover item">
-                </figure>
+                <a href="{% url 'remover_itemcarrinho' id=item.id %}">
+                    <figure class="lixeira_produto">
+                        <img src="{% static 'images/icons/lixeira.svg' %}" alt="Remover item">
+                    </figure>
+                </a>
             </li>
         {% endfor %}
         </ul>

@@ -86,7 +86,7 @@ def livro(request, titulo):
         'cliente': cliente,}
     return render(request, 'elibrosLoja/livro.html', context=context)
 
-@login_required
+
 def ver_carrinho(request): #show cart    
     cliente = request.user # okay
     
@@ -101,7 +101,18 @@ def ver_carrinho(request): #show cart
 
     return render(request, 'elibrosLoja/carrinho.html', context=context)
 
-@login_required
+def remover_itemcarrinho(request, id=None):
+    cliente = request.user
+    print(cliente)
+    item_carrinho = ItemCarrinho.objects.get(id=id)
+    print(item_carrinho)
+    carrinho = Carrinho.objects.get(cliente=cliente)
+    carrinho.items.remove(item_carrinho)
+    carrinho.update_total()
+    carrinho.save()
+    return redirect('carrinho')
+
+
 def comprar_agora(request, titulo): #add_to_cart and redirect to cart
 
     livro = get_object_or_404(Livro, titulo=titulo)
@@ -150,7 +161,6 @@ def perfil(request):
         'form': form,
     }
     return render(request, 'elibrosLoja/perfil.html', context=context)
-
 
 
 def admin(request):
