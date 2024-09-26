@@ -39,8 +39,8 @@ class Cliente(AbstractUser):
     )
 
     telefone = models.CharField(max_length=15, blank=True, null=True)
-    genero = models.CharField(max_length=20, choices=genero_choices, default="F", null=True, blank=True, verbose_name="Gênero")
-    outro_genero = models.CharField(max_length=50, blank=True, null=True, verbose_name="Outro Gênero")
+    genero = models.CharField(max_length=20, choices=genero_choices, default="F", null=True, blank=True, verbose_name="Identidade de gênero")
+    outro_genero = models.CharField(max_length=50, blank=True, null=True, verbose_name="Outro gênero")
     dt_nasc = models.DateField(blank=True, null=True, verbose_name="Data de Nascimento")
     enderecos = models.ManyToManyField(Endereco, related_name="enderecos_do_cliente", blank=True)
 
