@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from elibrosLoja.models import Livro, GeneroTextual, Categoria, Carrinho, ItemCarrinho
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.http import require_POST
 import random
 from django.contrib.auth.decorators import login_required
 from elibrosLoja.forms import UserImageForm  
@@ -68,10 +69,9 @@ def acervo(request):
     return render(request, 'elibrosLoja/acervo.html', context=context, status=200)
 
 
-def livro(request, titulo):
+def livro(request, id):
     cliente = request.user
-    livros = Livro.objects.all()
-    livro = livros.filter(titulo=titulo).first()
+    livro = get_object_or_404(Livro, id=id)
     preco_com_desconto = None
 
     if livro is not None:
@@ -101,37 +101,80 @@ def ver_carrinho(request): #show cart
 
     return render(request, 'elibrosLoja/carrinho.html', context=context)
 
-def remover_itemcarrinho(request, id=None):
+
+def adicionar_itemcarrinho(request, id, quantidade):
+    livro = get_object_or_404(Livro, id=id)
     cliente = request.user
-    print(cliente)
-    item_carrinho = ItemCarrinho.objects.get(id=id)
-    print(item_carrinho)
-    carrinho = Carrinho.objects.get(cliente=cliente)
-    carrinho.items.remove(item_carrinho)
-    carrinho.update_total()
-    carrinho.save()
-    return redirect('carrinho')
-
-
-def comprar_agora(request, titulo): #add_to_cart and redirect to cart
-
-    livro = get_object_or_404(Livro, titulo=titulo)
-    cliente = request.user  # Assuming the user has a related Cliente object
-
-    # Retrieve or create the cart for the logged-in user
     carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
-
     quantidade = int(request.GET.get('quantity', 1))
 
-    # Check if the item is already in the cart
-    item_carrinho, item_created = ItemCarrinho.objects.get_or_create(livro=livro, defaults={'quantidade': 1, 'preco': livro.preco})
+    item_carrinho, item_created = ItemCarrinho.objects.get_or_create(livro=livro, defaults={'quantidade': quantidade, 'preco': livro.preco})
 
     if not item_created:
-        # If the item already exists, increase the quantity
         item_carrinho.quantidade += quantidade
         item_carrinho.save()
 
-    # Add the item to the cart
+    carrinho.items.add(item_carrinho)
+    carrinho.update_total()
+    carrinho.save()
+
+    return redirect('carrinho')
+
+def remover_itemcarrinho(request, id):
+    cliente = request.user
+    carrinho = Carrinho.objects.get(cliente=cliente)
+
+    try:
+        item_carrinho = ItemCarrinho.objects.get(id=id)
+        if item_carrinho in carrinho.items.all():
+            carrinho.items.remove(item_carrinho) 
+
+            item_carrinho.delete() 
+
+            carrinho.update_total()
+            carrinho.save()
+    except ItemCarrinho.DoesNotExist:
+      
+        print('Item não encontrado')
+
+    return redirect('carrinho')
+
+@require_POST
+def atualizar_quantidade(request, id):
+    cliente = request.user
+    carrinho = Carrinho.objects.get(cliente=cliente)
+    quantidade = int(request.POST.get('quantity', 1))
+
+    try:
+        item_carrinho = ItemCarrinho.objects.get(id=id)
+        if item_carrinho in carrinho.items.all():
+            item_carrinho.quantidade = quantidade
+            item_carrinho.save()
+            carrinho.update_total()
+            carrinho.save()
+    except ItemCarrinho.DoesNotExist:
+        print('Item não encontrado')
+
+    return redirect('carrinho')
+
+def comprar_agora(request, id): 
+
+    livro = get_object_or_404(Livro, id=id)
+    cliente = request.user  
+    carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
+    quantidade = int(request.GET.get('quantity', 1)) # Is returning 1, when it should be corresponding to the input value
+    print(f"Quantidade: {quantidade}")
+    
+    item_carrinho, item_created = ItemCarrinho.objects.get_or_create(livro=livro, defaults={'quantidade': quantidade, 'preco': livro.preco})
+
+    if not item_created:
+        item_carrinho.quantidade += quantidade
+    else:
+        item_carrinho.quantidade = quantidade
+        print(item_carrinho.quantidade)
+    item_carrinho.save()
+
+
     carrinho.items.add(item_carrinho)
     carrinho.update_total()
     carrinho.save()

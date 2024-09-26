@@ -63,6 +63,7 @@
         <h2>Indicações eLibros</h2>
         <div>
             {% for livro in livros_indicacoes %}
+            <a href="{% url 'livro' id=livro.id %}">
             <div>
                 <figure>
                     {% if livro.capa %}
@@ -81,14 +82,14 @@
                     </h3>
                     <p>{{ livro.autor }}</p>
                     <p>{{ livro.preco }}</p>
-                    <a href="{% url 'livro' titulo=livro.titulo %}">Comprar</a>
+                    <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
                 </div>
             </div>
+            </a>
             {% endfor %}
             <a href="#" class="setinha"><img src="{% static 'images/setinha.png' %}"></a>
-        </div>
-
-        <p><a href="{% url 'acervo' %}">Ver mais</a></p>
+            </div>
+            <p><a href="{% url 'acervo' %}">Ver mais</a></p>
     </section>
 </main>
 {% endblock content %}

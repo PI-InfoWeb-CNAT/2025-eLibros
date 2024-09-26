@@ -427,7 +427,7 @@ figure {
   font-style: italic;
 }
 
-.livros>div>div a {
+.livro_botao_comprar {
   font-size: .8em;
   color: #1C1607;
   text-decoration: none;

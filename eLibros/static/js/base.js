@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   
   botoes_adicionar_remover = document.querySelectorAll('.quantity-btn');
-  console.log(botoes_adicionar_remover)
 
   if (botoes_adicionar_remover.length !== 0) {
     botoes_adicionar_remover.forEach(botao => {
@@ -21,11 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
             input.value = value - 1;
           }
         }
+
+        document.getElementById('hidden_quantity').value = input.value;
+        console.log(document.getElementById('hidden_quantity').value);
       });
 
     });
-
-    
   }
  
 
