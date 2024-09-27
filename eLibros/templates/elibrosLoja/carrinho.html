@@ -19,7 +19,7 @@
         
             {% for item in carrinho.items.all %}
             <li>
-                <form method="post" action="{% url 'atualizar_quantidade' id=item.id %}">
+                <form method="post" action="{% url 'atualizar_quantidade' id=item.id %}" class="quantity-form">
                     {% csrf_token %}
                     <label for="myCheckbox1">
                         <input type="checkbox" id="myCheckbox1" class="custom-checkbox">
@@ -43,7 +43,6 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit">Atualizar</button>
                 </form>
                 <a href="{% url 'remover_itemcarrinho' id=item.id %}">
                     <figure class="lixeira_produto">

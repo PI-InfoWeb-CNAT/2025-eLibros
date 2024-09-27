@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import AboutPageView, acervo, Inicio, livro, comprar_agora, perfil, ver_carrinho, admin, remover_itemcarrinho, adicionar_itemcarrinho
+from .views import AboutPageView, acervo, Inicio, livro, comprar_agora, perfil, ver_carrinho, admin, remover_itemcarrinho, adicionar_itemcarrinho, atualizar_quantidade
 
 urlpatterns = [
     path("", Inicio, name="inicio"),

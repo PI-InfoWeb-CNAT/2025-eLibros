@@ -1,44 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
-  
-  botoes_adicionar_remover = document.querySelectorAll('.quantity-btn');
 
-  if (botoes_adicionar_remover.length !== 0) {
-    botoes_adicionar_remover.forEach(botao => {
+  const quantityInputs = document.querySelectorAll('.input_quantia_produtos');
+  const quantityForms = document.querySelectorAll('.quantity-form');
 
-      botao.addEventListener('click', () => {
-        let input = botao.parentElement.querySelector('input');
-        let value = parseInt(input.value);
-        let max = parseInt(input.getAttribute('max'));
-        let min = parseInt(input.getAttribute('min'));
-
-        if (botao.classList.contains('plus')) {
-          if (value < max) {
-            input.value = value + 1;
-          }
-        } else if (botao.classList.contains('minus')) {
-          if (value > min) {
-            input.value = value - 1;
-          }
-        }
-
-        document.getElementById('hidden_quantity').value = input.value;
-        console.log(document.getElementById('hidden_quantity').value);
+  quantityInputs.forEach(input => {
+      input.addEventListener('change', () => {
+          input.closest('form').submit();
       });
+  });
 
-    });
-  }
- 
+  window.addEventListener('beforeunload', () => {
+      quantityForms.forEach(form => {
+          form.submit();
+      });
+  });
+  
+  document.querySelectorAll('.quantity-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const quantityInput = this.parentElement.querySelector('input');
+        let currentValue = parseInt(quantityInput.value);
+        const max = parseInt(quantityInput.getAttribute('max'));
+        const min = parseInt(quantityInput.getAttribute('min'));
 
-const selectAllCheckbox = document.getElementById('myCheckbox');
-const checkboxes = document.querySelectorAll('.custom-checkbox');
-
-if (selectAllCheckbox) {
-  selectAllCheckbox.addEventListener('change', () => {
-    checkboxes.forEach(checkbox => {
-      checkbox.checked = selectAllCheckbox.checked;
+        if (this.classList.contains('minus') && currentValue > min) {
+            quantityInput.value = currentValue - 1;
+        } else if (this.classList.contains('plus') && currentValue < max) {
+            quantityInput.value = currentValue + 1;
+        }
+        document.getElementById('hidden_quantity').value = input.value;
+        quantityInput.dispatchEvent(new Event('change'));
     });
   });
-}
+ 
+
+  
+
+  const selectAllCheckbox = document.getElementById('myCheckbox');
+  const checkboxes = document.querySelectorAll('.custom-checkbox');
+
+  if (selectAllCheckbox) {
+    selectAllCheckbox.addEventListener('change', () => {
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+      });
+    });
+  }
 
 
 

@@ -185,9 +185,6 @@ def comprar_agora(request, id):
         }
     return render(request, 'elibrosLoja/carrinho.html', context=context)
 
-def carrinho_vazio(request):
-    return render(request, 'elibrosLoja/carrinho_vazio.html', context={})
-
 @login_required
 def perfil(request):
     cliente = request.user
