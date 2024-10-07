@@ -106,33 +106,46 @@ def atualizar_carrinho(request):
         request.session['session_id'] = session_id
         carrinho, created = Carrinho.objects.get_or_create(session_id=session_id)
     
-    if action == 'remover':
-        item_carrinho = ItemCarrinho.objects.get(id=id)
-        if item_carrinho in carrinho.items.all():
-            carrinho.items.remove(item_carrinho)
-            item_carrinho.delete()
-            message = 'Item foi removido do carrinho'
-        else:
-            message = 'Item não está no carrinho'
-    else:
+    if action in ['adicionarAoCarrinho', 'comprarAgora']: #estamos lidando com um Livro
         livro = Livro.objects.get(id=id)
 
         item_carrinho, item_created = ItemCarrinho.objects.get_or_create(
             livro=livro,
             defaults={'quantidade': int(quantidade), 'preco': livro.preco}
         )
-
-        if item_created:
-            item_carrinho.quantidade = int(quantidade)
-        else:
+        
+        if not item_created:
             item_carrinho.quantidade += int(quantidade) 
+        else:
+            item_carrinho.quantidade = int(quantidade)
+
         item_carrinho.save()
         if item_carrinho not in carrinho.items.all():
             carrinho.items.add(item_carrinho)
-        carrinho.save()
         message = 'Item foi adicionado ao carrinho'
+
+        cart_item_count = carrinho.numero_itens
         if action == 'comprarAgora':
             return JsonResponse({'redirect': True, 'url': '/carrinho/'}, safe=False)
+    else:                                               #estamos lidando com um ItemCarrinho
+        item_carrinho = ItemCarrinho.objects.get(id=id)
+        if action == 'deletar':
+            if item_carrinho in carrinho.items.all():
+                carrinho.items.remove(item_carrinho)
+                item_carrinho.delete()
+                message = 'Item foi removido do carrinho'
+            else:
+                message = 'Tentou-se removr Item mas ele não está no carrinho'
+        else:
+            if action == 'adicionar':
+                item_carrinho.quantidade += 1
+            elif action == 'remover' and item_carrinho.quantidade > 1:
+                item_carrinho.quantidade -= 1
+      
+            item_carrinho.save()
+            carrinho.save()
+            message = 'Item foi atualizado ao carrinho'
+
     
     cart_item_count = carrinho.numero_itens
     return JsonResponse({'message': message, 'cartItemCount': cart_item_count}, safe=False)

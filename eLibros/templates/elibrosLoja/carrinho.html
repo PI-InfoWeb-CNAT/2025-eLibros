@@ -35,14 +35,14 @@
                     <div>
                         <p>Qnt:</p>
                         <div class="quantity-input">
-                            <button type="button" class="quantity-btn minus">-</button>
-                            <input type="number" class="input_quantia_produtos" name="quantity" id="quantity{{ item.id }}" value="{{ item.quantidade }}" min="1" max="99">
-                            <button type="button" class="quantity-btn plus">+</button>
+                            <button type="button" class="quantity-btn minus" data-action="remover">-</button>
+                            <input type="number" class="input_quantia_produtos" name="quantity" id="quantity{{ item.id }}" data-id="{{ item.id }}" value="{{ item.quantidade }}" min="1" max="99">
+                            <button type="button" class="quantity-btn plus"  data-action="adicionar">+</button>
                         </div>
                     </div>
                 </div>
               
-                <button data-id="{{item.id}}" data-action="remover" class="botaoRemoverDoCarrinho">
+                <button data-id="{{ item.id }}" data-action="deletar" class="botaoRemoverDoCarrinho">
                     <figure class="lixeira_produto">
                         <img src="{% static 'images/icons/lixeira.svg' %}" alt="Remover item">
                     </figure>
