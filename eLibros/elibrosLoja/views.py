@@ -1,11 +1,15 @@
+import uuid
 from django.views.generic import TemplateView
 from elibrosLoja.models import Livro, GeneroTextual, Categoria, Carrinho, ItemCarrinho
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
+from django.http import JsonResponse
 import random
+import json 
 from django.contrib.auth.decorators import login_required
 from elibrosLoja.forms import UserImageForm  
-from elibrosLoja.models import UploadImage  
+from elibrosLoja.models import UploadImage
+
 
 def Inicio(request):
     cliente = request.user
@@ -87,101 +91,55 @@ def livro(request, id):
     return render(request, 'elibrosLoja/livro.html', context=context)
 
 
-def ver_carrinho(request): #show cart    
-    cliente = request.user # okay
-    
-    carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
-    print(cliente)
-    print(carrinho)
+def atualizar_carrinho(request):
+    data = json.loads(request.body)
+    id = data['id']
+    action = data['action']
+    quantidade = data['quantidadeAdicionada']
 
-    context = {
-        'carrinho': carrinho,
-        'cliente': cliente,
-        }
-
-    return render(request, 'elibrosLoja/carrinho.html', context=context)
-
-
-def adicionar_itemcarrinho(request, id, quantidade):
-    livro = get_object_or_404(Livro, id=id)
-    cliente = request.user
-    carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
-    quantidade = int(request.GET.get('quantity', 1))
-
-    item_carrinho, item_created = ItemCarrinho.objects.get_or_create(livro=livro, defaults={'quantidade': quantidade, 'preco': livro.preco})
-
-    if not item_created:
-        item_carrinho.quantidade += quantidade
-        item_carrinho.save()
-
-    carrinho.items.add(item_carrinho)
-    carrinho.update_total()
-    carrinho.save()
-
-    return redirect('carrinho')
-
-def remover_itemcarrinho(request, id):
-    cliente = request.user
-    carrinho = Carrinho.objects.get(cliente=cliente)
-
-    try:
-        item_carrinho = ItemCarrinho.objects.get(id=id)
-        if item_carrinho in carrinho.items.all():
-            carrinho.items.remove(item_carrinho) 
-
-            item_carrinho.delete() 
-
-            carrinho.update_total()
-            carrinho.save()
-    except ItemCarrinho.DoesNotExist:
-      
-        print('Item não encontrado')
-
-    return redirect('carrinho')
-
-@require_POST
-def atualizar_quantidade(request, id):
-    cliente = request.user
-    carrinho = Carrinho.objects.get(cliente=cliente)
-    quantidade = int(request.POST.get('quantity', 1))
-
-    try:
-        item_carrinho = ItemCarrinho.objects.get(id=id)
-        if item_carrinho in carrinho.items.all():
-            item_carrinho.quantidade = quantidade
-            item_carrinho.save()
-            carrinho.update_total()
-            carrinho.save()
-    except ItemCarrinho.DoesNotExist:
-        print('Item não encontrado')
-
-    return redirect('carrinho')
-
-def comprar_agora(request, id): 
-
-    livro = get_object_or_404(Livro, id=id)
-    cliente = request.user  
-    carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
-    quantidade = int(request.GET.get('quantity', 1)) # Is returning 1, when it should be corresponding to the input value
-    print(f"Quantidade: {quantidade}")
-    
-    item_carrinho, item_created = ItemCarrinho.objects.get_or_create(livro=livro, defaults={'quantidade': quantidade, 'preco': livro.preco})
-
-    if not item_created:
-        item_carrinho.quantidade += quantidade
+    # livro = Livro.objects.get(id=id)
+    if request.user.is_authenticated:
+        cliente = request.user
+        carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
     else:
-        item_carrinho.quantidade = quantidade
-        print(item_carrinho.quantidade)
-    item_carrinho.save()
+        session_id = request.session.get('session_id', str(uuid.uuid4()))
+        request.session['session_id'] = session_id
+        carrinho, created = Carrinho.objects.get_or_create(session_id=session_id)
+    
+    if action == 'remover':
+        item_carrinho = ItemCarrinho.objects.get(id=id)
+        if item_carrinho in carrinho.items.all():
+            carrinho.items.remove(item_carrinho)
+            item_carrinho.delete()
+            message = 'Item foi removido do carrinho'
+        else:
+            message = 'Item não está no carrinho'
+    else:
+        livro = Livro.objects.get(id=id)
 
+        item_carrinho, item_created = ItemCarrinho.objects.get_or_create(
+            livro=livro,
+            defaults={'quantidade': int(quantidade), 'preco': livro.preco}
+        )
 
-    carrinho.items.add(item_carrinho)
-    carrinho.update_total()
-    carrinho.save()
+        if item_created:
+            item_carrinho.quantidade = int(quantidade)
+        else:
+            item_carrinho.quantidade += int(quantidade) 
+        item_carrinho.save()
+        if item_carrinho not in carrinho.items.all():
+            carrinho.items.add(item_carrinho)
+        carrinho.save()
+        message = 'Item foi adicionado ao carrinho'
+        if action == 'comprarAgora':
+            return JsonResponse({'redirect': True, 'url': '/carrinho/'}, safe=False)
+    
+    cart_item_count = carrinho.numero_itens
+    return JsonResponse({'message': message, 'cartItemCount': cart_item_count}, safe=False)
+    
 
+def ver_carrinho(request):   
     context = {
-        'carrinho': carrinho,
-        'cliente': cliente,
         }
     return render(request, 'elibrosLoja/carrinho.html', context=context)
 

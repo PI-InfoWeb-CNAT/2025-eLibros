@@ -49,14 +49,11 @@
                     <button class="quantity-btn plus">+</button>
                 </div>
                 <div class="botoes">
-                    <button><img src="{% static 'images/carrinho.png' %}"> <!--This button will be conected to the view "adicionar_itemcarrinho"-->
+                    <button data-id="{{ livro.id }}" data-action="adicionar" class="botaoAdicionarAoCarrinho">
+                        <img src="{% static 'images/carrinho.png' %}">
                         <p>Adicionar</p>
                     </button>
-
-                    <form method="get" action="{% url 'comprar_agora' id=livro.id %}">
-                        <input type="hidden" id="hidden_quantity" name="quantity" value="1">
-                        <button type="submit">Comprar Agora</button>
-                    </form>
+                    <button data-id="{{ livro.id }}" data-action="comprarAgora" class="botaoComprarAgora">Comprar Agora</button>
 
                     <button><img src="{% static 'images/caminhao.png' %}">
                         <p>Calcular Frete</p>
@@ -65,6 +62,7 @@
             </div>
         </div>
     </section>
-    
 </main>
+<script>    
+</script>
 {% endblock content %}

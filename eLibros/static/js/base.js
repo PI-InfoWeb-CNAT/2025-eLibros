@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
           form.submit();
       });
   });
-  
+
+
   document.querySelectorAll('.quantity-btn').forEach(button => {
     button.addEventListener('click', function() {
         const quantityInput = this.parentElement.querySelector('input');
@@ -24,11 +25,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (this.classList.contains('minus') && currentValue > min) {
             quantityInput.value = currentValue - 1;
-        } else if (this.classList.contains('plus') && currentValue < max) {
+          } else if (this.classList.contains('plus') && currentValue < max) {
             quantityInput.value = currentValue + 1;
-        }
-        document.getElementById('hidden_quantity').value = input.value;
+          }
+        
+          
         quantityInput.dispatchEvent(new Event('change'));
+  
+        if (document.getElementById('hidden_quantity') != null){
+            document.getElementById('hidden_quantity').value = quantityInput.value;
+        }
+        console.log('Valor do elemento js selecionado: '+ quantityInput.value);
+        
     });
   });
  

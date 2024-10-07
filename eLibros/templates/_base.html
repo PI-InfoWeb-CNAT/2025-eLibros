@@ -33,11 +33,7 @@
         </li>
        
         <!--Header Cliente-->
-        {% if user.is_authenticated %}
-
-        <li>
-          <a id="carrinho" class="nav-link" href="{% url 'carrinho' %}"><img src="{% static 'images/icons/carrinho.svg' %}"></a>
-        </li>
+        {% if user.is_authenticated %}        
 
         <li id="dropdown">
           <div>
@@ -66,11 +62,13 @@
           <a id="entrar" class="nav-link-expand" href="{% url 'account_login' %}">Entrar</a>
         </li>
         {% endif %}
-
-        
-
-
-        
+        <li>
+          <a id="carrinho" class="nav-link" href="{% url 'carrinho' %}">
+            <img src="{% static 'images/icons/carrinho.svg' %}">
+            <span class="carrinho-quantidade">{{carrinho.numero_itens}}</span>
+          </a>
+        </li>
+       
       </ul>
     </nav>
   </header>
@@ -85,7 +83,14 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>-->
   <!-- Project JS -->
+  <script src="{% static 'js/carrinho.js' %}">
+    
+  </script>
   <script src="{% static 'js/base.js' %}"></script>
+  <script type="text/javascript">
+    var csrfToken = "{{ csrf_token }}";
+    var user = '{{ request.user }}';
+  </script>
   {% endblock javascript %}
 </body>
 </html>

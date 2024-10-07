@@ -8,9 +8,6 @@ class EnderecoCriarForm(forms.Form):
         model = Endereco
         fields = ['cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'uf',]
 
-
-
-  
 class UserImageForm(forms.ModelForm):
     class Meta:
         model = Cliente

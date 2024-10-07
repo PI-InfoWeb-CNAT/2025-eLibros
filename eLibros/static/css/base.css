@@ -134,6 +134,10 @@ nav .nav-link-normal:hover:before {
   width: 24px;
 }
 
+.carrinho-quantidade {
+  color: white;
+}
+
 #perfil {
   display: flex;
   align-items: center;
