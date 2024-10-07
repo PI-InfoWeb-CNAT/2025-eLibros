@@ -25,7 +25,7 @@ class Cliente(AbstractUser):
 
     '''
 
-    nome = models.CharField(blank=True, null=True, max_length=100, validators=[nao_nulo])
+    nome = models.CharField(blank=True, null=True, max_length=100)
     CPF = models.CharField(blank=True, null=True, max_length=15)
 
     foto_de_perfil = models.ImageField(upload_to='fotos_de_perfil/', blank=True, null=True)
