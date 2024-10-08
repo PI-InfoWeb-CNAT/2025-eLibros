@@ -8,7 +8,10 @@ class Carrinho(models.Model):
     total = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, blank=True)
 
     def __str__(self):
-        return f"Carrinho de {self.cliente.username}"
+        if self.cliente:
+            return f"Carrinho de {self.cliente.username}"
+        else:
+            return f"Carrinho de {self.session_id}"
     
     @property
     def preco_carrinho(self):
