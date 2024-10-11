@@ -3,7 +3,7 @@ from .views import *
 
 urlpatterns = [
     path("", Inicio, name="inicio"),
-    path("about/", AboutPageView.as_view(), name="about"),
+
     path("acervo/", acervo, name="acervo"),
     path("acervo/livro/<int:id>", livro, name="livro"),
 
