@@ -21,18 +21,22 @@ def atualizar_carrinho(request):
         #Cliente logado
         cliente = request.user
         carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
+        
+        
     else:
         #Usuário anônimo
         session_id = request.session.get('session_id', str(uuid.uuid4()))
         request.session['session_id'] = session_id
         carrinho, created = Carrinho.objects.get_or_create(session_id=session_id)
+   
+           
 
-    if action in ['adicionarAoCarrinho', 'comprarAgora']: #foi passado via JS para o backend um id de livro
+    if action in ['adicionarAoCarrinho', 'comprarAgora']: 
         livro = Livro.objects.get(id=id)
-
         item_carrinho, item_created = ItemCarrinho.objects.get_or_create(
             livro=livro,
-            defaults={'quantidade': int(quantidade), 'preco': livro.preco}
+            carrinho=carrinho,
+            defaults={'quantidade': int(quantidade), 'preco': livro.preco, 'carrinho': carrinho}
         )
 
         if not item_created:
@@ -41,23 +45,18 @@ def atualizar_carrinho(request):
             item_carrinho.quantidade = int(quantidade)
 
         item_carrinho.save()
-        if item_carrinho not in carrinho.items.all():
-            carrinho.items.add(item_carrinho)
         message = 'Item foi adicionado ao carrinho'
-
         cart_item_count = carrinho.numero_itens
+
         if action == 'comprarAgora':
             return JsonResponse({'redirect': True, 'url': '/carrinho/'}, safe=False)
     else:
         #foi passado via JS para o backend um id de um ItemCarrinho
         item_carrinho = ItemCarrinho.objects.get(id=id)
         if action == 'deletar':
-            if item_carrinho in carrinho.items.all():
-                carrinho.items.remove(item_carrinho)
-                item_carrinho.delete()
-                message = 'Item foi removido do carrinho'
-            else:
-                message = 'Tentou-se remover Item mas ele não está no carrinho'
+            item_carrinho.delete()
+            message = 'Item foi removido do carrinho'
+
         else:
             if action == 'adicionar':
                 item_carrinho.quantidade += 1
@@ -74,7 +73,17 @@ def atualizar_carrinho(request):
 
 
 def ver_carrinho(request):
+    if request.user.is_authenticated:
+        cliente = request.user
+        carrinho = Carrinho.objects.filter(cliente=cliente).first()
+    else:
+        session_id = request.session.get('session_id')
+        carrinho = Carrinho.objects.filter(session_id=session_id).first()
+
+    items = carrinho.items_do_carrinho.all() if carrinho else []
+   
     context = {
+        'items': items,
         }
     return render(request, 'elibrosLoja/carrinho.html', context=context)
 

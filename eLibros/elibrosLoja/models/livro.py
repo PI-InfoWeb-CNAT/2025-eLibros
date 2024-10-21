@@ -2,7 +2,6 @@ from django.db import models
 
 from validators import *
 
-from elibrosLoja.models.generoTextual import GeneroTextual
 from elibrosLoja.models.generoLiterario import GeneroLiterario
 from elibrosLoja.models.categoria import Categoria
 
@@ -29,7 +28,6 @@ class Livro(models.Model):
     quantidade = models.IntegerField(validators=[nao_negativo])
     qtd_vendidos = models.IntegerField(default=0, validators=[nao_negativo], verbose_name='Vendidos')
 
-    genero = models.ManyToManyField(GeneroTextual, related_name="Genero_Textual_do_Livro",  blank=True)
     genero_literario = models.ManyToManyField(GeneroLiterario, related_name="Genero_Literario_do_Livro", blank=True)
     categoria = models.ManyToManyField(Categoria, related_name="Categoria_do_Livro", blank=True) 
 

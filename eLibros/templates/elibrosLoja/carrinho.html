@@ -4,8 +4,8 @@
 {% block content %}
 <main>
     <section class="meucarrinho">
-        {% if not carrinho.items %}
-        <p id="carrinhovazio">Seu carrinho está vazio.</p>
+        {% if not items %}
+            <p id="carrinhovazio">Seu carrinho está vazio.</p>
         
         {% else %}
         <h2>Meu Carrinho</h2>
@@ -17,7 +17,7 @@
         </label>
         <ul>
         
-            {% for item in carrinho.items.all %}
+            {% for item in items %}
             <li>
                 <label for="myCheckbox1">
                     <input type="checkbox" id="myCheckbox1" class="custom-checkbox">
