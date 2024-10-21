@@ -14,11 +14,7 @@ class ImageAdmin(admin.ModelAdmin):
 class LivroAdmin(admin.ModelAdmin):
     readonly_fields = ['img_preview', 'data_de_adicao']
     
-    list_display = ['titulo','img_preview', 'autor', 'editora', 'preco', 'get_generos', 'get_generos_literarios', 'get_categorias']
-
-    def get_generos(self, obj):
-        return ", ".join([genero.nome for genero in obj.genero.all()])
-    get_generos.short_description = 'Gêneros Textuais'
+    list_display = ['titulo','img_preview', 'autor', 'editora', 'preco', 'get_generos_literarios', 'get_categorias']
 
     def get_generos_literarios(self, obj):
         return ", ".join([genero.nome for genero in obj.genero_literario.all()])
@@ -66,6 +62,5 @@ admin.site.register(Livro, LivroAdmin)
 admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(Carrinho, CarrinhoAdmin)
 admin.site.register(ItemCarrinho, ItemCarrinhoAdmin)
-admin.site.register(GeneroTextual, GeneroTextualAdmin)
 admin.site.register(GeneroLiterario, GeneroLiterarioAdmin)
 admin.site.register(Categoria, CategoriaAdmin)

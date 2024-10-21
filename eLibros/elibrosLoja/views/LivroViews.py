@@ -1,4 +1,4 @@
-from elibrosLoja.models import Livro, GeneroTextual, Categoria
+from elibrosLoja.models import Livro, Categoria, GeneroLiterario
 from django.shortcuts import render, get_object_or_404 
 import random
 
@@ -7,7 +7,7 @@ def Inicio(request):
     cliente = request.user
     livro = request.GET.get('livro')
     livros = Livro.objects.all()
-    generos = GeneroTextual.objects.all()
+    generos = GeneroLiterario.objects.all()
 
     livros_filtrados = []
     
@@ -16,11 +16,12 @@ def Inicio(request):
 
     generos = list(generos)
     random.shuffle(generos)
+
     for genero in generos:
-        if livros.filter(genero=genero).exists():
+        if livros.filter(genero_literario=genero).exists():
             livros_filtrados.append({
                 'genero': genero.nome,
-                'livros': livros.filter(genero=genero),
+                'livros': livros.filter(genero_literario=genero),
             })
 
     context = {
@@ -36,7 +37,7 @@ def acervo(request):
     cliente = request.user
     livro = request.GET.get('livro')
     livros = Livro.objects.all()
-    generos = GeneroTextual.objects.all()
+    generos = GeneroLiterario.objects.all()
 
     livros_filtrados = []
     
@@ -46,10 +47,10 @@ def acervo(request):
     generos = list(generos)
     random.shuffle(generos)
     for genero in generos:
-        if livros.filter(genero=genero).exists():
+        if livros.filter(genero_literario=genero).exists():
             livros_filtrados.append({
                 'genero': genero.nome,
-                'livros': livros.filter(genero=genero)
+                'livros': livros.filter(genero_literario=genero)
             })
 
     context = {
