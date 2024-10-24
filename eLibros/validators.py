@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 import datetime
+from datetime import date
 from django.db import models
 
 def nao_negativo(valor):
@@ -21,7 +22,7 @@ def verificar_vazio(string):
 
 def nao_e_no_futuro(data):
     if type(data) == datetime.date:
-        if data.date() > datetime.datetime.now().date():
+        if data > datetime.datetime.now().date():
             raise ValidationError(f"Data de evento passado não pode estar no futuro")
     elif type(data) == int:
         if data > datetime.datetime.now().year:

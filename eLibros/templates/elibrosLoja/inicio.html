@@ -61,34 +61,42 @@
 
     <section class="livros">
         <h2>Indicações eLibros</h2>
-        <div>
-            {% for livro in livros_indicacoes %}
-            <a href="{% url 'livro' id=livro.id %}">
-            <div>
-                <figure>
-                    {% if livro.capa %}
-                    <img src="{{ livro.capa.url }}">
-                    {% else %}
-                    <img src="{% static 'images/placeholder.png' %}" width="100px">
-                    {% endif %}
-                </figure>
-                <div>
-                    <h3>
-                        {{ livro.titulo }}
-                        {% if livro.subtitulo %}
-                        <br>
-                        <span>{{ livro.subtitulo }}</span>
-                        {% endif %}
-                    </h3>
-                    <p>{{ livro.autor }}</p>
-                    <p>{{ livro.preco }}</p>
-                    <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
+        <div class="swiper Indicacoes-Elibros">
+            <div class="swiper-wrapper">
+                {% for livro in livros_indicacoes %}
+                <div class="swiper-slide">              
+                    <a href="{% url 'livro' id=livro.id %}">
+                    <div>
+                        <figure>
+                            {% if livro.capa %}
+                            <img src="{{ livro.capa.url }}">
+                            {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" width="100px">
+                            {% endif %}
+                        </figure>
+                        <div>
+                            <h3>
+                                {{ livro.titulo }}
+                                {% if livro.subtitulo %}
+                                <br>
+                                <span>{{ livro.subtitulo }}</span>
+                                {% endif %}
+                            </h3>
+                            <p>{{ livro.autor }}</p>
+                            <p>{{ livro.preco }}</p>
+                            <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
+                        </div>
+                    </div>
+                    </a>
                 </div>
+                {% endfor %}   
             </div>
-            </a>
-            {% endfor %}
-            <a href="#" class="setinha"><img src="{% static 'images/setinha.png' %}"></a>
-            </div>
+            
+            
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
             <p><a href="{% url 'acervo' %}">Ver mais</a></p>
     </section>
 </main>

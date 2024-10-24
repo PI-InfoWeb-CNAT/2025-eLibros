@@ -351,6 +351,7 @@ figure {
 }
 
 .livros {
+    width: 70%;
     padding: 1em 5em;
 }
 
@@ -359,22 +360,25 @@ figure {
     font-size: 1.24em;
 }
 
-.livros>div {
+
+ 
+
+/* .carousel {
     margin: 0 auto;
     gap: 1em;
     display: flex;
     position: relative;
     align-items: center;
     overflow: hidden;
-}
+} */
 
-.livros .acervo {
+ /* .livros .acervo {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 2em 1em;
-}
+}  */
 
-.livros>div>div {
+ .livros>div>div {
     display: flex;
     text-align: center;
     justify-content: center;
@@ -411,7 +415,9 @@ figure {
     font-style: italic;
 }
 
-.livros>div>div a {
+
+
+ .livros>div>div a {
     font-size: .8em;
     color: #1C1607;
     text-decoration: none;
@@ -419,13 +425,6 @@ figure {
     border-radius: 10px;
     padding: 0.3em 1.2em;
     margin: 1em 0;
-}
-
-.livros>div .setinha {
-    position: absolute;
-    right: -1px;
-    background: none;
-    border: none;
 }
 
 .livros>p a {
@@ -437,6 +436,41 @@ figure {
     text-align: center;
 }
 
+
+.multi-item-carousel{
+    .carousel-inner{
+      > .item{
+        transition: 500ms ease-in-out left;
+      }
+      .active{
+        &.left{
+          left:-33%;
+        }
+        &.right{
+          left:33%;
+        }
+      }
+      .next{
+        left: 33%;
+      }
+      .prev{
+        left: -33%;
+      }
+      @media all and (transform-3d), (-webkit-transform-3d) {
+        > .item{
+          transition: 500ms ease-in-out left;
+          transition: 500ms ease-in-out all;
+          backface-visibility: visible;
+          transform: none!important;
+        }
+      }
+    }
+    .carouse-control{
+      &.left, &.right{
+        background-image: none;
+      }
+    }
+  }
 
 section#search p {
     color: #6A6A6A;

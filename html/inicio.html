@@ -8,6 +8,7 @@
         <title>eLibros - Inicio</title>
         <!-- <link rel="stylesheet" href="{% static 'global.css' %}"> -->
         <link rel="stylesheet" href="static/global.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
         <header>
@@ -87,48 +88,54 @@
                     </div>
                 </div>
             </section>
+
             <section class="livros">
                 <h2>Mais vendidos</h2>
-                <div>
-                    <div>
-                        <figure><img src="static/images/placeholder.png"></figure>
-                        <div>
-                            <h3>A Queda dos Reinos</h3>
-                            <p>Morgan Rhodes</p>
-                            <p>R$59,90</p>
-                            <a href="#">Comprar</a>
+
+                <div id="carouselExample" class="carousel slide multi-item-carousel" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <figure><img src="static/images/placeholder.png"></figure>
+                            <div>
+                                <h3>A Queda dos Reinos</h3>
+                                <p>Morgan Rhodes</p>
+                                <p>R$59,90</p>
+                                <a href="#">Comprar</a>
+                            </div>                    
                         </div>
-                    </div>
-                    <div>
-                        <figure><img src="static/images/placeholder.png"></figure>
-                        <div>
-                            <h3>Heartstopper<br><span>Volume I</span></h3>
-                            <p>Alice Oseman</p>
-                            <p>R$59,90</p>
-                            <a href="#">Comprar</a>
+
+                        <div class="carousel-item">
+                            <figure><img src="static/images/placeholder.png"></figure>
+                            <div>
+                                <h3>A Queda dos Rsfsdfsfsfsfeinos</h3>
+                                <p>Morgan Rhodes</p>
+                                <p>R$59,90</p>
+                                <a href="#">Comprar</a>
+                            </div>
                         </div>
+
+                        <div class="carousel-item">
+                            <figure><img src="static/images/placeholder.png"></figure>
+                            <div>
+                                <h3>A Qsafafsffsfsfsfsfsfsfsfeinos</h3>
+                                <p>Morgan sfsfsfsfs</p>
+                                <p>R$59,90</p>
+                                <a href="#">Comprar</a>
+                            </div>
+                        </div>                       
+
+
+                        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                        </a>
                     </div>
-                    <div>
-                        <figure><img src="static/images/placeholder.png"></figure>
-                        <div>
-                            <h3>Conectadas</h3>
-                            <p>Clara Alves</p>
-                            <p>R$59,90</p>
-                            <a href="#">Comprar</a>
-                        </div>
-                    </div>
-                    <div>
-                        <figure><img src="static/images/placeholder.png"></figure>
-                        <div>
-                            <h3>Percy Jackson<br><span>Ladrão de Raios</span></h3>
-                            <p>Rick Riordan</p>
-                            <p>R$59,90</p>
-                            <a href="#">Comprar</a>
-                        </div>
-                    </div>
-                    <a href="#" class="setinha"><img src="static/images/setinha.png"></a>
-                </div>
-                <p><a href="acervo.html">Ver mais</a></p>
+                    
+                </div>                
             </section>
         </main>
 
@@ -136,10 +143,10 @@
 
 
 
-        <!-- {% block content %}{% endblock %} -->
+       
         <footer >
             <p>2024 Entregadores. Todos os direitos reservados</p>
         </footer>
-        <!-- {% block scripts %}{% endblock %} -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
 </html>

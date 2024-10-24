@@ -1,4 +1,5 @@
 from elibrosLoja.models import Carrinho
+import re
 
 def carrinho(request):
     try:
@@ -18,3 +19,7 @@ def cliente(request):
     except:
         cliente = None
     return {'cliente': cliente}
+
+def remove_special_characters(text):
+  special_chars = re.compile(r'[^a-zA-Z0-9]')
+  return special_chars.sub('', text)

@@ -378,7 +378,31 @@ figure {
   font-size: 1.24em;
 }
 
-.livros>div {
+
+.swiper-button-prev, .swiper-button-next {
+  --swiper-navigation-color: #1C1607;
+  transform: scale(0.8);
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide>div {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+
+.swiper-wrapper:nth-child(1)>div {
+  text-align: left;
+}
+
+.swiper {
   margin: 0 auto;
   gap: 1em;
   display: flex;
@@ -387,26 +411,19 @@ figure {
   overflow: hidden;
 }
 
-.livros .acervo {
+.acervo {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 2em 1em;
 }
 
-.livros>div>div {
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-}
-
-.livros>div>div figure img{
+.swiper-slide>div figure img{
   width: 7em;
   height: 10em;
   border-radius: 3px;
 }
 
-.livros>div>div h3 {
+.swiper-slide>div>div h3 {
   font-size: 1em;
   font-weight: 600;
   width: 8em;
@@ -415,20 +432,26 @@ figure {
   line-height: 1.2em;
 }
 
-.livros>div>div h3 span {
+.swiper-slide>div>div h3 span {
   font-size: .9em;
   font-weight: 300;
 }
 
-.livros>div>div p {
+.swiper-slide>div>div p {
   font-size: .8em;
   margin: .5em 0;
   font-weight: 400;
 }
 
-.livros>div>div p:nth-child(2) {
+.swiper-slide>div>div p:nth-child(2) {
   font-size: .72em;
   font-style: italic;
+}
+
+@media screen and (max-width: 400px) {
+  .swiper-slide>div {
+    flex-direction: column;
+  }
 }
 
 .livro_botao_comprar {
@@ -441,12 +464,6 @@ figure {
   margin: 1em 0;
 }
 
-.livros>div .setinha {
-  position: absolute;
-  right: -1px;
-  background: none;
-  border: none;
-}
 
 .livros>p a {
   color: #FFD147;
