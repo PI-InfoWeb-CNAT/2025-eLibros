@@ -810,10 +810,119 @@ input[type="number"]::-webkit-outer-spin-button {
     background-color: #ffdc71;
 }
 
+.compra {
+    margin: 3em 0;
+}
+
+.custom-radio {
+    display: inline-block;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+}
+
+.custom-radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.radio-mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 2px solid #bbb;
+    background-color: white;
+}
+
+.custom-radio input:checked + .radio-mark {
+    background-color: #ffdc71;
+    border-color: #ffdc71;
+}
+
+div.compra{
+    gap: 5em;
+    margin: 3em 0 0 0;
+    display: flex;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 3em;
+}
+
+.compra h1 {
+    font-size: 2em;
+    font-weight: 500;
+}
+
+.compra h2 {
+    opacity: 50%;
+    font-size: 2em;
+}
+
+.compra h3 {
+    margin: 0.5em 0 1.5em 0;
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+#endereco {
+    margin-left: 1em;
+    background-color: #f9f9f1;
+    padding: 10px;
+}
+
+#endereco input {
+    background: none;
+    margin-left: 5px;
+}
+
+#endereco input:focus {
+    outline: none;
+}
+
+#endereco select {
+    background: none;
+    width: 5em;
+    border-radius: 5px;
+}
+
+.sem-borda {
+    border: none;
+}
+
+#pagamento button {
+    padding: 5px 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: white;
+    border: 2px solid #ffdc71;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#pagamento button:focus {
+    background-color: #ffdc71;
+}
+
+#pagamento button:hover {
+    background-color: #ffdc71;
+}
+
 /* admin */
 
 main.admin {
     margin: 3em 0;
+}
+
+footer.admin {
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    left: 0%;
 }
 
 h1#adminHome {
