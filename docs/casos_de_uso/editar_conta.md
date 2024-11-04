@@ -36,7 +36,8 @@ Após a execução deste caso de uso, espera que-se o sistema:
 Não há fluxo de exceção.
 
 ### 6. Protótipos de Interface
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/f5f9db93-0ac4-4e0a-a035-76ab0fb35bb4)
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 A ser desenvolvido.
