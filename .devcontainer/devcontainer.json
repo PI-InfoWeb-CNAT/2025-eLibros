@@ -6,9 +6,9 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspace",
-	"postCreateCommand": "python eLibros/manage.py collectstatic && python eLibros/manage.py migrate",
+	"postCreateCommand": "python eLibros/manage.py migrate",
 	"postAttachCommand": {
-    	"server": "python eLibros/manage.py runserver"
+    	"server": "python eLibros/manage.py runserver 8000"
   	},
 
 	// Configure tool-specific properties.
