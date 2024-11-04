@@ -6,7 +6,8 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
-| 16/09/2024 | **1.10** | Pequenas correções  | Gabriel Campos |
+| 16/09/2024 | **1.10** | Correções  | Gabriel Campos |
+| 04/11/2024 | **1.30** | Adição de protótipo de interface  | Gabriel Campos |
 
 
 ### 1. Resumo 
