@@ -44,7 +44,8 @@ Após a execução deste caso de uso, espera que o sistema:
 |---|2. O sistema informa ao usuário que não há a quantia disponível requisitada de um livro |
 
 ### 6. Protótipos de Interface
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/a36910d5-8b14-49aa-a12d-728c88e09dd1)
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 A ser desenvolvido.
