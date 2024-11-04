@@ -1290,3 +1290,43 @@ ul.crud2 li:last-child a {
 .pedidos ul li > div:nth-child(2) div button:nth-child(1){
     background-color: #FFDB70;
 }
+
+/* compra */
+
+.compra div div figure{
+    width: 12em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8em;
+    margin-right: 1em;
+}
+
+.compra div div div figure img{
+    width: 5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.compra .itens div div p:nth-child(2){
+    opacity: 0.5;
+}
+
+.compra .itens{
+    display: flex;
+}
+
+.compra .itens div:nth-child(1){
+    display: flex; 
+    gap: 2em;
+}
+
+.compra .itens > p{
+    font-size: 24px;
+    text-align: right;
+    margin-left: 20em;
+}
+
+.compra .itens div div{
+    display: flex;
+    flex-direction: column;
+    gap: 10em;
+} 
