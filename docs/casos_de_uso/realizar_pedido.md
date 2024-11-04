@@ -40,7 +40,7 @@ Após a execução deste caso de uso, espera que o sistema:
 | --- |2. O sistema informa que o número digitado é inválido e pede para verificar. | 
 
 ### 6. Protótipos de Interface
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/db2dc822-a62f-42c2-9d41-74f9bcc33695)
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 A ser desenvolvido.
