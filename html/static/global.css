@@ -924,6 +924,69 @@ div.compra{
     background-color: #ffdc71;
 }
 
+#cupom input{
+    background-color: #f4f4ed;
+    border: 1px solid #FFDB70;
+    padding: 10px 100px 10px 10px;
+    border-radius: 5px;
+}
+
+#cupom input:focus {
+    outline: none;
+}
+
+#cupom button {
+    border: none;
+    background: none;
+    font-size: 1em;
+    margin: 0 1em;
+    cursor: pointer;
+    color: #876950;
+}
+
+#envio {
+    display: flex;
+}
+
+#itens {
+    display: flex;
+    gap: 2em;
+}
+
+#livrocompra {
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#final {
+    margin: 3em 0;
+    text-align: right;
+}
+
+#total {
+    display: flex;
+    justify-content: right;
+    gap: 2.5em;
+}
+
+.valores {
+    text-align: center;
+}
+
+.valores p:nth-child(1){
+    color: #7F7F7A;
+    margin-bottom: 5px;
+}
+
+#finalizar {
+    border: none;
+    background-color: #FFDB70;
+    padding: 10px 50px;
+    font-size: 1em;
+    margin: 2em 0;
+}
+
 /* admin */
 
 main.admin {

@@ -114,24 +114,24 @@
                         <div>
                             <h3>Ofertas</h3>
                             <div>
-                                <form>
+                                <form id="cupom">
                                     <input type="text">
-                                    <button type="submit">Inserir cupom</button>
+                                    <button  type="submit">Inserir cupom</button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div id="envio">
+                    <div class="compra">
                         <h2>4</h2>
                         <div>
                             <h3>Itens e envio</h3>
-                            <div>
-                                <div>
-                                    <img src="static/images/placeholder.png" width="200">
-                                </div>
-                                <div>
-                                    <span><p>R$</p><p>45,00</p></span>
-                                    <p>1 item no pedido</p>
+                            <div id="envio">
+                                <div id="itens">
+                                    <img src="static/images/placeholder.png" id="livrocompra">
+                                    <div>
+                                        <span><p>R$</p><p>45,00</p></span>
+                                        <p>1 item no pedido</p>
+                                    </div>
                                 </div>
                                 <div>
                                     <p>Ao finalizar o pedido a entrega será estimada para sexta-feira</p>
@@ -141,10 +141,10 @@
                     </div>
                     <div id="final">
                         <div id="total">
-                            <span><p>Subtotal</p><p>R$ 45,00</p></span>
-                            <span><p>Valor Total</p><p>R$ 45,00</p></span>
+                            <span class="valores"><p>Subtotal</p><p>R$ 45,00</p></span>
+                            <span class="valores"><p>Valor Total</p><p>R$ 45,00</p></span>
                         </div>
-                        <button type="submit">Finalizar pedido</button>
+                        <button type="submit" id="finalizar">Finalizar pedido</button>
                     </div>
                 </div>
             </section>
