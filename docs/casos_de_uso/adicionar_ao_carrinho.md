@@ -11,7 +11,7 @@
 | 06/09/2024 | **1.30** | Correção dicionário de dados | Cortez |
 | 12/09/2024 | **1.40** | Correção ortográfica | Gabriel Campos |
 | 16/09/2024 | **1.50** | Apenas cliente adiciona ao carrinho | Gabriel Campos |
-| 16/09/2024 | **1.60** | Adição de protótipo de interface  | Gabriel Campos |
+| 04/11/2024 | **1.60** | Adição de protótipo de interface  | Gabriel Campos |
 
 
 ### 1. Resumo 
