@@ -26,3 +26,4 @@ typing_extensions==4.9.0
 urllib3==1.26.14
 whitenoise==6.6.0
 mysqlclient
+psycopg2-binary
