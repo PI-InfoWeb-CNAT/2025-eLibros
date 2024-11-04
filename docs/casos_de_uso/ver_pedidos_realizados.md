@@ -6,6 +6,7 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
+| 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
 
 ### 1. Resumo 
 Esse caso de uso permite o usuário consultar os pedidos realizados.
