@@ -6,7 +6,7 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspace",
-	"postCreateCommand": "python manage.py collectstatic && python manage.py migrate",
+	"postCreateCommand": "python eLibros/manage.py collectstatic && python eLibros/manage.py migrate",
 	"postAttachCommand": {
     	"server": "python eLibros/manage.py runserver"
   	},
