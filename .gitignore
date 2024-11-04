@@ -11,4 +11,4 @@ __pycache__/
 
 # Virtual environment
 .venv
-.amb
+.env

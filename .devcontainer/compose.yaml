@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+
+    volumes:
+      - ../..:/workspaces:cached
+
+    command: sleep infinity
+    environment:
+      MYSQL_ROOT_PASSWORD: ${secrets.MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${secrets.MYSQL_DATABASE}
+      MYSQL_USER: ${secrets.MYSQL_USER}
+      MYSQL_PASSWORD: ${secrets.MYSQL_PASSWORD}
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${secrets.MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${secrets.MYSQL_DATABASE}
+      MYSQL_USER: ${secrets.MYSQL_USER}
+      MYSQL_PASSWORD: ${secrets.MYSQL_PASSWORD}
+
+volumes:
+  todo-mysql-data:
