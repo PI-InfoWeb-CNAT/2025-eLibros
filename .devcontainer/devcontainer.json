@@ -6,6 +6,10 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspace",
+	"postCreateCommand": "python manage.py collectstatic && python manage.py migrate",
+	"postAttachCommand": {
+    	"server": "python elibros/manage.py runserver"
+  	},
 
 	// Configure tool-specific properties.
 	"customizations": {
@@ -31,7 +35,9 @@
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"ms-python.python",
-				"ms-python.vscode-pylance"
+				"ms-python.vscode-pylance",
+				"ms-azuretools.vscode-docker",
+				"mtxr.sqltools"
 			]
 		}
 	},
