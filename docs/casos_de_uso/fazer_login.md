@@ -55,7 +55,10 @@ Após a execução deste caso de uso, espera que o sistema:
 |--- |4. O sistema não valida os dados inseridos pelo admin e exibe uma mensagem de erro ("Email e/ou senha inválido(s). Tente novamente") |
 
 ### 6. Protótipos de Interface
-imgs do site/figma referente a esse caso de uso
+![image](https://github.com/user-attachments/assets/2afd7368-f735-4fcd-8bd3-4a2f2455a238)
+![image](https://github.com/user-attachments/assets/1660c1bd-4296-4108-8653-8686d6626690)
+
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 A ser desenvolvido pelo aluno.
