@@ -6,7 +6,8 @@
 |  Data  | Versão | Descrição | Autor |
 |:-----|:-------|:----------|:------|
 | 08/04/2024 | **1.00** | Primeira versão  | Ana Júlia |
-| 06/09/2024 | **1.01** | Atualização dicionário de dados e correção nomenclatura do ator | Cortez
+| 06/09/2024 | **1.10** | Atualização dicionário de dados e correção nomenclatura do ator | Cortez
+| 04/11/2024 | **1.20** | Adição de protótipo de interface  | Gabriel Campos |
 
 
 ### 1. Resumo 
