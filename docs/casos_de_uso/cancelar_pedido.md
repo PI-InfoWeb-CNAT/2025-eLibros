@@ -38,7 +38,8 @@ Após a execução deste caso de uso, espera que o sistema:
 Não há exceção.
 
 ### 6. Protótipos de Interface
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/72ec8037-fc65-4b16-bd55-36254619f06f)
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 A ser desenvolvido.
