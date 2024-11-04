@@ -36,7 +36,8 @@ Não há exceção.
 
 ### 6. Protótipos de Interface
 
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/3a6c99e8-b32a-41a6-abd6-72f29c572da0)
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 
