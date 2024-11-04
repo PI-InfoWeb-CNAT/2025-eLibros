@@ -6,11 +6,12 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 01/04/2024 | **1.00** | Primeira versão  | Cortez |
-| 09/04/2024 | **1.1** | Correção do histórico de revisão  | Cortez |
-| 12/08/2024 | **1.2** | Correção de detalhes  | Gabriel Campos |
-| 06/09/2024 | **1.3** | Correção dicionário de dados | Cortez |
-| 12/09/2024 | **1.4** | Correção ortográfica | Gabriel Campos |
-| 16/09/2024 | **1.5** | Apenas cliente adiciona ao carrinho | Gabriel Campos |
+| 09/04/2024 | **1.10** | Correção do histórico de revisão  | Cortez |
+| 12/08/2024 | **1.20** | Correção de detalhes  | Gabriel Campos |
+| 06/09/2024 | **1.30** | Correção dicionário de dados | Cortez |
+| 12/09/2024 | **1.40** | Correção ortográfica | Gabriel Campos |
+| 16/09/2024 | **1.50** | Apenas cliente adiciona ao carrinho | Gabriel Campos |
+| 16/09/2024 | **1.60** | Adição de protótipo de interface  | Gabriel Campos |
 
 
 ### 1. Resumo 
