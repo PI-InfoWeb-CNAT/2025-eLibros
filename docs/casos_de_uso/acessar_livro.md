@@ -6,6 +6,7 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 16/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
+| 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -36,7 +37,8 @@ Não há exceção.
 
 ### 6. Protótipos de Interface
 
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/327413a7-5a7a-4b2f-a4c5-9d5f5756b4ff)
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 

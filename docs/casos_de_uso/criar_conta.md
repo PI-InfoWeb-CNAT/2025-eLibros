@@ -6,7 +6,8 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 15/08/2024 | **1.00** | Primeira versão  | Os Integradores |
-| 06/09/2024 | **1.01** | Atualização dicionário de dados | Cortez |
+| 06/09/2024 | **1.10** | Atualização dicionário de dados | Cortez |
+| 04/11/2024 | **1.20** | Adição de protótipo de interface  | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -44,7 +45,10 @@ Após a execução deste caso de uso, espera-se que:
 |--- |4. O sistema exibe mensagem de aviso "Campo não pode ser vazio" |
 
 ### 6. Protótipos de Interface
-imgs do site/figma referente a esse caso de uso
+![image](https://github.com/user-attachments/assets/cde27ad3-2665-4ef3-b754-056fbc2b4abe)
+![image](https://github.com/user-attachments/assets/47a82928-38d6-41da-9d0e-2a9e8b1c8e19)
+
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 A ser desenvolvido pelo aluno.

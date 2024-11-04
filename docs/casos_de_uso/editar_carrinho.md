@@ -6,7 +6,8 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
-| 16/09/2024 | **1.10** | Pequenas correções  | Gabriel Campos |
+| 16/09/2024 | **1.10** | Correções  | Gabriel Campos |
+| 04/11/2024 | **1.30** | Adição de protótipo de interface  | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -41,7 +42,8 @@ Após a execução deste caso de uso, espera que o sistema:
 |---|2. O sistema informa ao usuário que não há a quantia disponível requisitada do item |
 
 ### 6. Protótipos de Interface
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/2e549f4a-4e64-4d0a-9d7c-8bf1d22841fd)
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 A ser desenvolvido.

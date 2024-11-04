@@ -1,34 +1,33 @@
 # Projeto eLibros - Especificação de caso de uso
 
-##  Acessar acervo
+##  Acessar carrinho
 
 ### Histórico da Revisão 
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
-| 16/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
-| 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
+| 04/11/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 
 
 ### 1. Resumo 
-Esse caso de uso permite ao usuário acessar o acervo de livros da loja.
+Esse caso de uso permite ao usuário acessar o seu carrinho
 
 ### 2. Atores 
-- Cliente e Visitante
+- Cliente
 
 ### 3. Pré-condições
-Não há
+Estar cadastrado e logado no sistema
   
 ### 4. Pós-condições
 Após a execução deste caso de uso, espera que o sistema:
-- Mostre o acervo de livros ao usuário
+- Mostre ao usuário seu carrinho
 
 ### 5. Fluxos de evento
 
 #### 5.1. Fluxo Principal 
 |  Ator  | Sistema |
 |:-------|:------- |
-|1. Na página inicial, o usuário clica no botão referente a "Ver mais" ou "Acervo"| --- |
-| --- |2. O sistema manda o usuário para a página Acervo | 
+|1. Em qualquer página, o Cliente clica no botão referente a "Carrinho"| --- |
+| --- |2. O sistema manda o usuário para a página Carrinho | 
 
 
 #### 5.2. Fluxo de exceção
@@ -36,9 +35,7 @@ Após a execução deste caso de uso, espera que o sistema:
 Não há exceção.
 
 ### 6. Protótipos de Interface
-
-![image](https://github.com/user-attachments/assets/3a6c99e8-b32a-41a6-abd6-72f29c572da0)
-
+![image](https://github.com/user-attachments/assets/7343a377-b5a7-47d7-954a-d968422ccbbd)
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 
