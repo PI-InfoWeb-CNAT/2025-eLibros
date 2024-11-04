@@ -1,0 +1,33 @@
+{    
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "waitFor": "onCreateCommand",
+    "updateContentCommand": "",
+    "postCreateCommand": "pip install --user -r requirements.txt && python manage.py collectstatic && python manage.py migrate",
+    "postAttachCommand": {
+      "server": "python manage.py runserver 0.0.0.0:8000"
+    },
+    "containerEnv": {
+      "DATABASE_URL": "mysql://${secrets.MYSQL_USER}:${secrets.MYSQL_PASSWORD}@db/${secrets.MYSQL_DATABASE}"
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-python.python"
+        ]
+      }
+    },
+    "portsAttributes": {
+      "8000": {
+        "label": "Application"
+      }
+    },
+    "forwardPorts": [8000],
+    "remoteEnv": {
+      "MYSQL_ROOT_PASSWORD": "${{ secrets.MYSQL_ROOT_PASSWORD }}",
+      "MYSQL_DATABASE": "${{ secrets.MYSQL_DATABASE }}",
+      "MYSQL_USER": "${{ secrets.MYSQL_USER }}",
+      "MYSQL_PASSWORD": "${{ secrets.MYSQL_PASSWORD }}"
+    }
+}
