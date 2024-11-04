@@ -77,15 +77,15 @@ TEMPLATES = [
 
 
 DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "NAME": "secrets.MYSQL_DATABASE",
-            "USER": "secrets.MYSQL_USER",
-            "PASSWORD": "secrets.MYSQL_PASSWORD",
-            "HOST": "db",
-            "PORT": "3306", 
-        }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "db",
+        "PORT": "5432", 
     }
+}
 
 
 AUTH_PASSWORD_VALIDATORS = [
