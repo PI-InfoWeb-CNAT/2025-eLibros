@@ -8,7 +8,7 @@
 	"workspaceFolder": "/workspace",
 	"postCreateCommand": "python manage.py collectstatic && python manage.py migrate",
 	"postAttachCommand": {
-    	"server": "python elibros/manage.py runserver"
+    	"server": "python eLibros/manage.py runserver"
   	},
 
 	// Configure tool-specific properties.
