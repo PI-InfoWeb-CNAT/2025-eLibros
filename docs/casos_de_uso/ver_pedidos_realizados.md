@@ -30,7 +30,8 @@ Após a execução deste caso de uso, espera-se que o sistema:
 | --- |2. O sistema apresenta uma nova página com os pedidos realizados pelo cliente.  | 
 
 ### 6. Protótipos de Interface
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/7d18919c-7995-4f75-bd72-de19adf677e8)
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 A ser desenvolvido.
