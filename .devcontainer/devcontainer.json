@@ -1,5 +1,7 @@
-{
-    "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
+{    
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
     "waitFor": "onCreateCommand",
     "updateContentCommand": "",
     "postCreateCommand": "pip install --user -r requirements.txt && python manage.py collectstatic && python manage.py migrate",
@@ -28,4 +30,4 @@
       "MYSQL_USER": "${{ secrets.MYSQL_USER }}",
       "MYSQL_PASSWORD": "${{ secrets.MYSQL_PASSWORD }}"
     }
-  }
+}

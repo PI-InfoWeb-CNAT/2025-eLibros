@@ -21,7 +21,7 @@ services:
       - "8000:8000"
 
   db:
-    image: mysql:8.0
+    image: mysql:latest
     restart: unless-stopped
     volumes:
       - todo-mysql-data:/var/lib/mysql
