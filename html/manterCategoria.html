@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="static/global.css" rel="stylesheet">
-    <title>Manter clientes</title>
+    <title>Manter categorias</title>
 </head>
 <body>
     <header>
@@ -18,13 +18,13 @@
                         <a class="nav-link-normal" href="manterCliente.html">Clientes</a>
                     </li>
                     <li>
-                        <a class="nav-link-normal active" href="manterPedido.html">Pedidos</a>
+                        <a class="nav-link-normal" href="manterPedido.html">Pedidos</a>
                     </li>
                     <li>
                         <a class="nav-link-normal" href="manterGenero.html">Gêneros</a>
                     </li>
                     <li>
-                        <a class="nav-link-normal" href="manterCategoria.html">Categorias</a>
+                        <a class="nav-link-normal active" href="manterCategoria.html">Categorias</a>
                     </li>
                     <li id="dropdown">
                         <div>
@@ -43,26 +43,22 @@
     </header>
     <main class="admin">
         <section id="cabecalho">
-            <h2 id="manter">Pedidos</h1>
+            <h2 id="manter">Categorias</h1>
+            <a href="#"><img src="static/images/icons/Wplus.svg" style="padding-right: 5px;">
+                 Adicionar categoria</a>
         </section>
         <section id="search">
             <form id="search">
                 <div id="search">
-                    <img src="static/images/icons/lupa.svg.">
-                    <input type="text" name="pesquisa" placeholder="Pesquisa por código..." size="52">
+                    <img src="static/images/icons/lupa.svg">
+                    <input type="text" name="pesquisa" placeholder="Pesquise por nome..." size="52">
                 </div>
                 <div id="filter">
                     <div id="select">
                         <img src="static/images/icons/filter.svg">                          
                         <select>
-                            <option value="recente">Mais recentes</option>
-                            <option value="antigo">Mais antigos</option>
-                            <option value="maior">Maior quant.</option>
-                            <option value="menor">Menor quant.</option>
+                            <option value="-1">A-Z</option>
                         </select>
-                    </div>
-                    <div id="status">
-                        <label><img src="static/images/icons/Bplus.svg"> Status</label>
                     </div>
                 </div>
             </form>
@@ -70,34 +66,30 @@
         <section style="font-family: 'Poppins'; max-width: 48%; margin-top: 3em;">
             <ul class="listagem">
                 <li>
-                    <span>123456789012</span>
-                    <ul class="crud">
-                        <li><a href="#">Ver</a></li>
-                        <li><a href="#">Editar</a></li>
+                    <span>Indicações eLibros</span>
+                    <ul class="crud2">
+                        <li><a href="#">Renomear</a></li>
                         <li><a href="#">Excluir</a></li>
                     </ul>
                 </li>
                 <li>
-                    <span>210987654321</span>
-                    <ul class="crud">
-                        <li><a href="#">Ver</a></li>
-                        <li><a href="#">Editar</a></li>
+                    <span>Autor LGTBQ+</span>
+                    <ul class="crud2">
+                        <li><a href="#">Renomear</a></li>
                         <li><a href="#">Excluir</a></li>
                     </ul>
                 </li>
                 <li>
-                    <span>112233445566</span>
-                    <ul class="crud">
-                        <li><a href="#">Ver</a></li>
-                        <li><a href="#">Editar</a></li>
+                    <span>Autoras femininas</span>
+                    <ul class="crud2">
+                        <li><a href="#">Renomear</a></li>
                         <li><a href="#">Excluir</a></li>
                     </ul>
                 </li>
                 <li>
-                    <span>665544332211</span>
-                    <ul class="crud">
-                        <li><a href="#">Ver</a></li>
-                        <li><a href="#">Editar</a></li>
+                    <span>Mais de 300 páginas</span>
+                    <ul class="crud2">
+                        <li><a href="#">Renomear</a></li>
                         <li><a href="#">Excluir</a></li>
                     </ul>
                 </li>
