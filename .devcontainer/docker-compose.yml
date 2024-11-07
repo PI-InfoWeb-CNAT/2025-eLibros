@@ -29,7 +29,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     restart: unless-stopped
     environment:
-      SA_PASSWORD: "YourStrong!Passw0rd"
+      SA_PASSWORD: "gatineosFofineos"
       ACCEPT_EULA: "Y"
     volumes:
       - mssql-data:/var/opt/mssql
