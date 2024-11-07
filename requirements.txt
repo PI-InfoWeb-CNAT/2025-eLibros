@@ -27,4 +27,4 @@ urllib3
 whitenoise
 mysqlclient
 pyodbc
-django-pyodbc-azure
+mssql-django
