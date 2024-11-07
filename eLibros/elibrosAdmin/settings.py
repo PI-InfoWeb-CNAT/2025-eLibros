@@ -80,7 +80,7 @@ DATABASES = {
     "default": {
         'ENGINE': 'mssql',
         'NAME': 'eLibrosDB',
-        'USER': 'eLeitor',
+        'USER': 'AdminElibros'DB',
         'PASSWORD': 'gatineosFofineos',
         'HOST': 'db',
         'PORT': '1433',

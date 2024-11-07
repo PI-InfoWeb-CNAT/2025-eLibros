@@ -1,6 +1,3 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/python-3-postgres
-// Update the VARIANT arg in docker-compose.yml to pick a Python version
 {
 	"name": "Python 3 & Sqlserver",
 	"dockerComposeFile": "docker-compose.yml",
