@@ -18,12 +18,17 @@ services:
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode
 
+    environment:
+      - DATABASE_URL=mssql+pyodbc://sa:gatineosFofineos@db:1433/eLibrosDB?driver=ODBC+Driver+17+for+SQL+Server
+
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     restart: unless-stopped
     environment:
       SA_PASSWORD: "gatineosFofineos"
       ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
     volumes:
       - mssql-data:/var/opt/mssql
 
