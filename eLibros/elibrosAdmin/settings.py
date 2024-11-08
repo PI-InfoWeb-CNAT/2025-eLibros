@@ -78,12 +78,15 @@ TEMPLATES = [
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",
-        "PORT": "5432", 
+        'ENGINE': 'mssql',
+        'NAME': 'eLibrosDB',
+        'USER': 'AdminElibrosDB',
+        'PASSWORD': 'gatineosFofineos',
+        'HOST': 'db',
+        'PORT': '1433',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        },
     }
 }
 
