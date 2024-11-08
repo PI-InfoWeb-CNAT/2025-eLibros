@@ -22,7 +22,6 @@ services:
       - DATABASE_URL=mssql+pyodbc://sa:gatineosFofineos@db:1433/eLibrosDB?driver=ODBC+Driver+17+for+SQL+Server
 
   db:
-    mssqlserver:
     image: mcr.microsoft.com/mssql/server:2022-preview-ubuntu-22.04
     container_name: mssqlserver
     hostname: eLibrosDB
