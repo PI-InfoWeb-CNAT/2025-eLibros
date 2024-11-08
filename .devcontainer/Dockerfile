@@ -14,3 +14,10 @@ RUN pip3 install --upgrade pip setuptools \
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
      && apt-get -y install --no-install-recommends unixodbc-dev \
      && rm -rf /var/lib/apt/lists/*
+
+RUN wget https://go.microsoft.com/fwlink/?linkid=218020&clcid=0x409 -O /tmp/msodbcsql17.x64.tar.gz \
+  && tar -xzf /tmp/msodbcsql17.x64.tar.gz -C /opt/microsoft \
+  && rm -rf /tmp/msodbcsql17.x64.tar.gz
+
+# (Optional) Set environment variable for driver location (if needed)
+ENV ODBC_DRIVER_PATH=/opt/microsoft/msodbcsql17/lib64
