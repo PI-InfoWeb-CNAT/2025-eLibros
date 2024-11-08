@@ -22,16 +22,16 @@ services:
       - DATABASE_URL=mssql+pyodbc://sa:gatineosFofineos@db:1433/eLibrosDB?driver=ODBC+Driver+17+for+SQL+Server
 
   db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: postgres:latest
     restart: unless-stopped
     environment:
-      SA_PASSWORD: "gatineosFofineos"
-      ACCEPT_EULA: "Y"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "eLibrosDB"
     ports:
-      - "1433:1433"
+      - "5432:5432"
     volumes:
-      - mssql-data:/var/opt/mssql
+      - postgres-data:/var/lib/postgresql/data
 
 
 volumes:
-   mssql-data: null
+   postgres-data: null
