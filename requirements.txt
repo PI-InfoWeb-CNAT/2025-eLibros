@@ -25,3 +25,4 @@ sqlparse
 typing_extensions
 urllib3
 whitenoise
+mssql-django

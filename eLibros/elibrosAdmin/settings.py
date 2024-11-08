@@ -78,12 +78,12 @@ TEMPLATES = [
 
 DATABASES = {
     "default": {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'mssql',
         'NAME': 'eLibrosDB',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
+        'USER': 'UsuarioElibrosDB',
+        'PASSWORD': 'gatineosFofineos',
         'HOST': 'db',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
 
