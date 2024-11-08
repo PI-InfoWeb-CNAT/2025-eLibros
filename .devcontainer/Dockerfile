@@ -12,7 +12,7 @@ RUN pip3 install --upgrade pip setuptools \
     && rm -rf /tmp/pip-tmp 
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-     && apt-get -y install --no-install-recommends unixodbc-dev \
+     && apt-get -y install --no-install-recommends unixodbc-dev curl \
      && rm -rf /var/lib/apt/lists/*
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
