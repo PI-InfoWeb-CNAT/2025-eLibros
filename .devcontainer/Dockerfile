@@ -15,9 +15,9 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
      && apt-get -y install --no-install-recommends unixodbc-dev \
      && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://go.microsoft.com/fwlink/?linkid=218020&clcid=0x409 -O /tmp/msodbcsql17.x64.tar.gz \
-  && tar -xzf /tmp/msodbcsql17.x64.tar.gz -C /opt/microsoft \
-  && rm -rf /tmp/msodbcsql17.x64.tar.gz
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
 
-# (Optional) Set environment variable for driver location (if needed)
-ENV ODBC_DRIVER_PATH=/opt/microsoft/msodbcsql17/lib64
+RUN ACCEPT_EULA=Y apt-get install -y --allow-unauthenticated msodbcsql17
+RUN ACCEPT_EULA=Y apt-get install -y --allow-unauthenticated mssql-tools
+
