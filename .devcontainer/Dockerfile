@@ -16,11 +16,11 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
      && rm -rf /var/lib/apt/lists/*
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
-RUN curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+RUN curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
 
 # Install the driver
-RUN sudo apt-get update
-RUN sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
+RUN apt-get update
+RUN ACCEPT_EULA=Y apt-get install -y msodbcsql18
 # optional: for bcp and sqlcmd
-RUN sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18
+RUN ACCEPT_EULA=Y apt-get install -y mssql-tools18
 RUN echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc
