@@ -7,7 +7,7 @@ ENV POSTGRES_PASSWORD=gatineosFofineos
 ENV POSTGRES_DB=eLibrosDB
 
 # Copy the initialization script to the Docker entrypoint directory
-COPY test.sql /docker-entrypoint-initdb.d/
+COPY .devcontainer/test.sql /docker-entrypoint-initdb.d/
 
 # Expose the PostgreSQL port
 EXPOSE 5432
