@@ -1,5 +1,5 @@
 {
-	"name": "Python 3 & Postgre",
+	"name": "Python 3 & PostgreSQL",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspace",
@@ -42,7 +42,7 @@
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// This can be used to network with other containers or the host.
-	"forwardPorts": [8000, 1433],
+	"forwardPorts": [8000, 5432],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip install --user -r requirements.txt",
