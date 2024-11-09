@@ -17,6 +17,10 @@ services:
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: Usuario_eLibrosDB
+      POSTGRES_DB: eLibrosDB
+      POSTGRES_PASSWORD: gatineosFofineos
     
 
 volumes:
