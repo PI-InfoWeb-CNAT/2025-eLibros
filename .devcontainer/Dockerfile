@@ -11,16 +11,6 @@ ENV PYTHONUNBUFFERED 1
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
-#socorro
-COPY test.sql /docker-entrypoint-initdb.d/
-
-RUN ["sed", "-i", "s/exec \"$@\"/echo \"skipping...\"/", "/usr/local/bin/docker-entrypoint.sh"]
-
-ENV PG_USER=Usuario_eLibrosDB
-ENV PGDATA=/data
-
-RUN ["/usr/local/bin/docker-entrypoint.sh", "postgres"]
-
 
 
 
