@@ -8,10 +8,10 @@
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
-	"forwardPorts": [5000, 5432],
+	"forwardPorts": [8000, 5432],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip install --user -r requirements.txt && python eLibros/manage.py collectstatic && python eLibros/manage.py migrate",
+	"postCreateCommand": "pip install --user -r requirements.txt && python eLibros/manage.py migrate",
 	"postAttachCommand": {
     	"server": "python eLibros/manage.py runserver 8000"
   	},

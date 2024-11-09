@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -71,16 +71,8 @@ TEMPLATES = [
 ]
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': 'eLibrosDB',
-        'USER': 'UsuarioElibrosDB',
-        'PASSWORD': 'gatineosFofineos',
-        'HOST': 'db',
-        'PORT': '5432',
-    }
-}
+DATABASES = {}
+DATABASES["default"] = dj_database_url.config()
 
 AUTH_PASSWORD_VALIDATORS = [
     {
