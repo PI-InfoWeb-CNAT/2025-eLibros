@@ -1,0 +1,13 @@
+# Use the official PostgreSQL image from the Docker Hub
+FROM postgres:latest
+
+# Set environment variables for the PostgreSQL database
+ENV POSTGRES_USER=Usuario_eLibrosDB
+ENV POSTGRES_PASSWORD=gatineosFofineos
+ENV POSTGRES_DB=eLibrosDB
+
+# Copy the initialization script to the Docker entrypoint directory
+COPY test.sql /docker-entrypoint-initdb.d/
+
+# Expose the PostgreSQL port
+EXPOSE 5432

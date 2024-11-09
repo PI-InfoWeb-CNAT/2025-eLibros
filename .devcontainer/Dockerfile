@@ -12,7 +12,16 @@ ENV PYTHONUNBUFFERED 1
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
 #socorro
-COPY .devcontainer/init-db.sh /docker-entrypoint-initdb.d/init-db.sh
-RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh
+COPY test.sql /docker-entrypoint-initdb.d/
+
+RUN ["sed", "-i", "s/exec \"$@\"/echo \"skipping...\"/", "/usr/local/bin/docker-entrypoint.sh"]
+
+ENV PG_USER=Usuario_eLibrosDB
+ENV PGDATA=/data
+
+RUN ["/usr/local/bin/docker-entrypoint.sh", "postgres"]
+
+
+
 
 

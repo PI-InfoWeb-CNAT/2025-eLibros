@@ -6,7 +6,9 @@
 	"service": "app",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+	"features": {
+		
+	},
 
 	"forwardPorts": [8000, 5432],
 
