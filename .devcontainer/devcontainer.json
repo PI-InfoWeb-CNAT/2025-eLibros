@@ -12,8 +12,6 @@
 
 	"forwardPorts": [8000, 5432],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip install --user -r requirements.txt",
 	"postAttachCommand": {
     	"server": " python eLibros/manage.py migrate && python eLibros/manage.py runserver 8000"
   	},
