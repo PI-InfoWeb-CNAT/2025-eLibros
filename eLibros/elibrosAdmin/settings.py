@@ -7,13 +7,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 SECRET_KEY = "django-insecure-0peo@#x9jur3!h$ryje!$879xww8y1y66jx!%*#ymhg&jkozs2"
 
-
 DEBUG = True
-
-
 ALLOWED_HOSTS = ["*"]
-
-
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -78,12 +73,12 @@ TEMPLATES = [
 
 DATABASES = {
     "default": {
-        'ENGINE': 'mssql',
+        "ENGINE": "django.db.backends.postgresql",
         'NAME': 'eLibrosDB',
         'USER': 'UsuarioElibrosDB',
         'PASSWORD': 'gatineosFofineos',
         'HOST': 'db',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 

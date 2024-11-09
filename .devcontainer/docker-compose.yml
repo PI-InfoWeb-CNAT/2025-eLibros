@@ -1,38 +1,25 @@
+version: '3.8'
+
 services:
   app:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
-      args:
-        VARIANT: 3-bullseye
-        NODE_VERSION: "none"
 
     volumes:
-      - ..:/workspace:cached
-
-    # Overrides default command so things don't shut down after the process ends.
+      - ../..:/workspaces:cached
     command: sleep infinity
-
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
     network_mode: service:db
-    # Uncomment the next line to use a non-root user for all processes.
-    # user: vscode
-
-    environment:
-      - DATABASE_URL=mssql+pyodbc://sa:gatineosFofineos@db:1433/eLibrosDB?driver=ODBC+Driver+17+for+SQL+Server
 
   db:
-    image: mcr.microsoft.com/mssql/server:2022-preview-ubuntu-22.04
-    container_name: mssqlserver
-    hostname: eLibrosDB
-    restart: always
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "gatineosFofineos"
-      MSSQL_PID: "Evaluation"
-    ports:
-      - "1433:1433"
-
+      POSTGRES_USER: UsuarioElibrosDB
+      POSTGRES_DB: ElibrosDB
+      POSTGRES_PASSWORD: gatineosFofineos
 
 volumes:
-   mssql-data: null
+  postgres-data: 

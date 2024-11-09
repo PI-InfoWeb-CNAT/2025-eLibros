@@ -1,18 +1,29 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/postgres
 {
 	"name": "Python 3 & PostgreSQL",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
-	"workspaceFolder": "/workspace",
-	"postCreateCommand": "python eLibros/manage.py migrate",
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	"forwardPorts": [5000, 5432],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "pip install --user -r requirements.txt && python eLibros/manage.py collectstatic && python eLibros/manage.py migrate",
 	"postAttachCommand": {
     	"server": "python eLibros/manage.py runserver 8000"
   	},
 
+	"containerEnv": {
+      "DATABASE_URL": "postgres://UsuarioElibrosDB:gatineosFofineos@db/eLibrosDB"
+    },
+
 	// Configure tool-specific properties.
 	"customizations": {
-		// Configure properties specific to VS Code.
 		"vscode": {
-			// Set *default* container specific settings.json values on container create.
+
 			"settings": { 
 				"python.defaultInterpreterPath": "/usr/local/bin/python",
 				"python.linting.enabled": true,
@@ -29,24 +40,17 @@
 				"python.testing.pytestPath": "/usr/local/py-utils/bin/pytest"
 			},
 			
-			// Add the IDs of extensions you want installed when the container is created.
+
 			"extensions": [
-				"ms-python.python",
-				"ms-python.vscode-pylance",
-				"ms-azuretools.vscode-docker",
-				"mtxr.sqltools",
-				"github.copilot"
+			  "ms-python.python",
+			  "ms-python.vscode-pylance",
+			  "ms-azuretools.vscode-docker",
+			  "mtxr.sqltools",
+			  "github.copilot"
 			]
-		}
+		  }
 	},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// This can be used to network with other containers or the host.
-	"forwardPorts": [8000, 5432],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip install --user -r requirements.txt",
-
-	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "vscode"
 }
