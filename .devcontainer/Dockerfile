@@ -12,7 +12,7 @@ ENV PYTHONUNBUFFERED 1
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
 #socorro
-COPY init-db.sh /docker-entrypoint-initdb.d/init-db.sh
+COPY .devcontainer/init-db.sh /docker-entrypoint-initdb.d/init-db.sh
 RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh
 
 
