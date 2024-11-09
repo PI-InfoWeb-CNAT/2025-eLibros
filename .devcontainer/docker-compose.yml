@@ -16,6 +16,7 @@ services:
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     environment:
       POSTGRES_USER: UsuarioElibrosDB
       POSTGRES_DB: ElibrosDB
