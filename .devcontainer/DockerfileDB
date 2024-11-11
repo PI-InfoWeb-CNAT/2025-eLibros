@@ -21,4 +21,4 @@ RUN ["/usr/local/bin/docker-entrypoint.sh", "postgres"]
 # Final build stage
 FROM postgres:latest
 
-COPY --from=dumper /data $POSTGRES_DATA
+COPY --from=dumper /var/lib/postgresql/data $POSTGRES_DATA
