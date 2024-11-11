@@ -1,27 +1,16 @@
 # Dump build stage
-
 FROM postgres:latest as dumper
-
 
 # Copy the initialization script to the Docker entrypoint directory
 COPY test.sql /docker-entrypoint-initdb.d/
-
 
 # This line uses sed to modify the docker-entrypoint.sh script. 
 # It replaces the line that executes the main command (exec "$@") with a line that echoes "skipping...". 
 # This effectively disables the default entrypoint behavior.
 RUN ["sed", "-i", "s/exec \"$@\"/echo \"skipping...\"/", "/usr/local/bin/docker-entrypoint.sh"]
 
-# the -i option tells sed to edit the file in place without printing to the console (overwrites the file).
-# "s/exec \"$@\"/echo \"skipping...\"/"
-# s stands for substitution
-# the first part between bars (exec \"$@\") is the pattern to be looked for
-# the second part between bars (echo \"skipping...\") indicates the substitution text to be used
-# "/usr/local/bin/docker-entrypoint.sh" is the file which the replacement will be perfomed
-
-
 # Set environment variables for the PostgreSQL database
-ENV POSTGRES_USER=Usuario_eLibrosDB
+ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=gatineosFofineos
 ENV POSTGRES_DB=eLibrosDB
 ENV POSTGRES_DATA=/var/lib/postgresql/data
@@ -32,5 +21,4 @@ RUN ["/usr/local/bin/docker-entrypoint.sh", "postgres"]
 # Final build stage
 FROM postgres:latest
 
-# Copy the initialized data from the dumper stage
-COPY --from=dumper /var/lib/postgresql/data $POSTGRES_DATA
+COPY --from=dumper /data $POSTGRES_DATA

@@ -71,8 +71,10 @@ TEMPLATES = [
 ]
 
 
-DATABASES = {}
-DATABASES["default"] = dj_database_url.config()
+DATABASES = {
+    'default': dj_database_url.config(default='postgres://postgres:gatineosFofineos@db/eLibrosDB')
+}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {

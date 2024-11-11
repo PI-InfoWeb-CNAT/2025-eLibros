@@ -17,7 +17,7 @@
   	},
 
 	"containerEnv": {
-      "DATABASE_URL": "postgres://Usuario_eLibrosDB:gatineosFofineos@db/eLibrosDB"
+      "DATABASE_URL": "postgres://postgres:gatineosFofineos@db/eLibrosDB"
     },
 
 	// Configure tool-specific properties.
