@@ -27,7 +27,7 @@ ENV POSTGRES_DB=eLibrosDB
 ENV POSTGRES_DATA=/data
 
 
-RUN ["/usr/local/bin/docker-entrypoint.sh", "postgres"]
+RUN ["/usr/local/bin/docker-entrypoint.sh", ${POSTGRES_USER}]
 
 
 # Final build stage
