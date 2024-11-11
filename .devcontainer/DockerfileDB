@@ -24,14 +24,13 @@ RUN ["sed", "-i", "s/exec \"$@\"/echo \"skipping...\"/", "/usr/local/bin/docker-
 ENV POSTGRES_USER=Usuario_eLibrosDB
 ENV POSTGRES_PASSWORD=gatineosFofineos
 ENV POSTGRES_DB=eLibrosDB
-ENV POSTGRES_DATA=/data
+ENV POSTGRES_DATA=/var/lib/postgresql/data
 
-
+# Run the entrypoint script to initialize the database
 RUN ["/usr/local/bin/docker-entrypoint.sh", "postgres"]
 
-
 # Final build stage
-
 FROM postgres:latest
 
-COPY --from=dumper /data $POSTGRES_DATA
+# Copy the initialized data from the dumper stage
+COPY --from=dumper /var/lib/postgresql/data $POSTGRES_DATA
