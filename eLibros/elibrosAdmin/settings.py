@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -72,7 +71,14 @@ TEMPLATES = [
 
 
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://postgres:gatineosFofineos@db/eLibrosDB')
+    'default': {
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': "eLibrosDB",
+        'USER': "postgres",
+        'PASSWORD': "gatineosFofineos",
+        'HOST': 'db',
+        'PORT': 5432,
+    }
 }
 
 
@@ -124,6 +130,8 @@ STORAGES = {
     },
 }
 
+
+CSRF_TRUSTED_ORIGINS = ['https://localhost:8000']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

@@ -1,11 +1,16 @@
 FROM mcr.microsoft.com/devcontainers/python:1-3.11-bullseye
 
+# Essa variável de ambiente é usada para controlar se o Python deve 
+# gravar arquivos de bytecode (.pyc) no disco. 1 = Não, 0 = Sim
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# Define que a saída do Python será exibida imediatamente no console ou em 
+# outros dispositivos de saída, sem ser armazenada em buffer.
+# Em resumo, você verá os outputs do Python em tempo real.
 ENV PYTHONUNBUFFERED 1
 
-# [Optional] If your requirements rarely change, uncomment this section to add them to the image.
-COPY requirements.txt /tmp/pip-tmp/
-RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
-    && rm -rf /tmp/pip-tmp
+RUN apt-get update && apt-get install -y postgresql-client
+
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
