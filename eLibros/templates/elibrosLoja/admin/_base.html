@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <title>{% block title %}eLibros{% endblock title %}</title>
+  <meta name="description" content="Site de vendas de livros somente brasileiros.">
+  <meta name="author" content="Entregadores">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+  {% endblock %}
+</head>
+
+<body>
+<header>
+    <h1><a href="inicioAdmin.html"><img src="static/images/logo.png"></a></h1>
+        <nav>
+            <ul class="navbar-ul">
+                <li>
+                    <a class="nav-link-normal" href="{% url 'listar_instancias' 'livros' %}">Livros</a>
+                </li>
+                <li>
+                    <a class="nav-link-normal" href="{% url 'listar_instancias' 'clientes' %}">Clientes</a>
+                </li>
+                <li>
+                    <a class="nav-link-normal" href="{% url 'listar_instancias' 'pedidos' %}">Pedidos</a>
+                </li>
+                <li>
+                    <a class="nav-link-normal" href="{% url 'listar_instancias' 'generos' %}">Gêneros</a>
+                </li>
+                <li>
+                    <a class="nav-link-normal active" href="{% url 'listar_instancias' 'categorias' %}">Categorias</a>
+                </li>
+                <li id="dropdown">
+                    <div>
+                        <div id="perfil">
+                          {% if cliente.foto_de_perfil %}  
+                            <img src="{{ cliente.foto_de_perfil.url }}">
+                          {% else %}
+                            <img src="{% static 'images/usuario'%}">
+                          {% endif %}
+                        </div>
+                        <ul id="espacinho">
+                            <li>
+                                <a href="{% url 'perfil' %}">Meu perfil</a>
+                            </li>
+                            <li>
+                                <a id="sair" href="{% url 'account_logout' %}">Sair</a>
+                            </li>
+                        </ul>
+                    </div>
+                  </li>
+            </ul>
+        </nav>
+</header>
+{% block content %}{% endblock content %}
+</body>
+</html>
