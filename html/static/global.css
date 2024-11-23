@@ -993,7 +993,7 @@ div.compra{
 
 .pedidos{
     margin-top: 5em;
-    font-family: 'Poppins', sans-serif;]
+    font-family: 'Poppins', sans-serif;
 }
 
 .pedidos h2{
@@ -1322,3 +1322,103 @@ ul.crud2 li:last-child a {
     text-decoration: none;
     padding: 5px 3em;
 }
+
+/* perfil */
+.form-perfil{
+    background-color: #EBEBE1;
+    margin: 4em;
+    padding: 4em;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 4em;
+}
+.form-perfil a, .form-perfil p, .form-perfil input, .form-perfil select{
+    text-decoration: none;
+    color: #3B362B;
+    font-size: 18px;
+}
+
+.form-perfil figure{
+    width: 18%;
+    margin: 0
+}
+.form-perfil img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 1000px;
+    object-fit: cover;
+}
+.form-perfil div{
+    display: flex;
+    /* width: 100%; */
+}
+
+.form-perfil label, .form-perfil h4{
+    margin-bottom: .3em;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+}
+.form-perfil input:disabled, .form-perfil select:disabled{
+    background-color: #EBEBE1;
+    outline: 1px solid #EBEBE1;
+    border: 1px solid #EBEBE1;
+}
+
+.form-perfil > div{
+    gap: 4em;
+    justify-content: space-between;
+}
+.form-perfil > div > div:nth-child(2){
+    gap: 20px;
+}
+
+.form-perfil > div:nth-child(1) > div{
+    width: 25%;
+}
+.form-perfil > div:nth-child(1) > div:last-child{
+    justify-content: space-between;
+}
+.form-perfil > div:nth-child(1) > div:last-child a{
+    width: 100%;
+    background-color: #D9D9D9;
+    text-align: center;
+    padding: 0.5em 0;
+    border-radius: 3px;
+}
+
+.form-perfil > div:nth-child(2) > div{
+    width: 100%;
+}
+.form-perfil > div:nth-child(2) > div:nth-child(2){
+    width: 1px;
+    background-color: #6C6C6C50;
+}
+.form-perfil hr{
+    border-color: #6C6C6C;
+}
+
+.form-perfil h3{
+    color: #3B362B;
+    margin-bottom: 1em;
+}
+
+#alterar-senha{
+    width: fit-content;
+    padding: .8em 1.6em;
+    background-color: #FFD147;
+}
+#desativar-conta{
+    width: fit-content;
+    padding: .8em 1.6em;
+    border: 1px solid #FF4E4E;
+}
+#excluir-conta{
+    width: fit-content;
+    padding: .8em 1.6em;
+    background-color: #FF4E4E;
+    color: #fff;
+    margin-right: 1em;
+}
+
+
