@@ -51,8 +51,8 @@
         {% endfor %}
         </ul>
         <div class="botoes">
-            <button><a href="acervo.html">Continuar comprando</a></button>
-            <button><a href="#">Finalizar compra</a></button>
+            <button><a href="{% url 'acervo' %}">Continuar comprando</a></button>
+            <button><a href="{% url 'finalizar_compra' %}">Finalizar compra</a></button>
         </div>
         {% endif %}
     </section>
