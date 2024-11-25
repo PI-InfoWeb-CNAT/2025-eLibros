@@ -1,0 +1,177 @@
+<!-- {% load static %} -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- {% block styles %}{% endblock %} -->
+    <title>eLibros - Compra</title>
+    <!-- <link rel="stylesheet" href="{% static 'global.css' %}"> -->
+    <link rel="stylesheet" href="static/global.css">
+</head>
+
+<body>
+    <header>
+        <!-- <h1><a href="inicio.html"><img src="{% static 'images/logo.svg' %}"></a></h1> -->
+        <h1><a href="inicio.html"><img src="static/images/logo.png"></a></h1>
+        <nav>
+            <ul class="navbar-ul">
+                <li>
+                    <a class="nav-link-normal active" href="inicio.html">Início</a>
+                </li>
+                <li>
+                    <a class="nav-link-normal" href="acervo.html">Acervo</a>
+                </li>
+                <li>
+                    <a id="carrinho" href="acervo.html"><img src="static/images/icons/carrinho.svg"></a>
+                    <!-- <a id="carrinho" href="acervo.html"><img src="{%  static 'images/icons/carrinho.svg' %}"></a> -->
+                </li>
+                <li id="dropdown">
+                    <div>
+                        <div id="perfil">
+                            <img src="static/images/usuario.png">
+                            <!-- <img src="{% static 'images/usuario.png' %}"> -->
+                        </div>
+                        <ul id="espacinho">
+                            <li>
+                                <a href="perfil.html">Meu perfil</a>
+                            </li>
+                            <li>
+                                <a id="sair" href="sair do sistema rs">Sair</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="compra">
+            <h1>Finalizar compra</h1>
+            <div>
+                <div class="compra">
+                    <h2>1</h2>
+                    <div>
+                        <div>
+                            <h3>Endereço de entrega</h3>
+                            <div style="display: flex;">
+                                <label class="custom-radio" style="margin-right: 5em;">
+                                    <input type="radio" name="options">
+                                    <span class="radio-mark"></span>
+                                    Meu endereço
+                                </label>
+                                <label class="custom-radio">
+                                    <input type="radio" name="options">
+                                    <span class="radio-mark"></span>
+                                    Outro
+                                </label>
+                                <form id="endereco">
+                                    <label>
+                                        CEP:
+                                        <input type="number" class="sem-borda" placeholder="_____-___"
+                                            style="width: 7em;">
+                                    </label>
+                                    <label>
+                                        Complemento:
+                                        <input type="text" class="sem-borda" size="40"
+                                            placeholder="_____________________________">
+                                    </label><br>
+                                    <label>
+                                        Rua:
+                                        <input type="text" class="sem-borda" size="55"
+                                            placeholder="_______________________________________">
+                                    </label>
+                                    <label>
+                                        Número:
+                                        <input type="number" class="sem-borda" style="width: 3em;" placeholder="____">
+                                    </label><br>
+                                    <label>
+                                        Estado:
+                                        <select>
+                                            <option value="-1"></option>
+                                            <option value="RN">RN</option>
+                                        </select>
+                                    </label>
+                                    <label>
+                                        Cidade:
+                                        <input type="text" class="sem-borda" size="50"
+                                            placeholder="____________________________________">
+                                    </label>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="compra">
+                    <h2>2</h2>
+                    <div>
+                        <h3>Método de pagamento</h3>
+                        <div style="display: flex; gap: 5em;" id="pagamento">
+                            <button>Crédito<img src="static/images/icons/credito.svg" width="20"></button>
+                            <button>Débito<img src="static/images/icons/debito.svg" width="20"></button>
+                            <button>Boleto<img src="static/images/icons/boleto.svg" width="20"></button>
+                            <button>PIX<img src="static/images/icons/pix.svg" width="20"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="compra">
+                    <h2>3</h2>
+                    <div>
+                        <h3>Ofertas</h3>
+                        <div>
+                            <form id="cupom">
+                                <input type="text">
+                                <button type="submit">Inserir cupom</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="compra">
+                    <h2>4</h2>
+                    <div>
+                        <h3>Itens e envio</h3>
+                        <div class="itens">
+                            <div>
+                                <figure>
+                                    <img src="static/images/placeholder.png" alt="Capa do livro 1">
+                                    <img src="static/images/placeholder.png" alt="Capa do livro 2">
+                                    <img src="static/images/placeholder.png" alt="Capa do livro 3">
+                                    <img src="static/images/placeholder.png" alt="Capa do livro 4">
+                                </figure>
+                                <div>
+                                    <p>
+                                        <span class="moeda-cart-p">R$</span>
+                                        <b><span class="preco-maior-cart-p">127,00</b>
+                                    </p>
+                                    <p>4 itens no pedido</p>
+                                </div>
+                            </div>
+                            <p>Ao finalizar o pedido a entrega será estimada para sexta-feira</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="final">
+                    <div id="total">
+                        <span class="valores">
+                            <p>Subtotal</p>
+                            <p>R$ 45,00</p>
+                        </span>
+                        <span class="valores">
+                            <p>Valor Total</p>
+                            <p>R$ 45,00</p>
+                        </span>
+                    </div>
+                    <button type="submit" id="finalizar">Finalizar pedido</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- {% block content %}{% endblock %} -->
+    <footer>
+        <p>2024 Entregadores. Todos os direitos reservados</p>
+    </footer>
+    <!-- {% block scripts %}{% endblock %} -->
+</body>
+
+</html>

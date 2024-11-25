@@ -22,8 +22,10 @@ class Pedido(models.Model):
     # endereco = models.ForeignKey(Endereco, null=False, related_name="endereco_do_pedido", on_delete=models.CASCADE, default=cliente.enderecos.all()[0])
 
     status = models.CharField(max_length=50, validators=[nao_nulo], default="nao_confirmado/processando")
-    data_de_pedido = models.DateTimeField(auto_now_add=True)
+    data_de_pedido = models.DateTimeField()
     entrega_estimada = models.DateTimeField()
+
+    valor_total = models.DecimalField(max_digits=5, decimal_places=2, validators=[nao_negativo, nao_nulo], default=0.0)
 
     def __str__(self):
         return f"{self.cliente} | {self.status} "

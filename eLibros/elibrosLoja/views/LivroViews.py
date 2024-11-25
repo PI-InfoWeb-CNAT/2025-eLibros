@@ -28,10 +28,14 @@ def Inicio(request):
                 'genero': genero.nome,
                 'livros': livros.filter(genero_literario=genero),
             })
+    # livros_indicacoes = None
+    # if livros.filter(categoria=Categoria.objects.get(nome='Indicações do eLibros')).exists(): 
+    #     livros_indicacoes = livros.filter(categoria=Categoria.objects.get(nome='Indicações do eLibros'))
+    # else: pass
 
     context = {
         'livros': livros,
-        'livros_indicacoes': livros.filter(categoria=Categoria.objects.get(nome='Indicações do eLibros')),
+        # 'livros_indicacoes': livros_indicacoes,
         'livros_filtrados_por_genero': livros_filtrados,
         'cliente': cliente,
     }

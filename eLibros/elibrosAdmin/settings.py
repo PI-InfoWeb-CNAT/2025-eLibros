@@ -1,19 +1,13 @@
 from pathlib import Path
 import os
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 SECRET_KEY = "django-insecure-0peo@#x9jur3!h$ryje!$879xww8y1y66jx!%*#ymhg&jkozs2"
 
-
 DEBUG = True
-
-
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
-
-
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -75,28 +69,19 @@ TEMPLATES = [
     },
 ]
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': "eLibrosDB",
+        'USER': "postgres",
+        'PASSWORD': "gatineosFofineos",
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
-# For Docker/PostgreSQL usage uncomment this and comment the DATABASES config above
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "postgres",
-#         "USER": "postgres",
-#         "PASSWORD": "postgres",
-#         "HOST": "db",  # set in docker-compose.yml
-#         "PORT": 5432,  # default postgres port
-#     }
-# }
 
-# Password validation
-# https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -114,33 +99,28 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "pt-BR"
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
+
 TIME_ZONE = "America/Sao_Paulo"
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-USE_I18N
+
 USE_I18N = True
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
+
 USE_TZ = True
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
+
 LOCALE_PATHS = [BASE_DIR / 'locale']
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-
-
-# https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 
-# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
+
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
 
-# https://whitenoise.readthedocs.io/en/latest/django.html
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -150,6 +130,8 @@ STORAGES = {
     },
 }
 
+
+CSRF_TRUSTED_ORIGINS = ['https://localhost:8000']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
