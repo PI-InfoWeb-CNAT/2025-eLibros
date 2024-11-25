@@ -25,6 +25,8 @@ class Pedido(models.Model):
     data_de_pedido = models.DateTimeField()
     entrega_estimada = models.DateTimeField()
 
+    valor_total = models.DecimalField(max_digits=5, decimal_places=2, validators=[nao_negativo, nao_nulo], default=0.0)
+
     def __str__(self):
         return f"{self.cliente} | {self.status} "
 
