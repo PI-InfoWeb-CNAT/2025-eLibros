@@ -990,3 +990,7 @@ ul.crud2 li:last-child a {
     text-decoration: none;
     padding: 5px 3em;
 }
+
+.mainlogin{
+    background-image: url('images/fundoacesso.png');
+}
