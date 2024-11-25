@@ -1326,11 +1326,6 @@ ul.crud2 li:last-child a {
     text-decoration: none;
     padding: 5px 3em;
 }
-
-<<<<<<< HEAD
-.mainlogin{
-    background-image: url('images/fundoacesso.png');
-=======
 /* perfil */
 .form-perfil{
     background-color: #EBEBE1;
@@ -1494,5 +1489,73 @@ ul.crud2 li:last-child a {
     border-radius: 30px;
     padding: 0.2em 1.5em;
     margin: 0;
->>>>>>> 22d71a81af4213f57a91c03b95e8e7c4f7b8275e
+}
+
+/* acesso */
+
+.bodylogin{
+    background-image: url('images/fundoacesso.png');
+}
+
+.headerlogin{
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+    border: 0;
+    margin-top: 5em;
+    padding: 0;
+}
+
+.login{
+    margin: 0 5em;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFF5;
+    border-radius: 6px;
+    width: 50em;
+    padding: 4em 5em;
+}
+
+.barralogin{
+    background-color: black;
+    width: 0.07em;
+}
+
+.login form label{
+    color: #1C1607;
+    font-size: 20px;
+}
+
+.login form input{
+    width: 100%;
+    padding: 0.5em;
+    margin: 0.5em 0;
+    border: 1px solid #1C1607;
+    border-radius: 3px;
+}
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon .img-form {
+    width: 14px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+}
+
+.eye-icon {
+    width: 14px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px; /* Ajuste a posição para a direita */
+}
+
+.input-icon input {
+    padding-left: 40px;
+    padding-right: 40px; /* Adiciona espaço para o ícone do olho */
 }
