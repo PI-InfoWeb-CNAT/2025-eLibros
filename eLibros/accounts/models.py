@@ -42,7 +42,7 @@ class Cliente(AbstractUser):
     genero = models.CharField(max_length=20, choices=genero_choices, default="F", null=True, blank=True, verbose_name="Identidade de gênero")
     outro_genero = models.CharField(max_length=50, blank=True, null=True, verbose_name="Outro gênero")
     dt_nasc = models.DateField(blank=True, null=True, verbose_name="Data de Nascimento")
-    enderecos = models.ManyToManyField(Endereco, related_name="enderecos_do_cliente", blank=True)
+    endereco = models.ForeignKey(Endereco, blank=True, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.username
