@@ -31,4 +31,4 @@ class Pedido(models.Model):
         return f"{self.cliente} | {self.status} "
 
 
-#nao_confirmado/processando, confirmado_e_nao_enviado, confirmado_e_enviado, entregue 
+#processando, pedido_confirmado, enviado, entregue 
