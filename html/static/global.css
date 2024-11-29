@@ -1522,40 +1522,77 @@ ul.crud2 li:last-child a {
     width: 0.07em;
 }
 
+.login figure img{
+    width: 90%;
+}
+
+.login form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .login form label{
     color: #1C1607;
     font-size: 20px;
 }
 
 .login form input{
-    width: 100%;
-    padding: 0.5em;
-    margin: 0.5em 0;
-    border: 1px solid #1C1607;
+    border: 1px solid #E5E7EB;
     border-radius: 3px;
+    padding: 1em 2em;
+    width: 80%;
+}
+
+.login form button{
+    background-color: #1C1607;
+    color: #FFFFFF;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 20px;
+    padding: 0.5em 6em;
+    font-weight: 300;
+}
+
+.login form > p{
+    font-size: 16px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 1.5em;
+}
+
+.login form > p a{
+    color: #FFD147;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login .form-group{
+    margin-top: 2em;
 }
 
 .input-icon {
     position: relative;
 }
 
-.input-icon .img-form {
-    width: 14px;
+.input-icon .img-form,
+.input-icon .eye-icon {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 10px;
+    width: 14px;
 }
 
-.eye-icon {
-    width: 14px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 10px; /* Ajuste a posição para a direita */
+.input-icon .img-form {
+    left: 12px;
+}
+
+.input-icon .eye-icon {
+    cursor: pointer;
+    margin-left: -2em;
 }
 
 .input-icon input {
-    padding-left: 40px;
-    padding-right: 40px; /* Adiciona espaço para o ícone do olho */
+    padding-left: 40px; /* Espaço para o ícone à esquerda */
+    padding-right: 40px; /* Espaço para o ícone à direita */
 }
