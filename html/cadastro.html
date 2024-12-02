@@ -1,0 +1,70 @@
+<!-- {% load static %} -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- {% block styles %}{% endblock %} -->
+    <title>eLibros - Cadastrar</title>
+    <!-- <link rel="stylesheet" href="{% static 'global.css' %}"> -->
+    <link rel="stylesheet" href="static/global.css">
+    <script src="static/global.js"></script>
+</head>
+
+<body class="bodylogin">
+    <header class="headerlogin">
+        <h1><img src="static/images/logoacesso.png"></h1>
+    </header>
+    <main>
+        <section class="cadastro">
+            <div class="infopessoal">
+                <h2>Informações pessoais obrigatórias</h2>
+                <form class="formpessoal">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    <div class="form-group">                       
+                        <div>
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" name="cpf">
+                        </div>
+                        <div>
+                            <label for="telefone">Tel.</label>
+                            <input type="number" id="telefone" name="telefone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_nasc">Data de nascimento</label>
+                        <input type="date" id="data_nasc" name="data_nasc">
+                    </div>
+                </form>
+            </div>
+            <div class="barraacesso"></div>
+            <div class="infologin">
+                <h2>Criação da conta</h2>
+                <form class="formlogin">
+                    <div class="form-group">
+                        <label for="username">Nome de usuário</label>
+                        <input type="text" id="username" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Confirme sua senha</label>
+                        <input type="password" id="password" name="password">
+                    </div>
+                </form>
+                <button type="submit">Criar conta</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
