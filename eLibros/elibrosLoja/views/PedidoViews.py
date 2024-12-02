@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from eLibros.utils.context_processors import carrinho
+from utils.context_processors import carrinho
 from elibrosLoja.models import Carrinho, Pedido, Desconto
 from django.shortcuts import render, redirect
 
