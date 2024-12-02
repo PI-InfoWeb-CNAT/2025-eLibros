@@ -1504,6 +1504,11 @@ ul.crud2 li:last-child a {
     border: 0;
     margin-top: 5em;
     padding: 0;
+    margin-bottom: 2em;
+}
+
+.headerlogin img{
+    width: 10em;
 }
 
 .login{
@@ -1608,7 +1613,7 @@ ul.crud2 li:last-child a {
     justify-content: space-between;
     background-color: #FFFFF5;
     border-radius: 6px;
-    width: 50em;
+    width: 60em;
     padding: 4em 5em;
 }
 
@@ -1617,12 +1622,37 @@ ul.crud2 li:last-child a {
     font-size: 20px;
 }
 
-.formpessoal div input{
+.cadastro div input{
     border: 1px solid #E5E7EB;
     border-radius: 3px;
     padding: 1em 3em 1em 1em;
     width: 80%;
     margin-top: 5px;
+}
+
+.cadastro button{
+    background-color: #1C1607;
+    color: #FFFFFF;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 0.5em 6em;
+    font-weight: 300;
+    margin-top: 20px;
+    width: 95%;
+    cursor: pointer;
+}
+
+.cadastro p{
+    font-size: 16px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.cadastro p a{
+    color: #FFD147;
+    text-decoration: none;
+    font-weight: 500;
 }
 
 .cadastro .form-group {
@@ -1641,4 +1671,9 @@ ul.crud2 li:last-child a {
     display: flex;
     flex-direction: column;
     gap: 1em;
+}
+
+.infologin .eye-icon{
+    width: 18px;
+    margin-left: 19em;
 }

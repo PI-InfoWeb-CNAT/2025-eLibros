@@ -14,7 +14,7 @@
 
 <body class="bodylogin">
     <header class="headerlogin">
-        <h1><img src="static/images/logoacesso.png"></h1>
+        <h1><a href="inicio.html"><img src="static/images/logoacesso.png"></a></h1>
     </header>
     <main>
         <section class="cadastro">
@@ -29,17 +29,17 @@
                         <label for="email">E-mail</label>
                         <input type="email" id="email" name="email">
                     </div>
-                    <div class="form-group">                       
+                    <div class="form-group" style="display: flex; margin: 2.4em 0;">                       
                         <div>
                             <label for="cpf">CPF</label>
-                            <input type="text" id="cpf" name="cpf">
+                            <input type="text" id="cpf" name="cpf" maxlength="14" placeholder="___.___.___-__" style="width: 48%;">
                         </div>
                         <div>
                             <label for="telefone">Tel.</label>
-                            <input type="number" id="telefone" name="telefone">
+                            <input type="number" id="telefone" name="telefone" style="width: 48%;">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="width: 40%;">
                         <label for="data_nasc">Data de nascimento</label>
                         <input type="date" id="data_nasc" name="data_nasc">
                     </div>
@@ -55,14 +55,21 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Senha</label>
-                        <input type="password" id="password" name="password">
+                        <div class="input-icon">
+                            <input type="password" id="password" name="password">
+                            <img src="static/images/icons/olho.png" alt="Eye Icon" class="eye-icon">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="password">Confirme sua senha</label>
-                        <input type="password" id="password" name="password">
+                        <label for="confirm_password">Confirme sua senha</label>
+                        <div class="input-icon">
+                            <input type="password" id="confirm_password" name="confirm_password">
+                            <img src="static/images/icons/olho.png" alt="Eye Icon" class="eye-icon">
+                        </div>
                     </div>
                 </form>
                 <button type="submit">Criar conta</button>
+                <p>Já possui uma conta? <a href="login.html">Entrar</a></p>
             </div>
         </section>
     </main>
