@@ -33,6 +33,8 @@ Após a execução deste caso de uso, espera que o sistema:
 #### 5.2. Fluxo de exceção
 
 ##### 5.2.1
+|  Ator  | Sistema |
+|:-------|:------- |
 |1. Na página de Finalizar Compra, o usuário clica no formulário referente a "Ofertas" e digita um código inválido| --- |
 | --- |2. O sistema não valida o código inserido e exibe uma mensagem de erro ("Este cupom expirou ou não existe.") |
 
