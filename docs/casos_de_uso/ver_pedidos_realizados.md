@@ -7,7 +7,7 @@
 |:-------|:-------|:----------|:------|
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
-| 08/12/2024 | **1.20** | Adição de diagrama de classe de domínio  | Gabriel Campos |
+| 09/12/2024 | **1.20** | Adição de diagrama de classe de domínio  | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -37,7 +37,8 @@ Após a execução deste caso de uso, espera-se que o sistema:
 
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-![image](https://github.com/user-attachments/assets/621af892-d479-44fd-a502-4ea067bdfd27)
+![image](https://github.com/user-attachments/assets/d8355352-3e4d-486f-994d-626eade05da0)
+
 
 
 ### 8. Dicionário de dados
