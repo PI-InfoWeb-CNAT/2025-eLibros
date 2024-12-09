@@ -41,9 +41,7 @@ Após a execução deste caso de uso, espera que o sistema:
 | --- |2. O sistema não valida o código inserido e exibe uma mensagem de erro ("Este cupom expirou ou não existe.") |
 
 ### 6. Protótipos de Interface
-
-
-
+![image](https://github.com/user-attachments/assets/c10b527b-2fa8-476b-8e05-f54ec5621f6d)
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 
