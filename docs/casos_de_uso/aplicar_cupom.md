@@ -6,6 +6,7 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 08/12/2024 | **1.00** | Primeira versão  | Gabriel Campos |
+| 09/12/2024 | **1.20** | Adição de diagrama de classe de domínio  | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -45,7 +46,8 @@ Após a execução deste caso de uso, espera que o sistema:
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/b562d6d6-d151-4eb0-9485-7b16b97bc4fb)
+
 
 ### 8. Dicionário de dados
 #### Cupom
