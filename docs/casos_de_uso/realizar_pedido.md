@@ -45,7 +45,8 @@ Após a execução deste caso de uso, espera que o sistema:
 ![image](https://github.com/user-attachments/assets/db2dc822-a62f-42c2-9d41-74f9bcc33695)
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-![image](https://github.com/user-attachments/assets/d1fa6635-bcbe-4b38-b372-e40223cd135b)
+![image](https://github.com/user-attachments/assets/cd4cc313-5364-426d-8e59-fdf79ca29227)
+
 
 
 ### 8. Dicionário de dados
