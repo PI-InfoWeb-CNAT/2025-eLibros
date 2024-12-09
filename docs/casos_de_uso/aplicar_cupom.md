@@ -15,7 +15,9 @@ Esse caso de uso permite ao usuário aplicar um cupom à sua compra
 - Cliente
 
 ### 3. Pré-condições
-Não há
+São pré-condições para iniciar este caso de uso:
+- O cliente estar logado no sistema
+- O cliente estar na página de finalização de compra
   
 ### 4. Pós-condições
 Após a execução deste caso de uso, espera que o sistema:
