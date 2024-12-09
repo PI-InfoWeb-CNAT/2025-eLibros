@@ -39,22 +39,27 @@
             <form class="form-perfil">
                 <div>
                     <figure>
-                        <img src="static/images/usuario.png"> <!-- foto de perfil -->
+                        {% if cliente.user.foto_de_perfil %}
+                            <img src="{{ cliente.user.foto_de_perfil.url }}" alt="Profile Picture"> 
+                        {% else %}
+                            <img src="{% static 'images/usuario.png' %}" alt="Profile Picture">
+                        {% endif %} 
                     </figure>
                     <div>
                         <div>
                             <label for="username">Nome de Usuário</label>
-                            <input id="username" type="text" value='Rafael tod' disabled>
+                            <input id="username" type="text" value={{ cliente.user.username }} disabled>
                         </div>
                         <div>
                             <label for="email">E-mail</label>
-                            <input id="email" type="email" value='tod@gmail.com' disabled>
+                            <input id="email" type="email" value={{ cliente.user.email }} disabled>
                         </div>
                         <div>
                             <label for="fone">Telefone</label>
-                            <input id="fone" type="tel" value='(84) 99999-9999' disabled>
+                            <input id="fone" type="tel" value={{ cliente.user.telefone }} disabled>
                         </div>
                     </div>
+
                     <div>
                         <label for="genero">Identidade de gênero</label>
                         <select id="genero" disabled>
@@ -64,11 +69,13 @@
                             <option value="1">Prefiro não dizer</option>
                         </select>
                     </div>
+                    
                     <div>
                         <a id="visualizar-pedidos" href="#">Visualizar pedidos</a> 
                         <a id="editar-perfil" href="#">Editar perfil de usuário</a>
                     </div>
                 </div>
+
                 <div>
                     <div>
                         <div>
@@ -81,7 +88,9 @@
                             <a id="desativar-conta" href="#">Desativar conta</a>
                         </div>
                     </div>
+
                     <div class="divisor"></div>
+
                     <div>
                         <h3>Outras informações</h3>
                         <div>
@@ -112,4 +121,3 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
 </html>
-

@@ -6,44 +6,84 @@
 
 <main>
 
-<form method="post" enctype="multipart/form-data">  
-    {% csrf_token %}  
-    {{ form.as_p }}    <!-- puts -->
-  
-    <button type="submit">Upload</button>  
+<form method="post" enctype="multipart/form-data" class="form-perfil">  
+    {% csrf_token %} 
+    <div>
+        <figure>
+            {% if cliente.user.foto_de_perfil %}
+                <img src="{{ cliente.user.foto_de_perfil.url }}" alt="Profile Picture"> 
+                {% else %}
+                <img src="{% static 'images/usuario.png' %}" alt="Profile Picture">
+            {% endif %} 
+        </figure>
+
+        <div class="flex-column">
+            <div class="flex-column">
+                <label for="username">Nome de Usuário</label>
+                <input id="username" type="text" value={{ cliente.user.username }} disabled>
+            </div>
+            <div class="flex-column">
+                <label for="email">E-mail</label>
+                <input id="email" type="email" value={{ cliente.user.email }} disabled>
+            </div>
+            <div class="flex-column">
+                <label for="fone">Telefone</label>
+                <input id="fone" type="tel" value={{ cliente.user.telefone }} disabled>
+            </div>
+        </div>
+
+        <div class="flex-column">
+            <label for="genero">Identidade de gênero</label>
+            <select id="genero" disabled>
+                <option value="0">Masculino</option>
+                <option value="1">Feminino</option>
+                <option value="1">Não-binário</option>
+                <option value="1">Prefiro não dizer</option>
+            </select>
+        </div>
+
+        <div class="flex-column">
+            <a id="visualizar-pedidos" href="{% url 'pedidos' %}">Visualizar pedidos</a> 
+            <a id="editar-perfil" href="#">Editar perfil de usuário</a>
+        </div>
+    </div>
+
+    <div>
+        <div class="flex-column" style="justify-content: space-between">
+            <div class="flex-column">
+                <h3>Senha e autenticação</h3>
+                <a id="alterar-senha" href="#">Alterar senha</a>
+            </div>
+            <hr>
+            <div>
+                <a id="excluir-conta" href="#">Excluir conta</a>
+                <a id="desativar-conta" href="#">Desativar conta</a>
+            </div>
+        </div>
+        
+        <div class="divisor"></div>
+
+        <div class="flex-column">
+            <h3>Outras informações</h3>
+            <div class="flex-column">
+                <h4>Data de nascimento</h4>
+                <p>{{ cliente.user.dt_nasc }}</p>
+            </div>
+            <div class="flex-column">
+                <h4>Endereço</h4>
+                {% if cliente.endereco %}
+                    <p>{{ cliente.endereco }}</p>
+                {% else %}
+                    <a href="">Cadastrar endereço</a>
+                {% endif %}
+            </div>
+            <div class="flex-column">
+                <h4>CPF</h4>
+                <p>{{ cliente.user.CPF }}</p>
+            </div>
+        </div>
+    </div>
 </form>  
-
-{% if cliente.foto_de_perfil %}
-    <img src="{{ cliente.foto_de_perfil.url }}" alt="Profile Picture" style="max-height:300px">  
-{% endif %} 
-
-<p>Nome de usuário</p>
-<p>{{ cliente.username }}</p>
-
-<p>E-mail</p>
-<p>{{ cliente.email }}</p>
-
-<p>Gênero</p>
-<p>{{ cliente.genero }}</p>
-
-<p>Telefone</p>
-<p>{{ cliente.telefone }}</p>
-
-<p>Endereço</p>
-{% if cliente.endereco %}
-    <p>{{ cliente.endereco }}</p>
-{% else %}
-    <!-- <p>Você não possui endereço(wrrw) cadastrado(s)</p> -->
-    <a href="">Cadastrar endereço</a>
-{% endif %}
-
-<div class="senha_autenticacao">
-    <button>Alterar senha</button>
-    <hr>
-    <button>Desativar conta</button>
-    <button>Excluir conta</button>
-</div>
-
 </main>
 
 

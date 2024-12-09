@@ -42,7 +42,7 @@
                     </div>
                 </div>
               
-                <button data-id="{{ item.id }}" data-action="deletar" class="botaoRemoverDoCarrinho">
+                <button data-id="{{ item.id }}" data-action="deletar" class="botaoRemoverDoCarrinho" >
                     <figure class="lixeira_produto">
                         <img src="{% static 'images/icons/lixeira.svg' %}" alt="Remover item">
                     </figure>
@@ -57,4 +57,7 @@
         {% endif %}
     </section>
 </main>
+<script>
+    const cartUpdateUrl = "{% url 'atualizar_carrinho' %}";
+</script>
 {% endblock content %}

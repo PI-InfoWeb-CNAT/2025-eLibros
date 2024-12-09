@@ -1,51 +1,44 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from elibrosLoja.models.endereco import Endereco
 from django.utils.html import mark_safe
 from django.conf import settings
-from validators import *
+from django.utils.translation import gettext_lazy as _
 
-class Cliente(AbstractUser):
-    
-    '''
-    AUTOMATIC FIELDS
-    
-    - username --> obrigatório por padrão
-    - password --> obrigatório
+from .managers import CustomUserManager
+
+# login poderá ser feito com email ou username, e senha
 
 
-   OPTIONAL FIELDS
+class Usuario(AbstractUser):
 
-    - first_name
-    - last_name
-    ...
-    - last_login
-    - date_joined
+    nome = models.CharField(blank=False, null=False, max_length=100, default="Nome não informado")
+    CPF = models.CharField(blank=False, null=False, max_length=14, default="000.000.000-00")
+    email = models.EmailField(_("email address"), unique=True)
 
-    '''
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
 
-    nome = models.CharField(blank=True, null=True, max_length=100)
-    CPF = models.CharField(blank=True, null=True, max_length=15)
+    objects = CustomUserManager()
 
     foto_de_perfil = models.ImageField(upload_to='fotos_de_perfil/', blank=True, null=True)
+    
+
 
     genero_choices = (
         ("F", "Feminino"),
         ("M", "Masculino"),
         ("NB", "Não-binário"),
         ("PND", "Prefiro não dizer"),
-        ("OU", "Outro")
+        ("NI", "Não informado"),
     )
 
-    telefone = models.CharField(max_length=15, blank=True, null=True)
-    genero = models.CharField(max_length=20, choices=genero_choices, default="F", null=True, blank=True, verbose_name="Identidade de gênero")
-    outro_genero = models.CharField(max_length=50, blank=True, null=True, verbose_name="Outro gênero")
-    dt_nasc = models.DateField(blank=True, null=True, verbose_name="Data de Nascimento")
-    endereco = models.ForeignKey(Endereco, blank=True, on_delete=models.SET_NULL, null=True)
+    telefone = models.CharField(max_length=15, blank=False, null=False, default="(00) 00000-0000")
+    genero = models.CharField(max_length=20, choices=genero_choices, default="NI", null=False, blank=False, verbose_name="Identidade de gênero")
+    dt_nasc = models.DateField(blank=False, null=False, verbose_name="Data de Nascimento", default="2000-01-01")
 
     def __str__(self):
-        return self.username
+        return self.email
     
     def perfil_preview(self):
         if self.foto_de_perfil:

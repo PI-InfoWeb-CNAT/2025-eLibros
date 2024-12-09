@@ -5,5 +5,7 @@ from .generoLiterario import GeneroLiterario
 from .carrinho import Carrinho
 from .itemcarrinho import ItemCarrinho
 from .categoria import Categoria
-from .uploadimage import UploadImage
-from .cupom import Desconto
+from .cupom import Cupom
+from .autor import Autor
+from .administrador import Administrador
+from .cliente import Cliente

@@ -66,11 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateUserCart(id, action, quantidadeAdicionada, csrfToken){
-    console.log('Usuario logado, enviando dados...');
-
-    var url = '/atualizar_carrinho';
+    var url = cartUpdateUrl;
    
-
+    //here
     fetch(url, {
         method: 'POST',
         headers: {
@@ -80,7 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({'id': id, 'action': action, 'quantidadeAdicionada': quantidadeAdicionada}),
     })
     .then((response) => {
-        return response.json();
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
     })
     .then((data) => {
         console.log('Data:', data);
@@ -94,7 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             var cartItemCountElement = document.querySelector('.carrinho-quantidade');
-            cartItemCountElement.textContent = data.cartItemCount
+            if (data.cartItemCount >= 10) {
+                cartItemCountElement.textContent = '+9';
+            } else {
+                cartItemCountElement.textContent = data.cartItemCount;
+            }
           
           
         }

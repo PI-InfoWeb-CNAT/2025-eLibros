@@ -39,10 +39,10 @@
         <li id="dropdown">
           <div>
               <div id="perfil">
-                {% if cliente.foto_de_perfil %}  
-                  <img src="{{ cliente.foto_de_perfil.url }}">
+                {% if user.foto_de_perfil %}  
+                  <img src="{{ user.foto_de_perfil.url }}">
                 {% else %}
-                  <img src="{% static 'images/usuario'%}">
+                  <img src="{% static 'images/usuario.png' %}">
                 {% endif %}
               </div>
               <ul id="espacinho">
@@ -66,7 +66,11 @@
         <li>
           <a id="carrinho" class="nav-link" href="{% url 'carrinho' %}">
             <img src="{% static 'images/icons/carrinho.svg' %}">
+            {% if carrinho.maior_que_10 %}
+            <span class="carrinho-quantidade">+9</span>
+            {% else %}
             <span class="carrinho-quantidade">{{carrinho.numero_itens}}</span>
+            {% endif %}
           </a>
         </li>
        
@@ -85,12 +89,10 @@
     crossorigin="anonymous"></script>-->
   <!-- Project JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script src="{% static 'js/carrinho.js' %}"></script>
   <script src="{% static 'js/swiper.js' %}"></script>
   <script src="{% static 'js/base.js' %}"></script>
   <script type="text/javascript">
     var csrfToken = "{{ csrf_token }}";
-    var user = '{{ request.user }}';
   </script>
   {% endblock javascript %}
 </body>

@@ -15,7 +15,7 @@
         <div class="livro_info">
             <div class="livro_header">
                 <h2>{{ livro.titulo }} <span>{{ livro.editora }} - {{ livro.ano_de_publicacao }}</span></h2>
-                <p>Escrito por {{ livro.autor }}</p>
+                <p>Escrito por {{ livro.get_autores_display }}</p>
             </div>
             <div class="livro_descricao">
                 <p>{{ livro.sinopse }}</p>
@@ -41,7 +41,14 @@
                 {% endif %}
                 
                 <p><span>Entrega GRÁTIS:</span> Chega entre XX - XX de Mês</p>
-                <p><img src="{% static 'images/local.png' %}"><a href="#">Entregando em ENDEREÇO. Atualizar local</a></p>
+                <p>
+                    <img src="{% static 'images/local.png' %}">
+                    {% if cliente.endereco == None %}
+                    <a href="#">Adicionar local</a>
+                    {% else %}
+                    <a href="#">Entregar em {{ cliente.endereco }}</a>
+                    {% endif %}
+                </p>
                 <p>Em estoque <span>{{ livro.quantidade }} restante(s)</span></p>
                 <div class="quantity-input">
                     <button class="quantity-btn minus">-</button>
@@ -63,6 +70,7 @@
         </div>
     </section>
 </main>
-<script>    
+<script>
+    const cartUpdateUrl = "{% url 'atualizar_carrinho' %}";
 </script>
 {% endblock content %}

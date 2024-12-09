@@ -9,3 +9,7 @@ def split_decimal(value):
         return integer_part, decimal_part
     except ValueError:
         return value, '00'  # Default to '00' if there's no decimal part
+    
+@register.filter(name='capitalize')
+def capitalize(value):
+    return value.capitalize()

@@ -2,21 +2,63 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import Cliente
+from .models import Usuario
 
-class ClienteAdmin(UserAdmin):
+class UsuarioAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
-    model = Cliente
-    list_display = ['email', 'username', 'perfil_preview', 'nome', 'CPF', 'genero', 'outro_genero', 'dt_nasc', 'endereco'] #OK
+    model = Usuario
+    list_display = [
+        'email', 
+        'username',
+        'perfil_preview',
+        'nome',
+        'CPF',
+        'genero',
+        'dt_nasc',
+      
+        ]
 
 
-    fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('nome', 'CPF', 'genero', 'outro_genero', 'dt_nasc', 'endereco')}), 
+    fieldsets = (
+        (None, {"fields": ( 
+             "username",
+            "nome",
+            "CPF",
+            "foto_de_perfil",
+            'genero',
+            'dt_nasc',
+            'telefone',
+            "email", 
+            "password",
+            )}
+        ),
+        ("Permissions", {"fields": (
+            "is_staff", 
+            "is_active", 
+            #"groups", 
+            #"user_permissions"
+            )}
+        ),
+    )
+    add_fieldsets = (
+        ( None, {"fields": (
+            "email",
+            "username",
+            "nome",
+            "CPF",
+            "foto_de_perfil",
+            'genero',
+            'dt_nasc',
+            'telefone',
+            "password1",
+            "password2",
+            "is_staff",
+            "is_active",
+            #"groups",
+            #"user_permissions"
+            )}
+        ),
     )
 
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('nome', 'CPF', 'genero', 'outro_genero', 'dt_nasc', 'endereco')}), 
-    )
-
-admin.site.register(Cliente, ClienteAdmin)
+admin.site.register(Usuario, UsuarioAdmin)

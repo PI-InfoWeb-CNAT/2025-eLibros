@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     "allauth.account",
     "crispy_forms",
     "crispy_bootstrap5",
+    "django_extensions",
+    'simple_history',
     # "debug_toolbar",
     # Local
     "accounts", #NÃO REMOVER
@@ -149,7 +151,7 @@ DEFAULT_FROM_EMAIL = "root@localhost"
 INTERNAL_IPS = ["127.0.0.1"]
 
 
-AUTH_USER_MODEL = "accounts.Cliente"
+AUTH_USER_MODEL = "accounts.Usuario"
 
 # django-allauth config
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id

@@ -48,13 +48,14 @@
                         </figure>
                         <div>
                             <h3>
-                                {{ livro.titulo }}
+                                {{ livro.get_titulo_display }}
                                 {% if livro.subtitulo %}
                                 <br>
-                                <span>{{ livro.subtitulo }}</span>
+                                <span>{{ livro.get_subtitulo_display }}</span>
+                                <br>
                                 {% endif %}
                             </h3>
-                            <p>{{ livro.autor }}</p>
+                            <p>{{ livro.get_primeiro_autor }}</p>
                             <p>{{ livro.preco }}</p>
                             <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
                         </div>

@@ -1,50 +1,108 @@
 {% extends '_base.html' %}
 {% load static %}
-{% block title %}eLibros - Carrinho{% endblock title %}
+{% block title %}eLibros - Pedidos{% endblock title %}
 {% block content %}
 <main>
     <section class="pedidos">
         <h2>Meus pedidos</h2>
+        <h3>Em andamento</h3>
         <ul>
-            <h3>Em andamento</h3>
+            {% if pedidos_andamento %}
+            {% for pedido in pedidos_andamento %}
+            <li>
+                <div>
+                    {% for item in pedido.itens_do_pedido %}
+                    <div class="item">
+                        <img src="{{ item.produto.imagem.url }}" alt="Capa do livro 1">
+                    </div>
+                    {% endfor %}
+                    <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
+                    <p>
+                        <span class="moeda-cart">R$</span>
+                        <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
+                    </p>
+                    <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
+                </div>
+                <div>
+                    <p>Entrega estimada para dia {{ pedido.entrega_estimada }}</p>
+                    {% if pedido.confirmado %}
+                    <p>Pedido pronto para sair da distribuidora</p>
+                    {% endif %}
+                    <form action="{% url 'cancelar_pedido' pedido.numero_pedido %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Cancelar pedido</button>
+                    </form>                    
+                    <button>Ver detalhes</button>
+                </div>
+            </li>
+            {% endfor %}
+            {% else %}
+            <div>
+                <p>Nenhum pedido em andamento</p>
+            </div>
+            {% endif %}
+        </ul>
+        <h3>Enviados</h3>
+        <ul>
+            {% if pedidos_enviados %}
+            {% for pedido in pedidos_enviados %}
             <li>
                 <div>
                     <div class="item">
                         <img src="/html/static/images/placeholder.png" alt="Capa do livro 1">
                     </div>
-                    <p>PEDIDO N°40028922</p>
+                    <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
                     <p>
                         <span class="moeda-cart">R$</span>
-                        <b><span class="preco-maior-cart">127,00</b>
+                        <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
                     </p>
-                    <p>Pedido realizado dia 31/02/2024</p>
+                    <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
                 </div>
                 <div>
-                    <p>Entrega estimada para sexta-feira</p>
-                    <p>Pedido pronto para sair da distribuidora</p>
+                    <p>Entrega estimada para dia {{ pedido.entrega_estimada }}</p>
+                    <p>Pedido a caminho</p>
+                    <form action="{% url 'confirmar_recebimento' pedido.numero_pedido %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Confirmar recebimento</button>
+                    </form>     
                     <button>Rastrear pacote</button>
-                    <button>Cancelar pedido</button>
-                    <button>Confirmar recebimento</button>
+                    <button>Ver detalhes</button>
                 </div>
             </li>
+            {% endfor %}
+            {% else %}
+            <div>
+                <p>Nenhum pedido enviado</p>
+            </div>
+            {% endif %}
         </ul>
+        <h3>Finalizados</h3>
         <ul>
-            <h3>Finalizados</h3>
-            <div>
-                <div class="item">
-                    <img src="/html/static/images/placeholder.png" alt="Capa do livro 1">
+            {% if pedidos_finalizados %}
+            {% for pedido in pedidos_finalizados %}
+            <li>
+                <div>
+                    <div class="item">
+                        <img src="/html/static/images/placeholder.png" alt="Capa do livro 1">
+                    </div>
+                    <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
+                    <p>
+                        <span class="moeda-cart">R$</span>
+                        <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
+                    </p>
+                    <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
                 </div>
-                <p>PEDIDO N°40028922</p>
-                <p>
-                    <span class="moeda-cart">R$</span>
-                    <b><span class="preco-maior-cart">127,00</b>
-                </p>
-                <p>Pedido realizado dia 31/02/2024</p>
-            </div>
+                <div>
+                    <p>Pedido entregue</p>
+                    <button>Ver detalhes</button>
+                </div>
+            </li>
+            {% endfor %}
+            {% else %}
             <div>
-                <p>Entrega efetuada dia 01/11/2024</p>
-                <p>Pedido entregue</p>
+                <p>Nenhum pedido finalizado</p>
             </div>
+            {% endif %}
         </ul>
     </section>
 </main>

@@ -63,7 +63,7 @@
         <h2>Indicações eLibros</h2>
         <div class="swiper Indicacoes-Elibros">
             <div class="swiper-wrapper">
-                {% for livro in livros_indicacoes %}
+                {% for livro in livros %}
                 <div class="swiper-slide">              
                     <a href="{% url 'livro' id=livro.id %}">
                     <div>
@@ -76,13 +76,11 @@
                         </figure>
                         <div>
                             <h3>
-                                {{ livro.titulo }}
-                                {% if livro.subtitulo %}
-                                <br>
-                                <span>{{ livro.subtitulo }}</span>
+                                {{ livro.get_titulo_display }}
+                                {% if livro.subtitulo %}<br><span>{{ livro.get_subtitulo_display }}</span>
                                 {% endif %}
                             </h3>
-                            <p>{{ livro.autor }}</p>
+                            <p>{{ livro.get_primeiro_autor }}</p>
                             <p>{{ livro.preco }}</p>
                             <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
                         </div>

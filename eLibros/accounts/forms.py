@@ -1,15 +1,49 @@
-from django import forms
+# users/forms.py
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Cliente
+from .models import Usuario
+
 
 class CustomUserCreationForm(UserCreationForm):
-
-    class Meta(UserCreationForm.Meta):
-        model = Cliente
-        fields = ('email', 'username', 'nome', 'CPF', 'foto_de_perfil', 'genero', 'outro_genero', 'dt_nasc', 'endereco')
-
+    """
+    Specify the user model created while adding a user
+    on the admin page.
+    """
+    class Meta:
+        model = Usuario
+        fields = [
+            "username",
+            "nome",
+            "CPF",
+            "foto_de_perfil",
+            'genero',
+            'dt_nasc',
+            'telefone',
+            "email",
+            "password", 
+            "is_staff",
+            "is_active",
+            # "groups",
+            # "user_permissions"
+        ]
 class CustomUserChangeForm(UserChangeForm):
-
-    class Meta(UserChangeForm.Meta):
-        model = Cliente
-        fields = ('email', 'username', 'nome', 'CPF', 'foto_de_perfil', 'genero', 'outro_genero', 'dt_nasc', 'endereco')
+    """
+    Specify the user model edited while editing a user on the
+    admin page.
+    """
+    class Meta:
+        model = Usuario
+        fields = [
+            "username",
+            "nome",
+            "CPF",
+            "foto_de_perfil",
+            'genero',
+            'dt_nasc',
+            'telefone',
+            "email",
+            "password", 
+            "is_staff",
+            "is_active",
+            #"groups",
+            #"user_permissions"
+         ]

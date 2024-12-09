@@ -1,13 +1,13 @@
-{% extends "eLibrosLoja/admin/_base.html" %}
+{% extends "./_base.html" %}
 {% load static %}
-
+{% load custom_filters %}
 {% block title %}About page{% endblock %}
 
 {% block content %}
 
 <main class="admin">
     <section id="cabecalho">
-        <h2 id="manter">{{ classe.capitalize() }}s</h1>
+        <h2 id="manter">{{ classe|capitalize }}s</h1>
 
         { % if botao %}
         <a href="#"><img src="static/images/icons/Wplus.svg" style="padding-right: 5px;">
@@ -44,7 +44,7 @@
                     {% endif %}
 
                     {% if 'u' in permissoes %}
-                    {% if classe in ['generos', 'categorias'] %}
+                    {% if classe in renomear_classes %}
                     <li><a href="#">Renomear</a></li>
                     {% else %}
                     <li><a href="#">Editar</a></li>

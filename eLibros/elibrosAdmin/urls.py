@@ -12,7 +12,8 @@ urlpatterns = [
     path("acervo/", include("elibrosLoja.urls.LivroUrls")),
     path("cliente/", include("elibrosLoja.urls.ClienteUrls")),
     path("carrinho/", include("elibrosLoja.urls.CarrinhoUrls")),
-    path("admin/", include("elibrosLoja.urls.AdminUrls")),  
+    path("admin/", include("elibrosLoja.urls.AdminUrls")),
+    path("pedido/", include("elibrosLoja.urls.PedidoUrls")), 
 ]
 
 if settings.DEBUG:

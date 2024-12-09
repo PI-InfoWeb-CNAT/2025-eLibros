@@ -1,15 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from elibrosLoja.models import Livro, Pedido, GeneroLiterario, Categoria
-from accounts.models import Cliente
+
 
 permissoes_admin_elibros = {
-    'livros': ['c', 'r', 'u', 'd'],
-    'pedidos': ['r', 'u', 'd'],
-    'clientes': ['r', 'u', 'd'],
-    'generos': ['c', 'r', 'd'],
-    'categorias': ['c', 'r', 'd'],
-    'enderecos': ['c', 'r', 'u', 'd'],
+    'livro': ['c', 'r', 'u', 'd'],
+    'pedido': ['r', 'u', 'd'],
+    'cliente': ['r', 'u', 'd'],
+    'genero': ['c', 'r', 'd'],
+    'categoria': ['c', 'r', 'd'],
+    'endereco': ['c', 'r', 'u', 'd'],
 }
 
 
@@ -27,14 +27,16 @@ def listar_instancias(request, classe):
     else:
         instancias = []
 
-    if classe != 'pedidos' and classe != 'clientes':
+    if classe != 'pedido' and classe != 'cliente':
         botao = True
 
     return render(request, 'elibrosLoja/admin/manter.html',
                   {'instancias': instancias,
                    'classe': classe,
                    'permissoes': permissoes_admin_elibros[classe],
-                   'botao': botao})
+                   'botao': botao, 
+                   'renomear_classes': ['genero', 'categoria']
+                   })
 
 @login_required
 def detalhar_instancia(request, classe, id):

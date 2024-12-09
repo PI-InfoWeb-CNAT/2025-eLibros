@@ -1,6 +1,6 @@
 from django import forms
 from .models import *
-from accounts.models import Cliente
+from accounts.models import Usuario
 
 class EnderecoCriarForm(forms.Form):
     cep = forms.IntegerField()
@@ -10,5 +10,5 @@ class EnderecoCriarForm(forms.Form):
 
 class UserImageForm(forms.ModelForm):
     class Meta:
-        model = Cliente
+        model = Usuario
         fields = ['foto_de_perfil']
