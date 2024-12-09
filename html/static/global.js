@@ -46,3 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+  const cpfInput = document.getElementById('cpf');
+
+  cpfInput.addEventListener('input', function(e) {
+      let value = e.target.value;
+      value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
+      if (value.length > 11) {
+          value = value.slice(0, 11); // Limita a 11 caracteres numéricos
+      }
+      value = value.replace(/(\d{3})(\d)/, '$1.$2'); // Adiciona o primeiro ponto
+      value = value.replace(/(\d{3})(\d)/, '$1.$2'); // Adiciona o segundo ponto
+      value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Adiciona o traço
+      e.target.value = value;
+  });
+}); 

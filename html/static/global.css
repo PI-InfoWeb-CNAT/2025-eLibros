@@ -1506,6 +1506,11 @@ ul.crud2 li:last-child a {
     border: 0;
     margin-top: 5em;
     padding: 0;
+    margin-bottom: 2em;
+}
+
+.headerlogin img{
+    width: 10em;
 }
 
 .login{
@@ -1519,13 +1524,13 @@ ul.crud2 li:last-child a {
     padding: 4em 5em;
 }
 
-.barralogin{
+.barraacesso{
     background-color: black;
     width: 0.07em;
 }
 
 .login figure img{
-    width: 90%;
+    margin-right: 20px;
 }
 
 .login form{
@@ -1536,14 +1541,16 @@ ul.crud2 li:last-child a {
 
 .login form label{
     color: #1C1607;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .login form input{
     border: 1px solid #E5E7EB;
     border-radius: 3px;
-    padding: 1em 2em;
+    padding: 1em 3em 1em 2em;
     width: 80%;
+    margin-top: 5px;
+    padding-left: 2.5em;
 }
 
 .login form button{
@@ -1554,6 +1561,7 @@ ul.crud2 li:last-child a {
     font-size: 20px;
     padding: 0.5em 6em;
     font-weight: 300;
+    margin-top: 20px;
 }
 
 .login form > p{
@@ -1575,6 +1583,7 @@ ul.crud2 li:last-child a {
 
 .input-icon {
     position: relative;
+    display: flex;
 }
 
 .input-icon .img-form,
@@ -1591,10 +1600,82 @@ ul.crud2 li:last-child a {
 
 .input-icon .eye-icon {
     cursor: pointer;
-    margin-left: -2em;
+    margin-left: 17em;
 }
 
-.input-icon input {
-    padding-left: 40px; /* Espaço para o ícone à esquerda */
-    padding-right: 40px; /* Espaço para o ícone à direita */
+.input-menor .form-group:nth-child(1), .input-menor .form-group div{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.cadastro {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFF5;
+    border-radius: 6px;
+    width: 60em;
+    padding: 4em 5em;
+}
+
+.cadastro h2 {
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.cadastro div input{
+    border: 1px solid #E5E7EB;
+    border-radius: 3px;
+    padding: 1em 3em 1em 1em;
+    width: 80%;
+    margin-top: 5px;
+}
+
+.cadastro button{
+    background-color: #1C1607;
+    color: #FFFFFF;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 0.5em 6em;
+    font-weight: 300;
+    margin-top: 20px;
+    width: 95%;
+    cursor: pointer;
+}
+
+.cadastro p{
+    font-size: 16px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.cadastro p a{
+    color: #FFD147;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.cadastro .form-group {
+    margin-top: 1em;
+}
+
+.infopessoal {
+    margin-right: 3em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.infologin {
+    margin-left: 3em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.infologin .eye-icon{
+    width: 18px;
+    margin-left: 19em;
 }
