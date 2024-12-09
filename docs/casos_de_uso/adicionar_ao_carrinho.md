@@ -12,7 +12,7 @@
 | 12/09/2024 | **1.40** | Correção ortográfica | Gabriel Campos |
 | 16/09/2024 | **1.50** | Apenas cliente adiciona ao carrinho | Gabriel Campos |
 | 04/11/2024 | **1.60** | Adição de protótipo de interface  | Gabriel Campos |
-| 08/12/2024 | **1.70** | Adição de diagrama de classe de domínio  | Gabriel Campos |
+| 09/12/2024 | **1.70** | Adição de diagrama de classe de domínio  | Gabriel Campos |
 
 
 ### 1. Resumo 
