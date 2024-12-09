@@ -6,7 +6,7 @@
 |  Data  | Versão | Descrição | Autor |
 |:-------|:-------|:----------|:------|
 | 08/12/2024 | **1.00** | Primeira versão  | Gabriel Campos |
-| 09/12/2024 | **1.20** | Adição de diagrama de classe de domínio  | Gabriel Campos |
+| 09/12/2024 | **1.10** | Adição de diagrama de classe de domínio  | Gabriel Campos |
 
 
 ### 1. Resumo 
