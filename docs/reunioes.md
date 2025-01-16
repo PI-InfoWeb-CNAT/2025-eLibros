@@ -46,4 +46,7 @@
 
 ## 16/01/2025
 
-
+### Objetivos da reunião
+- Revisar metas para segunda-feira (20/01/2025), para apresentação dia 03 de Fevereiro (OK)
+- Explicar o uso do codespace e como podemos definir nossa dinâmica de desenvolvimento (OK)
+- Discussão organização branches (OK)
