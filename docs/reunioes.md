@@ -44,3 +44,6 @@
 
 - Discussão das telas do figma no mobile
 
+## 16/01/2025
+
+
