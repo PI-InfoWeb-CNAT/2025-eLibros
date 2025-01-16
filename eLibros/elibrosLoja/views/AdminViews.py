@@ -12,6 +12,58 @@ permissoes_admin_elibros = {
     'endereco': ['c', 'r', 'u', 'd'],
 }
 
+fields_exclude = {
+    'livro': ['id', 'historico', 'criado_por', 'qtd_vendidos'],
+    'genero': ['id'],
+    'categoria': ['id'],
+    'cliente': ['id, criado_por, historico'],
+    'pedido': ['id, criado_por, historico'],
+    'cupom': ['id'],
+}
+
+ordem_livro = ['subtitulo', 'autor']
+
+def get_h2(classe, instancia):
+
+    if classe == 'livro':
+            h2 = instancia.titulo
+    elif classe == 'genero':
+            h2 = instancia.nome
+    elif classe == 'categoria':
+            h2 = instancia.nome
+    elif classe == 'cliente':
+        if instancia.user.username:
+            h2 = instancia.user.username
+        else:
+            h2 = instancia.user.email
+    elif classe == 'pedido':
+            h2 = instancia.id
+    elif classe == 'cupom':
+            h2 = instancia.codigo
+    
+    return h2
+
+def get_fields(instancia):
+    fields = instancia._meta.get_fields()
+    field_values = []
+    for field in fields:
+        if field.concrete and not field.is_relation and field.name not in fields_exclude[instancia.__class__.__name__.lower()]:
+            field_values.append({
+                'name': field.name,
+                'verbose_name': field.verbose_name,
+                'value': getattr(instancia, field.name)
+            })
+        elif field.is_relation and field.name not in fields_exclude[instancia.__class__.__name__.lower()]:
+            related_objects = getattr(instancia, field.name).all() if field.many_to_many else getattr(instancia, field.name)
+            value = related_objects
+            verbose_name = field.related_model._meta.verbose_name if hasattr(field, 'related_model') else field.verbose_name
+            field_values.append({
+                'name': field.name,
+                'verbose_name': verbose_name,
+                'value': value,
+            })
+    print(field_values)
+    return field_values
 
 @login_required
 def admin(request):
@@ -40,11 +92,22 @@ def listar_instancias(request, classe):
 
 @login_required
 def detalhar_instancia(request, classe, id):
-    if classe in ['livro', 'genero', 'categoria', 'cliente', 'pedido']:
+    if classe in ['livro', 'genero', 'categoria', 'cliente', 'pedido', 'cupom']:
         instancia = eval(classe.capitalize()).objects.get(id=id)
+        h2 = get_h2(classe, instancia)
+        field_values = get_fields(instancia)
+        
     else:
         instancia = None
-    return render(request, 'elibrosLoja/admin/detalhar_instancia.html', {'instancia': instancia})
+        field_values = []
+    
+    return render(request, 'elibrosLoja/admin/ver_e_editar.html', {
+        'instancia': instancia,
+        'h2': h2,
+        'classe': classe,
+        'fields': field_values,
+        'disabled': True,
+    })
 
 @login_required
 def editar_instancia(request, classe, id):
