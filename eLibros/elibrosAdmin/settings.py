@@ -133,8 +133,13 @@ STORAGES = {
 }
 
 
-CSRF_TRUSTED_ORIGINS = ['https://localhost:8000']
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://studious-space-memory-gjv956xp45wfw7w6-8000.app.github.dev",
+    "https://*.app.github.dev",
+    "http://localhost:8000",
+    "https://localhost:8000",
+    "https://*.github.dev"
+]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
