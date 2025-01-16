@@ -12,6 +12,7 @@
 | 12/09/2024 | **1.40** | Correção ortográfica | Gabriel Campos |
 | 16/09/2024 | **1.50** | Apenas cliente adiciona ao carrinho | Gabriel Campos |
 | 04/11/2024 | **1.60** | Adição de protótipo de interface  | Gabriel Campos |
+| 09/12/2024 | **1.70** | Adição de diagrama de classe de domínio  | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -49,7 +50,8 @@ Após a execução deste caso de uso, espera que o sistema:
 
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/969a7061-8f58-4634-b9ff-32dc87b1f9c1)
+
 
 ### 8. Dicionário de dados
 

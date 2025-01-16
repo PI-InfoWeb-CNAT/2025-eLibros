@@ -7,6 +7,7 @@
 |:-------|:-------|:----------|:------|
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
+| 09/12/2024 | **1.20** | Adição de diagrama de classe de domínio  | Gabriel Campos |
 
 ### 1. Resumo 
 Esse caso de uso permite o usuário realizar o pedido dos itens que se encontram no seu carrinho.
@@ -44,7 +45,9 @@ Após a execução deste caso de uso, espera que o sistema:
 ![image](https://github.com/user-attachments/assets/db2dc822-a62f-42c2-9d41-74f9bcc33695)
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/cd4cc313-5364-426d-8e59-fdf79ca29227)
+
+
 
 ### 8. Dicionário de dados
 
