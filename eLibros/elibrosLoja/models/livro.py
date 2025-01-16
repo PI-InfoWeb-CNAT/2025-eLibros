@@ -12,22 +12,22 @@ from django.conf import settings
 from django.utils.html import mark_safe
 
 class Livro(models.Model):
-    titulo = models.CharField(null=False, max_length=200)
-    subtitulo = models.CharField(null=True, blank=True, max_length=200)
-    autor = models.ManyToManyField(Autor, related_name="Autor_do_Livro", blank=True)
-    data_de_publicacao = models.DateField(null=True, blank=True, validators=[nao_e_no_futuro])
-    ano_de_publicacao = models.IntegerField(null=True, blank=True, validators=[nao_negativo, nao_nulo, nao_e_no_futuro])
-    capa = models.ImageField(upload_to='capas/', null=True, blank=True)
+    titulo = models.CharField(null=False, max_length=200, verbose_name='Título')
+    subtitulo = models.CharField(null=True, blank=True, max_length=200, verbose_name='Subtítulo')
+    autor = models.ManyToManyField(Autor, related_name="Autor_do_Livro", blank=True, verbose_name='Autor(es)')
+    editora = models.CharField(max_length=100, default='Editora não informada', verbose_name='Editora')
     ISBN = models.CharField(unique=True, max_length=15)
-    sinopse = models.TextField(blank=True, null=True)
-    editora = models.CharField(max_length=100, default='Editora não informada')
+    data_de_publicacao = models.DateField(null=True, blank=True, validators=[nao_e_no_futuro], verbose_name='Data de Publicação')
+    ano_de_publicacao = models.IntegerField(null=True, blank=True, validators=[nao_negativo, nao_nulo, nao_e_no_futuro], verbose_name='Ano de Publicação')
+    capa = models.ImageField(upload_to='capas/', null=True, blank=True)
+    sinopse = models.TextField(blank=True, null=True, verbose_name='Sinopse')
     genero_literario = models.ManyToManyField(GeneroLiterario, related_name="Genero_Literario_do_Livro", blank=True)
     categoria = models.ManyToManyField(Categoria, related_name="Categoria_do_Livro", blank=True)
     
-    preco = models.DecimalField(max_digits=5, decimal_places=2, validators=[nao_negativo, nao_nulo], default=0.00)
-    desconto = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    preco = models.DecimalField(max_digits=5, decimal_places=2, validators=[nao_negativo, nao_nulo], default=0.00, verbose_name='Preço')
+    desconto = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, verbose_name='Desconto')
 
-    quantidade = models.IntegerField(validators=[nao_negativo])
+    quantidade = models.IntegerField(validators=[nao_negativo], verbose_name='Quantidade')
     qtd_vendidos = models.IntegerField(default=0, validators=[nao_negativo], verbose_name='Vendidos')
 
 
@@ -36,7 +36,7 @@ class Livro(models.Model):
 
     historico = HistoricalRecords(user_model=Administrador)
 
-
+    
     @property
     def _history_user(self):
         return self.criado_por
