@@ -11,27 +11,34 @@
             {% for pedido in pedidos_andamento %}
             <li>
                 <div>
-                    {% for item in pedido.itens_do_pedido %}
-                    <div class="item">
-                        <img src="{{ item.produto.imagem.url }}" alt="Capa do livro 1">
+                 
+
+                        <figure class="item">
+                            {% with item=pedido.itens.first %}
+                            <img src="{{ item.livro.capa.url }}" alt="Capa do livro 1">
+                            {% endwith %}
+                        </figure>
+                 
+                    <div>
+                        <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
+                        <p>
+                            <span class="moeda-cart">R$</span>
+                            <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
+                        </p>
+                        <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
                     </div>
-                    {% endfor %}
-                    <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
-                    <p>
-                        <span class="moeda-cart">R$</span>
-                        <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
-                    </p>
-                    <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
                 </div>
                 <div>
                     <p>Entrega estimada para dia {{ pedido.entrega_estimada }}</p>
                     {% if pedido.confirmado %}
                     <p>Pedido pronto para sair da distribuidora</p>
+                    {% else %}
+                    <p>Pedido em processamento</p>
                     {% endif %}
                     <form action="{% url 'cancelar_pedido' pedido.numero_pedido %}" method="post">
                         {% csrf_token %}
                         <button type="submit">Cancelar pedido</button>
-                    </form>                    
+                    </form>
                     <button>Ver detalhes</button>
                 </div>
             </li>
@@ -48,23 +55,41 @@
             {% for pedido in pedidos_enviados %}
             <li>
                 <div>
-                    <div class="item">
-                        <img src="/html/static/images/placeholder.png" alt="Capa do livro 1">
+                    <figure class="item">
+                        {% for item in pedido.itens.all %}
+                        <img src="{{ item.livro.capa.url }}" alt="Capa do livro 1">
+                        {% endfor %}
+                    </figure>
+                    <div>
+                        <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
+                        <p>
+                            <span class="moeda-cart">R$</span>
+                            <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
+                        </p>
+                        <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
                     </div>
-                    <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
-                    <p>
-                        <span class="moeda-cart">R$</span>
-                        <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
-                    </p>
-                    <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
                 </div>
                 <div>
                     <p>Entrega estimada para dia {{ pedido.entrega_estimada }}</p>
                     <p>Pedido a caminho</p>
-                    <form action="{% url 'confirmar_recebimento' pedido.numero_pedido %}" method="post">
+                    <!-- <form action="{% url 'confirmar_recebimento' pedido.numero_pedido %}" method="post">
                         {% csrf_token %}
-                        <button type="submit">Confirmar recebimento</button>
-                    </form>     
+                        <button id="amarelo" type="submit">Confirmar recebimento</button>
+                    </form>      -->
+                    <button class="amarelo" class="confirmar" type="button" data-toggle="confirmar" data-target="confirmar">Confirmar
+                        recebimento</button>
+                    <div class="modal_confirmar">
+                        <div>
+                            <h4>Deseja confirmar que recebeu o pedido?</h4>
+                            <form action="{% url 'confirmar_recebimento' pedido.numero_pedido %}" method="post">
+                            <div>
+                                <button id="close" type="button" data-dismiss="confirmar">Não</button>
+                                    {% csrf_token %}
+                                <button type="submit">Sim</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <button>Rastrear pacote</button>
                     <button>Ver detalhes</button>
                 </div>
@@ -82,17 +107,22 @@
             {% for pedido in pedidos_finalizados %}
             <li>
                 <div>
-                    <div class="item">
-                        <img src="/html/static/images/placeholder.png" alt="Capa do livro 1">
+                    <figure class="item">
+                        {% for item in pedido.itens.all %}
+                        <img src="{{ item.livro.capa.url }}" alt="Capa do livro 1">
+                        {% endfor %}
+                    </figure>
+                    <div>
+                        <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
+                        <p>
+                            <span class="moeda-cart">R$</span>
+                            <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
+                        </p>
+                        <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
                     </div>
-                    <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
-                    <p>
-                        <span class="moeda-cart">R$</span>
-                        <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
-                    </p>
-                    <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
                 </div>
                 <div>
+                    <p>Entrega confirmada pelo cliente</p>
                     <p>Pedido entregue</p>
                     <button>Ver detalhes</button>
                 </div>
@@ -106,4 +136,8 @@
         </ul>
     </section>
 </main>
+{% block javascript %}
+<script src="{% static 'js/modal.js' %}"></script>
+{% endblock javascript %}
+
 {% endblock content %}
