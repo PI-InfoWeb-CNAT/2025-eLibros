@@ -130,6 +130,8 @@ def pedidos(request):
     pedidos_finalizados = []
 
     for pedido in pedidos:
+        print(pedido.itens.all())
+
         if pedido.status == 'ENT':
             pedidos_finalizados.append(pedido)
         elif pedido.status == 'ENV':
@@ -138,6 +140,7 @@ def pedidos(request):
             continue
         else:
             pedidos_andamento.append(pedido)
+
 
     context = {
         'pedidos': pedidos,
