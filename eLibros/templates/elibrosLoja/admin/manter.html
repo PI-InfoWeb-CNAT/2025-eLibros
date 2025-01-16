@@ -1,7 +1,7 @@
 {% extends "./_base.html" %}
 {% load static %}
 {% load custom_filters %}
-{% block title %}About page{% endblock %}
+{% block title %}Manter {{classe}}s {% endblock %}
 
 {% block content %}
 
@@ -9,20 +9,20 @@
     <section id="cabecalho">
         <h2 id="manter">{{ classe|capitalize }}s</h1>
 
-        { % if botao %}
-        <a href="#"><img src="static/images/icons/Wplus.svg" style="padding-right: 5px;">
+        {% if botao %}
+        <a href="#"><img src="{% static 'images/icons/Wplus.svg' %}" style="padding-right: 5px;">
              Adicionar {{classe}}</a>
-        { % endif %}
+        {% endif %}
     </section>
     <section id="search">
         <form id="search">
             <div id="search">
-                <img src="static/images/icons/lupa.svg">
+                <img src="{% static 'images/icons/lupa.svg' %}" >
                 <input type="text" name="pesquisa" placeholder="Pesquise por nome..." size="52">
             </div>
             <div id="filter">
                 <div id="select">
-                    <img src="static/images/icons/filter.svg">                          
+                    <img src="{% static 'images/icons/filter.svg' %}">                          
                     <select>
                         <option value="-1">A-Z</option>
                     </select>
@@ -40,14 +40,14 @@
                 <ul class="crud2">
 
                     {% if 'r' in permissoes %}
-                    <li><a href="#">Ver</a></li>
+                    <li><a href="{% url 'detalhar_instancia' classe=classe id=instancia.id %}">Ver</a></li>
                     {% endif %}
 
                     {% if 'u' in permissoes %}
                     {% if classe in renomear_classes %}
                     <li><a href="#">Renomear</a></li>
                     {% else %}
-                    <li><a href="#">Editar</a></li>
+                    <li><a href="{% url 'editar_instancia' classe=classe id=instancia.id %}">Editar</a></li>
                     {% endif %}
                     {% endif %}
 
