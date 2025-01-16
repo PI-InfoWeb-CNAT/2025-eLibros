@@ -17,7 +17,7 @@
 
 <body>
 <header>
-    <h1><a href="inicioAdmin.html"><img src="static/images/logo.png"></a></h1>
+    <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logo.png' %}"></a></h1>
         <nav>
             <ul class="navbar-ul">
                 <li>
@@ -38,12 +38,12 @@
                 <li id="dropdown">
                     <div>
                         <div id="perfil">
-                          {% if cliente.foto_de_perfil %}  
-                            <img src="{{ cliente.foto_de_perfil.url }}">
-                          {% else %}
-                            <img src="{% static 'images/usuario'%}">
-                          {% endif %}
-                        </div>
+                            {% if user.foto_de_perfil %}  
+                              <img src="{{ user.foto_de_perfil.url }}">
+                            {% else %}
+                              <img src="{% static 'images/usuario.png' %}">
+                            {% endif %}
+                          </div>
                         <ul id="espacinho">
                             <li>
                                 <a href="{% url 'perfil' %}">Meu perfil</a>
