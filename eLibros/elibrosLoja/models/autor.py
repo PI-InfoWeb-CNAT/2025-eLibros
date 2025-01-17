@@ -23,4 +23,5 @@ class Autor(models.Model):
             self.criado_por = Administrador.objects.get(user=value)
 
     class Meta:
+        verbose_name = "Autor"
         verbose_name_plural = "Autores"

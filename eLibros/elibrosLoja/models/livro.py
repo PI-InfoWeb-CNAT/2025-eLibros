@@ -19,7 +19,7 @@ class Livro(models.Model):
     ISBN = models.CharField(unique=True, max_length=15)
     data_de_publicacao = models.DateField(null=True, blank=True, validators=[nao_e_no_futuro], verbose_name='Data de Publicação')
     ano_de_publicacao = models.IntegerField(null=True, blank=True, validators=[nao_negativo, nao_nulo, nao_e_no_futuro], verbose_name='Ano de Publicação')
-    capa = models.ImageField(upload_to='capas/', null=True, blank=True)
+    capa = models.ImageField(upload_to='capas/', null=True, blank=True, verbose_name='Capa')
     sinopse = models.TextField(blank=True, null=True, verbose_name='Sinopse')
     genero_literario = models.ManyToManyField(GeneroLiterario, related_name="Genero_Literario_do_Livro", blank=True)
     categoria = models.ManyToManyField(Categoria, related_name="Categoria_do_Livro", blank=True)
