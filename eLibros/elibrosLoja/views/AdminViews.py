@@ -13,7 +13,7 @@ permissoes_admin_elibros = {
 }
 
 fields_exclude = {
-    'livro': ['id', 'historico', 'criado_por', 'qtd_vendidos'],
+    'livro': ['id', 'historico', 'criado_por', 'livro_selecionado', 'capa', 'genero_literario', 'categoria'],
     'genero': ['id'],
     'categoria': ['id'],
     'cliente': ['id, criado_por, historico'],
@@ -26,21 +26,21 @@ ordem_livro = ['subtitulo', 'autor']
 def get_h2(classe, instancia):
 
     if classe == 'livro':
-            h2 = instancia.titulo
+        h2 = instancia.titulo
     elif classe == 'genero':
-            h2 = instancia.nome
+        h2 = instancia.nome
     elif classe == 'categoria':
-            h2 = instancia.nome
+        h2 = instancia.nome
     elif classe == 'cliente':
         if instancia.user.username:
             h2 = instancia.user.username
         else:
             h2 = instancia.user.email
     elif classe == 'pedido':
-            h2 = instancia.id
+        h2 = instancia.id
     elif classe == 'cupom':
-            h2 = instancia.codigo
-    
+        h2 = instancia.codigo
+
     return h2
 
 def get_fields(instancia):
