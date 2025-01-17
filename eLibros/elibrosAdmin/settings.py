@@ -71,17 +71,23 @@ TEMPLATES = [
     },
 ]
 
-
 DATABASES = {
-    'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': "eLibrosDB",
-        'USER': "postgres",
-        'PASSWORD': "gatineosFofineos",
-        'HOST': 'db',
-        'PORT': 5432,
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "eLibrosDB",
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         "ENGINE": "django.db.backends.postgresql",
+#         'NAME': "eLibrosDB",
+#         'USER': "postgres",
+#         'PASSWORD': "gatineosFofineos",
+#         'HOST': 'db',
+#         'PORT': 5432,
+#     }
+# }
 
 
 AUTH_PASSWORD_VALIDATORS = [
