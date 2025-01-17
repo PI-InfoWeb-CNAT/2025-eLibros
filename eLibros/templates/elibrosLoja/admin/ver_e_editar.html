@@ -8,49 +8,21 @@
     <div>
         <div>
             <h2>{{h2}}</h2>
-            <a href="/">Voltar</a> <!--manter livros-->
+            <a href="/admin">Voltar</a> <!--manter livros-->
         </div>
         <form class="form-livro">
             
             {% for field in fields %}
             <div>
-                <label for="{{ field.name }}">{{ field.verbose_name }}</label>
-                <input id="{{ field.name }}" type="text" value="{{ field.value }}" {% if disabled %} disabled {% endif %}>
+                <label for="{{ field.name }}">{{ field.verbose_name }}:</label>
+                {% if field.name == "sinopse" %}
+                    <textarea rows="6" id="sinopse" disabled>{{ field.value }}</textarea>
+                {% else %}
+                    <input id="{{ field.name }}" type="text" value="{{ field.value }}" {% if disabled %} disabled {% endif %}>
+                {% endif %}
             </div>
             {% endfor %}
-            <!-- <div>
-                <label for="autor">Autor(es):</label><br>
-                <input id="autor" type="text" value='Luisa Geisler, Marcelo Ferroni, Natalia Borges Polesso, Samir Machado de Machado' disabled>
-            </div>
-            <div>
-                <label for="editora">Editora:</label>
-                <input id="editora" type="text" value='Alfaguara' disabled>
-            </div>
-            <div>
-                <label for="isbn">ISBN:</label>
-                <input id="isbn" type="text" value='8556521029' disabled>
-            </div>
-            <div>
-                <label for="publicacao">Data de publicação:</label>
-                <input id="publicacao" type="text" value='2020' disabled>
-            </div>
-            <div>
-                <label for="preco">Preço:</label>
-                R$<input id="preco" type="text" value='40,00' disabled>
-            </div>
-            <div>
-                <label for="desconto">Desconto:</label>
-                <input id="desconto" type="checkbox" disabled>
-                <input id="desconto" type="number" disabled>%
-            </div>
-            <div>
-                <label for="quantidade">Quantidade:</label>
-                <input id="quantidade" type="number" value='300' disabled>
-            </div>
-            <div>
-                <label class="sinopse" for="sinopse">Sinopse:</label>
-                <textarea id="sinopse" rows="6" disabled>Primeiro, o uso de novos agrotóxicos sem os devidos testes. Depois, a reação inesperada com as larvas que eles deveriam dizimar. Não se sabe quem foi o primeiro infectado, apenas que o surto começou no Mato Grosso do Sul. São os chamados corpos secos: espectros humanos que não possuem mais atividade cerebral. Mas seus corpos ainda funcionam e anseiam por sangue. Seis meses depois, há poucos sobreviventes. Um jovem aparentemente imune à doença está sendo estudado por uma equipe médica e precisa ser protegido a qualquer custo; uma dona de casa vive em uma fazenda no interior do Brasil e se encontra sozinha precisando reagir para sair de seu isolamento; uma criança vê a mãe tentar de tudo para salvar a família e fugir do contágio; uma engenheira de alimentos percebe que seus conhecimentos técnicos talvez não sejam suficientes para explicar o terror que assola o país. Juntos, eles vão narrar suas jornadas, em busca do último refúgio ao sul do país. Escrito em conjunto por quatro autores, Corpos secos não é só um thriller, nem um romance-catástrofe. É uma narrativa sobre os limites da maldade humana, e as chances de redenção em meio ao caos.</textarea>
-            </div> -->
+            
         </form>
     </div>
     <div>
@@ -62,17 +34,24 @@
                     <img src="{% static 'images/placeholder.png' %}">            
                 {% endif %}
             </figure>
-        {% endif %}
+        
         <h3>Categorias</h3>
-        <!-- <div>
-            <p>Indicado</p>
-            <p>+18</p>
-        </div> -->
+        
+        <div>
+            {% for field in fields %}
+                {% if field.name == "categoria" %}
+
+                    {% for categoria in field.value %}
+                        <p>{{categoria}}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div> 
         <h3>Gêneros</h3>
         <div>
-            <p>Suspense</p>
-            <p>Ficção</p>
+            
         </div>
+        {% endif %}
     </div>
 </main>
 
