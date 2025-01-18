@@ -13,7 +13,7 @@ permissoes_admin_elibros = {
 }
 
 fields_exclude = {
-    'livro': ['id', 'historico', 'criado_por', 'livro_selecionado', 'capa', 'genero_literario', 'categoria'],
+    'livro': ['id', 'historico', 'criado_por', 'livro_selecionado', 'capa'],
     'genero': ['id'],
     'categoria': ['id'],
     'cliente': ['id, criado_por, historico'],
@@ -51,16 +51,25 @@ def get_fields(instancia):
             field_values.append({
                 'name': field.name,
                 'verbose_name': field.verbose_name,
-                'value': getattr(instancia, field.name)
+                'value': getattr(instancia, field.name),
+                'is_list': False
             })
         elif field.is_relation and field.name not in fields_exclude[instancia.__class__.__name__.lower()]:
             related_objects = getattr(instancia, field.name).all() if field.many_to_many else getattr(instancia, field.name)
             value = related_objects
             verbose_name = field.related_model._meta.verbose_name if hasattr(field, 'related_model') else field.verbose_name
+
+            #converter de QuerySet para lista
+            if field.many_to_many:
+                value = list(value)
+            elif value:
+                value = [value]
+                
             field_values.append({
                 'name': field.name,
                 'verbose_name': verbose_name,
                 'value': value,
+                'is_list': True
             })
     print(field_values)
     return field_values
@@ -111,18 +120,22 @@ def detalhar_instancia(request, classe, id):
 
 @login_required
 def editar_instancia(request, classe, id):
-    if classe in ['livro', 'genero', 'categoria', 'cliente', 'pedido']:
+    if classe in ['livro', 'genero', 'categoria', 'cliente', 'pedido', 'cupom']:
         instancia = eval(classe.capitalize()).objects.get(id=id)
+        h2 = get_h2(classe, instancia)
+        field_values = get_fields(instancia)
         
-        # find fields from instance that are a relation to another model
-        fields = instancia._meta.get_fields()
-        relacoes = {}
-        for field in fields:
-            if field.is_relation:
-                relacoes[field.name] = field.related_model.objects.all()
     else:
         instancia = None
-    return render(request, 'elibrosLoja/admin/editar_instancia.html', {'instancia': instancia, 'relacoes': relacoes})
+        field_values = []
+    
+    return render(request, 'elibrosLoja/admin/editar_instancia.html', {
+        'instancia': instancia,
+        'h2': h2,
+        'classe': classe,
+        'fields': field_values,
+        'disabled': True,
+    })
 
 @login_required
 def editar_instancia_postback(request, classe):
