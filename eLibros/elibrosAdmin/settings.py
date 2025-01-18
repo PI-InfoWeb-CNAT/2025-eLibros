@@ -21,8 +21,6 @@ INSTALLED_APPS = [
     # Third-party
     "allauth",
     "allauth.account",
-    "crispy_forms",
-    "crispy_bootstrap5",
     "django_extensions",
     'simple_history',
     # "debug_toolbar",
@@ -148,19 +146,11 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
-CRISPY_TEMPLATE_PACK = "bootstrap5"
-
-
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
 
 DEFAULT_FROM_EMAIL = "root@localhost"
 
-
 INTERNAL_IPS = ["127.0.0.1"]
-
 
 AUTH_USER_MODEL = "accounts.Usuario"
 
@@ -171,18 +161,20 @@ SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 LOGIN_REDIRECT_URL = "inicio"
 
-# https://django-allauth.readthedocs.io/en/latest/views.html#logout-account-logout
 ACCOUNT_LOGOUT_REDIRECT_URL = "inicio"
 
-# https://django-allauth.readthedocs.io/en/latest/installation.html?highlight=backends
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+ACCOUNT_FORMS = {
+    "login": "accounts.forms.CustomLoginForm",
+    "signup": "accounts.forms.CustomSignupForm",
+}
 
 ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
