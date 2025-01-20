@@ -10,7 +10,7 @@
         <h2 id="manter">{{ classe|capitalize }}s</h1>
 
         {% if botao %}
-        <a href="{% url '{{classe}}/criar' %}"><img src="{% static 'images/icons/Wplus.svg' %}" style="padding-right: 5px;">
+        <a href="{% url 'criar_instancia' classe=classe %}"><img src="{% static 'images/icons/Wplus.svg' %}" style="padding-right: 5px;">
              Adicionar {{classe}}</a>
         {% endif %}
     </section>
