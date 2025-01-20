@@ -14,17 +14,19 @@
 
 <body class="bodylogin">
   <header class="headerlogin">
-    <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logoacesso.png' %}"></a></h1>
+    <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logoacesso.png' %}" alt="logo eLibros"></a></h1>
   </header>
   <main>
     <section class="login">
       <figure><img src="{% static 'images/vetorlogin.png' %}"></figure>
       <div class="barraacesso"></div>
-      <form method="post" action="{% url 'account_login' %}">
+      <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
+        
+  
         {{ form.non_field_errors }}
         <div class="form-group">
-          <label for="username">Email</label>
+          <label for="login">Email</label>
           <div class="input-icon">
               <img src="{% static 'images/icons/user.png' %}" alt="User Icon" class="img-form">
               {{ form.login }}
@@ -36,7 +38,6 @@
           <div class="input-icon">
               <img src="{% static 'images/icons/lock.png' %}" alt="Lock Icon" class="img-form">
               {{ form.password }}
-              <img src="{% static 'images/icons/olho.png' %}" alt="Eye Icon" class="eye-icon">
           </div>
         </div>
 
@@ -49,11 +50,16 @@
         </div>
 
         <button type="submit">Entrar</button>
-        <p>Não possui uma conta? <a href="{% url 'account_signup' %}">Cadastrar</a></p>
+        <p>Não possui uma conta? <a href="{% url 'signup' %}">Cadastrar</a></p>
       </form>
     </section>
   </main>
 </body>
 
+{% block javascript %}
+<script type="text/javascript">
+  console.log("CSRF Token: {{ csrf_token }}");
+</script>
+{% endblock %}
 </html>
 
