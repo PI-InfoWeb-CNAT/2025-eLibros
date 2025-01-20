@@ -19,13 +19,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     # Third-party
-    "allauth",
-    "allauth.account",
     "django_extensions",
     'simple_history',
     # "debug_toolbar",
-    # Local
-    "accounts", #NÃO REMOVER
+   
+    "accounts", #
     "elibrosLoja",
 
 ]
@@ -40,8 +38,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",  # django-allauth
+    "django.middleware.clickjacking.XFrameOptionsMiddleware"
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
@@ -137,47 +134,37 @@ STORAGES = {
 }
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://studious-space-memory-gjv956xp45wfw7w6-8000.app.github.dev",
-    "https://*.app.github.dev",
-    "http://localhost:8000",
-    "https://localhost:8000",
-    "https://*.github.dev"
-]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 DEFAULT_FROM_EMAIL = "root@localhost"
 
-INTERNAL_IPS = ["127.0.0.1"]
+import socket
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 
 AUTH_USER_MODEL = "accounts.Usuario"
 
-# django-allauth config
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
+
 LOGIN_REDIRECT_URL = "inicio"
 
-ACCOUNT_LOGOUT_REDIRECT_URL = "inicio"
+CSRF_TRUSTED_ORIGINS = [
+'http://localhost',
+'https://localhost:8000',
+'https://studious-space-memory-gjv956xp45wfw7w6-8000.app.github.dev/'
+
+]
+
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+   
 )
 
-ACCOUNT_FORMS = {
-    "login": "accounts.forms.CustomLoginForm",
-    "signup": "accounts.forms.CustomSignupForm",
-}
 
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
 
-SESSION_SAVE_EVERY_REQUEST = True
