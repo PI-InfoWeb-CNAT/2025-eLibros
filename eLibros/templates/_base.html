@@ -18,48 +18,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   {% endblock %}
-  <script type="text/javascript">
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
 
-    // Set CSRF token for all AJAX requests
-    document.addEventListener('DOMContentLoaded', function() {
-        const csrftoken = getCookie('csrftoken');
-        if (csrftoken) {
-            const headers = new Headers({
-                'X-CSRFToken': csrftoken,
-            });
-            // Add CSRF token to all forms
-            document.querySelectorAll('form').forEach(form => {
-                if (!form.querySelector('input[name="csrfmiddlewaretoken"]')) {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'csrfmiddlewaretoken';
-                    input.value = csrftoken;
-                    form.appendChild(input);
-                }
-            });
-        }
-    });
-  </script>
+  
+
 </head>
 
 <body>
 
   <header>
-    <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logo.png' %}"></a></h1>
+    <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logo.png' %}" alt="eLibros logo"></a></h1>
     <nav>
       <ul class="navbar-ul">
         <li>
@@ -86,17 +53,17 @@
                       <a href="{% url 'perfil' %}">Meu perfil</a>
                   </li>
                   <li>
-                      <a id="sair" href="{% url 'account_logout' %}">Sair</a>
+                      <a id="sair" href="{% url 'logout' %}">Sair</a>
                   </li>
               </ul>
           </div>
         </li>
         {% else %}
         <li>
-          <a id="cadastrar" class="nav-link-expand" href="{% url 'account_signup' %}">Cadastrar</a>
+          <a id="cadastrar" class="nav-link-expand" href="{% url 'signup' %}">Cadastrar</a>
         </li>
         <li>
-          <a id="entrar" class="nav-link-expand" href="{% url 'account_login' %}">Entrar</a>
+          <a id="entrar" class="nav-link-expand" href="{% url 'login' %}">Entrar</a>
         </li>
         {% endif %}
         <li>
@@ -124,9 +91,11 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>-->
   <!-- Project JS -->
+  
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="{% static 'js/swiper.js' %}"></script>
   <script src="{% static 'js/base.js' %}"></script>
+  
   <script type="text/javascript">
     var csrfToken = "{{ csrf_token }}";
   </script>
