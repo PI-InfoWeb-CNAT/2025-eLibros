@@ -1,12 +1,17 @@
-from allauth.account.forms import LoginForm
+
+
 from django import forms
 
-class CustomLoginForm(LoginForm):
+
+
+
+class LoginForm(forms.Form):
+           
     login = forms.CharField(
         label="Email",
-        widget=forms.TextInput(attrs={
+        widget=forms.EmailInput(attrs={
             'id': 'username',
-            'name': 'username',
+            'name': 'login',
             'placeholder': 'Email',
             'class': 'form-control'
         })
@@ -29,5 +34,4 @@ class CustomLoginForm(LoginForm):
         })
     )
 
-    def login(self, *args, **kwargs):
-        return super(CustomLoginForm, self).login(*args, **kwargs)
+    
