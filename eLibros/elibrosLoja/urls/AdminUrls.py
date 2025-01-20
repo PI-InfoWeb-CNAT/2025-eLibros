@@ -1,20 +1,23 @@
 from django.urls import path
-from elibrosLoja.views import admin, listar_instancias, detalhar_instancia, editar_instancia, editar_instancia_postback, criar_instancia, excluir_instancia, excluir_instancia_postback
+import elibrosLoja.views.AdminViews as AdminViews
+
+
 
 urlpatterns = [
-    path("", admin, name="admin"),
+    path("", AdminViews.admin, name="admin"),
 
     # listagem das instância de uma classe
-    path("<str:classe>", listar_instancias, name="listar_instancias"),
+    path("<str:classe>", AdminViews.listar_instancias, name="listar_instancias"),
     
     # detalhes de uma instância
-    path("<str:classe>/<int:id>", detalhar_instancia, name="detalhar_instancia"),
+    path("<str:classe>/<int:id>", AdminViews.detalhar_instancia, name="detalhar_instancia"),
 
-    path("<str:classe>/editar/<int:id>", editar_instancia, name="editar_instancia"),
-    path("<str:classe>/editar/", editar_instancia_postback, name="editar_instancia_postback"),
+    path("<str:classe>/editar/<int:id>", AdminViews.editar_instancia, name="editar_instancia"),
+    path("<str:classe>/editar/", AdminViews.editar_instancia_postback, name="editar_instancia_postback"),
 
-    path("<str:classe>/criar", criar_instancia, name="criar_instancia"),
+    path("<str:classe>/criar", AdminViews.criar_instancia, name="criar_instancia"),
 
-    path("<str:classe>/excluir/<int:id>", excluir_instancia, name="excluir_instancia"),
-    path("<str:classe>/excluir/", excluir_instancia_postback, name="excluir_instancia_postback"),
+    path("<str:classe>/excluir/<int:id>", AdminViews.excluir_instancia, name="excluir_instancia"),
+    
+    path("<str:classe>/excluir/", AdminViews.excluir_instancia_postback, name="excluir_instancia_postback"),
 ]

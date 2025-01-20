@@ -1,7 +1,7 @@
 from django.urls import path
-from elibrosLoja.views import Inicio
+import elibrosLoja.views.LivroViews as LivroViews
 
 urlpatterns = [
-    path("", Inicio, name="inicio"),
+    path("", LivroViews.Inicio, name="inicio"),
 
 ]
