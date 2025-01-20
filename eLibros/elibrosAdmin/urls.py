@@ -7,13 +7,12 @@ from django.urls import path, include
 
 urlpatterns = [
     path("djangoadmin/", admin.site.urls),
-    path("accounts/", include("allauth.urls")),
+    path("accounts/", include("accounts.urls")),
     path("", include("elibrosLoja.urls.HomeUrls")),
     path("acervo/", include("elibrosLoja.urls.LivroUrls")),
     path("cliente/", include("elibrosLoja.urls.ClienteUrls")),
     path("carrinho/", include("elibrosLoja.urls.CarrinhoUrls")),
-    path("admin/", include("elibrosLoja.urls.AdminUrls")),
-    path("pedido/", include("elibrosLoja.urls.PedidoUrls")), 
+    path("admin/", include("elibrosLoja.urls.AdminUrls")) 
 ]
 
 if settings.DEBUG:
