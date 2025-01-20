@@ -14,12 +14,12 @@
                         <h3>Endereço de entrega</h3>
                         <div style="display: flex; gap: 3em;">
                             <label class="custom-radio">
-                                <input type="radio" name="options">
+                                <input type="radio" name="meu-endereco">
                                 <span class="radio-mark"></span>
                                 Meu endereço
                             </label>
                             <label class="custom-radio">
-                                <input type="radio" name="options">
+                                <input type="radio" name="outro-endereco">
                                 <span class="radio-mark"></span>
                                 Outro
                             </label>
@@ -103,7 +103,7 @@
                         <div>
                             <figure>
                                 {% for item in items %}
-                                <img src="{{ item.produto.imagem.url }}" alt="{{ item.produto.nome }}">
+                                <img src="{{ item.livro.capa.url }}" alt="{{ item.livro.titulo }}">
                                 {% endfor %}
                             </figure>
                             <div>
@@ -157,7 +157,35 @@
 </script>
 <script src="{% static 'js/cupom.js' %}">
 </script>
-<script src="{% static 'js/cep.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {  
+        const outroEnderecoDiv = document.querySelector('.outroendereco');
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+
+        if (outroEnderecoDiv) {
+            outroEnderecoDiv.style.display = 'none';
+
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    // Uncheck all other radio buttons
+                    radioButtons.forEach(otherRadio => {
+                        if (otherRadio !== radio) {
+                            otherRadio.checked = false;
+                        }
+                    });
+
+                    // Show/hide address form based on selection
+                    if (radio.name === 'outro-endereco') {
+                        outroEnderecoDiv.style.display = 'block';
+                    } else {
+                        outroEnderecoDiv.style.display = 'none';
+                    }
+                });
+            });
+        }
+    });
+</script>
+<script src="{% static 'js/base.js' %}"></script>
 {% endblock javascript %}
 
 
