@@ -98,4 +98,9 @@
             <p><a href="{% url 'acervo' %}">Ver mais</a></p>
     </section>
 </main>
+{% block javascript %}
+<script type="text/javascript">
+  console.log("CSRF Token: {{ csrf_token }}");
+</script>
+{% endblock %}
 {% endblock content %}
