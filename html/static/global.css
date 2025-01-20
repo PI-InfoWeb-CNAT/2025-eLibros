@@ -1128,7 +1128,7 @@ div.compra{
 
 .compra .itens div:nth-child(1){
     display: flex; 
-    gap: 2em;
+    gap: 5em;
 }
 
 .compra .itens > p{
