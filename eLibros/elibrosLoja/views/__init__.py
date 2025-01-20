@@ -1,5 +1,5 @@
 from .AdminViews import *
-from .LivroViews import *
-from .CarrinhoViews import *
-from .ClienteViews import *
-from .PedidoViews import *
+from .LivroViews import LivroViews
+from .CarrinhoViews import CarrinhoViews
+from .ClienteViews import ClienteViews
+
