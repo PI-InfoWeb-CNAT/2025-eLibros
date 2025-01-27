@@ -1,0 +1,51 @@
+<!-- {% load static %} -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- {% block styles %}{% endblock %} -->
+        <title>eLibros - {% block title %}{% endblock %}</title>
+        <!-- <link rel="stylesheet" href="{% static 'global.css' %}"> -->
+        <link rel="stylesheet" href="static/global.css">
+    </head>
+    <body>
+        <header>
+            <!-- <h1><a href="inicio.html"><img src="{% static 'images/logo.svg' %}"></a></h1> -->
+            <h1><a href="inicio.html"><img src="static/images/logo.png"></a></h1>
+            <nav>
+                <ul class="navbar-ul">
+                    <li>
+                        <a class="nav-link-normal active" href="inicio.html">Início</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-normal" href="acervo.html">Acervo</a>
+                    </li>
+                    <li>
+                        <a id="cadastrar" class="nav-link-expand" href="cadastrar.html">Cadastrar</a>
+                    </li>
+                    <li>
+                        <a id="entrar" class="nav-link-expand" href="entrar.html">Entrar</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section class="pagenotfound">
+                <div>
+                    <h3>ERRO 404</h3>
+                    <h2>OPS!</h2>
+                    <p>A página que você procura não foi encontrada. Pode ser que:</p><br>
+                    <ul>
+                        <li>A URL da página desejada foi digitada incorretamente</li>
+                        <li>A página desejada mudou de endereço ou não existe mais</li>
+                    </ul>
+                </div>
+                <figure><img src="static/images/carolina.png"></figure>
+            </section>
+        </main>
+        <footer >
+            <p>2024 Entregadores. Todos os direitos reservados</p>
+        </footer>
+    </body>
+</html>
