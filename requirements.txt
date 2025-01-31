@@ -2,13 +2,9 @@ asgiref
 certifi
 cffi
 charset-normalizer
-crispy-bootstrap5
 cryptography
 defusedxml
 Django
-django-allauth
-django-crispy-forms
-django-debug-toolbar
 gunicorn
 idna
 oauthlib
@@ -26,3 +22,6 @@ typing_extensions
 urllib3
 whitenoise
 dj-database-url
+six
+django-simple-history
+django-extensions
