@@ -11,14 +11,11 @@
             {% for pedido in pedidos_andamento %}
             <li>
                 <div>
-                 
-
-                        <figure class="item">
-                            {% with item=pedido.itens.first %}
-                            <img src="{{ item.livro.capa.url }}" alt="Capa do livro 1">
-                            {% endwith %}
-                        </figure>
-                 
+                    <figure class="item">
+                        {% with item=pedido.itens.first %}
+                        <img src="{{ item.livro.capa.url }}" alt="Capa do livro 1">
+                        {% endwith %}
+                    </figure>
                     <div>
                         <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
                         <p>
@@ -26,6 +23,22 @@
                             <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
                         </p>
                         <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
+                        <button class="botao-ver-detalhes" data-pedido-id="{{ pedido.numero_pedido }}">Ver detalhes</button>
+                        <div class="detalhes-pedido" id="detalhes-pedido-{{ pedido.numero_pedido }}" style="display: none;">
+                            <div>
+                                <p>Itens:</p>
+                                <ul>
+                                    {% for item in pedido.itens.all %}
+                                    <p>{{item}}</p>
+                                    {% endfor %}
+                                </ul>
+                                <p>Endereço de entrega:</p>
+                                <p>{{ pedido.endereco.rua }}, {{ pedido.endereco.numero }}</p>
+                                <p>{{ pedido.endereco.complemento }}</p>
+                                <p>{{ pedido.endereco.cep }}, {{ pedido.endereco.cidade }}</p>
+                                <button class="botao-ocultar-detalhes" data-pedido-id="{{ pedido.numero_pedido }}">Ocultar detalhes</button>
+                            </div>   
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -39,8 +52,8 @@
                         {% csrf_token %}
                         <button type="submit">Cancelar pedido</button>
                     </form>
-                    <button>Ver detalhes</button>
                 </div>
+                
             </li>
             {% endfor %}
             {% else %}
@@ -67,6 +80,20 @@
                             <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
                         </p>
                         <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
+                        <button class="botao-ver-detalhes" data-pedido-id="{{ pedido.numero_pedido }}">Ver detalhes</button>
+                        <div class="detalhes-pedido" id="detalhes-pedido-{{ pedido.numero_pedido }}" style="display: none;">
+                            <p>Itens:</p>
+                            <ul>
+                                {% for item in pedido.itens.all %}
+                                <p>{{item}}</p>
+                                {% endfor %}
+                            </ul>
+                            <p>Endereço de entrega:</p>
+                            <p>{{ pedido.endereco.rua }}, {{ pedido.endereco.numero }}</p>
+                            <p>{{ pedido.endereco.complemento }}</p>
+                            <p>{{ pedido.endereco.cep }}, {{ pedido.endereco.cidade }}</p>
+                            <button class="botao-ocultar-detalhes" data-pedido-id="{{ pedido.numero_pedido }}">Ocultar detalhes</button>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -91,7 +118,7 @@
                         </div>
                     </div>
                     <button>Rastrear pacote</button>
-                    <button>Ver detalhes</button>
+                    
                 </div>
             </li>
             {% endfor %}
@@ -119,12 +146,26 @@
                             <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
                         </p>
                         <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
+                        <button class="botao-ver-detalhes" data-pedido-id="{{ pedido.numero_pedido }}">Ver detalhes</button>
+                        <div class="detalhes-pedido" id="detalhes-pedido-{{ pedido.numero_pedido }}" style="display: none;">
+                            <p>Itens:</p>
+                            <ul>
+                                {% for item in pedido.itens.all %}
+                                <p>{{item}}</p>
+                                {% endfor %}
+                            </ul>
+                            <p>Endereço de entrega:</p>
+                            <p>{{ pedido.endereco.rua }}, {{ pedido.endereco.numero }}</p>
+                            <p>{{ pedido.endereco.complemento }}</p>
+                            <p>{{ pedido.endereco.cep }}, {{ pedido.endereco.cidade }}</p>
+                            <button class="botao-ocultar-detalhes" data-pedido-id="{{ pedido.numero_pedido }}">Ocultar detalhes</button>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <p>Entrega confirmada pelo cliente</p>
                     <p>Pedido entregue</p>
-                    <button>Ver detalhes</button>
+                    
                 </div>
             </li>
             {% endfor %}
@@ -134,10 +175,56 @@
             </div>
             {% endif %}
         </ul>
+
+        <h3>Cancelados</h3>
+        <ul>
+            {% if pedidos_cancelados %}
+            {% for pedido in pedidos_cancelados %}
+            <li>
+                <div>
+                    <figure class="item">
+                        {% for item in pedido.itens.all %}
+                        <img src="{{ item.livro.capa.url }}" alt="Capa do livro 1">
+                        {% endfor %}
+                    </figure>
+                    <div>
+                        <p>PEDIDO N°{{ pedido.numero_pedido }}</p>
+                        <p>
+                            <span class="moeda-cart">R$</span>
+                            <b><span class="preco-maior-cart">{{ pedido.valor_total }}</b>
+                        </p>
+                        <p>Pedido realizado dia {{ pedido.data_de_pedido }}</p>
+                        <button class="botao-ver-detalhes" data-pedido-id="{{ pedido.numero_pedido }}">Ver detalhes</button>
+                        <div class="detalhes-pedido" id="detalhes-pedido-{{ pedido.numero_pedido }}" style="display: none;">
+                            <p>Itens:</p>
+                            <ul>
+                                {% for item in pedido.itens.all %}
+                                <p>{{item}}</p>
+                                {% endfor %}
+                            </ul>
+                            <p>Endereço de entrega:</p>
+                            <p>{{ pedido.endereco.rua }}, {{ pedido.endereco.numero }}</p>
+                            <p>{{ pedido.endereco.complemento }}</p>
+                            <p>{{ pedido.endereco.cep }}, {{ pedido.endereco.cidade }}</p>
+                            <button class="botao-ocultar-detalhes" data-pedido-id="{{ pedido.numero_pedido }}">Ocultar detalhes</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p>Pedido cancelado</p>                    
+                </div>
+            </li>
+            {% endfor %}
+            {% else %}
+            <div>
+                <p>Nenhum pedido cancelado</p>
+            </div>
+            {% endif %}
+        </ul>
     </section>
 </main>
 {% block javascript %}
-<script src="{% static 'js/modal.js' %}"></script>
+<script src="{% static 'js/ver_detalhes.js' %}"></script>
 {% endblock javascript %}
 
 {% endblock content %}
