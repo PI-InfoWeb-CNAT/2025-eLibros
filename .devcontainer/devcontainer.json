@@ -16,7 +16,7 @@
 	"postCreateCommand": "pip install --user -r requirements.txt",
 
 	"postAttachCommand": {
-    	"server": " python eLibros/manage.py migrate && python eLibros/manage.py runserver 8000",
+    	"server": "cd eLibros && python manage.py runserver 8000",
 		"makePortsPublic": "gh codespace ports visibility 5050:public -c $CODESPACE_NAME && gh codespace ports visibility 8000:public -c $CODESPACE_NAME"
   	},
 
@@ -49,8 +49,10 @@
 			"extensions": [
 			  "ms-python.python",
 			  "ms-python.vscode-pylance",
-			  "ms-azuretools.vscode-docker",
-			  "github.copilot"
+			//   "ms-azuretools.vscode-docker",
+			  "github.copilot",
+			  "ms-vsliveshare.vsliveshare",
+			  "qwtel.sqlite-viewer"
 			]
 		  }
 	},
