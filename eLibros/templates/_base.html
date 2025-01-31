@@ -92,13 +92,10 @@
     crossorigin="anonymous"></script>-->
   <!-- Project JS -->
   
+  <script src="{% static 'js/base.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="{% static 'js/swiper.js' %}"></script>
-  <script src="{% static 'js/base.js' %}"></script>
-  
-  <script type="text/javascript">
-    var csrfToken = "{{ csrf_token }}";
-  </script>
+
   {% endblock javascript %}
 </body>
 </html>
