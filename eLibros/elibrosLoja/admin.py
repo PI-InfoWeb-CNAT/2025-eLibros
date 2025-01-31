@@ -27,12 +27,12 @@ class EnderecoAdmin(SimpleHistoryAdmin):
 class LivroAdmin(CustomSimpleHistoryAdmin):
     readonly_fields = ['img_preview']
     
-    list_display = ['titulo','img_preview', 'get_autores_display', 'editora', 'preco', 'get_generos_literarios', 'get_categorias']
+    list_display = ['titulo','img_preview', 'get_autores_display', 'editora', 'preco', 'get_generos', 'get_categorias']
 
 
-    def get_generos_literarios(self, obj):
-        return ", ".join([genero.nome for genero in obj.genero_literario.all()])
-    get_generos_literarios.short_description = 'Gêneros Literários'
+    def get_generos(self, obj):
+        return ", ".join([genero.nome for genero in obj.genero.all()])
+    get_generos.short_description = 'Gêneros Literários'
 
     def get_categorias(self, obj):
         return ", ".join([categoria.nome for categoria in obj.categoria.all()])
@@ -87,7 +87,7 @@ class PedidoAdmin(CustomSimpleHistoryAdmin):
         obj._history_user = administrador
         super().save_model(request, obj, form, change)
 
-class GeneroTextualAdmin(CustomSimpleHistoryAdmin):
+class GeneroAdmin(CustomSimpleHistoryAdmin):
     def save_model(self, request, obj, form, change):
         try:
             administrador = Administrador.objects.get(user=request.user)
@@ -99,7 +99,7 @@ class GeneroTextualAdmin(CustomSimpleHistoryAdmin):
         obj._history_user = administrador
         super().save_model(request, obj, form, change)
 
-class GeneroLiterarioAdmin(CustomSimpleHistoryAdmin):
+class GeneroAdmin(CustomSimpleHistoryAdmin):
     def save_model(self, request, obj, form, change):
         try:
             administrador = Administrador.objects.get(user=request.user)
@@ -145,7 +145,7 @@ admin.site.register(Livro, LivroAdmin)
 admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(Carrinho, CarrinhoAdmin)
 admin.site.register(ItemCarrinho, ItemCarrinhoAdmin)
-admin.site.register(GeneroLiterario, GeneroLiterarioAdmin)
+admin.site.register(Genero, GeneroAdmin)
 admin.site.register(Categoria, CategoriaAdmin)
 admin.site.register(Cupom, CupomAdmin)
 admin.site.register(Autor, AutorAdmin)

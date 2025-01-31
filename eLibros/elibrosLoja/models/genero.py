@@ -3,7 +3,7 @@ from elibrosLoja.models.administrador import Administrador
 from simple_history.models import HistoricalRecords
 
 
-class GeneroLiterario(models.Model):
+class Genero(models.Model):
     nome = models.CharField(unique=True, max_length=50)
 
     criado_por = models.ForeignKey(Administrador, on_delete=models.SET_NULL, related_name='generos_criados', null=True, blank=True)
@@ -25,5 +25,5 @@ class GeneroLiterario(models.Model):
         return self.nome
     
     class Meta:
-        verbose_name = "Gênero Literário"
-        verbose_name_plural = "Gêneros Literários"
+        verbose_name = "Gênero"
+        verbose_name_plural = "Gêneros"
