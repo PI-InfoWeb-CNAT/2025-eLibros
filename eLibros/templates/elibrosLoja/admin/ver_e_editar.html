@@ -37,7 +37,7 @@
         {% if classe == 'livro' %}
             <figure>
                 {% if instancia.capa %}
-                    <img src={{instancia.capa.url}}>         
+                    <img class="capa" src={{instancia.capa.url}}>         
                 {% else %}
                     <img src="{% static 'images/placeholder.png' %}">            
                 {% endif %}
