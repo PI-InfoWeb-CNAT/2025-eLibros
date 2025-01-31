@@ -9,7 +9,6 @@ from validators import *
 class Cliente(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     endereco = models.ForeignKey(Endereco, blank=True, on_delete=models.SET_NULL, null=True)
-    
     criado_por = models.ForeignKey(Administrador, on_delete=models.SET_NULL, related_name='clientes_criados', null=True, blank=True)
     historico = HistoricalRecords(user_model=Administrador)
 

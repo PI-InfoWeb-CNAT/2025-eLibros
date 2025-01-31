@@ -1,0 +1,32 @@
+<div>
+    <div>
+        {% for livro in lista_livros %}
+        <div class="swiper-slide">              
+            <a href="{% url 'livro' id=livro.id %}">
+            <div>
+                <figure>
+                    {% if livro.capa %}
+                    <img src="{{ livro.capa.url }}">
+                    {% else %}
+                    <img src="{% static 'images/placeholder.png' %}" width="100px">
+                    {% endif %}
+                </figure>
+                <div>
+                    <h3>
+                        {{ livro.get_titulo_display }}
+                        {% if livro.subtitulo %}
+                        <br>
+                        <span>{{ livro.get_subtitulo_display }}</span>
+                        <br>
+                        {% endif %}
+                    </h3>
+                    <p>{{ livro.get_primeiro_autor }}</p>
+                    <p>{{ livro.preco }}</p>
+                    <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
+                </div>
+            </div>
+            </a>
+        </div>
+        {% endfor %}   
+    </div>
+</div>

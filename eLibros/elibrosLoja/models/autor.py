@@ -5,6 +5,7 @@ from simple_history.models import HistoricalRecords
 class Autor(models.Model):
     nome = models.CharField(max_length=100)
 
+
     criado_por = models.ForeignKey(Administrador, on_delete=models.SET_NULL, related_name='autores_criados', null=True, blank=True)
     historico = HistoricalRecords(user_model=Administrador)
 
