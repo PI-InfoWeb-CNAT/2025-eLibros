@@ -181,6 +181,9 @@ class CarrinhoViews:
 
             
             subtotal = sum([item.livro.preco * item.quantidade for item in items])
+            
+            sum([item.livro.qtd_vendidos + item.quantidade for item in items])
+
             frete = Decimal(request.session.get('frete', 0))
             desconto = Decimal(request.session.get('desconto', 0))
             valor_total = subtotal - desconto + frete
@@ -196,6 +199,7 @@ class CarrinhoViews:
                 quantia_itens=sum([item.quantidade for item in items]),
             )
 
+        
             
             for item in items:
                 pedido.itens.add(item)
