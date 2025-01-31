@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var nextButton = document.querySelector("#swiper-button-next-" + category);
     var prevButton = document.querySelector("#swiper-button-prev-" + category);
     var pagination = document.querySelector("#swiper-pagination-" + category);
+    console.log("Swiper: " + swiperEl);
+    console.log("Next: " + nextButton);
+    console.log("Prev: " + prevButton);
+    console.log("Pagination: " + pagination);
 
 
     new Swiper(swiperEl, {
