@@ -3,7 +3,9 @@
 {% block title %}Forbidden (403){% endblock title %}
 
 {% block content %}
+<main style="flex: 1;">
 <h1>Forbidden (403)</h1>
 <p>{{reason}}</p>
 <p>CSRF verification failed. Request aborted.</p>
+</main>
 {% endblock content %}
