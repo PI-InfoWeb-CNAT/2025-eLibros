@@ -2,10 +2,10 @@
 {% load static %}
 {% block title %}eLibros - Carrinho{% endblock title %}
 {% block content %}
-<main>
+<main style="flex: 1;">
     <section class="meucarrinho">
         {% if not items %}
-            <p id="carrinhovazio">Seu carrinho está vazio.</p>
+            <p id="carrinhovazio" style="text-align: center;">Seu carrinho está vazio.</p>
         
         {% else %}
         <h2>Meu Carrinho</h2>
