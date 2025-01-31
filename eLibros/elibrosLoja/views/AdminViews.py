@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from elibrosLoja.models import Livro, Pedido, GeneroLiterario, Categoria
+from elibrosLoja.models import Livro, Pedido, Genero, Categoria, Cliente
 
 class AdminViews:
 
@@ -42,7 +42,7 @@ class AdminViews:
             else:
                 h2 = instancia.user.email
         elif classe == 'pedido':
-            h2 = instancia.id
+            h2 = instancia.numero_pedido
         elif classe == 'cupom':
             h2 = instancia.codigo
 
@@ -87,11 +87,14 @@ class AdminViews:
     
     @login_required
     def listar_instancias(request, classe):
+        print(f'Classe: {classe}')
 
         botao = False
 
         if classe in ['livro', 'genero', 'categoria', 'cliente', 'pedido']:
             instancias = eval(classe.capitalize()).objects.all()
+            print(classe)
+           
         else:
             instancias = []
 
@@ -109,7 +112,10 @@ class AdminViews:
     @login_required
     def detalhar_instancia(request, classe, id):
         if classe in ['livro', 'genero', 'categoria', 'cliente', 'pedido', 'cupom']:
-            instancia = eval(classe.capitalize()).objects.get(id=id)
+            if classe == "pedido":
+                instancia = Pedido.objects.get(numero_pedido=id)
+            else:
+                instancia = eval(classe.capitalize()).objects.get(id=id)
             h2 = AdminViews.get_h2(classe, instancia)
             field_values = AdminViews.get_fields(instancia)
             
