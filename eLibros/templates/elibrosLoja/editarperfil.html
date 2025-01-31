@@ -1,0 +1,47 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Editar Perfil{% endblock title %}
+{% block content %}
+
+  <main class="editar-perfil">
+    <div class="profile-container">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="profile-photo">
+          {% if cliente.user.foto_de_perfil %}
+            <img src="{{ cliente.user.foto_de_perfil.url }}" alt="Profile Picture"> 
+          {% else %}
+            <img src="{% static 'images/usuario.png' %}" alt="Profile Picture">
+          {% endif %} 
+          <button>Mudar foto de perfil</button>
+        </div>
+        <div class="profile-info">
+          <label for="username">Nome de usuário</label>
+          <input type="text" id="username" name="username" value="{{ cliente.user.username }}">
+
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" value="{{ cliente.user.email }}">
+
+          <label for="phone">Telefone</label>
+          <input type="text" id="phone" name="phone" value="{{ cliente.user.telefone }}">
+
+          <label for="genero">Identidade de gênero</label>
+            <select id="genero" name="genero">
+              <option value="0" {% if cliente.user.genero == "0" %}selected{% endif %}>Masculino</option>
+              <option value="1" {% if cliente.user.genero == "1" %}selected{% endif %}>Feminino</option>
+              <option value="2" {% if cliente.user.genero == "2" %}selected{% endif %}>Não-binário</option>
+              <option value="3" {% if cliente.user.genero == "3" %}selected{% endif %}>Prefiro não dizer</option>
+            </select>
+
+          <label for="address">Endereço</label>
+          <input type="text" id="address" name="address" value="{{ cliente.endereco }}">
+
+          <div class="profile-actions">
+            <button type="reset" class="reset">Redefinir</button>
+            <button type="submit" class="save">Salvar alterações</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+{% endblock content %}
