@@ -16,6 +16,8 @@ class Usuario(AbstractUser):
     CPF = models.CharField(blank=False, null=False, max_length=14, default="000.000.000-00")
     email = models.EmailField(_("email address"), unique=True)
 
+    email_is_verified = models.BooleanField(default=False)
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
@@ -34,8 +36,8 @@ class Usuario(AbstractUser):
     )
 
     telefone = models.CharField(max_length=15, blank=False, null=False, default="(00) 00000-0000")
-    genero = models.CharField(max_length=20, choices=genero_choices, default="NI", null=False, blank=False, verbose_name="Identidade de gênero")
-    dt_nasc = models.DateField(blank=False, null=False, verbose_name="Data de Nascimento", default="2000-01-01")
+    genero = models.CharField(max_length=20, choices=genero_choices, default="NI", null=True, blank=False, verbose_name="Identidade de gênero")
+    dt_nasc = models.DateField(blank=False, null=True, verbose_name="Data de Nascimento", default="2000-01-01")
 
     def __str__(self):
         return self.email
