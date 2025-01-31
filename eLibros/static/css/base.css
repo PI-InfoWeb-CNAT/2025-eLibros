@@ -4,6 +4,12 @@ body {
   width: 100%;
 }
 
+html, body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .input_quantia_produtos {
   margin: 0 auto;
   text-align: center;
@@ -965,24 +971,35 @@ div#filter label {
   gap: 5px;
 }
 
-div#select {
+div.select {
   display: flex;
   align-items: center;
   gap: 5px;
   font-size: 1em;
 }
 
-div#select select {
+div.select select {
   background-color: transparent;
   border: 1px solid #FFFFF5;
 }
 
-div#select select:focus {
+div.select select:focus {
   outline: none;
+}
+
+#data-inclusao {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 
 /* Administração eLibros */
+
+.capa {
+  width: 20em;
+}
+
 
 
 .paginasadmincontainer {
@@ -1236,6 +1253,10 @@ ul.crud2 #excluir {
   padding: 0;
 }
 
+.pedidos ul div:nth-child(2){
+  margin-bottom: 8em;
+}
+
 /*ok*/
 .pedidos h3{
   border-top: 1px solid black;
@@ -1266,10 +1287,16 @@ ul.crud2 #excluir {
 
 .pedidos ul figure{
   margin-right: 2em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8em;
+  width: 13em;
+  height: 20em;
 }
 
 .pedidos ul figure img{
-  width: 8em;
+  width: 6em;
+  height: 10em;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
 }
 
@@ -1337,6 +1364,7 @@ ul.crud2 #excluir {
   justify-items: flex-end;
 }
 
+
 .pedidos ul li button{
   width: 16em;
   border: none;
@@ -1350,6 +1378,34 @@ ul.crud2 #excluir {
 
 .pedidos ul li button.amarelo{
   background-color: #FFDB70;
+}
+
+.detalhes-pedido{
+  display: flex;
+  flex-direction: column;
+}
+
+.detalhes-pedido div{
+  display: flex;
+  flex-direction: column;
+}
+
+.detalhes-pedido p{
+  font-size:16px !important;
+  color: #6A6A6A;
+  font-weight: 400;
+  opacity: 0.5;
+  margin: 0 !important;
+}
+
+.detalhes-pedido .botao-ocultar-detalhes {
+  justify-self: flex-end;
+  margin-top: auto;
+}
+
+.item img {
+  width: 100px; /* Ajuste o tamanho conforme necessário */
+  height: auto;
 }
 
 .compra {
@@ -1410,15 +1466,16 @@ div.compra{
 }
 
 .compra div div figure{
-  width: 30em;
+  width: 13em;
+  height: 20em;
   display: flex;
   flex-wrap: wrap;
   gap: 0.8em;
-  margin-right: 1em;
 }
 
 .compra div div div figure img{
-  width: 5em;
+  width: 6em;
+  height: 10em;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 -4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -1708,6 +1765,11 @@ div.compra{
   margin-right: 20px;
 }
 
+.login figure{
+ align-items: center;
+ justify-content: center;
+}
+
 .login form{
   display: flex;
   flex-direction: column;
@@ -1857,3 +1919,240 @@ div.compra{
 .infologin input{
   width: 20em;
 }
+
+/* verificar email etapa */
+.h2-autenticacao {
+  color: #1C1607;
+  margin-bottom: 1em;
+}
+
+.secao-autenticacao input{
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 3px;
+  padding: 0.8em 3em 0.8em 2em;
+  width: 80%;
+  margin-top: 5px;
+  padding-left: 2.5em;
+}
+
+.secao-autenticacao{
+  background-color: #FFFFF5;
+  width: 20em;
+  max-height: 17em;
+  margin: 0 auto;
+  padding: 4em 5em;
+  border-radius: 6px;
+  margin-top: 0em;
+  font-family: Poppins;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.secao-autenticacao p {
+  font-size: 0.7em;
+  margin-bottom: 2.5em;
+}
+
+.secao-autenticacao input[type="submit"] {
+  text-align: center;
+  padding: 0.5em 2em;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.secao-autenticacao div {
+  text-align: left;
+}
+
+.secao-autenticacao button{
+    background-color: #1C1607;
+    color: #FFFFFF;
+    text-align: center;
+    border: none;
+    border-radius: 6px;
+    font-size: 20px;
+    font-weight: 300;
+    margin-top: 1em;
+    width: 100%;
+    height: 20%;
+    padding: 0.50em 3.5em;
+    cursor: pointer;
+}
+
+.secao-autenticacao form label{
+  color: #1C1607;
+  font-size: 17px;
+}
+
+/* Editar perfil */
+
+.profile-container {
+  background-color: #EAE7DB;
+  width: 90%;
+  max-width: 900px;
+  border-radius: 10px;
+  padding: 2rem;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.profile-container .profile-photo {
+  text-align: center;
+}
+
+.profile-container .profile-photo img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: block;
+  margin: 0 auto;
+}
+
+.profile-container .profile-photo button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #FFD966;
+  border: none;
+  border-radius: 5px;
+  color: #2F2A1D;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.profile-container .profile-photo button:hover {
+  background-color: #E6C557;
+}
+
+.profile-container .profile-info label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.profile-container .profile-info input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #F9F7EF;
+}
+
+.profile-container .profile-info select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #F9F7EF;
+}
+
+.profile-container .profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-container .profile-actions button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-container .profile-actions .reset {
+  background-color: #D9D9D9;
+  color: #2F2A1D;
+  font-weight: bold;
+}
+
+.profile-container .profile-actions .save {
+  background-color: #FFD966;
+  color: #2F2A1D;
+  font-weight: bold;
+}
+@media (max-width: 768px) {
+  .profile-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .profile-container .profile-info {
+    text-align: left;
+  }
+
+  .profile-container .profile-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .profile-container .profile-actions button {
+    flex: 1;
+    max-width: 200px;
+  }
+}
+
+/* .password_reset input{
+  border: 1px solid #E5E7EB;
+  border-radius: 3px;
+  padding: 1em 3em 1em 2em;
+  width: 80%;
+  margin-top: 5px;
+  padding-left: 2.5em;
+} */
+
+.editar-perfil {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 120px);
+  padding: 2rem;
+}
+
+/* parte do guru autenticação (senha e e-mail) */
+section .secao-autenticacao {
+  font-size: 62.5%;
+  width: 70vw;
+  max-height: 46.1rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #eee;
+  border: 2px solid black;
+  text-align: center;
+}
+
+.left-wrapper-mail h3 {
+  letter-spacing: 1px;
+  font-size: 1.6em;
+  margin-bottom: .8em;
+  text-align: center;
+}
+
+.left-wrapper-mail p {
+  margin-bottom: 5em;
+  text-align: center;
+}
+
+.btn-verify-mail {
+  color:white;
+  background-color: black;
+  padding: 12px 45px;
+  border-radius: 6px;
+  margin-top: 50px;
+  width: 362px;
+  font-size:.8em;
+  text-align: center;
+  margin-left: 35px
+}
+
+.bordacinza {
+  border-right: 2px solid black;
+}
+
