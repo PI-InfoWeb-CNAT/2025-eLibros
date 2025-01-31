@@ -21,7 +21,6 @@ INSTALLED_APPS = [
     # Third-party
     "django_extensions",
     'simple_history',
-    # "debug_toolbar",
    
     "accounts", #
     "elibrosLoja",
@@ -136,9 +135,14 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-DEFAULT_FROM_EMAIL = "root@localhost"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "noreply.elibros@gmail.com"
+EMAIL_HOST_PASSWORD = "oqnn mame ddsd ybsv"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "noreply.elibros@gmail.com"
+EXPIRE_AFTER = "1h" 
 
 import socket
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
@@ -153,12 +157,12 @@ SITE_ID = 1
 
 LOGIN_REDIRECT_URL = "inicio"
 
-CSRF_TRUSTED_ORIGINS = [
-'http://localhost',
-'https://localhost:8000',
-'https://studious-space-memory-gjv956xp45wfw7w6-8000.app.github.dev/'
+CSRF_COOKIE_SECURE = False
 
-]
+if 'CODESPACE_NAME' in os.environ:
+    codespace_name = os.getenv("CODESPACE_NAME")
+    codespace_domain = os.getenv("GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN")
+    CSRF_TRUSTED_ORIGINS = [f'https://{codespace_name}-8000.{codespace_domain}', 'https://localhost:8000']
 
 
 AUTHENTICATION_BACKENDS = (
@@ -166,5 +170,34 @@ AUTHENTICATION_BACKENDS = (
    
 )
 
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'accounts': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
