@@ -37,6 +37,8 @@ class Pedido(models.Model):
 
     historico = HistoricalRecords(user_model=Administrador)
 
+    data_de_cancelamento = models.DateTimeField(null=True, blank=True)
+
     @property
     def _history_user(self):
         return self.criado_por
