@@ -72,5 +72,6 @@
 </main>
 <script>
     const cartUpdateUrl = "{% url 'atualizar_carrinho' %}";
+    var csrfToken = "{{ csrf_token }}";
 </script>
 {% endblock content %}
