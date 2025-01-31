@@ -1,5 +1,5 @@
 from django.urls import path
-import elibrosLoja.views.CarrinhoViews as CarrinhoViews
+from elibrosLoja.views import CarrinhoViews
 
 urlpatterns = [
     path("", CarrinhoViews.ver_carrinho, name="carrinho"), 
