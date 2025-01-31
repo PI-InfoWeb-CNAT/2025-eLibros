@@ -19,12 +19,12 @@
             <div>
                 <img src="{% static 'images/icons/missao.svg' %}">
                 <h3>Missão</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <p>Aumentar a visibilidade dos livros nacionais!</p>
             </div>
             <div>
                 <img src="{% static 'images/icons/visao.svg' %}">
                 <h3>Visão</h3>
-                <p>Placeat omnis modi expedita, quis optio harum ullam sint fuga.</p>
+                <p>Vender livros brasileiros em escala internacional.</p>
             </div>
         </div>
     </section>
@@ -61,7 +61,7 @@
 
     <section class="livros">
         <h2>Indicações eLibros</h2>
-        <div class="swiper Indicacoes-Elibros">
+        <div class="swiper {{catOUgen_clean}}">
             <div class="swiper-wrapper">
                 {% for livro in livros %}
                 <div class="swiper-slide">              
@@ -91,16 +91,12 @@
             </div>
             
             
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination" id="swiper-pagination-{{catOUgen_clean}}"></div>
+            <div class="swiper-button-prev" id="swiper-button-prev-{{catOUgen_clean}}"></div>
+            <div class="swiper-button-next" id="swiper-button-next-{{catOUgen_clean}}"></div>
         </div>
-            <p><a href="{% url 'acervo' %}">Ver mais</a></p>
+            <p><a href="{% url 'acervo' %}" style="color: black; text-decoration: underline; margin-top: 3em; font-size: 18px;">Ver mais</a></p>
     </section>
 </main>
-{% block javascript %}
-<script type="text/javascript">
-  console.log("CSRF Token: {{ csrf_token }}");
-</script>
-{% endblock %}
+
 {% endblock content %}
