@@ -45,7 +45,7 @@
         {% for dicionario in lista_livros %}
         <h2>{{ dicionario.catOUgen.nome }}</h2>
 
-        <div class="swiper {{dicionario.catOUgen.id}}">
+        <div class="swiper {{dicionario.catOUgen.id}}" data-category="{{dicionario.catOUgen_clean}}">
             <div class="swiper-wrapper">
                 {% for livro in dicionario.livros %}
                 <div class="swiper-slide">              

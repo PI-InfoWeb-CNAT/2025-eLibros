@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   var swipers = document.querySelectorAll('.swiper');
   swipers.forEach(function (swiperEl) {
-    var category = swiperEl.classList[1];
+    var category = swiperEl.dataset.category;
     var nextButton = document.querySelector("#swiper-button-next-" + category);
     var prevButton = document.querySelector("#swiper-button-prev-" + category);
     var pagination = document.querySelector("#swiper-pagination-" + category);
