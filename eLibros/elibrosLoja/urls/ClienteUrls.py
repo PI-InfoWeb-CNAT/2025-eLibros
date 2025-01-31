@@ -1,10 +1,10 @@
 from django.urls import path
-import elibrosLoja.views.ClienteViews as ClienteViews
+from elibrosLoja.views import ClienteViews
 
 urlpatterns = [
     path("", ClienteViews.perfil, name="perfil"),
+    path("editar/", ClienteViews.editar_perfil, name="editar_perfil"),
     path("adicionar_endereco/", ClienteViews.adicionar_endereco, name="adicionar_endereco"),
-    path("pedidos/", ClienteViews.pedidos, name="pedidos"),
-    path('cancelar-pedido/<str:numero_pedido>/', ClienteViews.cancelar_pedido, name='cancelar_pedido'),
-    path('confirmar-recebimento/<str:numero_pedido>/', ClienteViews.confirmar_recebimento, name='confirmar_recebimento'),
+    path("editar_endereco/<int:id_endereco>/", ClienteViews.editar_endereco, name="editar_endereco"),
+    path("excluir_endereco/<int:id_endereco>/", ClienteViews.excluir_endereco, name="excluir_endereco"),
 ]
