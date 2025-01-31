@@ -1,5 +1,8 @@
-from elibrosLoja.models import Livro, Categoria, GeneroLiterario
-from django.shortcuts import render, get_object_or_404 
+from elibrosLoja.models import Livro, Categoria, Genero
+from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 import random
 import re
 
@@ -12,7 +15,7 @@ class LivroViews:
         cliente = request.user
         livro = request.GET.get('livro')
         livros = Livro.objects.all()
-        generos = GeneroLiterario.objects.all()
+        generos = Genero.objects.all()
 
         livros_filtrados = []
         
@@ -28,37 +31,42 @@ class LivroViews:
                     'genero': genero.nome,
                     'livros': livros.filter(genero_literario=genero),
                 })
+
+        # categoria = Categoria.objects.get(nome='Indicações do eLibros')
         # livros_indicacoes = None
         # if livros.filter(categoria=Categoria.objects.get(nome='Indicações do eLibros')).exists(): 
-        #     livros_indicacoes = livros.filter(categoria=Categoria.objects.get(nome='Indicações do eLibros'))
+        #     livros_indicacoes = livros.filter(categoria=categoria)
         # else: pass
 
         context = {
             'livros': livros,
             # 'livros_indicacoes': livros_indicacoes,
-            'livros_filtrados_por_genero': livros_filtrados,
+            'catOUgen_clean': remove_special_characters('Indicações do eLibros'),
+            # 'catOUgen': categoria,
+            # 'livros_filtrados_por_genero': livros_filtrados,
             'cliente': cliente,
         }
 
         return render(request, 'elibrosLoja/inicio.html', context=context, status=200)
 
-    def acervo(request):
-        
+    def acervo(request):     
         livros = Livro.objects.all()
 
+        pesquisa = request.GET.get('pesquisa', '')
+        if pesquisa:
+            return redirect('explorar', busca=pesquisa)
 
-        generos = list(GeneroLiterario.objects.all())
+        generos = list(Genero.objects.all())
         genero = random.choice(generos)
 
         while not livros.filter(genero_literario=genero).exists():
             genero = random.choice(generos)
         else:
             livros_genero = {
-                'categoria_clean': remove_special_characters(genero.nome),
-                'categoria': 'Livros de ' + genero.nome,
+                'catOUgen_clean': remove_special_characters(genero.nome),
+                'catOUgen': genero,
                 'livros': livros.filter(genero_literario=genero),
             }
-    
 
         lista_livros = []
         categorias = Categoria.objects.all()
@@ -66,17 +74,17 @@ class LivroViews:
         for categoria in categorias:
             if livros.filter(categoria=categoria).exists():
                 lista_livros.append({
-                    'categoria_clean': remove_special_characters(categoria.nome),
-                    'categoria': categoria.nome,
+                    'catOUgen_clean': remove_special_characters(categoria.nome),
+                    'catOUgen': categoria,
                     'livros': livros.filter(categoria=categoria),
                 })
-        
+
         lista_livros.append(livros_genero)
         random.shuffle(lista_livros)
-        
 
         context = {
-            'lista_livros': lista_livros
+            'lista_livros': lista_livros,
+            'generos': Genero.objects.all(),
         }
         return render(request, 'elibrosLoja/acervo.html', context=context, status=200)
 
@@ -97,3 +105,41 @@ class LivroViews:
             'preco_com_desconto': preco_com_desconto,
             'cliente': cliente,}
         return render(request, 'elibrosLoja/livro.html', context=context)
+
+    def explorar(request, busca=None):
+        
+        livros = Livro.objects.all()
+        busca = request.GET.get('pesquisa', '')
+        print(busca)
+
+        if busca:
+            livros = Livro.objects.filter(
+            Q(titulo__icontains=busca) |
+            Q(autor__nome__icontains=busca)
+        ).distinct()
+
+            if not livros.exists():
+                livros = Livro.objects.all()
+
+        genero = request.GET.get('genero', '')
+        data = request.GET.get('data', '')
+        if genero:
+           livros = livros.filter(genero_literario__nome=genero)
+        if data:
+            if data == "+":
+                livros = livros.filter(ano_de_publicacao__gt=2010)
+            else:
+                data = int(data)
+                livros= livros.filter(
+                    ano_de_publicacao__gte=data,
+                    ano_de_publicacao__lt=data+10
+                )
+        
+        generos = Genero.objects.all()
+        context = {
+            'lista_livros': livros,
+            'generos': generos
+        }
+        
+        return render(request, 'elibrosLoja/explorar.html', context=context)
+
