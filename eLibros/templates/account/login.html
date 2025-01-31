@@ -1,30 +1,23 @@
+{% extends './_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>{% block title %}eLibros - Entrar{% endblock title %}</title>
-  {% block css %}
-  <link rel="stylesheet" href="{% static 'css/base.css' %}">
-  {% endblock %}
-</head>
+{% block title %}eLibros - Entrar{% endblock %}
 
+{% block content %}
 
-<body class="bodylogin">
   <header class="headerlogin">
     <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logoacesso.png' %}" alt="logo eLibros"></a></h1>
   </header>
   <main>
     <section class="login">
-      <figure><img src="{% static 'images/vetorlogin.png' %}"></figure>
+      <figure><img src="{% static 'images/vetorlogin.png' %}" style="width: 80%; height: 80%;"></figure>
       <div class="barraacesso"></div>
       <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         
-  
+        
         {{ form.non_field_errors }}
+        <span class="mensagem-erro">{{message.text}}</span>
         <div class="form-group">
           <label for="login">Email</label>
           <div class="input-icon">
@@ -51,15 +44,10 @@
 
         <button type="submit">Entrar</button>
         <p>Não possui uma conta? <a href="{% url 'signup' %}">Cadastrar</a></p>
+        <p><a href="{% url 'password_reset' %}">Esqueceu sua senha?</a></p>
       </form>
     </section>
   </main>
-</body>
+{% endblock content %}
 
-{% block javascript %}
-<script type="text/javascript">
-  console.log("CSRF Token: {{ csrf_token }}");
-</script>
-{% endblock %}
-</html>
 
