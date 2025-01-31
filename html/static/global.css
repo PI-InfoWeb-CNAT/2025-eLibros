@@ -1142,6 +1142,61 @@ div.compra{
     flex-direction: column;
     gap: 10em;
 } 
+
+.pagenotfound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20em;
+    margin: 8em 0;
+}
+
+.pagenotfound h3 { 
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 1.5em;
+    font-weight: 450;
+}
+
+.pagenotfound h2 {
+    font-size: 8em;
+    font-weight: 500;
+    line-height: 120%;
+    margin-bottom: 20px;
+}
+
+.pagenotfound p, ul {
+    font-size: 1.1em;
+}
+
+.pagenotfound ul {
+    margin-left: 20px;
+}
+
+.forbidden {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20em;
+    margin: 8em 0;    
+}
+
+.forbidden h3 {
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 1.5em;
+    font-weight: 450;
+}
+
+.forbidden p {
+    font-size: 1.1em;    
+}
+
+.forbidden h2 {
+    font-size: 6.5em;
+    font-weight: 500;
+    line-height: 120%;
+    margin-bottom: 30px;
+}
+
 /* admin */
 
 main.admin {
