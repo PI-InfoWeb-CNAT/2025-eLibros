@@ -1,5 +1,5 @@
 from django.urls import path
-import elibrosLoja.views.AdminViews as AdminViews
+from elibrosLoja.views import AdminViews
 
 
 
