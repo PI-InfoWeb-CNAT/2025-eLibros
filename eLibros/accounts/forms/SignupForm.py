@@ -45,6 +45,7 @@ class SignupForm(forms.Form):
         widget=forms.DateInput(attrs={
             'id': 'data_nasc',
             'name': 'data_nasc',
+            'type': 'date',
             'placeholder': 'Data de nascimento',
             'class': 'form-control'
         })
