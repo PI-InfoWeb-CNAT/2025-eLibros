@@ -49,11 +49,11 @@
         </form>
     </section>
 
-    <section class="livros2" id="livros-section">
+    <section id="livros-section">
         {% if termo_pesquisa %}
-        <p>Pesquisa por {{ termo_pesquisa }}<p>
+        <p>Pesquisa por {{ termo_pesquisa }}</p>
         {% endif %}
-        
+        <div class="livros2">
             {% for livro in lista_livros %}
             <div class="livros">              
                 <a href="{% url 'livro' id=livro.id %}">
