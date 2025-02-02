@@ -26,10 +26,10 @@ class LivroViews:
         random.shuffle(generos)
 
         for genero in generos:
-            if livros.filter(genero_literario=genero).exists():
+            if livros.filter(genero=genero).exists():
                 livros_filtrados.append({
                     'genero': genero.nome,
-                    'livros': livros.filter(genero_literario=genero),
+                    'livros': livros.filter(genero=genero),
                 })
 
         # categoria = Categoria.objects.get(nome='Indicações do eLibros')
@@ -59,13 +59,13 @@ class LivroViews:
         generos = list(Genero.objects.all())
         genero = random.choice(generos)
 
-        while not livros.filter(genero_literario=genero).exists():
+        while not livros.filter(genero=genero).exists():
             genero = random.choice(generos)
         else:
             livros_genero = {
                 'catOUgen_clean': remove_special_characters(genero.nome),
                 'catOUgen': genero,
-                'livros': livros.filter(genero_literario=genero),
+                'livros': livros.filter(genero=genero),
             }
 
         lista_livros = []
@@ -130,7 +130,7 @@ class LivroViews:
 
         if genero:
            print(genero)
-           livros = livros.filter(genero_literario__nome=genero)
+           livros = livros.filter(genero__nome=genero)
         if autor:
             print(autor)
             livros = livros.filter(autor__nome=autor)

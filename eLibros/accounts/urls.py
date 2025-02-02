@@ -21,7 +21,7 @@ urlpatterns = [
     path('password_reset/complete/', auth_views.PasswordResetCompleteView.as_view(template_name="account/password_reset_complete.html"), name='password_reset_complete'),
 
     path('password_change/', auth_views.PasswordChangeView.as_view(template_name="account/password_change.html"), name='password_change'),
-    path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name="account_password_change_done.html"), name='password_change_done'),
+    path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name="account/password_change_done.html"), name='password_change_done'),
 
     path('verify-email/<str:user>', LoginViews.verify_email, name='verify-email'),
     path('verify-email/done/', LoginViews.verify_email_done, name='verify-email-done'),

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.filter');
-    const botao_select = document.querySelector('#select img')
+    const form = document.getElementById('search-form');
+    const botao_select = document.querySelector('.select img')
     const select = document.getElementById('filtros')
     const genreSelect = document.getElementById('genero');
     const writerSelect = document.getElementById('autor');

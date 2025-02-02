@@ -7,9 +7,10 @@
   <header class="headerlogin">
     <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logoacesso.png' %}" alt="logo eLibros"></a></h1>
   </header>
+ 
   <main>
-    <section class="secao-autenticacao">
-      <div class="bordacinza"> 
+    <div class="conteudo-pag-verifymail" >
+    <section class="secao-autenticacao-verify-email-done">
       <div class="left-wrapper-mail">
       <h3>Verifique seu email</h3>
       <p>Para garantirmos que você possui acesso ao seu email cadastrado, enviamos uma mensagem com instruções para verificar sua conta.</p>
@@ -17,9 +18,11 @@
     </div>
 
     <div class="line-grey"></div>
-  </div>
-      
 
+    <div>
+      <img src="{% static 'images/malucomenino.png' %}" alt="Menino Maluquinho">
     </section>
+  </div>
   </main>
+
 {% endblock content %}

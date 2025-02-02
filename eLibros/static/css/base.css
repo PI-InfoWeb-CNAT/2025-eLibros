@@ -930,7 +930,7 @@ section#search {
   margin-bottom: 1em;
 }
 
-form#search {
+form#search-form {
   display: flex;
   gap: 2em;
   font-family: 'Poppins';
@@ -2062,18 +2062,18 @@ div.compra{
 }
 
 /* parte do guru autenticação (senha e e-mail) */
-section .secao-autenticacao {
-  font-size: 62.5%;
-  width: 70vw;
-  max-height: 46.1rem;
-  border-radius: 6px;
+
+.secao-autenticacao-verify-email-done {
+  display: flex;
+  width: 900px;
+  align-items: center;
+}
+
+.left-wrapper-mail {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #eee;
-  border: 2px solid black;
-  text-align: center;
+  flex-direction: column
 }
 
 .left-wrapper-mail h3 {
@@ -2086,6 +2086,8 @@ section .secao-autenticacao {
 .left-wrapper-mail p {
   margin-bottom: 5em;
   text-align: center;
+  width: 400px;
+  font-size:17px;
 }
 
 .btn-verify-mail {
@@ -2093,16 +2095,28 @@ section .secao-autenticacao {
   background-color: black;
   padding: 12px 45px;
   border-radius: 6px;
-  margin-top: 50px;
-  width: 362px;
+  width: 230px;
   font-size:.8em;
+  margin-left: 30px;
   text-align: center;
-  margin-left: 35px
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2.5em;
 }
 
-.bordacinza {
-  border-right: 2px solid black;
+.line-grey {
+  height:330px;
+  width: 1px;
+  background-color: black;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-right: 10%;
+  margin-top: 1%;
+  margin-left: 10%;
 }
+
 
 /* pagina 403 e 404 */
 
@@ -2164,19 +2178,51 @@ section .secao-autenticacao {
 
 .livros2 {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1em;
-  margin-left: -3.5em;
 }
 
-.livros2 .livros3 {
+.livros2 .livros {
+  box-sizing: border-box;
+  padding: 1em;
+}
+
+.livros3 {
   display: flex;
-  flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.livros2 .livros3 img {
-  width: 112px;
-  height: 160px;
+.livros3 img {
+  width: 7em;
+  height: 10em;
+  border-radius: 3px;
 }
+
+.livros3>div h3 {
+  font-size: 1em;
+  font-weight: 600;
+  width: 8em;
+  padding: 0 .5em;
+  height: 3em;
+  line-height: 1.2em;
+}
+
+.livros3>div h3 span {
+  font-size: .84em;
+  font-weight: 300;
+}
+
+.livros3>div p {
+  font-size: .9em;
+  margin: .5em 0;
+  font-weight: 400;
+  padding-top: 0;
+}
+
+.livros3>div p:nth-child(2) {
+  font-size: .72em;
+  font-style: italic;
+  padding-top: 1em;
+}
+

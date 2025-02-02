@@ -4,17 +4,17 @@
 {% block content %}
 <main>
     <section id="search">
-        <form class="filter" action="{% url 'explorar' %}" method="GET">
-            {% csrf_token %}
+        <form id="search-form" method="GET" action="{% url 'explorar' %}">
             <div id="search">
                 <img src="{% static 'images/icons/lupa.svg' %}">
-                <input id="search-bar1" class="search-bar" name='pesquisa' type="text" placeholder="Pesquisar por nome/autor..." size="52">
+                <input type="search" name="pesquisa" placeholder="Pesquisar por nome/autor..." size="52">
             </div>
             <div id="filter">
                 <div class="select">
-                    <img src="{% static 'images/icons/filter.svg' %}">
-                    <select id="filtros" class="filtros" name="filtros">
-                        <option value="a" selected>A-Z</option>
+                    <img src="{% static 'images/icons/filter.svg' %}">                          
+                    <select title="Filtros" name="filtros" id="filtros">
+                        <option value="asc">A-Z</option>
+                        <option value="mais-vendidos">Mais vendidos</option>
                     </select>
                 </div>
                 <div class="select">
@@ -26,7 +26,7 @@
                     </select>
                 </div>
                 <div class="select">
-                    <select id="autor" name="autor">
+                    <select id="autor" name="autor" style="width: 100px;">
                         <option value="" selected>Autor(a)</option>
                         {% for autor in autores %}
                         <option value="{{autor.nome}}">{{autor.nome}}</option>
@@ -36,7 +36,7 @@
                 <div class="select">
                     <select id="data" name="data">
                         <option value="" selected>Ano de publicação</option>
-                        <option value="1960"><=1960</option>
+                        <option value="1960"><= 1960</option>
                         <option value="1970">1961-1970</option>
                         <option value="1980">1971-1980</option>
                         <option value="1990">1981-1990</option>
@@ -51,7 +51,7 @@
 
     <section id="livros-section">
         {% if termo_pesquisa %}
-        <p>Pesquisa por {{ termo_pesquisa }}</p>
+        <p>Pesquisa por "{{ termo_pesquisa }}"</p>
         {% endif %}
         <div class="livros2">
             {% for livro in lista_livros %}
@@ -71,11 +71,10 @@
                             {% if livro.subtitulo %}
                             <br>
                             <span>{{ livro.get_subtitulo_display }}</span>
-                            <br>
                             {% endif %}
                         </h3>
                         <p>{{ livro.get_primeiro_autor }}</p>
-                        <p>{{ livro.preco }}</p>
+                        <p>R$ {{ livro.preco }}</p>
                         <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
                     </div>
                 </div>

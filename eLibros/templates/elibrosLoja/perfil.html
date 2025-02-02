@@ -35,10 +35,11 @@
         <div class="flex-column">
             <label for="genero">Identidade de gênero</label>
             <select id="genero" disabled>
-                <option value="0">Masculino</option>
-                <option value="1">Feminino</option>
-                <option value="1">Não-binário</option>
-                <option value="1">Prefiro não dizer</option>
+                {% if cliente.genero %}
+                    <option>{{ cliente.genero }}</option>
+                {% else %}
+                    <option>Colocar Gênero</option>
+                {% endif %}
             </select>
         </div>
 

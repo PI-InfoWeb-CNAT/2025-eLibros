@@ -81,7 +81,7 @@
                                 {% endif %}
                             </h3>
                             <p>{{ livro.get_primeiro_autor }}</p>
-                            <p>{{ livro.preco }}</p>
+                            <p>R$ {{ livro.preco }}</p>
                             <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
                         </div>
                     </div>
