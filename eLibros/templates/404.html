@@ -1,7 +1,21 @@
 {% extends '_base.html' %}
 
-{% block title %}404 Page not found{% endblock %}
+{% block title %}404 Página Não Encontrada{% endblock %}
 
 {% block content %}
-<h1>Page not found</h1>
+{% load static %}
+<main>
+    <section class="pagenotfound">
+        <div>
+            <h3>ERRO 404</h3>
+            <h2>OPS!</h2>
+            <p>A página que você procura não foi encontrada. Pode ser que:</p><br>
+            <ul>
+                <li>A URL da página desejada foi digitada incorretamente</li>
+                <li>A página desejada mudou de endereço ou não existe mais</li>
+            </ul>
+        </div>
+        <figure><img src="{% static 'images/carolina.png' %}"></figure>
+    </section>
+</main>
 {% endblock content %}

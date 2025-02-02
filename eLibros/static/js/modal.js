@@ -1,22 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
-  var modal = document.getElementsByClassName("modal_confirmar")[0];
-  var btn = document.getElementsByClassName("confirmar")[0];
-  var span = document.getElementById("close");
+    var confirmButtons = document.querySelectorAll('.confirmar');
+    var closeButtons = document.querySelectorAll('.close');
 
-  // When the user clicks on the button, open the modal
-  btn.addEventListener('click', function() {
-      modal.style.display = "block";
-  });
+    console.log(confirmButtons);
+    console.log(closeButtons);
 
-  // When the user clicks on <span> (x), close the modal
-  span.addEventListener('click', function() {
-      modal.style.display = "none";
-  });
+    confirmButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var pedidoId = btn.getAttribute('data-pedido-id');
+            var modal = document.getElementById('modal_confirmar_' + pedidoId);
+            modal.style.display = "block";
+        });
+    });
 
-  // When the user clicks anywhere outside of the modal, close it
-  window.addEventListener('click', function(event) {
-      if (event.target == modal) {
-          modal.style.display = "none";
-      }
-  });
+    closeButtons.forEach(function(span) {
+        span.addEventListener('click', function() {
+            var pedidoId = span.getAttribute('data-pedido-id');
+            var modal = document.getElementById('modal_confirmar_' + pedidoId);
+            modal.style.display = "none";
+        });
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal_confirmar')) {
+            event.target.style.display = "none";
+        }
+    });
 });

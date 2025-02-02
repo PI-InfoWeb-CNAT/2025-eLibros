@@ -14,12 +14,12 @@
                         <h3>Endereço de entrega</h3>
                         <div style="display: flex; gap: 3em;">
                             <label class="custom-radio">
-                                <input type="radio" name="meu-endereco">
+                                <input type="radio" name="endereco_tipo" value="meu_endereco" checked>
                                 <span class="radio-mark"></span>
                                 Meu endereço
                             </label>
                             <label class="custom-radio">
-                                <input type="radio" name="outro-endereco">
+                                <input type="radio" name="endereco_tipo" value="outro_endereco">
                                 <span class="radio-mark"></span>
                                 Outro
                             </label>
@@ -63,7 +63,8 @@
                                 </label>
                             </div>
                               
-                        </div>
+                        </div>             
+                        
                 </div>
             </div>
             <div class="compra">
@@ -154,34 +155,8 @@
 
 <script src="{% static 'js/cupom.js' %}">
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {  
-        const outroEnderecoDiv = document.querySelector('.outroendereco');
-        const radioButtons = document.querySelectorAll('input[type="radio"]');
+<script src="{% static 'js/cep.js' %}"></script>
 
-        if (outroEnderecoDiv) {
-            outroEnderecoDiv.style.display = 'none';
-
-            radioButtons.forEach(radio => {
-                radio.addEventListener('change', () => {
-                    // Uncheck all other radio buttons
-                    radioButtons.forEach(otherRadio => {
-                        if (otherRadio !== radio) {
-                            otherRadio.checked = false;
-                        }
-                    });
-
-                    // Show/hide address form based on selection
-                    if (radio.name === 'outro-endereco') {
-                        outroEnderecoDiv.style.display = 'block';
-                    } else {
-                        outroEnderecoDiv.style.display = 'none';
-                    }
-                });
-            });
-        }
-    });
-</script>
 <script src="{% static 'js/base.js' %}"></script>
 {% endblock javascript %}
 

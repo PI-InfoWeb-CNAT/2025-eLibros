@@ -1,6 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => { 
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('.filter');
     const botao_select = document.querySelector('#select img')
-    const select = document.getElementsByName('filtros')[0];
+    const select = document.getElementById('filtros')
+    const genreSelect = document.getElementById('genero');
+    const writerSelect = document.getElementById('autor');
+    const yearSelect = document.getElementById('data');
     const options = select.options;
 
     if(select && botao_select){
@@ -18,5 +22,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 options[0].value = options[0].value == 'asc' ? 'desc' : 'asc';
             });
         }
+    }
+
+    [select, genreSelect, writerSelect, yearSelect].forEach(select => {
+        if (select) {
+            select.addEventListener('change', () => form.submit());
+        }
+    });
+
+    const searchInput = document.getElementById('search-bar1');
+    if (searchInput) {
+        searchInput.value = new URLSearchParams(window.location.search).get('pesquisa') || '';
     }
 });

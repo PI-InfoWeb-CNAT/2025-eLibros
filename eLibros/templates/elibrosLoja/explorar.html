@@ -13,7 +13,7 @@
             <div id="filter">
                 <div class="select">
                     <img src="{% static 'images/icons/filter.svg' %}">
-                    <select id="ordem" class="ordem" name="ordem">
+                    <select id="filtros" class="filtros" name="filtros">
                         <option value="a" selected>A-Z</option>
                     </select>
                 </div>
@@ -26,9 +26,17 @@
                     </select>
                 </div>
                 <div class="select">
+                    <select id="autor" name="autor">
+                        <option value="" selected>Autor(a)</option>
+                        {% for autor in autores %}
+                        <option value="{{autor.nome}}">{{autor.nome}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="select">
                     <select id="data" name="data">
                         <option value="" selected>Ano de publicação</option>
-                        <option value="1960"><= 1960</option>
+                        <option value="1960"><=1960</option>
                         <option value="1970">1961-1970</option>
                         <option value="1980">1971-1980</option>
                         <option value="1990">1981-1990</option>
@@ -41,15 +49,15 @@
         </form>
     </section>
 
-    <section class="livros" id="livros-section">
+    <section class="livros2" id="livros-section">
         {% if termo_pesquisa %}
         <p>Pesquisa por {{ termo_pesquisa }}<p>
         {% endif %}
-        <div class="swiper-wrapper">
+        
             {% for livro in lista_livros %}
-            <div class="swiper-slide">              
+            <div class="livros">              
                 <a href="{% url 'livro' id=livro.id %}">
-                <div>
+                <div class="livros3">
                     <figure>
                         {% if livro.capa %}
                         <img src="{{ livro.capa.url }}">
@@ -73,13 +81,11 @@
                 </div>
                 </a>
             </div>
-            {% endfor %} 
+            {% endfor %}
         </div>
-        <p style="display: flex"><a href="{% url 'explorar' %}" style="color: black; text-decoration: underline; margin-top: 3em; font-size: 18px;">Ver mais</a></p>
-    </section>  
-
+    </section>
+    <p style="display: flex"><a href="{% url 'explorar' %}" style="color: black; text-decoration: underline; font-size: 18px; margin: 0 auto; margin-top: 3em;">Ver mais</a></p>
 </main>
 
-<script src="{% static 'js/swiper.js' %}"></script>
 <script src="{% static 'js/livros_pesquisar.js' %}"></script>
 {% endblock content %}

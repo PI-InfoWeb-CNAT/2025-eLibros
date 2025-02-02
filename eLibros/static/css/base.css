@@ -217,7 +217,7 @@ nav .nav-link-normal:hover:before {
 
 /* footer */
 footer {
-  margin-top: 5em;
+  margin-top: 10em;
   padding: 2em 5em;
   background-color: #1C1607;
 }
@@ -487,7 +487,6 @@ figure {
   display: block;
   text-align: center;
 }
-
 
 section#search p {
   color: #6A6A6A;
@@ -1291,7 +1290,7 @@ ul.crud2 #excluir {
   flex-wrap: wrap;
   gap: 0.8em;
   width: 13em;
-  height: 20em;
+  max-height: 20em;
 }
 
 .pedidos ul figure img{
@@ -1305,63 +1304,6 @@ ul.crud2 #excluir {
   padding: 3em 0;
   margin: 0 5em;
   justify-content: space-between;
-  align-items: center;
-}
-
-.pedidos ul li div:nth-child(1){
-  display: flex;
-}
-
-.pedidos ul li div:nth-child(1) p:nth-child(2){
-  font-size: 26px;
-  padding-bottom: 0.2em;
-  margin-bottom: 1em;
-}
-
-.pedidos ul li div:nth-child(1) div > p:nth-child(1){
-  font-size: 26px;
-  padding-bottom: 0.2em;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.pedidos ul li div:nth-child(1) p:nth-child(3){
-  opacity: 0.5;
-  font-size: 16px;
-}
-
-.pedidos ul li div:nth-child(2){
-  display: flex;
-  flex-direction: column;
-}
-
-.pedidos ul li > div:nth-child(2){
-  text-align: right;
-}
-
-.pedidos ul li > div:nth-child(2){
-  line-height: 1;
-}
-
-.pedidos ul li > div:nth-child(2){
-  font-size: 24px;
-  justify-content: space-between;
-  align-content: flex-end;
-  align-items: flex-end
-}
-.pedidos ul li > div:nth-child(2) p:nth-child(1){
-  font-size: 20px;
-  color: black;
-  margin-bottom: 2em;
-}
-
-.pedidos ul li > div:nth-child(2) p:nth-child(2){
-  display: flex;
-  font-size: 16px;
-  color: #408A43;
-  margin-top: -2em;
-  margin-bottom: 2em;
-  justify-content: flex-end;
-  justify-items: flex-end;
 }
 
 
@@ -1374,6 +1316,13 @@ ul.crud2 #excluir {
   justify-content: center;
   margin-top: 0.5em;
   cursor: pointer;
+}
+
+.status-pedido{
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  text-align: right;
 }
 
 .pedidos ul li button.amarelo{
@@ -1736,7 +1685,6 @@ div.compra{
   justify-content: center;
   background-color: transparent;
   border: 0;
-  margin-top: 5em;
   padding: 0;
   margin-bottom: 2em;
 }
@@ -2156,3 +2104,79 @@ section .secao-autenticacao {
   border-right: 2px solid black;
 }
 
+/* pagina 403 e 404 */
+
+.pagenotfound {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20em;
+  margin: 8em 0;
+}
+
+.pagenotfound h3 { 
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 1.5em;
+  font-weight: 450;
+}
+
+.pagenotfound h2 {
+  font-size: 8em;
+  font-weight: 500;
+  line-height: 120%;
+  margin-bottom: 20px;
+}
+
+.pagenotfound p, ul {
+  font-size: 1.1em;
+}
+
+.pagenotfound ul {
+  margin-left: 20px;
+}
+
+.forbidden {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20em;
+  margin: 8em 0;    
+}
+
+.forbidden h3 {
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 1.5em;
+  font-weight: 450;
+}
+
+.forbidden p {
+  font-size: 1.1em;    
+}
+
+.forbidden h2 {
+  font-size: 6.5em;
+  font-weight: 500;
+  line-height: 120%;
+  margin-bottom: 30px;
+}
+
+/* explorar */
+
+.livros2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1em;
+  margin-left: -3.5em;
+}
+
+.livros2 .livros3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.livros2 .livros3 img {
+  width: 112px;
+  height: 160px;
+}

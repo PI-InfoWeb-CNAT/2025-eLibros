@@ -157,57 +157,71 @@ class CarrinhoViews:
 
     def finalizar_compra_postback(request):
         if request.method == 'POST':
-            cliente = Cliente.objects.get(user=request.user)
-            carrinho = Carrinho.objects.get(cliente=cliente)
-            items = carrinho.items_do_carrinho.all()
+            try:
+                cliente = Cliente.objects.get(user=request.user)
+                carrinho = Carrinho.objects.get(cliente=cliente)
+                items = carrinho.items_do_carrinho.all()
 
+                endereco_tipo = request.POST.get('endereco_tipo')
+                
+                # Handle address creation/selection
+                if endereco_tipo == 'meu_endereco':
+                    if not cliente.endereco:
+                        return redirect('finalizar_compra')
+                    endereco = cliente.endereco
+                elif endereco_tipo == 'outro_endereco':
+                    try:
+                        # Validate and create new address
+                        numero = request.POST.get('numero')
+                        if not numero or not numero.isdigit() or int(numero) <= 0:
+                            raise ValueError("Número inválido")
+                            
+                        endereco = Endereco.objects.create(
+                            cep=request.POST.get('cep'),
+                            rua=request.POST.get('rua'),
+                            numero=int(numero),
+                            complemento=request.POST.get('complemento', ''),
+                            cidade=request.POST.get('cidade'),
+                            uf=request.POST.get('estado')
+                        )
+                    except (ValueError, TypeError) as e:
+                        print(f"Error creating address: {str(e)}")
+                        return redirect('finalizar_compra')
             
-            cep = request.POST.get('cep')
-            rua = request.POST.get('rua')
-            numero = request.POST.get('numero')
-            complemento = request.POST.get('complemento')
-            cidade = request.POST.get('cidade')
-            estado = request.POST.get('estado')
 
-            
-            endereco, created = Endereco.objects.get_or_create(
-                cep=cep,
-                rua=rua,
-                numero=numero,
-                complemento=complemento,
-                cidade=cidade,
-                uf=estado,
-            )
+                
+                subtotal = sum([item.livro.preco * item.quantidade for item in items])
+                
+                sum([item.livro.qtd_vendidos + item.quantidade for item in items])
 
-            
-            subtotal = sum([item.livro.preco * item.quantidade for item in items])
-            
-            sum([item.livro.qtd_vendidos + item.quantidade for item in items])
-
-            frete = Decimal(request.session.get('frete', 0))
-            desconto = Decimal(request.session.get('desconto', 0))
-            valor_total = subtotal - desconto + frete
-
-    
-            pedido = Pedido.objects.create(
-                cliente=cliente,
-                endereco=endereco,
-                data_de_pedido=timezone.now(),
-                entrega_estimada=timezone.now() + timezone.timedelta(days=7),
-                valor_total=valor_total,
-                desconto=desconto,
-                quantia_itens=sum([item.quantidade for item in items]),
-            )
+                frete = Decimal(request.session.get('frete', 0))
+                desconto = Decimal(request.session.get('desconto', 0))
+                valor_total = subtotal - desconto + frete
 
         
-            
-            for item in items:
-                pedido.itens.add(item)
+                pedido = Pedido.objects.create(
+                    cliente=cliente,
+                    endereco=endereco,
+                    data_de_pedido=timezone.now(),
+                    entrega_estimada=timezone.now() + timezone.timedelta(days=7),
+                    valor_total=valor_total,
+                    desconto=desconto,
+                    quantia_itens=sum([item.quantidade for item in items]),
+                )
 
             
-            carrinho.items_do_carrinho.clear()
+                
+                for item in items:
+                    pedido.itens.add(item)
 
-            return redirect('pedidos')
+                
+                carrinho.items_do_carrinho.clear()
+
+                return redirect('pedidos')
+            
+            except Exception as e:
+                print(f"Error: {str(e)}")
+            return redirect('finalizar_compra')
 
         return redirect('finalizar_compra')
 

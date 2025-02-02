@@ -7,12 +7,12 @@
         <form id="search" method="GET" action="{% url 'explorar' %}">
             <div id="search">
                 <img src="{% static 'images/icons/lupa.svg' %}">
-                <input type="search" name="pesquisa" placeholder="Pesquise por nome..." size="52">
+                <input type="search" name="pesquisa" placeholder="Pesquisar por nome/autor..." size="52">
             </div>
             <div id="filter">
                 <div id="select">
                     <img src="{% static 'images/icons/filter.svg' %}">                          
-                    <select title="Filtros" name="filtros">
+                    <select title="Filtros" name="filtros" id="filtros">
                         <option value="asc">A-Z</option>
                         <option value="mais-vendidos">Mais vendidos</option>
                     </select>
@@ -22,6 +22,14 @@
                         <option value="" selected>Gênero</option>
                         {% for genero in generos %}
                         <option value="{{genero.nome}}">{{genero.nome}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="select">
+                    <select id="autor" name="autor">
+                        <option value="" selected>Autor(a)</option>
+                        {% for autor in autores %}
+                        <option value="{{autor.nome}}">{{autor.nome}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -44,13 +52,12 @@
     <section class="livros">
         {% for dicionario in lista_livros %}
         <h2>{{ dicionario.catOUgen.nome }}</h2>
-
         <div class="swiper {{dicionario.catOUgen.id}}" data-category="{{dicionario.catOUgen_clean}}">
             <div class="swiper-wrapper">
                 {% for livro in dicionario.livros %}
                 <div class="swiper-slide">              
                     <a href="{% url 'livro' id=livro.id %}">
-                    <div>
+                    <div class="livros">
                         <figure>
                             {% if livro.capa %}
                             <img src="{{ livro.capa.url }}">

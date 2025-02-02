@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from elibrosLoja.forms import UserImageForm
-from elibrosLoja.models import Cliente
+from elibrosLoja.models import Cliente, Endereco
 
 class ClienteViews:
 
@@ -30,7 +30,32 @@ class ClienteViews:
             cliente.user.email = request.POST['email']
             cliente.user.telefone = request.POST['phone']
             cliente.user.genero = request.POST['genero']
-            cliente.endereco = request.POST['address']
+           
+            cep = request.POST.get('cep')
+            rua = request.POST.get('rua')
+            numero = request.POST.get('numero')
+            complemento = request.POST.get('complemento')
+            cidade = request.POST.get('cidade')
+            estado = request.POST.get('estado')
+            bairro = request.POST.get('bairro')
+
+            if cep and rua and numero and cidade and estado:
+                endereco, created = Endereco.objects.update_or_create(
+                    defaults={
+                        'cep': cep,
+                        'rua': rua,
+                        'numero': numero,
+                        'complemento': complemento or '',
+                        'cidade': cidade,
+                        'uf': estado,
+                        'bairro': bairro
+                    },
+                    cep=cep  # Use CEP as unique identifier
+                )
+           
+
+            cliente.endereco = endereco
+            
             cliente.user.save()
             cliente.save()
             return redirect('perfil')
@@ -39,6 +64,8 @@ class ClienteViews:
                 'cliente': cliente
             }
             return render(request, 'elibrosLoja/editarperfil.html', context=context)
+        
+
 
     @login_required
     def adicionar_endereco(request):

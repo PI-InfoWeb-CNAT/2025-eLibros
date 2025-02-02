@@ -1,4 +1,4 @@
-from elibrosLoja.models import Livro, Categoria, Genero
+from elibrosLoja.models import Livro, Categoria, Genero, Autor
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.http import HttpResponse
@@ -85,6 +85,7 @@ class LivroViews:
         context = {
             'lista_livros': lista_livros,
             'generos': Genero.objects.all(),
+            'autor': Autor.objects.all(),
         }
         return render(request, 'elibrosLoja/acervo.html', context=context, status=200)
 
@@ -117,15 +118,24 @@ class LivroViews:
             Q(titulo__icontains=busca) |
             Q(autor__nome__icontains=busca)
         ).distinct()
+            
+        print(livros)
 
-            if not livros.exists():
+        if not livros.exists():
                 livros = Livro.objects.all()
 
         genero = request.GET.get('genero', '')
+        autor = request.GET.get('autor', '')
         data = request.GET.get('data', '')
+
         if genero:
+           print(genero)
            livros = livros.filter(genero_literario__nome=genero)
+        if autor:
+            print(autor)
+            livros = livros.filter(autor__nome=autor)
         if data:
+            print(data)
             if data == "+":
                 livros = livros.filter(ano_de_publicacao__gt=2010)
             else:
@@ -136,9 +146,12 @@ class LivroViews:
                 )
         
         generos = Genero.objects.all()
+        autores = Autor.objects.all()
         context = {
             'lista_livros': livros,
-            'generos': generos
+            'generos': generos,
+            'autores': autores,
+            'termo_pesquisa': busca,
         }
         
         return render(request, 'elibrosLoja/explorar.html', context=context)

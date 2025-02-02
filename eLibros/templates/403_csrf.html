@@ -1,11 +1,18 @@
 {% extends '_base.html' %}
 
-{% block title %}Forbidden (403){% endblock title %}
-
+{% block title %}Acesso Negado (403){% endblock title %}
+{% load static %}
 {% block content %}
-<main style="flex: 1;">
-<h1>Forbidden (403)</h1>
-<p>{{reason}}</p>
-<p>CSRF verification failed. Request aborted.</p>
+<main>
+    <section class="forbidden">
+        <div>
+            <h3>ERRO 403</h3>
+            <h2>ACESSO<br>NEGADO</h2>
+            <p>Você não tem permissão para acessar esta URL.</p><br>
+            <p>{{reason}}</p>
+            <p>CSRF verification failed. Request aborted.</p>
+        </div>
+        <figure><img src="{% static 'images/tortoarado.png' %}" width="570"></figure>
+    </section>
 </main>
 {% endblock content %}
