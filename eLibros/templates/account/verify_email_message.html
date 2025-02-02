@@ -3,11 +3,11 @@
     <div>
         <p>Hi {{ user.nome }},</p>
         <p>Você criou uma conta em eLibros.com.br, mas precisa verificá-la. Para isso, clique no link abaixo.</p>
-        <a href="https://fantastic-trout-x7g69xrx7rgfv6x-8000.app.github.dev/{% url 'verify-email-confirm' uidb64=uid token=token %}">
+        <a href="http://127.0.0.1:8000/{% url 'verify-email-confirm' uidb64=uid token=token %}">
             Verificar email
         </a>
         <p>Ou você pode copiar o link abaixo para seu browser:</p>
-        <p>https://fantastic-trout-x7g69xrx7rgfv6x-8000.app.github.dev/{% url 'verify-email-confirm' uidb64=uid token=token %}</p>
+        <p>http://127.0.0.1:8000/{% url 'verify-email-confirm' uidb64=uid token=token %}</p>
         <br>
         <p>Atenciosamente,</p>
         <p>Equipe eLibros</p>
