@@ -39,6 +39,8 @@ Não há fluxo de exceção.
 ### 6. Protótipos de Interface
 ![image](https://github.com/user-attachments/assets/7fb923a4-ad62-4c89-b444-45ad57a3f110)
 ![image](https://github.com/user-attachments/assets/920c7f3b-480c-4e33-ba06-7d9fa0feac93)
+![image](https://github.com/user-attachments/assets/add9ae39-fb8f-48b2-9562-c3cd1ea876c1)
+
 
 
 
