@@ -8,6 +8,8 @@
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
 | 09/12/2024 | **1.20** | Adição de diagrama de classe de domínio  | Gabriel Campos |
+| 02/02/2025 | **1.30** | Atualizaçãode diagrama de classe de domínio de dicionário de dados  | Gabriel Campos |
+
 
 ### 1. Resumo 
 Esse caso de uso permite o usuário realizar o pedido dos itens que se encontram no seu carrinho.
@@ -45,15 +47,15 @@ Após a execução deste caso de uso, espera que o sistema:
 ![image](https://github.com/user-attachments/assets/db2dc822-a62f-42c2-9d41-74f9bcc33695)
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-![image](https://github.com/user-attachments/assets/cd4cc313-5364-426d-8e59-fdf79ca29227)
+![image](https://github.com/user-attachments/assets/9bdf1e67-8697-4f71-98e3-54a5bc8fa0bc)
+
 
 
 
 ### 8. Dicionário de dados
+![image](https://github.com/user-attachments/assets/ca304c29-2cf8-47dd-8f98-28cacefe2d10)
 
-#### 8.1. Pedido
-- Status - Booleano
-- entregaEstimada - Data do calendário em modelo DD/MM/AAAA
-- numero_Pedido - Atributo identificador do Pedido
+![image](https://github.com/user-attachments/assets/29b4827e-a1f7-491f-ab1f-b7a54f998d45)
+
 
 ### 9. Regras de negócio
