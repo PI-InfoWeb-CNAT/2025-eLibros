@@ -7,6 +7,8 @@
 |:-------|:-------|:----------|:------|
 | 04/11/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 09/12/2024 | **1.10** | Adição de diagrama de classe de domínio  | Gabriel Campos |
+| 02/02/2024 | **1.20** | Atualização diagrama de classe de domínio e adição de dicionário de dados  | Gabriel Campos |
+
 
 
 ### 1. Resumo 
@@ -36,12 +38,16 @@ Após a execução deste caso de uso, espera que o sistema:
 Não há exceção.
 
 ### 6. Protótipos de Interface
-![image](https://github.com/user-attachments/assets/7343a377-b5a7-47d7-954a-d968422ccbbd)
+![image](https://github.com/user-attachments/assets/85b1548e-8c91-448f-b3bb-68441d8b83e1)
+
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 
-![image](https://github.com/user-attachments/assets/969a7061-8f58-4634-b9ff-32dc87b1f9c1)
+![image](https://github.com/user-attachments/assets/184119e6-8e6f-4572-a653-6fa5c7296bf8)
 
 ### 8. Dicionário de dados
+![image](https://github.com/user-attachments/assets/1eefdaa2-3c61-4bd6-b6a7-6bb546f25472)
+![image](https://github.com/user-attachments/assets/9e799788-3941-458f-a44b-f8d5d709d3cd)
+
 
 ### 9. Regras de negócio
