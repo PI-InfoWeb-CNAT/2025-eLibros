@@ -47,30 +47,19 @@ Após a execução deste caso de uso, espera que o sistema:
 
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-![image](https://github.com/user-attachments/assets/969a7061-8f58-4634-b9ff-32dc87b1f9c1)
+![image](https://github.com/user-attachments/assets/c7301ff2-2a91-4183-b99c-437579eb8855)
+
+
 
 ### 8. Dicionário de dados
 
-#### 8.1. Livro
-- Capa - Arquivo de imagem
-- Título - Uma cadeia de caracteres alfabéticos tamanho 100
-- Autor - Uma cadeia de caracteres alfabéticos tamanho 100
-- Descrição - Uma cadeia de caracteres alfanuméricos
-- Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
-- Data de Publicação - Data do calendário em modelo MM/AAAA
-- ISBN - Uma cadeia de 15 caracteres numéricos 
-- Editora - Uma cadeia de caracteres alfabéticos tamanho 30
+#### 8.1. Carrinho
+![image](https://github.com/user-attachments/assets/084b39e9-adab-4c61-8aae-30d3e3990415)
 
-#### 8.2. Cliente
-- Id_cliente - Atributo identificador do Cliente
-- Username - Uma cadeia de caracteres alfabéticos tamanho 20
-- Senha - Uma cadeia de caracteres alfanuméricos tamano 15
-- Cpf - Uma cadeia de caracteres alfanuméricos tamanho 13
-- Email - Uma cadeia de caracteres alfanuméricos tamanho 320
-- Nome - Uma cadeia de caracteres alfanuméricos tamanho 100
-- Dt_nasc - Data do calendário em modelo DD/MM/AAAA
-- Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
-- Id_endereço - Código identificador da entidade Endereço
+
+#### 8.2. ItemCarrinho
+![image](https://github.com/user-attachments/assets/4da7b409-db16-4deb-a715-3e65fd19e8d5)
+
 
 
 ### 9. Regras de negócio
