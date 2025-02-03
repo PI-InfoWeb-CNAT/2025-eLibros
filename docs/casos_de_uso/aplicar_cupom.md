@@ -7,6 +7,8 @@
 |:-------|:-------|:----------|:------|
 | 08/12/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 09/12/2024 | **1.10** | Adição de diagrama de classe de domínio  | Gabriel Campos |
+| 02/02/2024 | **1.20** | Atualização de diagrama de classe de domínio e adição de dicionário de dados  | Gabriel Campos |
+
 
 
 ### 1. Resumo 
@@ -45,14 +47,12 @@ Após a execução deste caso de uso, espera que o sistema:
 ![image](https://github.com/user-attachments/assets/c10b527b-2fa8-476b-8e05-f54ec5621f6d)
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-
-![image](https://github.com/user-attachments/assets/5d0f7057-6694-4e79-ba00-1f19e6084883)
-
-
+![image](https://github.com/user-attachments/assets/34d24594-0949-44f8-852e-eebeaeb2a29e)
 
 ### 8. Dicionário de dados
 #### Cupom
-- Ativo - Booleano
-- Valor - Número inteiro que representa a porcentagem
+![image](https://github.com/user-attachments/assets/fb98b5f5-2e0f-4d7a-bc09-4af21332c529)
+
 #### Pedido
-- Valor total- Número natural com duas casas decimais
+![image](https://github.com/user-attachments/assets/ecc2674a-6c3f-42c6-9256-d4f4cf16e01c)
+
