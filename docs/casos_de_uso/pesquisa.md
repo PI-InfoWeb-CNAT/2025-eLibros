@@ -7,6 +7,7 @@
 |:-------|:-------|:----------|:------|
 | 16/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
+| 02/02/2025 | **1.20** | Adição de diagrama de classe e dicionário de dados  | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -48,14 +49,16 @@ Após a execução deste caso de uso, espera que o sistema:
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/bd7813a2-0dca-4b93-b689-01a8172815c2)
+
 
 ### 8. Dicionário de dados
 
-#### 8.1. Livro
-- Capa - Arquivo de imagem
-- Título - Uma cadeia de caracteres alfabéticos tamanho 100
-- Autor - Uma cadeia de caracteres alfabéticos tamanho 100
+![image](https://github.com/user-attachments/assets/495e9b79-e719-40bf-bf00-7aaa5d80ad60)
+![image](https://github.com/user-attachments/assets/6cc527da-6a02-4911-a80e-3d0f9fab5db1)
+![image](https://github.com/user-attachments/assets/48ca6b58-b471-403d-a10e-826065fffdf3)
+![image](https://github.com/user-attachments/assets/8f563d98-a8b5-449d-8199-98015cc29d02)
+
 
 ### 9. Regras de negócio
 
