@@ -8,6 +8,8 @@
 | 15/08/2024 | **1.00** | Primeira versão  | Os Integradores |
 | 06/09/2024 | **1.10** | Atualização dicionário de dados | Cortez |
 | 04/11/2024 | **1.20** | Adição de protótipo de interface  | Gabriel Campos |
+| 02/02/2024 | **1.30** | Atualização dicionário de dados adição diagrama de classe  | Gabriel Campos |
+
 
 
 ### 1. Resumo 
@@ -51,20 +53,14 @@ Após a execução deste caso de uso, espera-se que:
 
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-A ser desenvolvido pelo aluno.
+![image](https://github.com/user-attachments/assets/568f2d0f-9b43-4653-ab07-7a74d4855a13)
+
 
 ### 8. Dicionário de dados
 
 #### 8.1. Cliente
-- Id_cliente - Atributo identificador do Cliente
-- Username - Uma cadeia de caracteres alfabéticos tamanho 20
-- Senha - Uma cadeia de caracteres alfanuméricos tamano 15
-- Cpf - Uma cadeia de caracteres alfanuméricos tamanho 13
-- Email - Uma cadeia de caracteres alfanuméricos tamanho 320
-- Nome - Uma cadeia de caracteres alfanuméricos tamanho 100
-- Dt_nasc - Um objeto date
-- Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
-- Id_endereço - Código identificador de um Endereço do Cliente
+![image](https://github.com/user-attachments/assets/35fd7419-27a9-412f-a754-e597731b94b9)
+
 
 ### 9. Regras de negócio
 -   E-mail - Um conjunto de caracteres (com exceção dos caracteres especiais, sendo permitido apenas o ponto) seguidos, respectivamente, por um arroba, outro conjunto de letras e um ou mais domínios de topo
