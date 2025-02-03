@@ -8,6 +8,8 @@
 | 08/04/2024 | **1.00** | Primeira versão  | Ana Júlia |
 | 06/09/2024 | **1.10** | Atualização dicionário de dados e correção nomenclatura do ator | Cortez
 | 04/11/2024 | **1.20** | Adição de protótipo de interface  | Gabriel Campos |
+| 02/02/2024 | **1.30** | Adição de diagrama de classe e correção dicionário de dados | Gabriel Campos |
+
 
 
 ### 1. Resumo 
@@ -62,11 +64,13 @@ Após a execução deste caso de uso, espera que o sistema:
 
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-A ser desenvolvido pelo aluno.
+![image](https://github.com/user-attachments/assets/fa422d8b-3237-4d94-85a2-00fa303fa18d)
 
 ### 8. Dicionário de dados
-- Username - Uma cadeia de caracteres alfanuméricos tamanho 20
-- Senha - Uma cadeia de caracteres alfanuméricos e especiais tamanho 15
+![image](https://github.com/user-attachments/assets/a8d2492d-2d9d-49e9-945d-3466e906bc02)
+![image](https://github.com/user-attachments/assets/9727e2b6-3e75-42f6-a758-2c2749b09433)
+
+
 
 ### 9. Regras de negócio
 - Email - Conjunto de caracteres alfanuméricos separando usuário de domínio por meio de um arroba@). São permitidos os caracteres especiais hífen(-) e ponto(.) antes do arroba(@).
