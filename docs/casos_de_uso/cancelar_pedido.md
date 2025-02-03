@@ -7,6 +7,8 @@
 |:-------|:-------|:----------|:------|
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
+| 02/02/2025 | **1.10** | Adição de diagrama de classe e dicionário de dados  | Gabriel Campos |
+
 
 
 ### 1. Resumo 
@@ -43,14 +45,14 @@ Não há exceção.
 
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/1fbb9adc-eff8-45dc-953c-5819b0a5e40a)
+
+
 
 ### 8. Dicionário de dados
 
-#### 8.1. Pedido
-- Status - Booleano
-- entregaEstimada - Data do calendário em modelo DD/MM/AAAA
-- numero_Pedido - Atributo identificador do Pedido
+![image](https://github.com/user-attachments/assets/5f78f810-4133-465d-a1f0-38c615f509b2)
+
 
 
 ### 9. Regras de negócio
