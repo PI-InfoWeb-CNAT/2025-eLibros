@@ -8,7 +8,7 @@
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
 | 09/12/2024 | **1.20** | Adição de diagrama de classe de domínio  | Gabriel Campos |
-| 02/02/2025 | **1.30** | Atualização de diagrama de classe de domínio e adição de diagrama de classe | Gabriel Campos |
+| 02/02/2025 | **1.30** | Atualização de diagrama de classe de domínio e adição de dicionário de dados | Gabriel Campos |
 
 
 
