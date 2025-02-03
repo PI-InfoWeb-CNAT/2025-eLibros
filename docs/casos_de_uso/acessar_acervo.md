@@ -7,6 +7,7 @@
 |:-------|:-------|:----------|:------|
 | 16/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
+| 02/02/2024 | **1.20** | Adição de diagrama de classe e dicionário de dados  | Gabriel Campos |
 
 
 ### 1. Resumo 
@@ -42,8 +43,10 @@ Não há exceção.
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/f2c3a638-5065-4681-bdc0-0f0f18ebc6f2)
+
 
 ### 8. Dicionário de dados
+![image](https://github.com/user-attachments/assets/0c6ec90a-5b48-47fa-a574-b162183506da)
 
 ### 9. Regras de negócio
