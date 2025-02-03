@@ -7,6 +7,8 @@
 |:-----|:-------|:----------|:------|
 | 12/08/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 06/09/2024 | **1.01** | Atualização dicionário de dados | Cortez | 
+| 02/02/2025 | **1.10** | Atualização dicionário de dados e adição diagrama de classe| Cortez | 
+
 
 
 ### 1. Resumo 
@@ -39,12 +41,14 @@ Não há.
 A ser desenvolvido.
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/5848443b-1424-42db-95b6-706681103a5a)
 
 ### 8. Dicionário de dados
 
-#### 8.1. Cliente
-- Username - Uma cadeia de caracteres alfabéticos tamanho 20
+![image](https://github.com/user-attachments/assets/733009ff-2a5c-431a-bf23-a436cf911248)
+![image](https://github.com/user-attachments/assets/8af8609c-f4ea-45b9-b116-a2a6cbc2f137)
+
+
 
 
 ### 9. Regras de negócio
