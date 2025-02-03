@@ -47,13 +47,14 @@ Após a execução deste caso de uso, espera que o sistema:
 
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/dbbd84a7-24c8-4541-ac78-01f3b7f6125e)
+
 
 ### 8. Dicionário de dados
 
 #### 8.1. Pedido
-- Status - Booleano
-- numero_Pedido - Atributo identificador do Pedido
+![image](https://github.com/user-attachments/assets/8cfdfeba-51c2-4dfc-81e4-149841bc1733)
+
 
 
 ### 9. Regras de negócio
