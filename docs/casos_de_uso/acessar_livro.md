@@ -7,6 +7,8 @@
 |:-------|:-------|:----------|:------|
 | 16/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
+| 02/02/2025 | **1.20** | Adição de dicionário de dados e diagrama de classe  | Gabriel Campos |
+
 
 
 ### 1. Resumo 
@@ -42,15 +44,13 @@ Não há exceção.
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
 
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/32408104-9456-4428-b0fd-09f7117703bb)
+
 
 ### 8. Dicionário de dados
 
 #### 8.1. Livro
-- Capa - Arquivo de imagem
-- Título - Uma cadeia de caracteres alfabéticos tamanho 100
-- Autor - Uma cadeia de caracteres alfabéticos tamanho 100
-- Preço - Um número com duas casas decimais
+![image](https://github.com/user-attachments/assets/45677599-e73b-480d-b9d6-b40771648e70)
 
 ### 9. Regras de negócio
 
