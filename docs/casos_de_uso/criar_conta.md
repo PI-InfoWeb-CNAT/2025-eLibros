@@ -58,7 +58,8 @@ Após a execução deste caso de uso, espera-se que:
 
 ### 8. Dicionário de dados
 
-#### 8.1. Cliente
+![image](https://github.com/user-attachments/assets/17a51d0e-4cbc-4e0a-91fb-877ace7069a4)
+
 ![image](https://github.com/user-attachments/assets/35fd7419-27a9-412f-a754-e597731b94b9)
 
 
