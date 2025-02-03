@@ -7,6 +7,8 @@
 |:-------|:-------|:----------|:------|
 | 12/09/2024 | **1.00** | Primeira versão  | Gabriel Campos |
 | 04/11/2024 | **1.10** | Adição de protótipo de interface  | Gabriel Campos |
+| 02/02/2025 | **1.20** | Adição dicionário de dados e diagrama de classe  | Gabriel Campos |
+
 
 
 ### 1. Resumo 
@@ -46,20 +48,15 @@ Não há fluxo de exceção.
 
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-A ser desenvolvido.
+![image](https://github.com/user-attachments/assets/b4669f8d-6c23-48bd-bc7f-cd96fd19dd16)
+
 
 ### 8. Dicionário de dados
 
-#### 8.1. Cliente
-- Id_cliente - Atributo identificador do Cliente
-- Username - Uma cadeia de caracteres alfabéticos tamanho 20
-- Senha - Uma cadeia de caracteres alfanuméricos tamano 15
-- Cpf - Uma cadeia de caracteres alfanuméricos tamanho 13
-- Email - Uma cadeia de caracteres alfanuméricos tamanho 320
-- Nome - Uma cadeia de caracteres alfanuméricos tamanho 100
-- Dt_nasc - Data do calendário em modelo DD/MM/AAAA
-- Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
-- Id_endereço - Código identificador da entidade Endereço
+![image](https://github.com/user-attachments/assets/1a1a06dc-5d85-4533-9664-31ea9066323b)
+
+![image](https://github.com/user-attachments/assets/a803136c-c60a-4bfe-ba94-08ad40238960)
+
 
 
 ### 9. Regras de negócio
