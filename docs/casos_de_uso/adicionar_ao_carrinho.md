@@ -13,6 +13,8 @@
 | 16/09/2024 | **1.50** | Apenas cliente adiciona ao carrinho | Gabriel Campos |
 | 04/11/2024 | **1.60** | Adição de protótipo de interface  | Gabriel Campos |
 | 09/12/2024 | **1.70** | Adição de diagrama de classe de domínio  | Gabriel Campos |
+| 02/02/2025 | **1.80** | Atualização de diagrama de classe de domínio e adição de dicionário de dados | Gabriel Campos |
+
 
 
 ### 1. Resumo 
@@ -50,31 +52,15 @@ Após a execução deste caso de uso, espera que o sistema:
 
 
 ### 7. Diagrama de classe de domínio usados neste caso de uso
-![image](https://github.com/user-attachments/assets/969a7061-8f58-4634-b9ff-32dc87b1f9c1)
+![image](https://github.com/user-attachments/assets/c0bc13cc-fb69-438c-8ef8-f1b55e226623)
+
 
 
 ### 8. Dicionário de dados
+![image](https://github.com/user-attachments/assets/5e6c0d62-ef91-421b-a5f5-8f546474d1d9)
+![image](https://github.com/user-attachments/assets/1be351f1-5871-4081-b70d-f9b37714189b)
 
-#### 8.1. Livro
-- Capa - Arquivo de imagem
-- Título - Uma cadeia de caracteres alfabéticos tamanho 100
-- Autor - Uma cadeia de caracteres alfabéticos tamanho 100
-- Descrição - Uma cadeia de caracteres alfanuméricos
-- Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
-- Data de Publicação - Data do calendário em modelo MM/AAAA
-- ISBN - Uma cadeia de 15 caracteres numéricos 
-- Editora - Uma cadeia de caracteres alfabéticos tamanho 30
 
-#### 8.2. Cliente
-- Id_cliente - Atributo identificador do Cliente
-- Username - Uma cadeia de caracteres alfabéticos tamanho 20
-- Senha - Uma cadeia de caracteres alfanuméricos tamano 15
-- Cpf - Uma cadeia de caracteres alfanuméricos tamanho 13
-- Email - Uma cadeia de caracteres alfanuméricos tamanho 320
-- Nome - Uma cadeia de caracteres alfanuméricos tamanho 100
-- Dt_nasc - Um objeto date
-- Gênero - Uma cadeia de caracteres alfabéticos tamanho 30
-- Id_endereço - Código identificador da entidade Endereço
 
 
 ### 9. Regras de negócio
