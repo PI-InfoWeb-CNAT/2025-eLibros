@@ -19,7 +19,6 @@ class PedidoViews:
         pedidos_cancelados = []
 
         for pedido in pedidos:
-            print(pedido.itens.all())
 
             if pedido.status == 'ENT':
                 pedidos_finalizados.append(pedido)
