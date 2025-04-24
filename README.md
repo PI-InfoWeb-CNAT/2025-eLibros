@@ -34,7 +34,7 @@ que posteriormente no 4º ano de Informática para Internet o readaptaram para a
   </tbody>
 </table>
 
-# Membro Anterior
+### Membro Anterior
 
 <td align="center" valign="top" width="14.28%"><a href="https://github.com/ViniluR"><img src="https://avatars.githubusercontent.com/u/124372681?v=4?s=100" width="100px;" alt="ViniH"/><br /><sub><b>ViniH</b></sub></a><br /><a href="#design-ViniluR" title="Design">🎨</a> <a href="#ideas-ViniluR" title="Ideas, Planning, & Feedback">🤔</a></td>
 
