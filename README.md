@@ -4,7 +4,8 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ### Site de vendas de livros apenas nacionalmente brasileiros, com o intuito de valorizar a literatura local. <br>
-Trabalho feito por alunos do 4º ano de Informática para Internet no IFRN-CNAT para a disciplina 'Projeto Integrador'.
+Trabalho feito por alunos do 3º ano de Informática para Internet no IFRN-CNAT para a disciplina 'Projeto Integrador',
+que posteriormente no 4º ano de Informática para Internet o readaptaram para a disciplina 'Projeto de Desenvolvimento de Sistemas para Internet'.
 
 
 ## Artefatos do projeto
