@@ -5,7 +5,7 @@
 |:-------|:-------|:----------|:------|
 | 11/03/2024 | **1.10** | Adição de requisitos  | Os Entregadores |
 | 10/07/2024 | **2.00** | Redirecionamento do documento de visão  | Os Entregadores |
-| 10/07/2024 | **3.00** | Redefinir o Doc de Visão  | Intregadores 2.0 |
+| 08/05/2025 | **3.00** | Redirecionamento do documento de visão com alterações  | Intregadores 2.0 |
 
 ## 1. Objetivo do Projeto 
 **Projeto**: Plataforma de venda de livros (eLibros)
