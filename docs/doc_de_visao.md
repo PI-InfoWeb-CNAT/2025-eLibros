@@ -1,3 +1,4 @@
+
 # Documento de visão
 
 ### Histórico da Revisão 
@@ -5,7 +6,7 @@
 |:-------|:-------|:----------|:------|
 | 11/03/2024 | **1.10** | Adição de requisitos  | Os Entregadores |
 | 10/07/2024 | **2.00** | Redirecionamento do documento de visão  | Os Entregadores |
-| 08/05/2025 | **3.00** | Redirecionamento do documento de visão com alterações  | Intregadores 2.0 |
+| 13/05/2025 | **3.00** | Redirecionamento do documento de visão com alterações  | Intregadores 2.0 |
 
 ## 1. Objetivo do Projeto 
 **Projeto**: Plataforma de venda de livros (eLibros)
@@ -24,7 +25,7 @@
 |:- |:- |:- |
 | Administrador  | Gestor da Loja; Usuário responsável pelos processos que permitem que os clientes adquiram os produtos com uso no site de vendas e acompanhem o processo de entrega dos pedidos realizados | Cadastrar os produtos e seus preços de venda; Disponibilizar ou bloquear a apresentação do produto no site de venda; Verificar as vendas realizados no período que ainda não foram remetidas aos clientes; Registra informações de envio dos pedidos aos clientes; Registra informação de controle de pagamento de pedidos|
 | Visitante   | Usuário que visualiza o site; O usuário deve ter a possibilidade de obter informações acerca dos produtos vendidos e seus preços, sem a necessidade de registrar suas informações cadastrais no site | O usuário deve poder consultar os produtos por várias opções de  busca de forma a facilitar que ele encontre os produtos desejados; Deverá ser possível também montar uma cesta de compras com os itens que deseja adquirir; Caso deseje, poderá criar um registro de usuário com senha de forma a possibilitar o acesso a área de realização de pedidos de produtos e acompanhamento de entrega |
-| Cliente | Usuário cadastrado; O usuário, após realizar seu cadastro no site, poderá realizar compras | Após a realização a inclusão de dados cadastrais tais como login, senha e endereço, o usuário (anteriormente do tipo Visitante) passa a ser visto como cliente e poderá registrar seus pedidos. Os pedidos poderão ser compostos por um ou mais produtos e deverão incluir suas respectivas quantidades adquiridas. O valor total do pedido deve ser apresentado. O cliente deve ter acesso às seguintes funcionalidades no site: Alterar seus dados cadastrais; Visualizar seu histórico de pedidos e observar a situação destes; Visualizar a situação de entrega dos pedidos; Cancelar o pedido; Avaliar os produtos adquiridos|
+| Cliente | Usuário cadastrado; O usuário, após realizar seu cadastro no site, poderá realizar compras e escrever resenhas sobre os produtos | Após a realização e inclusão de dados cadastrais tais como login, senha e endereço, o usuário (anteriormente do tipo Visitante) passa a ser visto como cliente e poderá registrar seus pedidos. Os pedidos poderão ser compostos por um ou mais produtos e deverão incluir suas respectivas quantidades adquiridas. O valor total do pedido deve ser apresentado. O cliente deve ter acesso às seguintes funcionalidades no site: Alterar seus dados cadastrais; Visualizar seu histórico de pedidos e observar a situação destes; Visualizar a situação de entrega dos pedidos; Cancelar o pedido; Avaliar os produtos adquiridos|
 ## 4. Descrição do ambiente dos usuários 
 O comércio eletrônico tem três tipos de usuários. O tipo Administrador representa o gestor do site, o tipo Visitante representa o usuário não cadastrado que deseja visitar o site e o tipo Cliente representa um usuário já cadastrado. 
 O administrador acessará o site a partir da sede da loja, fará a configuração dos produtos a serem vendidos e realizará a logística de atendimento dos pedidos coletados pelo site, registrando a informação de situação de envio dos pedidos. Nesse processo, os produtos que forem identificados fisicamente sem estoque deverão ter sua disponibilidade para venda bloqueada.
@@ -64,25 +65,28 @@ Esse projeto consiste em um site voltado para vendas de livros que pretende func
 ## 8.	Requisitos funcionais
 | Código | Nome | Descrição |
 |:---  |:--- |:--- |
-| F01	| Adicionar, remover ou alterar produtos | O administrador tem à sua disponibilidade a função de adicionar, remover ou alterar produtos comercializados no site estabelecendo ainda seus preços de venda. 
+| F01	| Ver, adicionar, remover ou alterar produtos | O administrador tem à sua disponibilidade a função de adicionar, remover ou alterar produtos comercializados no site estabelecendo ainda seus preços de venda. 
 | F02	| Disponibilizar ou bloquear a apresentação do produto no site de venda	| O administrador tem à sua disponibilidade a função de liberar ou bloquear a apresentação de produtos a venda 
 | F03	| Consultar pedidos realizados e não enviados.	| O administrador pode acessar os dados de vendas de produtos do site que foram realizados pelos clientes e que ainda não foram remetidos
 | F04	| Registrar recebimento do pagamento do cliente	| O administrador registra no site a identificação do recebimento do pagamento realizado pelo cliente liberando o pedido para envio.
-| F05	| Registrar o envio do pedido.	| O administrador informa no site a forma de envio do pedido ao cliente.
-| F06	| Visualizar produtos	| O usuário visualiza os produtos disponíveis, podendo filtrá-los.
-| F07	| Adicionar ou remover produtos à cesta de compras	| O usuário  pode escolher mais de um produto para realizar a compra e inserir em uma cesta de compras.
+| F05	| Registrar o envio do pedido.	| O administrador informa no site o status do pedido ao cliente.
+| F06	| Visualizar produtos	| O visitante ou usuário visualizam os produtos disponíveis, podendo filtrá-los.
+| F07	| Ver, adicionar ou remover produtos à cesta de compras	| O usuário  pode escolher mais de um produto para realizar a compra e inserir em uma cesta de compras.
 | F08	| Realizar o cadastro e login no site	| O usuário pode se cadastrar no site para poder comprar produtos e acessar outras diversas funcionalidades como avaliar e comentar os produtos.
 | F09	| Realizar a compra de um produto	| Os clientes podem confirmar a compra dos produtos adicionados em sua cesta de compra gerando assim um pedido.
 | F10	| Realizar o cancelamento de pedido solicitado	| Os clientes podem solicitar o cancelamento de um pedido realizado desde que ainda não tenha sido enviado.
 | F11	| Verificar as compras realizadas	| Os clientes podem verificar seu histórico de compra na loja.
 | F12	| Verificar o andamento do pedido	| Os clientes podem acompanhar o andamento da entrega dos pedidos realizados.
-| F13 | Revisar dados cadastrais	| Os clientes podem alterar seus dados cadastrais permitindo assim que façam, por exemplo, alteração do endereço de entrega
+| F13 | Revisar dados cadastrais	| Os clientes podem alterar seus dados cadastrais permitindo assim que façam, por exemplo, alteração do endereço de entrega.
+| F14 | Avaliar livro	| Os clientes podem avaliar os livros após serem comprados e escrever uma resenha que poderá ser curtida ou comentada.
+| F15 | Aplicar Cupom	| Os clientes podem adicionar cupons de desconto/promoção para diminuir o preço de suas compras caso disponíveis.
+| F16 | Métodos de pagamento	| Os clientes podem realizar a compra com diversos métodos de pagamento.
 
-## 9.	Requisitos não-funcionais
+## 9.	Requisitos não funcionais
 | Código | Nome | Descrição | Categoria | Classificação |
 |:---  |:--- |:--- |:--- |:--- |
-| NF01	| Design responsivo	| O site apresentará responsividade, deixando-o mais confortável para o usuário | Usabilidade	| obrigatório
-| NF02	| Acesso somente com internet	| É necessário um acesso contínuo à Internet para poder acessar os dados do site e suas funcionalidades, como comprar produtos.	| Disponibilidade	| Obrigatório
-| NF03	| Criptografia de informações sensíveis aos usuários	| Senhas do usuário devem ser gravadas de forma criptografada no banco de dados	| Segurança	| Obrigatório
-| NF04	| Organização do conteúdo de forma objetiva	| O site apresentará o conteúdo de forma objetiva, de modo que o usuário encontre o desejado com facilidade.	| Usabilidade	| Obrigatório
-
+| NF01	| Design responsivo	| O site apresentará responsividade, deixando-o mais confortável para o usuário | Usabilidade	| Obrigatório
+| NF02	| Criptografia de informações sensíveis aos usuários	| Senhas do usuário devem ser gravadas de forma criptografada no banco de dados	| Segurança	| Obrigatório
+| NF03	| Organização do conteúdo de forma objetiva	| O site apresentará o conteúdo de forma objetiva, de modo que o usuário encontre o desejado com facilidade.	| Usabilidade	| Obrigatório
+| NF04	| Aplicação compatível com linguagens de sinais	| O site auxiliará o leitor de forma inclusiva permitindo acessível sua interpretação ao site	| Acessibilidade | Obrigatório
+| NF05	| Criptografia de informações bancárias dos usuários	| Dados bancários serão armazenados com criptografia de segurança no banco de dados	| Segurança | Obrigatório
