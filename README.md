@@ -11,7 +11,7 @@ que posteriormente no 4º ano de Informática para Internet o readaptaram para a
 ## Artefatos do projeto
 
 - [Documento de visão](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/doc_de_visao.md)
-- [Diagrama de casos de uso](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/diagramas/apoo/eLibros%20CDU%20FINAL.png)
+- [Diagrama de casos de uso](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/diagramas/apoo/eLibros%-%CDU.drawio.png)
 - [Diagrama ER Completo](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/diagramas/banco%20de%20dados/Diagram%20ER%20intermedi%C3%A1rio%20eLibros.png)
 - [Mapa do site](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/mapa%20do%20site.png)
 - [Protótipo do site](https://www.figma.com/design/VjkAeOBZT5tL58llSvcPw0/Prot%C3%B3tipo-eLibros?node-id=0-1&t=saPmJma2oz2AsZpg-1)
