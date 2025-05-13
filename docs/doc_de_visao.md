@@ -81,6 +81,7 @@ Esse projeto consiste em um site voltado para vendas de livros que pretende func
 | F14 | Avaliar livro	| Os clientes podem avaliar os livros após serem comprados e escrever uma resenha que poderá ser curtida ou comentada.
 | F15 | Aplicar Cupom	| Os clientes podem adicionar cupons de desconto/promoção para diminuir o preço de suas compras caso disponíveis.
 | F16 | Métodos de pagamento	| Os clientes podem realizar a compra com diversos métodos de pagamento.
+| F17 | Calcular frete e estimativa	| Os clientes poderão visualizar o tempo de entrega de seu produto após envio e calcular frete e estimativa de chegar.
 
 ## 9.	Requisitos não funcionais
 | Código | Nome | Descrição | Categoria | Classificação |
