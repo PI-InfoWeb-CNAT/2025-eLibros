@@ -10,14 +10,13 @@
 
 
 ### 1. Resumo 
-Esse caso de uso permite ao Cliente calcular o frete e estimativa de entrega de um livro específico ou de um carrinho que foi fechado e está na fase de pagamento.
+Esse caso de uso permite ao Cliente ou a um Visitante calcular o frete e estimativa de entrega de um livro específico ou de um carrinho de um Cliente que foi fechado e está na fase de pagamento.
 
 ### 2. Atores 
 - Cliente ou Visitante
 
 ### 3. Pré-condições
-Cliente ou Visitante deve estar na página de um livro ou
-Cliente (apenas) deve estar na etapa de pagamento de uma compra que está sendo feita.
+Cliente ou Visitante deve estar na página de um livro ou Cliente (apenas) deve estar na etapa de pagamento de uma compra que está sendo feita.
   
 ### 4. Pós-condições
 Após a execução deste caso de uso, espera que o sistema:
@@ -29,13 +28,13 @@ Após a execução deste caso de uso, espera que o sistema:
 |  Ator  | Sistema |
 |:-------|:------- |
 | 1. Cliente ou Visitante informa cep | --- |
-| --- | 2. O sistema valida o cep e exibe a lista de opções de entrega para o item específico, calculando o preço|
+| --- | 2. O sistema valida o cep e exibe a lista de opções de entrega para o item específico, calculando o preço |
 
 #### 5.2. Fluxo Alternativo 
 |  Ator  | Sistema |
 |:-------|:------- |
 | 1. Cliente informa cep de endereço não cadastrado no momento da compra | --- |
-| --- | 2. O sistema valida o cep e endereço e exibe a lista de opções de entrega | 
+| --- | 2. O sistema valida o cep e endereço e exibe a lista de opções de entrega para o pedido | 
 
 #### 5.3. Fluxo de exceção
 
