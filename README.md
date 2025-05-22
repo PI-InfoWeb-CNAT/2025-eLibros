@@ -47,7 +47,7 @@ que posteriormente no 4º ano de Informática para Internet o readaptaram para a
 </table>
 
 ### Liderança da equipe
-- Fulano1: data-inicio a data-fim
+- Fulano1: <td align="center" valign="top" width="14.28%"><a href="https://github.com/rafaeltod"><img src="https://avatars.githubusercontent.com/u/124226801?v=4?s=100" width="100px;" alt="Rafael Ricco"/><br /><sub><b>Rafael Ricco</b></sub></a><br /><a href="https://github.com/PI-InfoWeb-CNAT/2024-eLibros/commits?author=rafaeltod" title="Documentation">📖</a> <a href="#design-ViniluR" title="Design">🎨</a> <a href="#ideas-rafaeltod" title="Ideas, Planning, & Feedback">🤔</a></td>
 - Fulano2: data-inicio a data-fim
 - Fulano3: data-inicio a data-fim
 - Fulano4: data-inicio a data-fim
