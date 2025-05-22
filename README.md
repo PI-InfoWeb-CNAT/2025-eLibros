@@ -46,6 +46,12 @@ que posteriormente no 4º ano de Informática para Internet o readaptaram para a
   </tbody>
 </table>
 
+### Liderançca da equipe
+- Fulano1: <data-inicio> a <data-fim>
+- Fulano2: <data-inicio> a <data-fim>
+- Fulano3: <data-inicio> a <data-fim>
+- Fulano4: <data-inicio> a <data-fim>
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
