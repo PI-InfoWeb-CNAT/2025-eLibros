@@ -1,103 +1,115 @@
-import Image from "next/image";
+"use client";
+
+import { Header, Footer, BooksCarousel } from '../components';
+import { mockBooks } from '../data/books';
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-[#FFFFF5] font-['Poppins'] text-[#1C1607]">
+      <Header />
+      
+      <main>
+        {/* Banner Section */}
+        <section 
+          className="bg-cover bg-center bg-top flex items-center justify-start px-4 md:px-20 py-20 mb-8"
+          style={{ backgroundImage: "url('/banner.png')" }}
+        >
+          <p className="text-[#FFFFF5] text-left text-base md:text-lg font-light max-w-lg">
+            "Há sonhos que devem permanecer nas <br />
+            gavetas, nos cofres, trancados até o <br />
+            nosso fim. E por isso passíveis de serem <br />
+            sonhados a vida inteira." - Hilda Hilst
+          </p>
+        </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+        {/* About Section */}
+        <section className="px-4 md:px-20 flex flex-col lg:flex-row justify-between items-center gap-8 mb-12">
+          <figure className="flex-shrink-0">
+            <img src="/marca.svg" alt="eLibros Marca" className="w-64 md:w-80" />
+          </figure>
+          
+          <div className="flex flex-col w-full lg:w-3/5 gap-6">
+            <div className="w-full">
+              <h2 className="text-[#1C1607] text-2xl md:text-3xl font-medium mb-4">
+                Conheça o eLibros
+              </h2>
+              <p className="pb-4 text-base">
+                Livraria digital brasileira onde você pode encontrar os seus escritores nacionais favoritos, ou até ir atrás de descobrir novos!
+              </p>
+            </div>
+            
+            <div className="flex flex-col md:flex-row justify-between gap-6">
+              <div className="flex flex-col w-full md:w-2/5">
+                <img src="/icons/missao.svg" alt="Missão" className="w-5 h-5 mb-2" />
+                <h3 className="text-lg font-medium mb-1">Missão</h3>
+                <p className="text-sm font-light">
+                  Aumentar a visibilidade dos livros nacionais!
+                </p>
+              </div>
+              
+              <div className="flex flex-col w-full md:w-2/5">
+                <img src="/icons/visao.svg" alt="Visão" className="w-5 h-5 mb-2" />
+                <h3 className="text-lg font-medium mb-1">Visão</h3>
+                <p className="text-sm font-light">
+                  Vender livros brasileiros em escala internacional.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Info Stats Section */}
+        <section className="px-4 md:px-20 my-12 flex flex-col md:flex-row justify-center md:justify-evenly gap-8">
+          <div className="w-full md:w-1/4 text-center">
+            <h3 className="text-[#5B4F3D] text-2xl font-semibold mb-2">+5Mi acessos</h3>
+            <p className="text-sm">
+              Desde 2023, conseguimos juntar mais de 5,000,000 acessos em nossa loja
+            </p>
+          </div>
+          
+          <div className="w-full md:w-1/4 text-center">
+            <h3 className="text-[#5B4F3D] text-2xl font-semibold mb-2">26 estados</h3>
+            <p className="text-sm">
+              Atualmente, somos capazes de entregar suas compras em qualquer estado do país
+            </p>
+          </div>
+          
+          <div className="w-full md:w-1/4 text-center">
+            <h3 className="text-[#5B4F3D] text-2xl font-semibold mb-2">+10mil livros</h3>
+            <p className="text-sm">
+              Nossa coleção conta com mais de 10,000 livros de inúmeros autores diferentes
+            </p>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section className="bg-[#FFD147] px-4 md:px-20 py-8 my-8 flex flex-col md:flex-row justify-between items-center gap-6">
+          <h2 className="text-[#574725] text-2xl font-medium">Contate-nos</h2>
+          
+          <div className="hidden md:block h-14 w-0.5 bg-[#BF9D35]"></div>
+          
+          <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+            <div className="flex items-center text-[#473b1d] text-lg">
+              <figure className="pr-3">
+                <img src="/icons/email.svg" alt="Email" className="h-5" />
+              </figure>
+              <p>elibros@entregadores.com</p>
+            </div>
+            
+            <div className="flex items-center text-[#473b1d] text-lg">
+              <figure className="pr-3">
+                <img src="/icons/fone.svg" alt="Telefone" className="h-5" />
+              </figure>
+              <p>Disque (84) 4005-9832</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Books Carousel */}
+        <BooksCarousel books={mockBooks} />
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <Footer />
     </div>
   );
 }
