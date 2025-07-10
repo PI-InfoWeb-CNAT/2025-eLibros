@@ -51,32 +51,32 @@ que posteriormente no 4º ano de Informática para Internet o readaptaram para a
 <table>
   <tbody>
     <tr>
-      <p>| Líder 1: 22/05 - 29/05 |</p>
+      <p>| Líder 1: 24/4 - 15/5 |</p>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/rafaeltod"><img src="https://avatars.githubusercontent.com/u/124226801?v=4?s=100" width="100px;" alt="Rafael Ricco"/><br /><sub><b>Rafael Ricco</b></sub></a><br /><a href="https://github.com/PI-InfoWeb-CNAT/2024-eLibros/commits?author=rafaeltod" title="Documentation">📖</a> <a href="#design-ViniluR" title="Design">🎨</a> <a href="#ideas-rafaeltod" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
     <br>
     <tr>
-      <p>| Líder 2: 29/05 - 05/06 |</p>
+      <p>| Líder 2: 15/5 - 29/5 |</p>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Artur-Cortez"><img src="https://avatars.githubusercontent.com/u/114093584?v=4?s=100" width="100px;" alt="Artur Cortez"/><br /><sub><b>Artur Cortez</b></sub></a><br /><a href="https://github.com/PI-InfoWeb-CNAT/2024-eLibros/commits?author=Artur-Cortez" title="Documentation">📖</a> <a href="#ideas-Artur-Cortez" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
     <br>
     <tr>
-      <p>| Líder 3: 05/06 - 12/06 |</p>
+      <p>| Líder 3: 12/6 - 26/6 |</p>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sakilfe"><img src="https://avatars.githubusercontent.com/u/123976455?v=4?s=100" width="100px;" alt="Samia"/><br /><sub><b>Sâmia</b></sub></a><br /><a href="https://github.com/PI-InfoWeb-CNAT/2024-eLibros/commits?author=Samia" title="Documentation">📖</a> <a href="#ideas-Samia" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
     <br>
     <tr>
-      <p>| Líder 4: 12/06 - 19/06 |</p>
+      <p>| Líder 4: 26/6 - 10/7 |</p>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/gaiiiel"><img src="https://avatars.githubusercontent.com/u/124104528?v=4?s=100" width="100px;" alt="gaiiiel"/><br /><sub><b>gaiiiel</b></sub></a><br /><a href="https://github.com/PI-InfoWeb-CNAT/2024-eLibros/commits?author=gaiiiel" title="Documentation">📖</a> <a href="#ideas-gaiiiel" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
     <br>
     <tr>
-      <p>| Líder 5: 19/06 - 26/06 |</p>
+      <p>| Líder 5: 10/7 - 24/7 |</p>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/caua2512"><img src="https://avatars.githubusercontent.com/u/130388387?v=4" width="100px;" alt="Caua"/><br /><sub><b>Cauã</b></sub></a><br /><a href="https://github.com/PI-InfoWeb-CNAT/2024-eLibros/commits?author=Caua" title="Documentation">📖</a> <a href="#ideas-Caua" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
     <br>
     <tr>
-      <p>| Líder 6: 26/06 - 03/06 |</p>
+      <p>| Líder 6: 24/7 - 7/8 |</p>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Ana-Julia-06"><img src="https://avatars.githubusercontent.com/u/93939810?v=4?s=100" width="100px;" alt="juju."/><br /><sub><b>juju.</b></sub></a><br /><a href="#design-Ana-Julia-06" title="Design">🎨</a> <a href="#ideas-Ana-Julia-06" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/PI-InfoWeb-CNAT/2024-eLibros/commits?author=Ana-Julia-06" title="Documentation">📖</a></td>
     </tr>
     <br>
