@@ -24,7 +24,7 @@ export const mockBooks: Book[] = [
   {
     id: 3,
     title: "A Moreninha",
-    author: "Joaquim Manuel de Macedo",
+    author: "Joaquim Manuel",
     price: "35,90",
     image: "/placeholder.png"
   },
