@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste API - eLibros</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .log { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #d32f2f; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        button { padding: 10px 20px; margin: 10px 0; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste de API - eLibros</h1>
+    <button onclick="testarAPI()">Testar API</button>
+    <button onclick="limparLogs()">Limpar Logs</button>
+    
+    <div id="logs"></div>
+    
+    <script>
+        function log(message, type = 'log') {
+            const logsDiv = document.getElementById('logs');
+            const logDiv = document.createElement('div');
+            logDiv.className = `log ${type}`;
+            logDiv.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong>: ${message}`;
+            logsDiv.appendChild(logDiv);
+            console.log(message);
+        }
+        
+        function limparLogs() {
+            document.getElementById('logs').innerHTML = '';
+        }
+        
+        async function testarAPI() {
+            log('🚀 Iniciando teste da API...');
+            
+            try {
+                log('📡 Fazendo requisição para http://localhost:8000/api/v1/livros/');
+                
+                const response = await fetch('http://localhost:8000/api/v1/livros/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    mode: 'cors'
+                });
+                
+                log(`📬 Status: ${response.status} ${response.statusText}`, response.ok ? 'success' : 'error');
+                
+                // Log headers
+                const headers = {};
+                for (let [key, value] of response.headers) {
+                    headers[key] = value;
+                }
+                log(`📋 Headers: ${JSON.stringify(headers, null, 2)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                log(`📚 Dados recebidos: ${data.count} livros`, 'success');
+                log(`📖 Primeiro livro: ${JSON.stringify(data.results[0], null, 2)}`);
+                
+                // Testar se conseguimos acessar as propriedades
+                if (data.results && data.results.length > 0) {
+                    const primeiroLivro = data.results[0];
+                    log(`✅ Título: ${primeiroLivro.titulo}`, 'success');
+                    log(`✅ Autores: ${JSON.stringify(primeiroLivro.autores)}`, 'success');
+                    log(`✅ Preço: R$ ${primeiroLivro.preco}`, 'success');
+                }
+                
+            } catch (error) {
+                log(`❌ Erro: ${error.message}`, 'error');
+                log(`❌ Erro completo: ${JSON.stringify(error, Object.getOwnPropertyNames(error))}`, 'error');
+            }
+        }
+        
+        // Testar automaticamente ao carregar
+        window.onload = () => {
+            log('🌐 Página carregada, aguardando 1 segundo para testar...');
+            setTimeout(testarAPI, 1000);
+        };
+    </script>
+</body>
+</html>
