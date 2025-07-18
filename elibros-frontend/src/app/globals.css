@@ -16,6 +16,26 @@ body {
   .font-poppins {
     font-family: 'Poppins', sans-serif;
   }
+  
+  /* Line clamp utilities */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+  
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+  }
 }
 
 /* Swiper custom styles */
@@ -64,14 +84,6 @@ body {
   height: 10rem;
   border-radius: 3px;
   object-fit: cover;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 @media screen and (max-width: 400px) {
