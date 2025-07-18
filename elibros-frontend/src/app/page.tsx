@@ -1,7 +1,6 @@
 "use client";
 
-import { Header, Footer, BooksCarousel } from '../components';
-import { mockBooks } from '../data/books';
+import { Header, Footer, BooksCarousel, ClientOnly } from '../components';
 
 export default function Home() {
   return (
@@ -106,7 +105,19 @@ export default function Home() {
         </section>
 
         {/* Books Carousel */}
-        <BooksCarousel books={mockBooks} />
+        <ClientOnly fallback={
+          <section className="py-12">
+            <h2 className="text-xl font-medium mb-8 text-center">Indicações eLibros</h2>
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FFD147] mx-auto mb-4"></div>
+                <p>Carregando livros...</p>
+              </div>
+            </div>
+          </section>
+        }>
+          <BooksCarousel />
+        </ClientOnly>
       </main>
 
       <Footer />
