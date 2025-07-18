@@ -25,3 +25,7 @@ dj-database-url
 six
 django-simple-history
 django-extensions
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+django-filter
