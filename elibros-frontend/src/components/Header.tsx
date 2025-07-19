@@ -29,7 +29,7 @@ export default function Header({}: HeaderProps) {
           </li>
           <li>
             <a 
-              href="/cadastrar" 
+              href="/registro" 
               className="bg-white text-[#1C1607] px-6 py-2 rounded hover:bg-gray-200 transition-colors duration-300"
             >
               Cadastrar
@@ -37,7 +37,7 @@ export default function Header({}: HeaderProps) {
           </li>
           <li>
             <a 
-              href="/entrar" 
+              href="/login" 
               className="bg-[#FFD147] text-[#1C1607] px-6 py-2 rounded hover:bg-[#fac423] transition-colors duration-300"
             >
               Entrar

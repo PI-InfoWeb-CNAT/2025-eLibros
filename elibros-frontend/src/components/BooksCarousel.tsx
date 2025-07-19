@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { elibrosApi, Livro } from '../services/api';
-import ClientOnly from './ClientOnly';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -79,19 +78,11 @@ export default function BooksCarousel({ title = "Indicações eLibros" }: BooksC
   }
 
   return (
-    <section>
-      <h2 className="text-xl font-medium mb-8 text-center">{title}</h2>
+    <section className="px-4 md:px-20">
+      <h2 className="text-2xl font-medium mb-8 text-left">{title}</h2>
       
-      <ClientOnly fallback={
-        <div className="flex justify-center items-center py-20">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FFD147] mx-auto mb-4"></div>
-            <p>Carregando livros...</p>
-          </div>
-        </div>
-      }>
-        <div className="swiper-container max-w-6xl mx-auto flex justify-center items-center">
-          <Swiper
+      <div className="swiper-container w-full">
+        <Swiper
             modules={[Navigation]}
             navigation={{
               nextEl: '.swiper-button-next',
@@ -106,58 +97,65 @@ export default function BooksCarousel({ title = "Indicações eLibros" }: BooksC
               768: {
                 slidesPerView: 2,
                 slidesPerGroup: 2,
-                spaceBetween: 30,
+                spaceBetween: 20,
               },
               1000: {
                 slidesPerView: 3,
                 slidesPerGroup: 3,
-                spaceBetween: 40,
+                spaceBetween: 20,
               },
               1400: {
                 slidesPerView: 4,
                 slidesPerGroup: 4,
-                spaceBetween: 50,
-              },
-              1800: {
-                slidesPerView: 5,
-                slidesPerGroup: 5,
-                spaceBetween: 40,
+                spaceBetween: 20,
               },
             }}
             className="relative w-full"
           >
             {books.map((book) => (
-              <SwiperSlide key={book.id} className="flex justify-center items-center">
-                <div className="flex flex-col justify-center text-center items-center max-w-32">
-                  <figure className="mb-4">
-                    <img 
-                      src={book.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
-                      alt={book.titulo}
-                      className="w-28 h-40 rounded mx-auto object-cover cursor-pointer"
-                      onClick={() => window.location.href = `/livro/${book.id}`}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
-                      }}
-                    />
-                  </figure>
-                  <div className="flex flex-col items-center w-full">
-                    <h3 
-                      className="text-base font-semibold mb-2 px-2 leading-tight h-12 line-clamp-3 cursor-pointer text-center w-full"
-                      onClick={() => window.location.href = `/livro/${book.id}`}
-                    >
-                      {book.titulo}
-                    </h3>
-                    <p className="text-xs italic mb-2 pt-4">
-                      {Array.isArray(book.autores) ? book.autores.join(', ') : book.autores}
-                    </p>
-                    <p className="text-sm mb-4">R$ {book.preco}</p>
-                    <a 
-                      href={`/livro/${book.id}`}
-                      className="text-sm text-[#1C1607] bg-[#FFD147] rounded-lg px-5 py-2 hover:bg-[#fac423] transition-colors"
-                    >
-                      Comprar
+              <SwiperSlide key={book.id}>
+                <div className="p-2 h-40">
+                  <div className="flex h-full">
+                    {/* Imagem à esquerda */}
+                    <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-4">
+                      <img 
+                        src={book.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
+                        alt={book.titulo}
+                        className="w-20 h-32 rounded object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
+                        }}
+                      />
                     </a>
+                    
+                    {/* Informações à direita */}
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <h3 className="text-base font-semibold leading-tight overflow-hidden" style={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical' as const,
+                        }}>
+                          {book.titulo}
+                        </h3>
+                        <p className="text-sm text-gray-700">
+                          {Array.isArray(book.autores) ? book.autores.join(', ') : book.autores}
+                        </p>
+                        <p className="text-sm font-semibold">
+                          R$ {book.preco}
+                        </p>
+                      </div>
+                      
+                      <div className="mt-auto pt-2">
+                        <a 
+                          href={`/livro/${book.id}`}
+                          className="inline-block text-sm text-[#1C1607] bg-[#FFD147] rounded-lg px-4 py-2 hover:bg-[#fac423] transition-colors"
+                        >
+                          Comprar
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </SwiperSlide>
@@ -168,16 +166,6 @@ export default function BooksCarousel({ title = "Indicações eLibros" }: BooksC
             <div className="swiper-button-next !text-[#1C1607] !scale-75"></div>
           </Swiper>
         </div>
-      </ClientOnly>
-      
-      <p className="text-center mt-12">
-        <a 
-          href="/acervo" 
-          className="text-black underline text-lg"
-        >
-          Ver mais
-        </a>
-      </p>
     </section>
   );
 }
