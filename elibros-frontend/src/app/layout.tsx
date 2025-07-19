@@ -11,6 +11,22 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "eLibros",
   description: "Livraria digital brasileira com os melhores autores nacionais",
+  icons: {
+    icon: [
+      {
+        url: '/logo.png',
+        sizes: '32x32',
+        type: 'image/png',
+      },
+      {
+        url: '/logo.png',
+        sizes: '16x16',
+        type: 'image/png',
+      },
+    ],
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({

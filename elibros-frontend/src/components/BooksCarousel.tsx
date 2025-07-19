@@ -9,9 +9,10 @@ import 'swiper/css/navigation';
 
 interface BooksCarouselProps {
   title?: string;
+  showViewMore?: boolean;
 }
 
-export default function BooksCarousel({ title = "Indicações eLibros" }: BooksCarouselProps) {
+export default function BooksCarousel({ title = "Indicações eLibros", showViewMore = false }: BooksCarouselProps) {
   const [books, setBooks] = useState<Livro[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -166,6 +167,17 @@ export default function BooksCarousel({ title = "Indicações eLibros" }: BooksC
             <div className="swiper-button-next !text-[#1C1607] !scale-75"></div>
           </Swiper>
         </div>
+        
+        {showViewMore && (
+          <p className="text-center mt-12">
+            <a 
+              href="/acervo" 
+              className="text-black underline text-lg hover:text-[#5B4F3D] transition-colors"
+            >
+              Ver mais
+            </a>
+          </p>
+        )}
     </section>
   );
 }

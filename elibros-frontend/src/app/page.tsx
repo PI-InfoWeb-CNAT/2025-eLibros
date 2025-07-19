@@ -105,7 +105,7 @@ export default function Home() {
         </section>
 
         {/* Books Carousel */}
-        <BooksCarousel/>
+        <BooksCarousel showViewMore={true} />
       </main>
 
       <Footer />
