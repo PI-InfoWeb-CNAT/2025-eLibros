@@ -12,10 +12,23 @@ interface BooksCarouselProps {
   showViewMore?: boolean;
 }
 
-export default function BooksCarousel({ title = "Indicações eLibros", showViewMore = false }: BooksCarouselProps) {
+export default function BooksCarousel({ 
+  title = "Indicações eLibros", 
+  showViewMore = false
+}: BooksCarouselProps) {
   const [books, setBooks] = useState<Livro[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Função para embaralhar array (algoritmo Fisher-Yates)
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -25,7 +38,9 @@ export default function BooksCarousel({ title = "Indicações eLibros", showView
         
         // ✅ Usando o endpoint correto que retorna todos os livros
         const response = await elibrosApi.getLivros();
-        setBooks(response.results);
+        // ✅ Embaralhando os livros para mostrar de forma aleatória
+        const randomizedBooks = shuffleArray(response.results);
+        setBooks(randomizedBooks);
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido ao carregar livros';
         setError(errorMessage);
@@ -95,19 +110,24 @@ export default function BooksCarousel({ title = "Indicações eLibros", showView
                 slidesPerGroup: 1,
                 spaceBetween: 20,
               },
-              768: {
+              640: {
                 slidesPerView: 2,
-                slidesPerGroup: 2,
+                slidesPerGroup: 1,
                 spaceBetween: 20,
               },
-              1000: {
+              900: {
                 slidesPerView: 3,
-                slidesPerGroup: 3,
+                slidesPerGroup: 1,
                 spaceBetween: 20,
               },
-              1400: {
+              1200: {
                 slidesPerView: 4,
-                slidesPerGroup: 4,
+                slidesPerGroup: 1,
+                spaceBetween: 20,
+              },
+              1600: {
+                slidesPerView: 5,
+                slidesPerGroup: 1,
                 spaceBetween: 20,
               },
             }}
@@ -115,14 +135,15 @@ export default function BooksCarousel({ title = "Indicações eLibros", showView
           >
             {books.map((book) => (
               <SwiperSlide key={book.id}>
-                <div className="p-2 h-40">
-                  <div className="flex h-full">
+                {/* Layout horizontal - imagem do lado das informações */}
+                <div className="p-3 h-52">
+                  <div className="flex h-full items-start">
                     {/* Imagem à esquerda */}
                     <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-4">
                       <img 
                         src={book.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
                         alt={book.titulo}
-                        className="w-20 h-32 rounded object-cover"
+                        className="w-26 h-40 rounded object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
@@ -131,24 +152,28 @@ export default function BooksCarousel({ title = "Indicações eLibros", showView
                     </a>
                     
                     {/* Informações à direita */}
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div className="space-y-2">
-                        <h3 className="text-base font-semibold leading-tight overflow-hidden" style={{
+                    <div className="flex-1 flex flex-col justify-between h-40">
+                      <div className="space-y-1">
+                        <h3 className="text-base font-semibold leading-tight overflow-hidden h-12" style={{
                           display: '-webkit-box',
-                          WebkitLineClamp: 2,
+                          WebkitLineClamp: 3,
                           WebkitBoxOrient: 'vertical' as const,
                         }}>
                           {book.titulo}
                         </h3>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm text-gray-700 h-5 overflow-hidden" style={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: 'vertical' as const,
+                        }}>
                           {Array.isArray(book.autores) ? book.autores.join(', ') : book.autores}
-                        </p>
-                        <p className="text-sm font-semibold">
-                          R$ {book.preco}
                         </p>
                       </div>
                       
-                      <div className="mt-auto pt-2">
+                      <div className="space-y-2">
+                        <p className="text-sm font-semibold">
+                          R$ {book.preco}
+                        </p>
                         <a 
                           href={`/livro/${book.id}`}
                           className="inline-block text-sm text-[#1C1607] bg-[#FFD147] rounded-lg px-4 py-2 hover:bg-[#fac423] transition-colors"

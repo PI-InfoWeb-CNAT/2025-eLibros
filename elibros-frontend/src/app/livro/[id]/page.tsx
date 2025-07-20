@@ -154,90 +154,130 @@ export default function LivroPage() {
           <div className="lg:w-80 border-8 border-[#D9D9D9] rounded-lg p-6">
             <div className="py-6 border-t border-b border-[#D9D9D9]">
               {/* Preço */}
-              <p className="mb-2">
-                <span className="text-xs opacity-50 align-top">R$</span>
-                <span className="text-2xl font-medium">
-                  {precoFormatado.reais}
-                </span>
-                <span className="text-xs align-top">
-                  ,{precoFormatado.centavos}
-                </span>
-              </p>
+              <div className="mb-4">
+                <p className="mb-1">
+                  <span className="text-xs opacity-50 align-top">R$</span>
+                  <span className="text-2xl font-bold">
+                    {precoFormatado.reais}
+                  </span>
+                  <span className="text-xs align-top font-bold">
+                    ,{precoFormatado.centavos}
+                  </span>
+                </p>
+              </div>
 
-              {/* Entrega */}
-              <p className="text-xs mb-2">
-                <span className="text-[#5391AB]">Entrega GRÁTIS:</span> Chega entre XX - XX de Mês
-              </p>
+              {/* Opções de frete */}
+              <div className="mb-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-[#5391AB] font-medium">eLibros econômico:</p>
+                    <p className="text-xs text-gray-600">Chega entre XX - XX de Mês</p>
+                  </div>
+                  <span className="bg-[#3B362B] text-white text-xs px-2 py-1 rounded">
+                    R$ XX,XX
+                  </span>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-[#FFB800] font-medium">eLibros Express:</p>
+                    <p className="text-xs text-gray-600">Chega entre XX - XX de Mês</p>
+                  </div>
+                  <span className="bg-[#FFB800] text-white text-xs px-2 py-1 rounded">
+                    R$ XX,XX
+                  </span>
+                </div>
+              </div>
 
-              {/* Local */}
-              <p className="text-xs mb-2 flex items-center">
-                <img src="/icons/local.svg" alt="Local" className="w-4 h-4 mr-2" />
-                <a href="#" className="text-[#5391AB] hover:underline">
-                  Adicionar local
-                </a>
-              </p>
+              {/* Local de entrega */}
+              <div className="mb-4">
+                <p className="text-sm flex items-center mb-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="mr-2">
+                    <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22S19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="#5391AB"/>
+                  </svg>
+                  <a href="#" className="text-[#5391AB] hover:underline text-sm">
+                    Entregando em ENDEREÇO. Atualizar local
+                  </a>
+                </p>
+              </div>
 
               {/* Estoque */}
-              <p className="text-base text-[#3B362B] mb-4">
+              <p className="text-sm text-[#3B362B] mb-4">
                 Em estoque 
                 <span className="text-xs font-light ml-1">
-                  {livro.quantidade} restante(s)
+                  {livro.quantidade} restantes
                 </span>
               </p>
 
-              {/* Seletor de quantidade */}
-              <div className="flex items-center justify-center w-48 mb-6 mx-auto">
+              {/* Seletor de quantidade e botão adicionar */}
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <div className="flex items-center">
+                  <button 
+                    onClick={() => handleQuantityChange(-1)}
+                    className="w-8 h-8 border border-gray-300 rounded-l bg-white hover:bg-gray-100 text-lg flex items-center justify-center"
+                    disabled={quantity <= 1}
+                  >
+                    -
+                  </button>
+                  <input 
+                    type="number" 
+                    value={quantity}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value, 10);
+                      if (value >= 1 && value <= livro.quantidade) {
+                        setQuantity(value);
+                      }
+                    }}
+                    className="w-16 h-8 border-t border-b border-gray-300 text-center bg-white text-sm"
+                    min="1"
+                    max={livro.quantidade}
+                  />
+                  <button 
+                    onClick={() => handleQuantityChange(1)}
+                    className="w-8 h-8 border border-gray-300 rounded-r bg-white hover:bg-gray-100 text-lg flex items-center justify-center"
+                    disabled={quantity >= livro.quantidade}
+                  >
+                    +
+                  </button>
+                </div>
+                
                 <button 
-                  onClick={() => handleQuantityChange(-1)}
-                  className="w-8 h-8 border border-gray-300 rounded-l bg-white hover:bg-gray-100 text-lg"
-                  disabled={quantity <= 1}
+                  onClick={handleAddToCart}
+                  className="bg-[#3B362B] hover:bg-[#2a241f] text-white rounded-lg px-4 py-2 transition-colors font-medium text-sm"
                 >
-                  -
-                </button>
-                <input 
-                  type="number" 
-                  value={quantity}
-                  onChange={(e) => {
-                    const value = parseInt(e.target.value, 10);
-                    if (value >= 1 && value <= livro.quantidade) {
-                      setQuantity(value);
-                    }
-                  }}
-                  className="w-16 h-8 border-t border-b border-gray-300 text-center bg-white"
-                  min="1"
-                  max={livro.quantidade}
-                />
-                <button 
-                  onClick={() => handleQuantityChange(1)}
-                  className="w-8 h-8 border border-gray-300 rounded-r bg-white hover:bg-gray-100 text-lg"
-                  disabled={quantity >= livro.quantidade}
-                >
-                  +
+                  Adicionar
                 </button>
               </div>
 
-              {/* Botões de ação */}
-              <div className="flex flex-col gap-3">
-                <button 
-                  onClick={handleAddToCart}
-                  className="w-48 mx-auto flex items-center justify-center gap-2 bg-[#FFD147] hover:bg-[#fac423] text-[#1C1607] rounded-lg px-4 py-3 transition-colors font-medium"
-                >
-                  <img src="/icons/carrinho.svg" alt="Carrinho" className="w-5 h-5" />
-                  Adicionar
-                </button>
-
+              {/* Botão Comprar Agora */}
+              <div className="mb-4">
                 <button 
                   onClick={handleBuyNow}
-                  className="w-48 mx-auto bg-[#5391AB] hover:bg-[#4a8299] text-white rounded-lg px-4 py-3 transition-colors font-medium"
+                  className="w-full bg-[#FFD147] hover:bg-[#fac423] text-[#1C1607] rounded-lg px-4 py-3 transition-colors font-medium text-sm"
                 >
                   Comprar Agora
                 </button>
-
-                <button className="w-48 mx-auto flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-[#1C1607] rounded-lg px-4 py-3 transition-colors">
-                  <img src="/icons/caminhao.svg" alt="Frete" className="w-5 h-5" />
-                  Calcular Frete
-                </button>
               </div>
+
+              {/* Campo CEP */}
+              <div className="mb-4">
+                <input
+                  type="text"
+                  placeholder="Digite o seu CEP"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD147] focus:border-transparent"
+                />
+              </div>
+
+              {/* Calcular frete */}
+              <button className="w-3/4 mx-auto flex items-center justify-center gap-2 bg-[#3B362B] hover:bg-[#2a241f] text-white rounded-lg px-3 py-2 transition-colors font-medium text-sm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="1" y="3" width="15" height="13"/>
+                  <polygon points="16,6 20,6 23,11 23,18 20,18 20,15 16,15"/>
+                  <circle cx="5.5" cy="18.5" r="2.5"/>
+                  <circle cx="18.5" cy="18.5" r="2.5"/>
+                </svg>
+                Calcular frete
+              </button>
             </div>
           </div>
         </section>
