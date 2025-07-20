@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Header, Footer, BooksCarousel } from '../../../components';
 import { elibrosApi, Livro } from '../../../services/api';
+import { cartUtils } from '../../../utils/cart';
 
 export default function LivroPage() {
   const params = useParams();
@@ -54,13 +55,17 @@ export default function LivroPage() {
   };
 
   const handleAddToCart = () => {
-    // TODO: Implementar lógica do carrinho
-    console.log('Adicionar ao carrinho:', { livroId, quantity });
+    if (livro) {
+      cartUtils.addToCart(livro, quantity);
+      alert(`${livro.titulo} adicionado ao carrinho!`);
+    }
   };
 
   const handleBuyNow = () => {
-    // TODO: Implementar lógica de compra direta
-    console.log('Comprar agora:', { livroId, quantity });
+    if (livro) {
+      cartUtils.addToCart(livro, quantity);
+      router.push('/carrinho');
+    }
   };
 
   if (loading) {
