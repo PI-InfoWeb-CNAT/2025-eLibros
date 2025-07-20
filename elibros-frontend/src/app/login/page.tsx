@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Header, Footer } from '../../components';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -54,28 +55,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{
-      backgroundImage: "url('/images/fundoacesso.png')",
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
-    }}>
-      {/* Header */}
-      <header className="flex justify-center bg-transparent border-0 p-0 mb-8 pt-30 pb-10">
-        <Link href="/">
-          <Image
-            src="/images/logoacesso.png"
-            alt="logo eLibros"
-            width={160}
-            height={80}
-            className="w-80"
-          />
-        </Link>
-      </header>
+    <div 
+      className="min-h-screen bg-cover bg-center bg-no-repeat flex flex-col"
+      style={{ backgroundImage: "url('/images/fundoacesso.png')" }}
+    >
+      
+      <main className="flex-1 flex items-center justify-center px-4 py-8">
+        {/* Header */}
+        <div className="flex flex-col items-center">
+          <header className="flex justify-center bg-transparent border-0 p-0 mb-8">
+            <Link href="/">
+              <Image
+                src="/images/logoacesso.png"
+                alt="logo eLibros"
+                width={160}
+                height={80}
+                className="w-80"
+              />
+            </Link>
+          </header>
 
-      {/* Main Content */}
-      <main className="flex justify-center px-4">
-        <section className="flex justify-between bg-[#FFFFF5] rounded-lg w-full max-w-4xl p-16">
+          {/* Main Content */}
+          <section className="flex justify-between bg-[#FFFFF5] rounded-lg w-full max-w-4xl p-16">
           {/* Left Side - Image */}
           <figure className="flex items-center justify-center mr-8">
             <Image
@@ -195,6 +196,7 @@ export default function LoginPage() {
             </form>
           </div>
         </section>
+        </div>
       </main>
     </div>
   );

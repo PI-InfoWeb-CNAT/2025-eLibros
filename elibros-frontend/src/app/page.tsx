@@ -4,10 +4,10 @@ import { Header, Footer, BooksCarousel} from '../components';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#FFFFF5] font-['Poppins'] text-[#1C1607]">
+    <div className="min-h-screen bg-[#FFFFF5] font-['Poppins'] text-[#1C1607] flex flex-col">
       <Header />
       
-      <main>
+      <main className="flex-1">
         {/* Banner Section */}
         <section 
           className="bg-cover bg-center bg-top flex items-center justify-start px-4 md:px-20 py-20 mb-8"

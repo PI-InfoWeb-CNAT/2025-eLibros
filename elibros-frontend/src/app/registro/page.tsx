@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Header, Footer } from '../../components';
 
 export default function RegistroPage() {
   const [formData, setFormData] = useState({
@@ -87,16 +88,19 @@ export default function RegistroPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{
+    <div className="min-h-screen flex flex-col" style={{
       backgroundImage: "url('/images/fundoacesso.png')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat'
     }}>
-      {/* Header */}
-      <header className="flex justify-center bg-transparent border-0 p-0 pt-30 pb-10">
-        <Link href="/">
-          <Image
+      
+      <main className="flex-1 flex items-center justify-center px-4 py-8">
+        <div className="flex flex-col items-center">
+          {/* Header logo */}
+          <header className="flex justify-center bg-transparent border-0 p-0 mb-8">
+            <Link href="/">
+              <Image
             src="/images/logoacesso.png"
             alt="logo eLibros"
             width={160}
@@ -107,7 +111,6 @@ export default function RegistroPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex justify-center px-4">
         <section className="flex justify-between bg-[#FFFFF5] rounded-lg w-full max-w-6xl p-16">
           
           {/* Error Messages */}
@@ -292,6 +295,7 @@ export default function RegistroPage() {
             </div>
           </form>
         </section>
+        </div>
       </main>
     </div>
   );

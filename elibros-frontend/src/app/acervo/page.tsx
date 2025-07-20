@@ -42,10 +42,10 @@ export default function AcervoPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FFFFF5] font-['Poppins'] text-[#1C1607]">
+    <div className="min-h-screen bg-[#FFFFF5] font-['Poppins'] text-[#1C1607] flex flex-col">
       <Header />
       
-      <main className="py-8">
+      <main className="flex-1 py-8">
         {/* Search Section */}
         <section className="mb-12 px-4 md:px-20">
           <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-8 font-['Poppins']">
