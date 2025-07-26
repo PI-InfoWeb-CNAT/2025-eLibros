@@ -17,13 +17,14 @@ from .views.AdminViews import AdminViews
 
 from .models import (
     Livro, Autor, Categoria, Genero, Cliente,
-    Carrinho, ItemCarrinho, Pedido, Cupom
+    Carrinho, ItemCarrinho, Pedido, Cupom, Avaliacao, CurtidaAvaliacao
 )
 from .serializers import (
     LivroSerializer, LivroCreateSerializer, AutorSerializer,
     CategoriaSerializer, GeneroSerializer, ClienteSerializer,
     CarrinhoSerializer, ItemCarrinhoSerializer, PedidoSerializer,
-    CupomSerializer
+    CupomSerializer, AvaliacaoSerializer, AvaliacaoCreateSerializer, 
+    CurtidaAvaliacaoSerializer, EstatisticasLivroSerializer
 )
 
 
@@ -395,3 +396,96 @@ def estatisticas(request):
         'total_generos': Genero.objects.count(),
     }
     return Response(stats)
+
+
+# === VIEWS DE AVALIAÇÕES ===
+
+@api_view(['GET', 'POST'])
+@permission_classes([AllowAny])  # GET é público, POST precisa de autenticação
+def avaliacoes_livro(request, livro_id):
+    """
+    GET: Lista avaliações de um livro
+    POST: Cria nova avaliação (requer autenticação)
+    """
+    livro = get_object_or_404(Livro, id=livro_id)
+    
+    if request.method == 'GET':
+        avaliacoes = Avaliacao.objects.filter(livro=livro).select_related('usuario')
+        serializer = AvaliacaoSerializer(avaliacoes, many=True, context={'request': request})
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        if not request.user.is_authenticated:
+            return Response(
+                {'detail': 'Autenticação necessária para avaliar'}, 
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        
+        # Verificar se usuário já avaliou este livro
+        if Avaliacao.objects.filter(usuario=request.user, livro=livro).exists():
+            return Response(
+                {'detail': 'Você já avaliou este livro'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        serializer = AvaliacaoCreateSerializer(
+            data=request.data, 
+            context={'request': request}
+        )
+        if serializer.is_valid():
+            avaliacao = serializer.save(livro=livro)
+            response_serializer = AvaliacaoSerializer(avaliacao, context={'request': request})
+            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def curtir_avaliacao(request, avaliacao_id):
+    """
+    POST: Curtir uma avaliação
+    DELETE: Remover curtida
+    """
+    avaliacao = get_object_or_404(Avaliacao, id=avaliacao_id)
+    
+    # Usuário não pode curtir própria avaliação
+    if avaliacao.usuario == request.user:
+        return Response(
+            {'detail': 'Você não pode curtir sua própria avaliação'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    curtida_existe = CurtidaAvaliacao.objects.filter(
+        usuario=request.user, 
+        avaliacao=avaliacao
+    ).first()
+    
+    if request.method == 'POST':
+        if curtida_existe:
+            return Response(
+                {'detail': 'Você já curtiu esta avaliação'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        CurtidaAvaliacao.objects.create(usuario=request.user, avaliacao=avaliacao)
+        
+        # Atualizar contador de curtidas
+        avaliacao.curtidas = avaliacao.curtidas_usuarios.count()
+        avaliacao.save(update_fields=['curtidas'])
+        
+        return Response({'detail': 'Avaliação curtida com sucesso'})
+    
+    elif request.method == 'DELETE':
+        if not curtida_existe:
+            return Response(
+                {'detail': 'Você não curtiu esta avaliação'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        curtida_existe.delete()
+        
+        # Atualizar contador de curtidas
+        avaliacao.curtidas = avaliacao.curtidas_usuarios.count()
+        avaliacao.save(update_fields=['curtidas'])
+        
+        return Response({'detail': 'Curtida removida com sucesso'})

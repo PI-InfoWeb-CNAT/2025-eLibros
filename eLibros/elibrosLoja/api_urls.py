@@ -33,6 +33,10 @@ urlpatterns = [
     path('livros/lancamentos/', api_views.livros_lancamentos, name='livros_lancamentos'),
     path('estatisticas/', api_views.estatisticas, name='estatisticas'),
     
+    # === ENDPOINTS DE AVALIAÇÕES ===
+    path('livros/<int:livro_id>/avaliacoes/', api_views.avaliacoes_livro, name='avaliacoes_livro'),
+    path('avaliacoes/<int:avaliacao_id>/curtir/', api_views.curtir_avaliacao, name='curtir_avaliacao'),
+    
     # Endpoints específicos dos ViewSets que simulam suas URLs existentes
     # /api/v1/livros/explorar/?pesquisa=termo&genero=fiction&autor=nome
     # /api/v1/livros/acervo/

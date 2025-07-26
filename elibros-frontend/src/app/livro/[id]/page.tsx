@@ -13,20 +13,6 @@ export default function LivroPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState({
-    sort: '',
-    genre: '',
-    author: '',
-    year: ''
-  });
-
-  const handleFilterChange = (filterName: string, value: string) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterName]: value
-    }));
-  };
 
   const livroId = typeof params.id === 'string' ? parseInt(params.id, 10) : null;
 
@@ -304,90 +290,6 @@ export default function LivroPage() {
             />
           </section>
         )}
-        <section>
-          <div className='flex flex-row mt-16 items-center'>
-            <h2 className='ml-20 mt-8 mr-15 text-2xl font-medium mb-8 text-left'>Avaliações</h2>
-            <form>
-            {/* Filters */}
-            <div className="flex flex-wrap gap-4 items-center">
-              {/* Sort Filter */}
-              <div className="flex items-center gap-2">
-                <svg 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  className="text-gray-500"
-                >
-                  <path 
-                    d="M3 4.5H21V6H3V4.5Z" 
-                    fill="currentColor"
-                  />
-                  <path 
-                    d="M3 11.25H15V12.75H3V11.25Z" 
-                    fill="currentColor"
-                  />
-                  <path 
-                    d="M3 18H9V19.5H3V18Z" 
-                    fill="currentColor"
-                  />
-                </svg>
-                <select
-                  value={filters.sort}
-                  onChange={(e) => handleFilterChange('sort', e.target.value)}
-                  className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
-                >
-                  <option value="">Ordenar</option>
-                  <option value="asc">A-Z</option>
-                  <option value="desc">Z-A</option>
-                  <option value="mais-vendidos">Mais vendidos</option>
-                </select>
-              </div>
-
-              {/* Genre Filter */}
-              <select
-                value={filters.genre}
-                onChange={(e) => handleFilterChange('genre', e.target.value)}
-                className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
-              >
-                <option value="">Gênero</option>
-                <option value="Romance">Romance</option>
-                <option value="Suspense">Suspense</option>
-                <option value="Ficção">Ficção</option>
-                <option value="Drama">Drama</option>
-              </select>
-
-              {/* Author Filter */}
-              <select
-                value={filters.author}
-                onChange={(e) => handleFilterChange('author', e.target.value)}
-                className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
-              >
-                <option value="">Autor(a)</option>
-                <option value="Machado de Assis">Machado de Assis</option>
-                <option value="Clarice Lispector">Clarice Lispector</option>
-                <option value="Graciliano Ramos">Graciliano Ramos</option>
-              </select>
-
-              {/* Year Filter */}
-              <select
-                value={filters.year}
-                onChange={(e) => handleFilterChange('year', e.target.value)}
-                className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
-              >
-                <option value="">Ano de publicação</option>
-                <option value="1960">&lt;= 1960</option>
-                <option value="1970">1961-1970</option>
-                <option value="1980">1971-1980</option>
-                <option value="2000">1991-2000</option>
-                <option value="2010">2001-2010</option>
-                <option value="+">&gt; 2010</option>
-              </select>
-            </div>
-            </form>
-          </div>
-        </section>
-        
       </main>
 
       <Footer />

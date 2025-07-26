@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from django.conf import settings
+from django.contrib.auth.models import User
 import os
 from .models import (
     Livro, Autor, Categoria, Genero, Cliente, 
-    Carrinho, ItemCarrinho, Pedido, Cupom, Endereco
+    Carrinho, ItemCarrinho, Pedido, Cupom, Endereco,
+    Avaliacao, CurtidaAvaliacao
 )
 from accounts.models import Usuario
 
@@ -135,3 +137,78 @@ class UsuarioCreateSerializer(serializers.ModelSerializer):
         validated_data.pop('password_confirm')
         user = Usuario.objects.create_user(**validated_data)
         return user
+
+
+class AvaliacaoSerializer(serializers.ModelSerializer):
+    """Serializer para leitura de avaliações"""
+    
+    usuario_nome = serializers.ReadOnlyField()
+    usuario_id = serializers.ReadOnlyField(source='usuario.id')
+    usuario_username = serializers.ReadOnlyField(source='usuario.username')
+    livro_titulo = serializers.ReadOnlyField(source='livro.titulo')
+    pode_curtir = serializers.SerializerMethodField()
+    usuario_curtiu = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Avaliacao
+        fields = [
+            'id', 'texto', 'curtidas', 'data_publicacao',
+            'usuario_nome', 'usuario_id', 'usuario_username',
+            'livro', 'livro_titulo', 'pode_curtir', 'usuario_curtiu'
+        ]
+        read_only_fields = ['id', 'curtidas', 'data_publicacao']
+    
+    def get_pode_curtir(self, obj):
+        """Verifica se o usuário atual pode curtir esta avaliação"""
+        request = self.context.get('request')
+        if not request or not request.user.is_authenticated:
+            return False
+        # Usuário não pode curtir a própria avaliação
+        return request.user != obj.usuario
+    
+    def get_usuario_curtiu(self, obj):
+        """Verifica se o usuário atual já curtiu esta avaliação"""
+        request = self.context.get('request')
+        if not request or not request.user.is_authenticated:
+            return False
+        return CurtidaAvaliacao.objects.filter(
+            usuario=request.user, 
+            avaliacao=obj
+        ).exists()
+
+
+class AvaliacaoCreateSerializer(serializers.ModelSerializer):
+    """Serializer para criação de avaliações"""
+    
+    class Meta:
+        model = Avaliacao
+        fields = ['livro', 'texto']
+    
+    def validate_texto(self, value):
+        if len(value.strip()) < 10:
+            raise serializers.ValidationError("A avaliação deve ter pelo menos 10 caracteres.")
+        return value.strip()
+    
+    def create(self, validated_data):
+        # O usuário vem do contexto da view
+        validated_data['usuario'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class CurtidaAvaliacaoSerializer(serializers.ModelSerializer):
+    """Serializer para curtidas"""
+    
+    class Meta:
+        model = CurtidaAvaliacao
+        fields = ['avaliacao']
+    
+    def create(self, validated_data):
+        validated_data['usuario'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class EstatisticasLivroSerializer(serializers.Serializer):
+    """Serializer para estatísticas de avaliações de um livro"""
+    
+    total_avaliacoes = serializers.IntegerField()
+    avaliacoes_recentes = AvaliacaoSerializer(many=True)

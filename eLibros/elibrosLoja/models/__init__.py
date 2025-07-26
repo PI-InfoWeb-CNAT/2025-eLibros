@@ -9,3 +9,4 @@ from .cupom import Cupom
 from .autor import Autor
 from .administrador import Administrador
 from .cliente import Cliente
+from .avaliacao import Avaliacao, CurtidaAvaliacao

@@ -152,3 +152,45 @@ admin.site.register(Autor, AutorAdmin)
 
 admin.site.register(Administrador, AdministradorAdmin)
 admin.site.register(Cliente, ClienteAdmin)
+
+
+# === ADMIN DE AVALIAÇÕES ===
+
+@admin.register(Avaliacao)
+class AvaliacaoAdmin(admin.ModelAdmin):
+    list_display = ['livro', 'usuario', 'curtidas', 'data_publicacao']
+    list_filter = ['data_publicacao', 'livro__categoria']
+    search_fields = ['livro__titulo', 'usuario__username', 'texto']
+    readonly_fields = ['data_publicacao', 'curtidas']
+    ordering = ['-data_publicacao']
+    
+    fieldsets = (
+        ('Informações Básicas', {
+            'fields': ('usuario', 'livro')
+        }),
+        ('Conteúdo', {
+            'fields': ('texto',)
+        }),
+        ('Estatísticas', {
+            'fields': ('curtidas', 'data_publicacao'),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('usuario', 'livro')
+
+
+@admin.register(CurtidaAvaliacao)
+class CurtidaAvaliacaoAdmin(admin.ModelAdmin):
+    list_display = ['usuario', 'avaliacao_info', 'data_curtida']
+    list_filter = ['data_curtida']
+    search_fields = ['usuario__username', 'avaliacao__livro__titulo']
+    readonly_fields = ['data_curtida']
+    
+    def avaliacao_info(self, obj):
+        return f'{obj.avaliacao.livro.titulo}'
+    avaliacao_info.short_description = 'Avaliação'
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('usuario', 'avaliacao__livro')
