@@ -14,12 +14,22 @@ export default function LivroPage() {
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [comentario, setComentario] = useState('');
+  const maxCaracteres = 1000;
   const [filters, setFilters] = useState({
     sort: '',
     genre: '',
     author: '',
     year: ''
   });
+
+  const comentarios = [
+    {
+      usuario: "RAfael Todeinho",
+      comentario: " Achei que o livro era muito legal porém assustador pensar em como o amor pode ser as vezes porque ele te pega de surpresa, é realmente um livro muito reflexivo e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse.",
+      curtidas: 0,
+    },
+  ];
 
   const handleFilterChange = (filterName: string, value: string) => {
     setFilters(prev => ({
@@ -304,90 +314,73 @@ export default function LivroPage() {
             />
           </section>
         )}
-        <section>
+        <section className='flex justify-start'>
           <div className='flex flex-row mt-16 items-center'>
-            <h2 className='ml-20 mt-8 mr-15 text-2xl font-medium mb-8 text-left'>Avaliações</h2>
-            <form>
-            {/* Filters */}
-            <div className="flex flex-wrap gap-4 items-center">
-              {/* Sort Filter */}
-              <div className="flex items-center gap-2">
-                <svg 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  className="text-gray-500"
-                >
-                  <path 
-                    d="M3 4.5H21V6H3V4.5Z" 
-                    fill="currentColor"
-                  />
-                  <path 
-                    d="M3 11.25H15V12.75H3V11.25Z" 
-                    fill="currentColor"
-                  />
-                  <path 
-                    d="M3 18H9V19.5H3V18Z" 
-                    fill="currentColor"
-                  />
-                </svg>
-                <select
-                  value={filters.sort}
-                  onChange={(e) => handleFilterChange('sort', e.target.value)}
-                  className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
-                >
-                  <option value="">Ordenar</option>
-                  <option value="asc">A-Z</option>
-                  <option value="desc">Z-A</option>
-                  <option value="mais-vendidos">Mais vendidos</option>
-                </select>
-              </div>
-
-              {/* Genre Filter */}
-              <select
-                value={filters.genre}
-                onChange={(e) => handleFilterChange('genre', e.target.value)}
-                className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
-              >
-                <option value="">Gênero</option>
-                <option value="Romance">Romance</option>
-                <option value="Suspense">Suspense</option>
-                <option value="Ficção">Ficção</option>
-                <option value="Drama">Drama</option>
-              </select>
-
-              {/* Author Filter */}
-              <select
-                value={filters.author}
-                onChange={(e) => handleFilterChange('author', e.target.value)}
-                className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
-              >
-                <option value="">Autor(a)</option>
-                <option value="Machado de Assis">Machado de Assis</option>
-                <option value="Clarice Lispector">Clarice Lispector</option>
-                <option value="Graciliano Ramos">Graciliano Ramos</option>
-              </select>
-
-              {/* Year Filter */}
-              <select
-                value={filters.year}
-                onChange={(e) => handleFilterChange('year', e.target.value)}
-                className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
-              >
-                <option value="">Ano de publicação</option>
-                <option value="1960">&lt;= 1960</option>
-                <option value="1970">1961-1970</option>
-                <option value="1980">1971-1980</option>
-                <option value="2000">1991-2000</option>
-                <option value="2010">2001-2010</option>
-                <option value="+">&gt; 2010</option>
-              </select>
-            </div>
-            </form>
+            <h2 className=' mt-8 mr-15 text-2xl font-medium mb-8 text-left'>Comentarios</h2>
+              <form className='flex flex-row gap-12 items-center ml-8'>
+                <div className='flex flex-row items-center'>
+                  <img src="/icons/Bplus.svg" alt="Ordenar" className="w-4 h-4 mr-2" />
+                  <p>mais recente</p>
+                </div>
+                <div className='flex flex-row items-center'>
+                  <img src="/icons/Bplus.svg" alt="Ordenar" className="w-4 h-4 mr-2" />
+                  <p>mais antigo</p>
+                </div>
+                <div className='flex flex-row items-center'>
+                  <img src="/icons/Bplus.svg" alt="Ordenar" className="w-4 h-4 mr-2" />
+                  <p>mais popular</p>
+                </div>
+                <div className='flex flex-row items-center'>
+                  <img src="/icons/Bplus.svg" alt="Ordenar" className="w-4 h-4 mr-2" />
+                  <p>menos popular</p>
+                </div>
+              </form>
           </div>
         </section>
-        
+        <section className="mt-8">
+          <div className="space-y-8">
+                {/* Campo de comentário */}
+                <div className="bg-white rounded-xl shadow p-6 w-full h-70">
+                  <form className="relative">
+                    <textarea
+                      value={comentario}
+                      onChange={(e) => setComentario(e.target.value.slice(0, maxCaracteres))}
+                      placeholder="Escreva seu comentário..."
+                      className="w-full h-54 bg-gray-100 rounded-lg p-4 text-gray-700 resize-none outline-none"
+                      maxLength={maxCaracteres}
+                    />
+                    <button
+                      type="submit"
+                      className="absolute bottom-4 right-4 text-gray-400 hover:text-gray-700"
+                      disabled={comentario.trim().length === 0}
+                      title="Enviar"
+                    >
+                      <img src="/icons/Envio.svg" alt="Enviar" className="w-5 h-5" />
+                    </button>
+                  </form>
+                  <div className="flex justify-end text-gray-400 text-sm mt-1">
+                    {comentario.length}/{maxCaracteres}
+                  </div>
+                </div>
+
+                {/* Comentário exibido */}
+                <div className="bg-white rounded-xl shadow p-6 flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-full bg-[#3B362B] flex-shrink-0 mt-1"></div>
+                  <div className="flex-1">
+                    <div className="font-medium text-lg mt-2 mb-1 text-[#3B362B]">Rafael Todeinho</div>
+                    <div className="text-gray-700 text-base leading-relaxed">
+                      {comentarios[0].comentario}
+                    </div>
+                  </div>
+                  <div className="flex items-end h-full justify-end mt-54">
+                    <button className="text-gray-400 hover:text-[#3B362B] flex gap-1">
+                      <img src="/icons/Like.svg" alt="Curtir" className="w-5 h-5" />
+                      <span className="text-sm">{comentarios[0].curtidas}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+        </section>
       </main>
 
       <Footer />
