@@ -1,0 +1,90 @@
+{% extends "./_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}Manter {{classe}}s {% endblock %}
+
+{% block content %}
+
+<main class="admin">
+    <section id="cabecalho">
+        <h2 id="manter">{{ classe|capitalize }}s</h1>
+
+        {% if botao %}
+        <a href="{% url 'criar_instancia' classe=classe %}"><img src="{% static 'images/icons/Wplus.svg' %}" style="padding-right: 5px;">
+             Adicionar {{classe}}</a>
+        {% endif %}
+    </section>
+    <section id="search">
+        <form id="search">
+            <div id="search">
+                <img src="{% static 'images/icons/lupa.svg' %}" >
+                <input type="text" name="pesquisa" placeholder="Pesquise por nome..." size="52">
+            </div>
+            <div id="filter">
+                <div id="select">
+                    <img src="{% static 'images/icons/filter.svg' %}">                          
+                    <select title="Filtros" name="filtros">
+                        <option value="asc">A-Z</option>
+                        <option value="mais-vendidos">Mais vendidos</option>
+                    </select>
+                </div>
+
+                <div class="select">
+                    <button id="data-inclusao">Data de inclusão:</button>
+                    <input type="datetime-local" style="display: none;">
+                    <span>à</span>
+                    <input type="datetime-local" style="display: none;">
+                </div>  
+
+            </div>
+        </form>
+    </section>
+
+    <!-- Instâncias -->
+    <section style="font-family: 'Poppins'; max-width: 48%; margin-top: 3em;">
+        <ul class="listagem">
+        {% for instancia in instancias %}
+        <li>
+            <span>{{instancia}}</span>
+            <ul class="crud2">
+                {% if 'r' in permissoes %}
+                    {% if classe == 'pedido' %}
+                        <li><a id="ver" href="{% url 'detalhar_instancia' classe=classe id=instancia.numero_pedido %}">Ver</a></li>
+                    {% elif classe == 'categoria' or classe == 'genero' %}
+                    <li><a id="ver" href="#">Renomear</a></li>
+                    {% else %}
+                        <li><a id="ver" href="{% url 'detalhar_instancia' classe=classe id=instancia.id %}">Ver</a></li>
+                    {% endif %}
+                {% endif %}
+
+                {% if 'u' in permissoes %}
+
+                    {% if classe in renomear_classes %}
+                        <li><a id="renomear" href="#">Renomear</a></li>
+                    {% else %}
+
+                        {% if classe == 'pedido' %}
+                                <li><a id="editar" href="{% url 'editar_instancia' classe=classe id=instancia.numero_pedido %}">Editar</a></li>
+                        {% else %}
+                                <li><a id="editar" href="{% url 'editar_instancia' classe=classe id=instancia.id %}">Editar</a></li>
+                        {% endif %}
+                        
+                    {% endif %}
+
+                {% endif %}
+
+                {% if 'd' in permissoes %}
+                {% if classe == 'pedido' %}
+                    <li><a id="excluir" href="{% url 'excluir_instancia' classe=classe id=instancia.numero_pedido %}">Excluir</a></li>
+                {% else %}
+                    <li><a id="excluir" href="{% url 'excluir_instancia' classe=classe id=instancia.id %}">Excluir</a></li>
+                {% endif %}
+                {% endif %}
+            </ul>
+        </li>
+        {% endfor %}
+        </ul>
+    </section>
+</main>
+
+{% endblock content %}

@@ -1,0 +1,90 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Explorar{% endblock title %}
+{% block content %}
+<main>
+    <section id="search">
+        <form id="search-form" method="GET" action="{% url 'explorar' %}">
+            <div id="search">
+                <img src="{% static 'images/icons/lupa.svg' %}">
+                <input type="search" name="pesquisa" placeholder="Pesquisar por nome/autor..." size="52">
+            </div>
+            <div id="filter">
+                <div class="select">
+                    <img src="{% static 'images/icons/filter.svg' %}">                          
+                    <select title="Filtros" name="filtros" id="filtros">
+                        <option value="asc">A-Z</option>
+                        <option value="mais-vendidos">Mais vendidos</option>
+                    </select>
+                </div>
+                <div class="select">
+                    <select id="genero" name="genero">
+                        <option value="" selected>Gênero</option>
+                        {% for genero in generos %}
+                        <option value="{{genero.nome}}">{{genero.nome}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="select">
+                    <select id="autor" name="autor" style="width: 100px;">
+                        <option value="" selected>Autor(a)</option>
+                        {% for autor in autores %}
+                        <option value="{{autor.nome}}">{{autor.nome}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="select">
+                    <select id="data" name="data">
+                        <option value="" selected>Ano de publicação</option>
+                        <option value="1960"><= 1960</option>
+                        <option value="1970">1961-1970</option>
+                        <option value="1980">1971-1980</option>
+                        <option value="1990">1981-1990</option>
+                        <option value="2000">1991-2000</option>
+                        <option value="2010">2001-2010</option>
+                        <option value="+">> 2010</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section id="livros-section">
+        {% if termo_pesquisa %}
+        <p>Pesquisa por "{{ termo_pesquisa }}"</p>
+        {% endif %}
+        <div class="livros2">
+            {% for livro in lista_livros %}
+            <div class="livros">              
+                <a href="{% url 'livro' id=livro.id %}">
+                <div class="livros3">
+                    <figure>
+                        {% if livro.capa %}
+                        <img src="{{ livro.capa.url }}">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" width="100px">
+                        {% endif %}
+                    </figure>
+                    <div>
+                        <h3>
+                            {{ livro.get_titulo_display }}
+                            {% if livro.subtitulo %}
+                            <br>
+                            <span>{{ livro.get_subtitulo_display }}</span>
+                            {% endif %}
+                        </h3>
+                        <p>{{ livro.get_primeiro_autor }}</p>
+                        <p>R$ {{ livro.preco }}</p>
+                        <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
+                    </div>
+                </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <p style="display: flex"><a href="{% url 'explorar' %}" style="color: black; text-decoration: underline; font-size: 18px; margin: 0 auto; margin-top: 3em;">Ver mais</a></p>
+</main>
+
+<script src="{% static 'js/livros_pesquisar.js' %}"></script>
+{% endblock content %}

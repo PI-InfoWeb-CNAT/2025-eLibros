@@ -1,0 +1,112 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Editar Perfil{% endblock title %}
+{% block content %}
+
+  <main class="editar-perfil">
+    <div class="profile-container">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="profile-photo">
+          {% if cliente.user.foto_de_perfil %}
+            <img src="{{ cliente.user.foto_de_perfil.url }}" alt="Profile Picture"> 
+          {% else %}
+            <img src="{% static 'images/usuario.png' %}" alt="Profile Picture">
+          {% endif %} 
+          <button>Mudar foto de perfil</button>
+        </div>
+        <div class="profile-info">
+          <label for="username">Nome de usuário</label>
+          <input type="text" id="username" name="username" value="{{ cliente.user.username }}">
+
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" value="{{ cliente.user.email }}">
+
+          <label for="phone">Telefone</label>
+          <input type="text" id="phone" name="phone" value="{{ cliente.user.telefone }}">
+
+          <label for="genero">Identidade de gênero</label>
+            <select id="genero" name="genero">
+              <option value="0" {% if cliente.user.genero == "0" %}selected{% endif %}>Masculino</option>
+              <option value="1" {% if cliente.user.genero == "1" %}selected{% endif %}>Feminino</option>
+              <option value="2" {% if cliente.user.genero == "2" %}selected{% endif %}>Não-binário</option>
+              <option value="3" {% if cliente.user.genero == "3" %}selected{% endif %}>Prefiro não dizer</option>
+            </select>
+
+         
+            <label for="cep">
+              CEP:
+              <input type="text" class="sem-borda" name="cep" id="cep" 
+                     value="{{ cliente.endereco.cep|default:'' }}" placeholder="_____-___">
+          </label>
+          <label for="complemento">
+              Complemento:
+              <input type="text" class="sem-borda" name="complemento" id="complemento"
+                     value="{{ cliente.endereco.complemento|default:'' }}" placeholder="_____________________________">
+          </label>
+          <label for="rua">
+              Rua:
+              <input type="text" class="sem-borda" name="rua" id="rua"
+                     value="{{ cliente.endereco.rua|default:'' }}" placeholder="_______________________________________">
+          </label>
+          <label for="numero">
+              Número:
+              <input type="text" class="sem-borda" name="numero" id="numero"
+                     value="{{ cliente.endereco.numero|default:'' }}" placeholder="____">
+          </label>
+          <label for="estado">
+              Estado:
+              <select name="estado" id="estado">
+                  <option value="">Selecione</option>
+                  {% with cliente.endereco.uf as selected_uf %}
+                  <option value="RN" {% if selected_uf == "RN" %}selected{% endif %}>RN</option>
+                  <option value="AC" {% if selected_uf == "AC" %}selected{% endif %}>AC</option>
+                  <option value="AL" {% if selected_uf == "AL" %}selected{% endif %}>AL</option>
+                  <option value="AP" {% if selected_uf == "AP" %}selected{% endif %}>AP</option>
+                  <option value="AM" {% if selected_uf == "AM" %}selected{% endif %}>AM</option>
+                  <option value="BA" {% if selected_uf == "BA" %}selected{% endif %}>BA</option>
+                  <option value="CE" {% if selected_uf == "CE" %}selected{% endif %}>CE</option>
+                  <option value="DF" {% if selected_uf == "DF" %}selected{% endif %}>DF</option>
+                  <option value="ES" {% if selected_uf == "ES" %}selected{% endif %}>ES</option>
+                  <option value="GO" {% if selected_uf == "GO" %}selected{% endif %}>GO</option>
+                  <option value="MA" {% if selected_uf == "MA" %}selected{% endif %}>MA</option>
+                  <option value="MT" {% if selected_uf == "MT" %}selected{% endif %}>MT</option>
+                  <option value="MS" {% if selected_uf == "MS" %}selected{% endif %}>MS</option>
+                  <option value="MG" {% if selected_uf == "MG" %}selected{% endif %}>MG</option>
+                  <option value="PA" {% if selected_uf == "PA" %}selected{% endif %}>PA</option>
+                  <option value="PB" {% if selected_uf == "PB" %}selected{% endif %}>PB</option>
+                  <option value="PR" {% if selected_uf == "PR" %}selected{% endif %}>PR</option>
+                  <option value="PE" {% if selected_uf == "PE" %}selected{% endif %}>PE</option>
+                  <option value="PI" {% if selected_uf == "PI" %}selected{% endif %}>PI</option>
+                  <option value="RJ" {% if selected_uf == "RJ" %}selected{% endif %}>RJ</option>
+                  <option value="RS" {% if selected_uf == "RS" %}selected{% endif %}>RS</option>
+                  <option value="RO" {% if selected_uf == "RO" %}selected{% endif %}>RO</option>
+                  <option value="RR" {% if selected_uf == "RR" %}selected{% endif %}>RR</option>
+                  <option value="SC" {% if selected_uf == "SC" %}selected{% endif %}>SC</option>
+                  <option value="SP" {% if selected_uf == "SP" %}selected{% endif %}>SP</option>
+                  <option value="SE" {% if selected_uf == "SE" %}selected{% endif %}>SE</option>
+                  <option value="TO" {% if selected_uf == "TO" %}selected{% endif %}>TO</option>
+                  {% endwith %}
+              </select>
+          </label>
+          <label for="cidade">
+              Cidade:
+              <input type="text" class="sem-borda" name="cidade" id="cidade"
+                     value="{{ cliente.endereco.cidade|default:'' }}" placeholder="____________________________________">
+          </label>
+
+          <label for="bairro">
+              Bairro:
+              <input type="text" class="sem-borda" name="bairro" id="bairro"
+                     value="{{ cliente.endereco.bairro|default:'' }}" placeholder="____________________________________">
+          </label>
+
+          <div class="profile-actions">
+            <button type="reset" class="reset">Redefinir</button>
+            <button type="submit" class="save">Salvar alterações</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+{% endblock content %}

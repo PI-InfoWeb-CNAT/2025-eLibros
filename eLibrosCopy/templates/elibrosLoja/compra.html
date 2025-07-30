@@ -1,0 +1,175 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Acervo{% endblock title %}
+{% block content %}
+
+<main>
+    <form method="POST" enctype="multipart/form-data" action= "" >
+    <section class="compra">
+        <h1>Finalizar compra</h1>
+        <div>
+            <div class="compra">
+                <h2>1</h2>
+                <div>
+                    <div>
+                        <h3>Endereço de entrega</h3>
+                        <div style="display: flex;">
+                            <label class="custom-radio" style="margin-right: 5em;">
+                                <input type="radio" name="options">
+                                <span class="radio-mark"></span>
+                                Meu endereço
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="options">
+                                <span class="radio-mark"></span>
+                                Outro
+                            </label>
+                            <!-- <form id="endereco"> -->
+                                <label>
+                                    CEP:
+                                    <input type="number" class="sem-borda" placeholder="_____-___"
+                                        style="width: 7em;">
+                                </label>
+                                <label>
+                                    Complemento:
+                                    <input type="text" class="sem-borda" size="40"
+                                        placeholder="_____________________________">
+                                </label><br>
+                                <label>
+                                    Rua:
+                                    <input type="text" class="sem-borda" size="55"
+                                        placeholder="_______________________________________">
+                                </label>
+                                <label>
+                                    Número:
+                                    <input type="number" class="sem-borda" style="width: 3em;" placeholder="____">
+                                </label><br>
+                                <label>
+                                    Estado:
+                                    <select>
+                                        <option value="-1"></option>
+                                        <option value="AC">AC</option>
+                                        <option value="AL">AL</option>
+                                        <option value="AP">AP</option>
+                                        <option value="AM">AM</option>
+                                        <option value="BA">BA</option>
+                                        <option value="CE">CE</option>
+                                        <option value="DF">DF</option>
+                                        <option value="ES">ES</option>
+                                        <option value="GO">GO</option>
+                                        <option value="MA">MA</option>
+                                        <option value="MT">MT</option>
+                                        <option value="MS">MS</option>
+                                        <option value="MG">MG</option>
+                                        <option value="PA">PA</option>
+                                        <option value="PB">PB</option>
+                                        <option value="PR">PR</option>
+                                        <option value="PE">PE</option>
+                                        <option value="PI">PI</option>
+                                        <option value="RJ">RJ</option>
+                                        <option value="RN">RN</option>
+                                        <option value="RS">RS</option>
+                                        <option value="RO">RO</option>
+                                        <option value="RR">RR</option>
+                                        <option value="SC">SC</option>
+                                        <option value="SP">SP</option>
+                                        <option value="SE">SE</option>
+                                        <option value="TO">TO</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    Cidade:
+                                    <input type="text" class="sem-borda" size="50"
+                                        placeholder="____________________________________">
+                                </label>
+                            <!-- </form> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="compra">
+                <h2>2</h2>
+                <div>
+                    <h3>Método de pagamento</h3>
+                    <div style="display: flex; gap: 5em;" id="pagamento">
+                        <button>Crédito<img src="static/images/icons/credito.svg" width="20"></button>
+                        <button>Débito<img src="static/images/icons/debito.svg" width="20"></button>
+                        <button>Boleto<img src="static/images/icons/boleto.svg" width="20"></button>
+                        <button>PIX<img src="static/images/icons/pix.svg" width="20"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="compra">
+                <h2>3</h2>
+                <div>
+                    <h3>Ofertas</h3>
+                    <div>
+                        <form id="cupom-form" method="POST" action="{% url 'aplicar_cupom' %}">
+                            {% csrf_token %}
+                            <input type="text" name="codigo_cupom" placeholder="Código do cupom">
+                            <button type="submit">Inserir cupom</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="compra">
+                <h2>4</h2>
+                <div>
+                    <h3>Itens e envio</h3>
+                    <div class="itens">
+                        { for item in items }
+                        <div>
+                            <figure>
+                               
+                                <img src="{{ item.livro.capa }}" alt="{{ item.livro.capa }}">
+                          
+                            </figure>
+                            <div>
+                                <p>
+                                    <span class="moeda-cart-p">R$</span>
+                                    <b><span class="preco-maior-cart-p">{{ subtotal }}</b>
+                                </p>
+                                { if quantia_itens == 1}
+                                <p>{{ quantia_itens }} item no pedido</p>
+                                { else }
+                                <p>{{ quantia_itens }} itens no pedido</p>
+                                { endif }
+                            </div>
+                        </div>
+                        <p>Ao finalizar o pedido a entrega será estimada para sexta-feira</p>
+                        { endfor }
+                    </div>
+                </div>
+            </div>
+            <div id="final">
+                <div id="total">
+                    <span class="valores">
+                        <p>Subtotal</p>
+                        <p>R$ {{ subtotal }}</p>
+                    </span>
+                    {if desconto}
+                    <span class="valores">
+                        <p>Desconto</p>
+                        <p>R$ {{ desconto }}</p>
+                    </span>
+                    { endif }
+                    <span class="valores">
+                        <p>Frete</p>
+                        <p>R$ {{ frete }}</p>
+                    </span>
+                    <span class="valores">
+                        <p>Valor Total</p>
+                        <p>R$ {{ valor_total }}</p>
+                    </span>
+                </div>
+                <button type="submit" id="finalizar">Finalizar pedido</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'js/cupom.js' %}"></script>
+{% endblock javascript %}

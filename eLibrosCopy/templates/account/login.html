@@ -1,0 +1,53 @@
+{% extends './_base.html' %}
+{% load static %}
+
+{% block title %}eLibros - Entrar{% endblock %}
+
+{% block content %}
+
+  <header class="headerlogin">
+    <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logoacesso.png' %}" alt="logo eLibros"></a></h1>
+  </header>
+  <main>
+    <section class="login">
+      <figure><img src="{% static 'images/vetorlogin.png' %}" style="width: 90%;"></figure>
+      <div class="barraacesso"></div>
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        
+        
+        {{ form.non_field_errors }}
+        <span class="mensagem-erro">{{message.text}}</span>
+        <div class="form-group">
+          <label for="login">Email</label>
+          <div class="input-icon">
+              <img src="{% static 'images/icons/user.png' %}" alt="User Icon" class="img-form">
+              {{ form.login }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <div class="input-icon">
+              <img src="{% static 'images/icons/lock.png' %}" alt="Lock Icon" class="img-form">
+              {{ form.password }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="myCheckbox1">
+            {{ form.remember }}
+            <span class="checkbox-dot"></span>
+          </label>
+          <label for="remember" style="font-size: 14px; margin-top: 0em !important;">Lembre-se de mim</label>
+        </div>
+
+        <button type="submit">Entrar</button>
+        <p>Não possui uma conta? <a href="{% url 'signup' %}">Cadastrar</a></p>
+        <p><a href="{% url 'password_reset' %}">Esqueceu sua senha?</a></p>
+      </form>
+    </section>
+  </main>
+{% endblock content %}
+
+

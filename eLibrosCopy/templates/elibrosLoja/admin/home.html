@@ -1,0 +1,63 @@
+{% extends "./_base.html" %}
+{% load static %}
+
+{% block title %}Administração eLibros{% endblock %}
+
+{% block content %}
+
+<main>
+    <section class="paginasadmincontainer">
+    <h1>Bem vindo, Admin!</h1>
+    
+        <div class="paginasadmingrid">
+        
+            <div>
+                <a href="{% url 'listar_instancias' 'livro' %}">
+                    <div>
+                        <figure><img src="{% static 'images/icons/livro.svg' %}"></figure>
+                        <h2>Manter livros</h2>
+                    </div>
+                </a>
+            </div>
+        
+            <div>
+                <a href="{% url 'listar_instancias' 'pedido' %}">
+                    <div>                    
+                        <figure><img src="{% static 'images/icons/pacote.svg' %}"></figure>
+                        <h2>Manter Pedidos</h2>
+                    </div>
+                </a>
+            </div>      
+        
+            <div>
+                <a href="{% url 'listar_instancias' 'cliente' %}">
+                    <div>
+                        <figure><img src="{% static 'images/icons/cliente.svg' %}"></figure>
+                        <h2>Manter Clientes</h2>
+                    </div>
+                </a>
+            </div>
+        
+            <div>
+                <a href="{% url 'listar_instancias' 'genero' %}">
+                    <div>
+                        <figure><img src="{% static 'images/icons/etiqueta.svg' %}"></figure>
+                        <h2>Manter Gêneros</h2>
+                    </div>
+                </a>
+            </div>
+
+            <div>
+                <a href="{% url 'listar_instancias' 'categoria' %}">
+                    <div>
+                        <figure><img src="{% static 'images/icons/ion_list.svg' %}"></figure>
+                        <h2>Manter Categorias</h2>
+                    </div>
+                </a>
+            </div>
+            
+        </div>
+    </section>
+</main>
+
+{% endblock content %}

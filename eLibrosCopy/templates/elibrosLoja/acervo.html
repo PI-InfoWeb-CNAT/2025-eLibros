@@ -1,0 +1,62 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Acervo{% endblock title %}
+{% block content %}
+<main>
+    <section id="search">
+        <form id="search" method="GET" action="{% url 'explorar' %}">
+            <div id="search">
+                <img src="{% static 'images/icons/lupa.svg' %}">
+                <input type="search" name="pesquisa" placeholder="Pesquisar por nome/autor..." size="52">
+            </div>
+        </form>
+    </section>
+
+    <section class="livros">
+        {% for dicionario in lista_livros %}
+        <h2>{{ dicionario.catOUgen.nome }}</h2>
+        <div class="swiper {{dicionario.catOUgen.id}}" data-category="{{dicionario.catOUgen_clean}}">
+            <div class="swiper-wrapper">
+                {% for livro in dicionario.livros %}
+                <div class="swiper-slide">              
+                    <a href="{% url 'livro' id=livro.id %}">
+                    <div class="livros">
+                        <figure>
+                            {% if livro.capa %}
+                            <img src="{{ livro.capa.url }}">
+                            {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" width="100px">
+                            {% endif %}
+                        </figure>
+                        <div>
+                            <h3>
+                                {{ livro.get_titulo_display }}
+                                {% if livro.subtitulo %}
+                                <br>
+                                <span>{{ livro.get_subtitulo_display }}</span>
+                                <br>
+                                {% endif %}
+                            </h3>
+                            <p>{{ livro.get_primeiro_autor }}</p>
+                            <p>R$ {{ livro.preco }}</p>
+                            <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            
+            
+            <div class="swiper-pagination" id="swiper-pagination-{{dicionario.catOUgen_clean}}"></div>
+            <div class="swiper-button-prev" id="swiper-button-prev-{{dicionario.catOUgen_clean}}"></div>
+            <div class="swiper-button-next" id="swiper-button-next-{{dicionario.catOUgen_clean}}"></div>
+        </div>
+        {% endfor %}
+            <p style='display:flex'><a href="{% url 'explorar' %}" style="color: black; text-decoration: underline; margin-top: 3em; font-size: 18px;">Ver mais</a></p>
+    </section>
+
+</main>
+<script src="{% static 'js/swiper.js' %}"></script>
+<script src="{% static 'js/livros_pesquisar.js' %}"></script>
+{% endblock content %}

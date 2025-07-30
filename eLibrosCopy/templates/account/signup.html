@@ -1,0 +1,79 @@
+    {% extends './_base.html' %}
+    {% load static %}
+
+{% block title %}eLibros - Cadastro{% endblock %}
+
+{% block content %}
+
+<header class="headerlogin">
+    <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logoacesso.png' %}"></a></h1>
+</header>
+<main>
+    <section class="cadastro">
+        {% if message %}
+        <div class="alert alert-{{ message.type }}" role="alert">
+            {{ message.text }}
+        </div>
+        {% endif %}
+    <form method="post" action="{% url 'signup' %}" class="formpessoal">
+        {% csrf_token %}
+        <div class="infopessoal">
+            <h2>Informações pessoais obrigatórias</h2>
+            
+            
+            {{ form.non_field_errors }}
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group" style="display: flex;">                       
+                    <div>
+                        <label for="cpf">CPF</label>
+                        {{ form.cpf }}
+                    </div>
+                    <div>
+                        <label for="telefone" style="margin-left: 1em;">Tel.</label>
+                        {{ form.telefone }}
+                    </div>
+                </div>
+                <div class="form-group" style="width: 40%;">
+                    <label for="data_nasc">Data de nascimento</label>
+                    {{ form.data_nasc }}
+                </div>
+            
+        </div>
+        <div class="barraacesso"></div>
+        <div class="infologin">
+            <h2>Criação da conta</h2>
+            
+                <div class="form-group">
+                    <label for="username">Nome de usuário</label>
+                    <div class="input-icon">
+                    <!-- This div is being empty when it should render a text input -->
+                    {{ form.username }}
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <div class="input-icon">
+                        {{ form.password }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirme sua senha</label>
+                    <div class="input-icon">
+                        {{ form.confirm_password }}
+                    </div>
+                </div>
+            <button type="submit">Criar conta</button>
+            <p>Já possui uma conta? <a href="{% url 'login' %}">Entrar</a></p>
+        </div>
+    </form>
+    </section>
+</main>
+{% endblock content %}

@@ -1,0 +1,65 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Carrinho{% endblock title %}
+{% block content %}
+<main style="flex: 1;">
+    <section class="meucarrinho">
+        {% if not items %}
+            <p id="carrinhovazio" style="text-align: center;">Seu carrinho está vazio.</p>
+        
+        {% else %}
+        <h2>Meu Carrinho</h2>
+        <input type="checkbox" id="selectAll" class="custom-checkbox">
+        <label for="myCheckbox">
+            <input type="checkbox" id="myCheckbox" class="custom-checkbox">
+            <span class="checkbox-dot"></span>
+            Selecionar tudo
+        </label>
+        <ul>
+        
+            {% for item in items %}
+            <li>
+                <label for="myCheckbox1">
+                    <input type="checkbox" id="myCheckbox1" class="custom-checkbox">
+                    <span class="checkbox-dot"></span>
+                </label>
+                <figure>
+                    <img src="{{ item.livro.capa.url }}" alt="{{ item.livro.titulo }}">
+                </figure>
+                <div>
+                    <h3><a href="{% url 'livro' id=item.livro.id %}">{{ item.livro.titulo }}</a></h3>
+                    <p>
+                        <span class="moeda-cart">R$</span>
+                        <b><span class="preco-maior-cart">{{ item.livro.preco }}</b>
+                    </p>
+                    <div>
+                        <p>Qnt:</p>
+                        <div class="quantity-input">
+                            <button type="button" class="quantity-btn minus" data-action="remover">-</button>
+                            <input type="number" class="input_quantia_produtos" name="quantity" id="quantity{{ item.id }}" data-id="{{ item.id }}" value="{{ item.quantidade }}" min="1" max="99">
+                            <button type="button" class="quantity-btn plus"  data-action="adicionar">+</button>
+                        </div>
+                    </div>
+                </div>
+              
+                <button data-id="{{ item.id }}" data-action="deletar" class="botaoRemoverDoCarrinho" >
+                    <figure class="lixeira_produto">
+                        <img src="{% static 'images/icons/lixeira.svg' %}" alt="Remover item">
+                    </figure>
+                </button>
+            </li>
+        {% endfor %}
+        </ul>
+        <div class="botoes">
+            <button><a href="{% url 'acervo' %}">Continuar comprando</a></button>
+            <button><a href="{% url 'finalizar_compra' %}">Finalizar compra</a></button>
+        </div>
+        {% endif %}
+    </section>
+</main>
+<script>
+    const cartUpdateUrl = "{% url 'atualizar_carrinho' %}";
+    var csrfToken = "{{ csrf_token }}";
+
+</script>
+{% endblock content %}
