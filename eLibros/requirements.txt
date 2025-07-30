@@ -29,3 +29,4 @@ djangorestframework
 djangorestframework-simplejwt
 django-cors-headers
 django-filter
+django-filter-stubs
