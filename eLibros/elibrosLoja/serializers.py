@@ -1,4 +1,3 @@
-from rest_framework import serializers
 import os
 from typing import Any
 from .models import (
@@ -7,6 +6,12 @@ from .models import (
     Avaliacao, CurtidaAvaliacao
 )
 from accounts.models import Usuario
+from rest_framework import serializers
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+
+from django.utils.crypto import get_random_string
 
 
 class AutorSerializer(serializers.ModelSerializer[Autor]):
@@ -115,18 +120,21 @@ class PedidoSerializer(serializers.ModelSerializer[Pedido]):
 class UsuarioSerializer(serializers.ModelSerializer[Usuario]):
     class Meta:
         model = Usuario
-        fields = ['id', 'email', 'first_name', 'last_name', 'date_joined', 'is_active']
-        read_only_fields = ['date_joined']
+        fields = ['id', 'email', 'username', 'nome', 'CPF', 'telefone', 'genero', 'dt_nasc', 'date_joined', 'is_active', 'email_is_verified']
+        read_only_fields = ['id', 'date_joined', 'is_active']
 
 
 class UsuarioCreateSerializer(serializers.ModelSerializer[Usuario]):
-    password = serializers.CharField(write_only=True)
-    password_confirm = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, min_length=8)
+    password_confirm = serializers.CharField(write_only=True, min_length=8)
     
     class Meta:
         model = Usuario
-        fields = ['email', 'first_name', 'last_name', 'password', 'password_confirm']
-    
+        fields = [
+            'email', 'username', 'nome', 'CPF', 'telefone', 
+            'genero', 'dt_nasc', 'password', 'password_confirm'
+        ]
+
     def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
         if attrs['password'] != attrs['password_confirm']:
             raise serializers.ValidationError("As senhas não coincidem.")
@@ -134,9 +142,96 @@ class UsuarioCreateSerializer(serializers.ModelSerializer[Usuario]):
     
     def create(self, validated_data: dict[str, Any]) -> Usuario:
         validated_data.pop('password_confirm')
-        user = Usuario.objects.create_user(**validated_data)
+        password = validated_data.pop('password')
+        user = Usuario(**validated_data)
+        user.set_password(password)
+        user.save()
         return user
+    
+class UsuarioLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        email = attrs.get('email')
+        password = attrs.get('password')
+        
+        if not email or not password:
+            raise serializers.ValidationError("Email e senha são obrigatórios.")
+        
+        user = Usuario.objects.filter(email=email).first()
+        if user is None:
+            raise AuthenticationFailed("Credenciais inválidas.")
+        
+        if not user.check_password(password):
+            raise AuthenticationFailed("Credenciais inválidas.")
+            
+        if not user.is_active:
+            raise AuthenticationFailed("Perfil desabilitado. Se for um erro, entre em contato com o administrador.")
 
+        attrs['user'] = user
+        return attrs
+    
+class UsuarioLogoutSerializer(serializers.Serializer):
+    """Serializer para logout de usuário com blacklist de token"""
+    refresh = serializers.CharField()
+    
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        self.token = attrs.get('refresh')
+        return attrs
+    
+    def save(self, **kwargs: Any) -> None:
+        try: 
+            token = RefreshToken(self.token)
+            token.blacklist()
+        except TokenError as e:
+            raise serializers.ValidationError(f"Erro ao invalidar o token: {str(e)}")
+
+class PasswordResetSerializer(serializers.Serializer):
+    """Serializer para redefinição de senha"""
+    email = serializers.EmailField()
+    
+    def validate_email(self, value: str) -> str:
+        if not Usuario.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Usuário com este email não encontrado.")
+        return value
+    
+    def save(self, **kwargs: Any) -> dict[str, Any]:
+        email = self.validated_data['email']  # type: ignore
+        user = Usuario.objects.get(email=email)
+        otp = get_random_string(length=6, allowed_chars='0123456789')
+        user.login_token = otp
+        user.save()
+        return {'user': user, 'otp': otp}
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    """Serializer para confirmação de redefinição de senha"""
+    email = serializers.EmailField()
+    otp = serializers.CharField(max_length=6)
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    confirm_password = serializers.CharField(write_only=True, min_length=8)
+    
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError("As senhas não coincidem.")
+        
+        email = attrs.get('email')
+        otp = attrs.get('otp')
+        
+        user = Usuario.objects.filter(email=email, login_token=otp).first()
+        if not user:
+            raise serializers.ValidationError("Token inválido ou expirado.")
+        
+        attrs['user'] = user
+        return attrs
+    
+    def save(self, **kwargs: Any) -> Usuario:
+        user = self.validated_data['user']  # type: ignore
+        user.set_password(self.validated_data['new_password'])  # type: ignore
+        user.login_token = None  # Limpar o token após uso
+        user.save()
+        return user
 
 class AvaliacaoSerializer(serializers.ModelSerializer[Avaliacao]):
     """Serializer para leitura de avaliações"""

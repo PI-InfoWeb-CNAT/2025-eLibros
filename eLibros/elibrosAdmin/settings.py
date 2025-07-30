@@ -21,12 +21,15 @@ INSTALLED_APPS = [
     # Third-party
     "django_extensions",
     'simple_history',
-    "accounts",
+    
     "elibrosLoja",
+    
+    "accounts.apps.AccountsConfig",
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',  # Para blacklist de tokens
     'corsheaders',
-
 ]
 
 # Django REST Framework configuration
@@ -51,6 +54,28 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,  # Blacklist do token antigo após rotação
+    'UPDATE_LAST_LOGIN': True,
+    
+    # Algoritmo de assinatura
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    
+    # Claims customizados
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    
+    # Headers
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    
+    # Token em cookies (opcional)
+    'AUTH_COOKIE': None,  # 'access_token'
+    'AUTH_COOKIE_DOMAIN': None,
+    'AUTH_COOKIE_SECURE': False,
+    'AUTH_COOKIE_HTTP_ONLY': True,
+    'AUTH_COOKIE_PATH': '/',
+    'AUTH_COOKIE_SAMESITE': 'Lax',
 }
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
