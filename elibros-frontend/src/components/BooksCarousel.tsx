@@ -19,6 +19,12 @@ export default function BooksCarousel({
   const [books, setBooks] = useState<Livro[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Criar um ID único para este carrossel
+  const carouselId = `carousel-${title.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Substitui qualquer caractere que não seja letra ou número por hífen
+    .replace(/^-+|-+$/g, '') // Remove hífens do início e fim
+    .replace(/--+/g, '-')}`; // Substitui múltiplos hífens por um único hífen
 
   // Função para embaralhar array (algoritmo Fisher-Yates)
   const shuffleArray = <T,>(array: T[]): T[] => {
@@ -99,18 +105,18 @@ export default function BooksCarousel({
 
       <div className="relative">
       <div className="absolute top-1/2 -translate-y-1/2 left-0 z-10">
-        <div className="swiper-button-prev !text-[#1C1607] !scale-75"></div>
+        <div className={`swiper-button-prev ${carouselId}-prev !text-[#1C1607] !scale-75`}></div>
       </div>
       <div className="absolute top-1/2 -translate-y-1/2 right-0 z-10">
-        <div className="swiper-button-next !text-[#1C1607] !scale-75"></div>
+        <div className={`swiper-button-next ${carouselId}-next !text-[#1C1607] !scale-75`}></div>
       </div>
       
       <div className="px-8 md:px-12">
         <Swiper
             modules={[Navigation]}
             navigation={{
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
+              nextEl: `.${carouselId}-next`,
+              prevEl: `.${carouselId}-prev`,
             }}
             breakpoints={{
               200: {
