@@ -94,7 +94,7 @@ class ItemCarrinhoSerializer(serializers.ModelSerializer[ItemCarrinho]):
 
 
 class CarrinhoSerializer(serializers.ModelSerializer[Carrinho]):
-    itens = ItemCarrinhoSerializer(many=True, read_only=True, source='itemcarrinho_set')
+    itens = ItemCarrinhoSerializer(many=True, read_only=True, source='items_do_carrinho')
     
     class Meta:
         model = Carrinho

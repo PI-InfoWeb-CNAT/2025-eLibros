@@ -26,40 +26,80 @@ class CarrinhoViewSet(viewsets.ModelViewSet[Carrinho]):
         # Retorna apenas o carrinho do usuário logado
         if hasattr(self.request.user, 'cliente'):
             return Carrinho.objects.filter(cliente=self.request.user.cliente)
-        return Carrinho.objects.none()
+        else:
+            # Se o usuário não tem Cliente associado, criar um
+            try:
+                cliente, created = Cliente.objects.get_or_create(user=self.request.user)
+                if created:
+                    print(f"Cliente criado automaticamente para o usuário: {self.request.user}")
+                return Carrinho.objects.filter(cliente=cliente)
+            except Exception as e:
+                print(f"Erro ao criar Cliente: {e}")
+                return Carrinho.objects.none()
     
     @action(detail=False, methods=['post'])
     def atualizar_carrinho(self, request: Request) -> Response:
         """Endpoint baseado na sua view atualizar_carrinho"""
         try:
-            id_item = request.data.get('id')
-            action = request.data.get('action')
-            quantidade = request.data.get('quantidadeAdicionada', 1)
+            # Novos parâmetros do frontend
+            livro_id = request.data.get('livro_id')
+            item_id = request.data.get('item_id')
+            acao = request.data.get('acao')
+            quantidade = request.data.get('quantidade', 1)
+            
+            # Parâmetros antigos para compatibilidade
+            id_item = request.data.get('id') or livro_id or item_id
+            action = request.data.get('action') or acao
+            quantidadeAdicionada = request.data.get('quantidadeAdicionada') or quantidade
             
             if request.user.is_authenticated:
-                cliente = Cliente.objects.get(user=request.user)
+                # Criar Cliente se não existir
+                cliente, created = Cliente.objects.get_or_create(user=request.user)
+                if created:
+                    print(f"Cliente criado automaticamente para o usuário: {request.user}")
+                
                 carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
             else:
                 return Response({'error': 'Usuário não autenticado'}, status=401)
             
-            if action in ['adicionarAoCarrinho', 'comprarAgora']:
+            if action in ['adicionarAoCarrinho', 'comprarAgora', 'adicionar']:
                 livro = Livro.objects.get(id=id_item)
                 item_carrinho, item_created = ItemCarrinho.objects.get_or_create(
                     livro=livro,
                     carrinho=carrinho,
-                    defaults={'quantidade': int(quantidade), 'preco': livro.preco}
+                    defaults={'quantidade': int(quantidadeAdicionada), 'preco': livro.preco}
                 )
                 
                 if not item_created:
-                    item_carrinho.quantidade += int(quantidade)
+                    item_carrinho.quantidade += int(quantidadeAdicionada)
                 
                 item_carrinho.save()
                 message = 'Item foi adicionado ao carrinho'
                 
-            elif action == 'deletar':
-                item_carrinho = ItemCarrinho.objects.get(id=id_item)
+            elif action in ['deletar', 'remover']:
+                if item_id:
+                    # Remover por ID do item do carrinho
+                    item_carrinho = ItemCarrinho.objects.get(id=item_id, carrinho=carrinho)
+                else:
+                    # Remover por ID do livro
+                    item_carrinho = ItemCarrinho.objects.get(livro__id=id_item, carrinho=carrinho)
                 item_carrinho.delete()
                 message = 'Item removido do carrinho'
+                
+            elif action in ['atualizar']:
+                if item_id:
+                    # Atualizar por ID do item do carrinho
+                    item_carrinho = ItemCarrinho.objects.get(id=item_id, carrinho=carrinho)
+                    item_carrinho.quantidade = int(quantidadeAdicionada)
+                    item_carrinho.save()
+                    message = 'Quantidade atualizada'
+                else:
+                    return Response({'error': 'ID do item é necessário para atualização'}, status=400)
+                    
+            elif action in ['limpar']:
+                # Limpar todo o carrinho
+                ItemCarrinho.objects.filter(carrinho=carrinho).delete()
+                message = 'Carrinho limpo'
             
             cart_item_count = carrinho.numero_itens
             return Response({
