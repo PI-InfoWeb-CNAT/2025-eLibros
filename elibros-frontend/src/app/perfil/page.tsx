@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 export default function PerfilPage() {
   const { user, logout } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -17,26 +16,9 @@ export default function PerfilPage() {
     }
   };
 
-  const formatCPF = (cpf: string) => {
-    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-  };
-
-  const formatPhone = (phone: string) => {
-    return phone.replace(/(\d{2})(\d{4,5})(\d{4})/, '($1) $2-$3');
-  };
-
-  const maskEmail = (email: string) => {
-    if (!email || !email.includes('@')) return email;
-    const [username, domain] = email.split('@');
-    if (username.length <= 2) {
-      return `${username[0]}*@${domain}`;
-    }
-    const maskedUsername = username.slice(0, 2) + '*'.repeat(Math.max(0, username.length - 2));
-    return `${maskedUsername}@${domain}`;
-  };
-
-  const maskPhone = (phone: string) => {
-    return phone.replace(/(\d{2})(\d{4,5})(\d{4})/, '($1) *****-$3');
+  const formatDate = (dateString: string) => {
+    if (!dateString) return 'Não informado';
+    return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
   return (
@@ -44,116 +26,126 @@ export default function PerfilPage() {
       <div className="min-h-screen bg-[#FFFFF5] font-['Poppins'] text-[#1C1607] flex flex-col">
         <Header />
         
-        <main className="flex-1 px-4 md:px-20 py-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="bg-gray-200 rounded-lg p-8">
-              <div className="flex flex-col lg:flex-row gap-8">
-                
-                {/* Profile Picture and Basic Info */}
-                <div className="flex flex-col items-center">
-                  <div className="w-32 h-32 bg-gray-400 rounded-full flex items-center justify-center mb-4">
-                    <svg 
-                      width="60" 
-                      height="60" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      className="text-gray-600"
-                    >
-                      <path 
-                        d="M20 21V19C20 17.9 19.1 17 18 17H6C4.9 17 4 17.9 4 19V21M16 7C16 9.2 14.2 11 12 11C9.8 11 8 9.2 8 7C8 4.8 9.8 3 12 3C14.2 3 16 4.8 16 7Z" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                  
-                  <div className="text-center mb-6">
-                    <h2 className="text-lg font-medium mb-1">Nome do usuário</h2>
-                    <p className="text-base text-gray-700">{user?.nome?.toUpperCase() || user?.username?.toUpperCase()}</p>
-                    
-                    <div className="mt-4">
-                      <h3 className="text-sm font-medium mb-1">Identidade de Gênero</h3>
-                      <p className="text-sm text-gray-700">{user?.genero || 'Não informado'}</p>
-                    </div>
-                    
-                    <div className="mt-4">
-                      <h3 className="text-sm font-medium mb-1">E-mail</h3>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm text-gray-700">{maskEmail(user?.email || '')}</p>
-                        <button 
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="text-xs text-blue-600 hover:underline"
-                        >
-                          Visualizar Perfil <svg className="inline w-3 h-3 ml-1" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-4">
-                      <h3 className="text-sm font-medium mb-1">Telefone</h3>
-                      <p className="text-sm text-gray-700">{maskPhone(user?.telefone || '')}</p>
-                    </div>
-                    
-                    <button className="mt-6 bg-[#FFD147] text-[#1C1607] px-6 py-2 rounded text-sm hover:bg-[#fac423] transition-colors">
-                      Editar perfil de usuário
-                    </button>
-                  </div>
+        <main>
+          <form className="bg-[#EBEBE1] mx-16 my-16 px-16 py-16 rounded-sm flex flex-col gap-16">
+            {/* Primeira seção */}
+            <div className="flex gap-16">
+              <figure className="w-[18%] m-0">
+                <img 
+                  src="/usuario.png" 
+                  alt="Profile Picture"
+                  className="w-full aspect-square rounded-full object-cover"
+                />
+              </figure>
+
+              <div className="flex flex-col gap-5 flex-1">
+                <div className="flex flex-col">
+                  <label htmlFor="username" className="font-light mb-1 text-black/50 text-lg w-full">Nome de Usuário</label>
+                  <input 
+                    id="username" 
+                    type="text" 
+                    value={user?.username || ''} 
+                    disabled
+                    className="bg-[#EBEBE1] outline-1 outline-[#EBEBE1] border border-[#EBEBE1] text-[#3B362B] text-lg font-light p-2"
+                  />
                 </div>
+                <div className="flex flex-col">
+                  <label htmlFor="email" className="font-light mb-1 text-black/50 text-lg w-full">E-mail</label>
+                  <input 
+                    id="email" 
+                    type="email" 
+                    value={user?.email || ''} 
+                    disabled
+                    className="bg-[#EBEBE1] outline-1 outline-[#EBEBE1] border border-[#EBEBE1] text-[#3B362B] text-lg font-light p-2"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="fone" className="font-light mb-1 text-black/50 text-lg w-full">Telefone</label>
+                  <input 
+                    id="fone" 
+                    type="tel" 
+                    value={user?.telefone || ''} 
+                    disabled
+                    className="bg-[#EBEBE1] outline-1 outline-[#EBEBE1] border border-[#EBEBE1] text-[#3B362B] text-lg font-light p-2"
+                  />
+                </div>
+              </div>
 
-                {/* Divider */}
-                <div className="hidden lg:block w-px bg-black"></div>
+              <div className="flex flex-col w-[25%]">
+                <label htmlFor="genero" className="font-light mb-1 text-black/50 text-lg">Identidade de gênero</label>
+                <select 
+                  id="genero" 
+                  disabled
+                  className="bg-[#EBEBE1] outline-1 outline-[#EBEBE1] border border-[#EBEBE1] text-[#3B362B] text-lg font-light p-2"
+                >
+                  <option>{user?.genero || 'Colocar Gênero'}</option>
+                </select>
+              </div>
 
-                {/* User Information Sections */}
-                <div className="flex-1">
-                  {/* Authentication Section */}
-                  <div className="mb-8">
-                    <h3 className="text-lg font-semibold mb-4">Senha e autenticação</h3>
-                    <button className="bg-[#FFD147] text-[#1C1607] px-4 py-2 rounded text-sm hover:bg-[#fac423] transition-colors mb-4">
-                      Alterar senha
-                    </button>
-                    <button 
-                      onClick={handleLogout}
-                      className="bg-red-500 text-white px-4 py-2 rounded text-sm hover:bg-red-600 transition-colors block"
-                    >
-                      Excluir conta
-                    </button>
-                  </div>
+              <div className="flex flex-col justify-between w-[25%] gap-4">
+                <a 
+                  id="visualizar-pedidos" 
+                  href="/pedidos"
+                  className="w-full bg-[#D9D9D9] text-center py-2 rounded-sm text-[#3B362B] text-lg font-light no-underline"
+                >
+                  Visualizar pedidos
+                </a>
+                <a 
+                  id="editar-perfil" 
+                  href="/editar-perfil"
+                  className="w-full bg-[#D9D9D9] text-center py-2 rounded-sm text-[#3B362B] text-lg font-light no-underline"
+                >
+                  Editar perfil de usuário
+                </a>
+              </div>
+            </div>
 
-                  {/* Other Information */}
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4">Outras informações</h3>
-                    
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-1">Data de Nascimento</h4>
-                        <p className="text-sm text-gray-900">
-                          {user?.dt_nasc ? new Date(user.dt_nasc).toLocaleDateString('pt-BR') : 'XX/XX/XXXX'}
-                        </p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-1">Endereço</h4>
-                        <p className="text-sm text-gray-900">Rua dos todorapés, 4002</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-1">CPF</h4>
-                        <p className="text-sm text-gray-900">
-                          {user?.CPF ? formatCPF(user.CPF) : 'XXX.XXX.XXX-XX'}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+            {/* Segunda seção */}
+            <div className="flex gap-16">
+              <div className="w-[25%] flex flex-col justify-between">
+                <div className="flex flex-col">
+                  <h3 className="text-[#3B362B] mb-5 font-normal">Senha e autenticação</h3>
+                  <a 
+                    id="alterar-senha" 
+                    href="/alterar-senha"
+                    className="inline-block w-fit px-7 py-3 bg-[#FFD147] text-center text-[#3B362B] text-lg font-light no-underline whitespace-nowrap"
+                  >
+                    Alterar senha
+                  </a>
+                </div>
+                <hr className="border-gray-400 my-4" />
+                <div>
+                  <button
+                    onClick={handleLogout}
+                    className="px-6 py-3 border border-[#FF4E4E] text-[#3B362B] text-lg font-light bg-transparent hover:bg-red-50 transition-colors whitespace-nowrap"
+                    id="excluir-conta"
+                  >
+                    Excluir conta
+                  </button>
+                </div>
+              </div>
+
+              <div className="w-px bg-[#6C6C6C80]"></div>
+
+              <div className="flex flex-col flex-1">
+                <h3 className="text-[#3B362B] mb-5 font-normal">Outras informações</h3>
+                <div className="flex flex-col mb-4">
+                  <h4 className="font-light mb-1 text-black/50 text-lg">Data de nascimento</h4>
+                  <p className="text-[#3B362B] text-lg font-light">{formatDate(user?.dt_nasc || '')}</p>
+                </div>
+                <div className="flex flex-col mb-4">
+                  <h4 className="font-light mb-1 text-black/50 text-lg">Endereço</h4>
+                  <a href="#" className="text-[#3B362B] text-lg font-light no-underline">Cadastrar endereço</a>
+                </div>
+                <div className="flex flex-col">
+                  <h4 className="font-light mb-1 text-black/50 text-lg">CPF</h4>
+                  <p className="text-[#3B362B] text-lg font-light">{user?.CPF || 'Não informado'}</p>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </main>
-        
+
         <Footer />
       </div>
     </ProtectedRoute>

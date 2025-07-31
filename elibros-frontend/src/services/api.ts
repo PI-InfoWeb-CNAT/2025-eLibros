@@ -96,9 +96,9 @@ class ElibrosApiService {
     return token ? { 'Authorization': `Bearer ${token}` } : {};
   }
 
-  private async makeRequest<T>(
+  async makeRequest<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit & { skipAuth?: boolean } = {}
   ): Promise<T> {
     // Verificar se estamos no lado do cliente
     if (typeof window === 'undefined') {
@@ -109,7 +109,7 @@ class ElibrosApiService {
     
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...this.getAuthHeaders(),
+      ...(options.skipAuth ? {} : this.getAuthHeaders()),
       ...(options.headers as Record<string, string>),
     };
 
@@ -170,11 +170,11 @@ class ElibrosApiService {
     if (search) {
       endpoint += `&search=${encodeURIComponent(search)}`;
     }
-    return this.makeRequest<ApiResponse<Livro>>(endpoint);
+    return this.makeRequest<ApiResponse<Livro>>(endpoint, { skipAuth: true });
   }
 
   async getLivro(id: number): Promise<Livro> {
-    return this.makeRequest<Livro>(`/livros/${id}/`);
+    return this.makeRequest<Livro>(`/livros/${id}/`, { skipAuth: true });
   }
 
   // ==================== AUTENTICAÇÃO ====================
@@ -198,6 +198,7 @@ class ElibrosApiService {
     return this.makeRequest<Usuario>('/usuarios/', {
       method: 'POST',
       body: JSON.stringify(userData),
+      skipAuth: true
     });
   }
 
@@ -277,6 +278,23 @@ class ElibrosApiService {
     if (typeof window === 'undefined') return null;
     const userJson = localStorage.getItem('user');
     return userJson ? JSON.parse(userJson) : null;
+  }
+
+  // ==================== CARRINHO ====================
+  async getCarrinho(): Promise<any> {
+    return this.makeRequest('/carrinhos/');
+  }
+
+  async atualizarCarrinho(dados: {
+    livro_id?: number;
+    item_id?: number;
+    quantidade?: number;
+    acao: 'adicionar' | 'remover' | 'atualizar' | 'limpar';
+  }): Promise<any> {
+    return this.makeRequest('/carrinhos/atualizar_carrinho/', {
+      method: 'POST',
+      body: JSON.stringify(dados),
+    });
   }
 }
 

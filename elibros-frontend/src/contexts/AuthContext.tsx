@@ -7,6 +7,7 @@ interface AuthContextType {
   user: Usuario | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isInitialized: boolean;
   login: (credentials: LoginRequest) => Promise<void>;
   register: (userData: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
@@ -17,15 +18,32 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<Usuario | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     // Verificar se há um usuário logado ao carregar a página
-    const checkAuth = () => {
+    const checkAuth = async () => {
       try {
         const currentUser = elibrosApi.getCurrentUser();
-        if (currentUser && elibrosApi.isAuthenticated()) {
+        const isAuth = elibrosApi.isAuthenticated();
+        
+        console.log('🔐 AuthContext DEBUG:', {
+          currentUser: currentUser?.username || 'null',
+          isAuth,
+          hasToken: !!localStorage.getItem('access_token')
+        });
+        
+        if (currentUser && isAuth) {
           setUser(currentUser);
+          setIsAuthenticated(true);
+          console.log('✅ Usuário autenticado:', currentUser.username);
+        } else {
+          // Limpar estados
+          setUser(null);
+          setIsAuthenticated(false);
+          console.log('❌ Usuário não autenticado');
         }
       } catch (error) {
         console.error('Erro ao verificar autenticação:', error);
@@ -33,8 +51,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem('user');
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        setUser(null);
+        setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
+        setIsInitialized(true);
+        console.log('🏁 AuthContext inicializado');
       }
     };
 
@@ -45,6 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const response = await elibrosApi.login(credentials);
       setUser(response.user);
+      setIsAuthenticated(true);
     } catch (error) {
       throw error;
     }
@@ -67,6 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Erro ao fazer logout:', error);
     } finally {
       setUser(null);
+      setIsAuthenticated(false);
     }
   };
 
@@ -77,8 +101,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value: AuthContextType = {
     user,
-    isAuthenticated: !!user,
+    isAuthenticated,
     isLoading,
+    isInitialized,
     login,
     register,
     logout,
