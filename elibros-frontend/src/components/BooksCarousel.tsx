@@ -100,18 +100,20 @@ export default function BooksCarousel({
   }
 
   return (
-    <section className="px-6 md:px-24">
+    <section className="px-6 md:px-24 overflow-hidden">
       <h2 className="text-2xl font-medium mb-8 text-left">{title}</h2>
 
-      <div className="relative">
-      <div className="absolute top-1/2 -translate-y-1/2 left-0 z-10">
-        <div className={`swiper-button-prev ${carouselId}-prev !text-[#1C1607] !scale-75`}></div>
-      </div>
-      <div className="absolute top-1/2 -translate-y-1/2 right-0 z-10">
-        <div className={`swiper-button-next ${carouselId}-next !text-[#1C1607] !scale-75`}></div>
-      </div>
-      
-      <div className="px-4 md:px-4 max-w-[1200px] mx-auto">
+      <div className="relative max-w-full">
+        {/* Setas posicionadas fora do container dos livros */}
+        <div className="absolute top-1/2 -translate-y-1/2 -left-2 z-10">
+          <div className={`swiper-button-prev ${carouselId}-prev !text-[#1C1607] !scale-75 opacity-80 hover:opacity-100`}></div>
+        </div>
+        <div className="absolute top-1/2 -translate-y-1/2 -right-2 z-10">
+          <div className={`swiper-button-next ${carouselId}-next !text-[#1C1607] !scale-75 opacity-80 hover:opacity-100`}></div>
+        </div>
+        
+        {/* Container dos livros com margem para as setas */}
+        <div className="mx-6">
           <Swiper
             modules={[Navigation]}
             navigation={{
@@ -119,40 +121,40 @@ export default function BooksCarousel({
               prevEl: `.${carouselId}-prev`,
             }}
             breakpoints={{
-              200: {
+              320: {
                 slidesPerView: 1,
                 slidesPerGroup: 1,
                 spaceBetween: 16,
               },
               640: {
                 slidesPerView: 2,
-                slidesPerGroup: 1,
+                slidesPerGroup: 2,
                 spaceBetween: 16,
               },
               900: {
                 slidesPerView: 3,
-                slidesPerGroup: 1,
+                slidesPerGroup: 3,
                 spaceBetween: 16,
               },
               1200: {
                 slidesPerView: 4,
-                slidesPerGroup: 1,
-                spaceBetween: 16,
+                slidesPerGroup: 4,
+                spaceBetween: 20,
               },
             }}
             className="relative w-full"
           >
             {books.map((book) => (
               <SwiperSlide key={book.id}>
-                {/* Layout horizontal - imagem do lado das informações */}
-                <div className="p-2 h-52">
+                {/* Layout horizontal com altura fixa para alinhamento */}
+                <div className="p-2 h-52 w-full">
                   <div className="flex h-full items-start">
-                    {/* Imagem à esquerda */}
+                    {/* Imagem à esquerda com tamanho fixo */}
                     <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-3">
                       <img 
                         src={book.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
                         alt={book.titulo}
-                        className="w-28 h-40 rounded object-cover"
+                        className="w-24 h-36 rounded object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
@@ -160,34 +162,39 @@ export default function BooksCarousel({
                       />
                     </a>
                     
-                    {/* Informações à direita */}
-                    <div className="flex-1 flex flex-col justify-between h-40">
+                    {/* Informações à direita com altura fixa */}
+                    <div className="flex-1 flex flex-col justify-between h-36">
                       <div className="space-y-1">
-                        <h3 className="text-base font-semibold leading-tight overflow-hidden h-12" style={{
-                          display: '-webkit-box',
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: 'vertical' as const,
+                        {/* Título com altura e largura fixas e limite de caracteres */}
+                        <h3 className="text-sm font-semibold leading-tight overflow-hidden h-10 w-48" style={{
+                          display: 'block',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
                         }}>
-                          {book.titulo}
+                          {book.titulo.length > 35 ? `${book.titulo.substring(0, 35)}...` : book.titulo}
                         </h3>
-                        <p className="text-sm text-gray-700 h-5 overflow-hidden" style={{
+                        {/* Autor com altura fixa e limite de caracteres */}
+                        <p className="text-xs text-gray-700 h-4 overflow-hidden" style={{
                           display: '-webkit-box',
                           WebkitLineClamp: 1,
                           WebkitBoxOrient: 'vertical' as const,
                         }}>
-                          {Array.isArray(book.autores) ? book.autores.join(', ') : book.autores}
+                          {(() => {
+                            const autores = Array.isArray(book.autores) ? book.autores.join(', ') : book.autores;
+                            return autores.length > 25 ? `${autores.substring(0, 25)}...` : autores;
+                          })()}
                         </p>
                       </div>
                       
-                      <div className="space-y-2">
+                      <div className="space-y-1 mt-auto">
                         <p className="text-sm font-semibold">
                           R$ {book.preco}
                         </p>
                         <a 
                           href={`/livro/${book.id}`}
-                          className="inline-block text-sm text-[#1C1607] bg-[#FFD147] rounded-lg px-4 py-2 hover:bg-[#fac423] transition-colors"
+                          className="inline-block text-xs text-[#1C1607] bg-[#FFD147] rounded px-3 py-1 hover:bg-[#fac423] transition-colors"
                         >
-                          Comprar
+                          Acessar livro
                         </a>
                       </div>
                     </div>
