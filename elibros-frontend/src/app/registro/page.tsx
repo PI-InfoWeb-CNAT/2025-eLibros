@@ -3,20 +3,24 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Header, Footer } from '../../components';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function RegistroPage() {
+  const router = useRouter();
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     // Informações pessoais
-    name: '',
+    nome: '',
     email: '',
-    cpf: '',
+    CPF: '',
     telefone: '',
-    data_nasc: '',
+    dt_nasc: '',
     // Criação da conta
     username: '',
     password: '',
-    confirm_password: ''
+    password_confirm: ''
   });
 
   const [errors, setErrors] = useState<string[]>([]);
@@ -39,17 +43,17 @@ export default function RegistroPage() {
     const newErrors: string[] = [];
     
     // Validar campos obrigatórios
-    if (!formData.name) newErrors.push('Nome é obrigatório');
+    if (!formData.nome) newErrors.push('Nome é obrigatório');
     if (!formData.email) newErrors.push('Email é obrigatório');
-    if (!formData.cpf) newErrors.push('CPF é obrigatório');
+    if (!formData.CPF) newErrors.push('CPF é obrigatório');
     if (!formData.telefone) newErrors.push('Telefone é obrigatório');
-    if (!formData.data_nasc) newErrors.push('Data de nascimento é obrigatória');
+    if (!formData.dt_nasc) newErrors.push('Data de nascimento é obrigatória');
     if (!formData.username) newErrors.push('Nome de usuário é obrigatório');
     if (!formData.password) newErrors.push('Senha é obrigatória');
-    if (!formData.confirm_password) newErrors.push('Confirmação de senha é obrigatória');
+    if (!formData.password_confirm) newErrors.push('Confirmação de senha é obrigatória');
     
     // Validar confirmação de senha
-    if (formData.password && formData.confirm_password && formData.password !== formData.confirm_password) {
+    if (formData.password && formData.password_confirm && formData.password !== formData.password_confirm) {
       newErrors.push('As senhas não coincidem');
     }
 
@@ -61,7 +65,7 @@ export default function RegistroPage() {
 
     // Validar CPF básico (apenas formato)
     const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$/;
-    if (formData.cpf && !cpfRegex.test(formData.cpf)) {
+    if (formData.CPF && !cpfRegex.test(formData.CPF)) {
       newErrors.push('CPF inválido (use o formato 000.000.000-00 ou 11 dígitos)');
     }
 
@@ -72,16 +76,29 @@ export default function RegistroPage() {
     }
 
     try {
-      // TODO: Implementar chamada para API de registro
-      console.log('Registration data:', formData);
-      // Simular delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await register({
+        email: formData.email,
+        username: formData.username,
+        nome: formData.nome,
+        CPF: formData.CPF,
+        telefone: formData.telefone,
+        dt_nasc: formData.dt_nasc,
+        password: formData.password,
+        password_confirm: formData.password_confirm
+      });
       
-      // Redirecionamento temporário
-      alert('Conta criada com sucesso!');
-      window.location.href = '/login';
+      // Sucesso - redirecionar para a página inicial (já está logado automaticamente)
+      router.push('/');
     } catch (error) {
-      setErrors(['Erro ao criar conta. Tente novamente.']);
+      if (error instanceof Error) {
+        if (error.message.includes('já existe')) {
+          setErrors(['Este email ou nome de usuário já está em uso']);
+        } else {
+          setErrors([error.message]);
+        }
+      } else {
+        setErrors(['Erro ao criar conta. Tente novamente.']);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -133,14 +150,14 @@ export default function RegistroPage() {
 
               {/* Nome */}
               <div className="mb-4">
-                <label htmlFor="name" className="block text-[#1C1607] text-base mb-1">
+                <label htmlFor="nome" className="block text-[#1C1607] text-base mb-1">
                   Nome
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
+                  id="nome"
+                  name="nome"
+                  value={formData.nome}
                   onChange={handleInputChange}
                   className="border border-[#E5E7EB] rounded-md px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-[#FFD147] focus:border-transparent"
                   placeholder="Seu nome completo"
@@ -168,14 +185,14 @@ export default function RegistroPage() {
               {/* CPF e Telefone */}
               <div className="flex gap-4 mb-4">
                 <div className="flex-1">
-                  <label htmlFor="cpf" className="block text-[#1C1607] text-base mb-1">
+                  <label htmlFor="CPF" className="block text-[#1C1607] text-base mb-1">
                     CPF
                   </label>
                   <input
                     type="text"
-                    id="cpf"
-                    name="cpf"
-                    value={formData.cpf}
+                    id="CPF"
+                    name="CPF"
+                    value={formData.CPF}
                     onChange={handleInputChange}
                     className="border border-[#E5E7EB] rounded-md px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-[#FFD147] focus:border-transparent"
                     placeholder="000.000.000-00"
@@ -201,14 +218,14 @@ export default function RegistroPage() {
 
               {/* Data de Nascimento */}
               <div className="mb-4 w-2/5">
-                <label htmlFor="data_nasc" className="block text-[#1C1607] text-base mb-1">
+                <label htmlFor="dt_nasc" className="block text-[#1C1607] text-base mb-1">
                   Data de nascimento
                 </label>
                 <input
                   type="date"
-                  id="data_nasc"
-                  name="data_nasc"
-                  value={formData.data_nasc}
+                  id="dt_nasc"
+                  name="dt_nasc"
+                  value={formData.dt_nasc}
                   onChange={handleInputChange}
                   className="border border-[#E5E7EB] rounded-md px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-[#FFD147] focus:border-transparent"
                   required
@@ -261,14 +278,14 @@ export default function RegistroPage() {
 
               {/* Confirmar Senha */}
               <div className="mb-6">
-                <label htmlFor="confirm_password" className="block text-[#1C1607] text-base mb-1">
+                <label htmlFor="password_confirm" className="block text-[#1C1607] text-base mb-1">
                   Confirme sua senha
                 </label>
                 <input
                   type="password"
-                  id="confirm_password"
-                  name="confirm_password"
-                  value={formData.confirm_password}
+                  id="password_confirm"
+                  name="password_confirm"
+                  value={formData.password_confirm}
                   onChange={handleInputChange}
                   className="border border-[#E5E7EB] rounded-md px-4 py-3 w-80 focus:outline-none focus:ring-2 focus:ring-[#FFD147] focus:border-transparent"
                   placeholder="Confirme sua senha"

@@ -1,6 +1,19 @@
+"use client";
+
+import { useAuth } from '../contexts/AuthContext';
+import AuthenticatedHeader from './AuthenticatedHeader';
+
 interface HeaderProps {}
 
 export default function Header({}: HeaderProps) {
+  const { isAuthenticated } = useAuth();
+
+  // Se o usuário estiver autenticado, usar o header específico
+  if (isAuthenticated) {
+    return <AuthenticatedHeader />;
+  }
+
+  // Header padrão para usuários não autenticados
   return (
     <header className="px-4 md:px-20 py-4 border-b-8 border-[#FFD147] flex flex-col md:flex-row justify-between items-center bg-[#1C1607]">
       <h1>

@@ -28,6 +28,43 @@ export interface Livro {
   qtd_vendidos: number;
 }
 
+export interface Usuario {
+  id: number;
+  email: string;
+  username: string;
+  nome: string;
+  CPF: string;
+  telefone: string;
+  genero?: string;
+  dt_nasc?: string;
+  date_joined: string;
+  is_active: boolean;
+  email_is_verified: boolean;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  user: Usuario;
+  refresh: string;
+  access: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  username: string;
+  nome: string;
+  CPF: string;
+  telefone: string;
+  genero?: string;
+  dt_nasc?: string;
+  password: string;
+  password_confirm: string;
+}
+
 export interface ApiResponse<T> {
   count: number;
   next: string | null;
@@ -36,6 +73,11 @@ export interface ApiResponse<T> {
 }
 
 class ElibrosApiService {
+  private getAuthHeaders(): Record<string, string> {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  }
+
   private async makeRequest<T>(
     endpoint: string,
     options: RequestInit = {}
@@ -49,6 +91,7 @@ class ElibrosApiService {
     
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      ...this.getAuthHeaders(),
       ...(options.headers as Record<string, string>),
     };
 
@@ -94,6 +137,84 @@ class ElibrosApiService {
 
   async getLivro(id: number): Promise<Livro> {
     return this.makeRequest<Livro>(`/livros/${id}/`);
+  }
+
+  // ==================== AUTENTICAÇÃO ====================
+  async login(credentials: LoginRequest): Promise<LoginResponse> {
+    const response = await this.makeRequest<LoginResponse>('/auth/login/', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    });
+    
+    // Salvar tokens no localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('access_token', response.access);
+      localStorage.setItem('refresh_token', response.refresh);
+      localStorage.setItem('user', JSON.stringify(response.user));
+    }
+    
+    return response;
+  }
+
+  async register(userData: RegisterRequest): Promise<Usuario> {
+    return this.makeRequest<Usuario>('/usuarios/', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+  }
+
+  async logout(): Promise<void> {
+    const refreshToken = typeof window !== 'undefined' ? localStorage.getItem('refresh_token') : null;
+    
+    if (refreshToken) {
+      try {
+        await this.makeRequest('/usuarios/logout/', {
+          method: 'POST',
+          body: JSON.stringify({ refresh: refreshToken }),
+        });
+      } catch (error) {
+        console.warn('Erro ao fazer logout no servidor:', error);
+      }
+    }
+    
+    // Limpar dados locais sempre
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('user');
+    }
+  }
+
+  async refreshToken(): Promise<string> {
+    const refreshToken = typeof window !== 'undefined' ? localStorage.getItem('refresh_token') : null;
+    
+    if (!refreshToken) {
+      throw new Error('No refresh token available');
+    }
+
+    const response = await this.makeRequest<{ access: string }>('/auth/refresh/', {
+      method: 'POST',
+      body: JSON.stringify({ refresh: refreshToken }),
+    });
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('access_token', response.access);
+    }
+
+    return response.access;
+  }
+
+  // Verificar se o usuário está logado
+  isAuthenticated(): boolean {
+    if (typeof window === 'undefined') return false;
+    return !!localStorage.getItem('access_token');
+  }
+
+  // Obter dados do usuário atual
+  getCurrentUser(): Usuario | null {
+    if (typeof window === 'undefined') return null;
+    const userJson = localStorage.getItem('user');
+    return userJson ? JSON.parse(userJson) : null;
   }
 }
 

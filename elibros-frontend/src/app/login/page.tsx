@@ -3,9 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Header, Footer } from '../../components';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -40,15 +44,25 @@ export default function LoginPage() {
     }
 
     try {
-      // TODO: Implementar chamada para API de login
-      console.log('Login data:', formData);
-      // Simular delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await login({
+        email: formData.email,
+        password: formData.password
+      });
       
-      // Redirecionamento temporário
-      window.location.href = '/';
+      // Sucesso - redirecionar para a página inicial
+      router.push('/');
     } catch (error) {
-      setErrors(['Erro ao fazer login. Tente novamente.']);
+      if (error instanceof Error) {
+        if (error.message.includes('Credenciais inválidas')) {
+          setErrors(['Email ou senha incorretos']);
+        } else if (error.message.includes('Perfil desabilitado')) {
+          setErrors(['Sua conta foi desabilitada. Entre em contato com o suporte.']);
+        } else {
+          setErrors([error.message]);
+        }
+      } else {
+        setErrors(['Erro ao fazer login. Tente novamente.']);
+      }
     } finally {
       setIsLoading(false);
     }
