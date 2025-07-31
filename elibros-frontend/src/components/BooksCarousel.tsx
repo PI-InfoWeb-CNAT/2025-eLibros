@@ -166,7 +166,7 @@ export default function BooksCarousel({
                     <div className="flex-1 flex flex-col justify-between h-36">
                       <div className="space-y-1">
                         {/* Título com altura e largura fixas e limite de caracteres */}
-                        <h3 className="text-sm font-semibold leading-tight overflow-hidden h-10 w-48" style={{
+                        <h3 className="text-sm font-semibold leading-tight overflow-hidden h-10 w-25 text-center mx-auto" style={{
                           display: 'block',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
