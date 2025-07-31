@@ -285,9 +285,11 @@ export default function LivroPage() {
         {/* Carrossel de livros do mesmo gênero */}
         {livro.generos && livro.generos.length > 0 && (
           <section className="mt-16">
-            <BooksCarousel 
-              title={`Outros do gênero ${Array.isArray(livro.generos) ? livro.generos[0] : livro.generos}`} 
-            />
+            <div className="-mx-4 md:-mx-20">
+              <BooksCarousel 
+                title={`Outros do gênero ${Array.isArray(livro.generos) ? livro.generos[0] : livro.generos}`} 
+              />
+            </div>
           </section>
         )}
       </main>
