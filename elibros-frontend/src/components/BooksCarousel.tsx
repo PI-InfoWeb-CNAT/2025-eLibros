@@ -19,6 +19,12 @@ export default function BooksCarousel({
   const [books, setBooks] = useState<Livro[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Criar um ID único para este carrossel
+  const carouselId = `carousel-${title.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Substitui qualquer caractere que não seja letra ou número por hífen
+    .replace(/^-+|-+$/g, '') // Remove hífens do início e fim
+    .replace(/--+/g, '-')}`; // Substitui múltiplos hífens por um único hífen
 
   // Função para embaralhar array (algoritmo Fisher-Yates)
   const shuffleArray = <T,>(array: T[]): T[] => {
@@ -36,9 +42,9 @@ export default function BooksCarousel({
         setLoading(true);
         setError(null);
         
-        // ✅ Usando o endpoint correto que retorna todos os livros
+        // Usando o endpoint correto que retorna todos os livros
         const response = await elibrosApi.getLivros();
-        // ✅ Embaralhando os livros para mostrar de forma aleatória
+        // Embaralhando os livros para mostrar de forma aleatória
         const randomizedBooks = shuffleArray(response.results);
         setBooks(randomizedBooks);
       } catch (err) {
@@ -94,41 +100,44 @@ export default function BooksCarousel({
   }
 
   return (
-    <section className="px-4 md:px-20">
+    <section className="px-6 md:px-24">
       <h2 className="text-2xl font-medium mb-8 text-left">{title}</h2>
+
+      <div className="relative">
+      <div className="absolute top-1/2 -translate-y-1/2 left-0 z-10">
+        <div className={`swiper-button-prev ${carouselId}-prev !text-[#1C1607] !scale-75`}></div>
+      </div>
+      <div className="absolute top-1/2 -translate-y-1/2 right-0 z-10">
+        <div className={`swiper-button-next ${carouselId}-next !text-[#1C1607] !scale-75`}></div>
+      </div>
       
-      <div className="swiper-container w-full">
-        <Swiper
+      <div className="px-4 md:px-4 max-w-[1200px] mx-auto">
+          <Swiper
             modules={[Navigation]}
             navigation={{
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
+              nextEl: `.${carouselId}-next`,
+              prevEl: `.${carouselId}-prev`,
             }}
             breakpoints={{
               200: {
                 slidesPerView: 1,
                 slidesPerGroup: 1,
-                spaceBetween: 20,
+                spaceBetween: 16,
               },
               640: {
                 slidesPerView: 2,
                 slidesPerGroup: 1,
-                spaceBetween: 20,
+                spaceBetween: 16,
               },
               900: {
                 slidesPerView: 3,
                 slidesPerGroup: 1,
-                spaceBetween: 20,
+                spaceBetween: 16,
               },
               1200: {
                 slidesPerView: 4,
                 slidesPerGroup: 1,
-                spaceBetween: 20,
-              },
-              1600: {
-                slidesPerView: 5,
-                slidesPerGroup: 1,
-                spaceBetween: 20,
+                spaceBetween: 16,
               },
             }}
             className="relative w-full"
@@ -136,14 +145,14 @@ export default function BooksCarousel({
             {books.map((book) => (
               <SwiperSlide key={book.id}>
                 {/* Layout horizontal - imagem do lado das informações */}
-                <div className="p-3 h-52">
+                <div className="p-2 h-52">
                   <div className="flex h-full items-start">
                     {/* Imagem à esquerda */}
-                    <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-4">
+                    <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-3">
                       <img 
                         src={book.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
                         alt={book.titulo}
-                        className="w-26 h-40 rounded object-cover"
+                        className="w-28 h-40 rounded object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
@@ -187,11 +196,9 @@ export default function BooksCarousel({
               </SwiperSlide>
             ))}
             
-            {/* Navigation buttons */}
-            <div className="swiper-button-prev !text-[#1C1607] !scale-75"></div>
-            <div className="swiper-button-next !text-[#1C1607] !scale-75"></div>
           </Swiper>
         </div>
+      </div>
         
         {showViewMore && (
           <p className="text-center mt-12">
