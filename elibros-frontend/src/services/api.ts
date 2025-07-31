@@ -65,6 +65,24 @@ export interface RegisterRequest {
   password_confirm: string;
 }
 
+export interface Avaliacao {
+  id: number;
+  texto: string;
+  curtidas: number;
+  data_publicacao: string;
+  usuario_nome: string;
+  usuario_id: number;
+  usuario_username: string;
+  livro: number;
+  livro_titulo: string;
+  pode_curtir: boolean;
+  usuario_curtiu: boolean;
+}
+
+export interface AvaliacaoCreateRequest {
+  texto: string;
+}
+
 export interface ApiResponse<T> {
   count: number;
   next: string | null;
@@ -109,7 +127,27 @@ class ElibrosApiService {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        // Tentar obter detalhes do erro
+        let errorDetails = `${response.status} ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          if (errorData.detail) {
+            errorDetails = errorData.detail;
+          } else if (errorData.error) {
+            errorDetails = errorData.error;
+          } else if (typeof errorData === 'object') {
+            // Se houver erros de campo específicos
+            const fieldErrors = Object.entries(errorData)
+              .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+              .join('; ');
+            if (fieldErrors) {
+              errorDetails = fieldErrors;
+            }
+          }
+        } catch (e) {
+          // Se não conseguir parsear o JSON, usar status original
+        }
+        throw new Error(`API Error: ${errorDetails}`);
       }
 
       return response.json();
@@ -202,6 +240,30 @@ class ElibrosApiService {
     }
 
     return response.access;
+  }
+
+  // Funções de Avaliações
+  async getAvaliacoesLivro(livroId: number): Promise<Avaliacao[]> {
+    return this.makeRequest<Avaliacao[]>(`/avaliacoes/livro/${livroId}/`);
+  }
+
+  async criarAvaliacao(livroId: number, dados: AvaliacaoCreateRequest): Promise<Avaliacao> {
+    return this.makeRequest<Avaliacao>(`/avaliacoes/livro/${livroId}/`, {
+      method: 'POST',
+      body: JSON.stringify(dados),
+    });
+  }
+
+  async curtirAvaliacao(avaliacaoId: number): Promise<{ detail: string }> {
+    return this.makeRequest<{ detail: string }>(`/avaliacoes/${avaliacaoId}/curtir/`, {
+      method: 'POST',
+    });
+  }
+
+  async removerCurtidaAvaliacao(avaliacaoId: number): Promise<{ detail: string }> {
+    return this.makeRequest<{ detail: string }>(`/avaliacoes/${avaliacaoId}/curtir/`, {
+      method: 'DELETE',
+    });
   }
 
   // Verificar se o usuário está logado

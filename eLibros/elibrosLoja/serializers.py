@@ -276,7 +276,7 @@ class AvaliacaoCreateSerializer(serializers.ModelSerializer[Avaliacao]):
     
     class Meta:
         model = Avaliacao
-        fields = ['livro', 'texto']
+        fields = ['texto']  # Removendo 'livro' pois vem do contexto da view
     
     def validate_texto(self, value: str) -> str:
         """Método customizado para o campo de texto de uma avaliação
@@ -287,8 +287,9 @@ class AvaliacaoCreateSerializer(serializers.ModelSerializer[Avaliacao]):
         return value.strip()
     
     def create(self, validated_data: dict[str, Any]) -> Avaliacao:
-        # O usuário vem do contexto da view
+        # O usuário e livro vêm do contexto da view
         validated_data['usuario'] = self.context['request'].user
+        # O livro deve ser passado pela view que chama o serializer
         return super().create(validated_data)
 
 
