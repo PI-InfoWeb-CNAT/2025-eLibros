@@ -36,9 +36,9 @@ export default function BooksCarousel({
         setLoading(true);
         setError(null);
         
-        // ✅ Usando o endpoint correto que retorna todos os livros
+        // Usando o endpoint correto que retorna todos os livros
         const response = await elibrosApi.getLivros();
-        // ✅ Embaralhando os livros para mostrar de forma aleatória
+        // Embaralhando os livros para mostrar de forma aleatória
         const randomizedBooks = shuffleArray(response.results);
         setBooks(randomizedBooks);
       } catch (err) {
@@ -94,10 +94,18 @@ export default function BooksCarousel({
   }
 
   return (
-    <section className="px-4 md:px-20">
+    <section className="px-6 md:px-24">
       <h2 className="text-2xl font-medium mb-8 text-left">{title}</h2>
+
+      <div className="relative">
+      <div className="absolute top-1/2 -translate-y-1/2 left-0 z-10">
+        <div className="swiper-button-prev !text-[#1C1607] !scale-75"></div>
+      </div>
+      <div className="absolute top-1/2 -translate-y-1/2 right-0 z-10">
+        <div className="swiper-button-next !text-[#1C1607] !scale-75"></div>
+      </div>
       
-      <div className="swiper-container w-full">
+      <div className="px-8 md:px-12">
         <Swiper
             modules={[Navigation]}
             navigation={{
@@ -187,11 +195,9 @@ export default function BooksCarousel({
               </SwiperSlide>
             ))}
             
-            {/* Navigation buttons */}
-            <div className="swiper-button-prev !text-[#1C1607] !scale-75"></div>
-            <div className="swiper-button-next !text-[#1C1607] !scale-75"></div>
           </Swiper>
         </div>
+      </div>
         
         {showViewMore && (
           <p className="text-center mt-12">
