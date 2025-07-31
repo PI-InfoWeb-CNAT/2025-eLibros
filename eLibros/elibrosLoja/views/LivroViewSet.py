@@ -37,7 +37,7 @@ class LivroViewSet(viewsets.ModelViewSet[Livro]):
         return LivroSerializer
     
     def get_permissions(self) -> list[Any]:
-        if self.action in ['list', 'retrieve']:
+        if self.action in ['list', 'retrieve', 'explorar', 'acervo', 'destaque', 'lancamentos']:
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAuthenticated]

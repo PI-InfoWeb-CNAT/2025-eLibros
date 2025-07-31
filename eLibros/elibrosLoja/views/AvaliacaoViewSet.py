@@ -20,7 +20,7 @@ class AvaliacaoViewSet(viewsets.ModelViewSet[Avaliacao]):
     serializer_class = AvaliacaoSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['livro__titulo', 'usuario__username']
-    ordering = ['-data_criacao']
+    ordering = ['-data_publicacao']
     
     def get_permissions(self) -> list[Any]:
         """
@@ -77,7 +77,7 @@ class AvaliacaoViewSet(viewsets.ModelViewSet[Avaliacao]):
 
 
     @action(detail=True, methods=['POST', 'DELETE'], url_path='curtir', permission_classes=[IsAuthenticated])
-    def curtir_avaliacao(self, request: Request) -> Response:
+    def curtir_avaliacao(self, request: Request, pk: Any = None) -> Response:
         """
         POST: Curtir uma avaliação \n
         DELETE: Remover curtida
