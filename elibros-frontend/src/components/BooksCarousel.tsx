@@ -111,8 +111,8 @@ export default function BooksCarousel({
         <div className={`swiper-button-next ${carouselId}-next !text-[#1C1607] !scale-75`}></div>
       </div>
       
-      <div className="px-8 md:px-12">
-        <Swiper
+      <div className="px-4 md:px-4 max-w-[1200px] mx-auto">
+          <Swiper
             modules={[Navigation]}
             navigation={{
               nextEl: `.${carouselId}-next`,
@@ -122,27 +122,22 @@ export default function BooksCarousel({
               200: {
                 slidesPerView: 1,
                 slidesPerGroup: 1,
-                spaceBetween: 20,
+                spaceBetween: 16,
               },
               640: {
                 slidesPerView: 2,
                 slidesPerGroup: 1,
-                spaceBetween: 20,
+                spaceBetween: 16,
               },
               900: {
                 slidesPerView: 3,
                 slidesPerGroup: 1,
-                spaceBetween: 20,
+                spaceBetween: 16,
               },
               1200: {
                 slidesPerView: 4,
                 slidesPerGroup: 1,
-                spaceBetween: 20,
-              },
-              1600: {
-                slidesPerView: 5,
-                slidesPerGroup: 1,
-                spaceBetween: 20,
+                spaceBetween: 16,
               },
             }}
             className="relative w-full"
@@ -150,14 +145,14 @@ export default function BooksCarousel({
             {books.map((book) => (
               <SwiperSlide key={book.id}>
                 {/* Layout horizontal - imagem do lado das informações */}
-                <div className="p-3 h-52">
+                <div className="p-2 h-52">
                   <div className="flex h-full items-start">
                     {/* Imagem à esquerda */}
-                    <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-4">
+                    <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-3">
                       <img 
                         src={book.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
                         alt={book.titulo}
-                        className="w-26 h-40 rounded object-cover"
+                        className="w-28 h-40 rounded object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
