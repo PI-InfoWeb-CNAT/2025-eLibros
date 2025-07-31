@@ -3,42 +3,97 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Header, Footer, BooksCarousel } from '../../../components';
-import { elibrosApi, Livro } from '../../../services/api';
+import { elibrosApi, Livro, Avaliacao } from '../../../services/api';
 import { cartUtils } from '../../../utils/cart';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function LivroPage() {
   const params = useParams();
   const router = useRouter();
+  const { user, isAuthenticated } = useAuth();
   const [livro, setLivro] = useState<Livro | null>(null);
+  const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingAvaliacoes, setLoadingAvaliacoes] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
   const [comentario, setComentario] = useState('');
+  const [enviandoComentario, setEnviandoComentario] = useState(false);
   const maxCaracteres = 1000;
-  const [filters, setFilters] = useState({
-    sort: '',
-    genre: '',
-    author: '',
-    year: ''
-  });
-
-  const comentarios = [
-    {
-      usuario: "RAfael Todeinho",
-      comentario: " Achei que o livro era muito legal porém assustador pensar em como o amor pode ser as vezes porque ele te pega de surpresa, é realmente um livro muito reflexivo e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse e as pessoas deveriam ler sobre ele, de verdade eu acho que todos deveríamos ser apresentados a livros como esse.",
-      curtidas: 0,
-    },
-  ];
-
-  const handleFilterChange = (filterName: string, value: string) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterName]: value
-    }));
-  };
 
   const livroId = typeof params.id === 'string' ? parseInt(params.id, 10) : null;
+
+  // Função para carregar avaliações
+  const carregarAvaliacoes = async () => {
+    if (!livroId) return;
+    
+    try {
+      setLoadingAvaliacoes(true);
+      const avaliacoesData = await elibrosApi.getAvaliacoesLivro(livroId);
+      setAvaliacoes(avaliacoesData);
+    } catch (err) {
+      console.error('Erro ao carregar avaliações:', err);
+    } finally {
+      setLoadingAvaliacoes(false);
+    }
+  };
+
+  // Função para enviar comentário/avaliação
+  const handleEnviarComentario = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!isAuthenticated) {
+      alert('Você precisa estar logado para comentar!');
+      return;
+    }
+
+    if (!comentario.trim()) {
+      alert('Digite um comentário!');
+      return;
+    }
+
+    if (comentario.trim().length < 10) {
+      alert('O comentário deve ter pelo menos 10 caracteres!');
+      return;
+    }
+
+    if (!livroId) return;
+
+    try {
+      setEnviandoComentario(true);
+      await elibrosApi.criarAvaliacao(livroId, { texto: comentario.trim() });
+      setComentario('');
+      await carregarAvaliacoes(); // Recarregar avaliações
+      alert('Comentário enviado com sucesso!');
+    } catch (err: any) {
+      console.error('Erro ao enviar comentário:', err);
+      const message = err?.message || 'Erro ao enviar comentário';
+      alert(message);
+    } finally {
+      setEnviandoComentario(false);
+    }
+  };
+
+  // Função para curtir/descurtir avaliação
+  const handleCurtirAvaliacao = async (avaliacaoId: number, usuarioCurtiu: boolean) => {
+    if (!isAuthenticated) {
+      alert('Você precisa estar logado para curtir!');
+      return;
+    }
+
+    try {
+      if (usuarioCurtiu) {
+        await elibrosApi.removerCurtidaAvaliacao(avaliacaoId);
+      } else {
+        await elibrosApi.curtirAvaliacao(avaliacaoId);
+      }
+      await carregarAvaliacoes(); // Recarregar avaliações
+    } catch (err: any) {
+      console.error('Erro ao curtir avaliação:', err);
+      const message = err?.message || 'Erro ao curtir avaliação';
+      alert(message);
+    }
+  };
 
   useEffect(() => {
     const fetchLivro = async () => {
@@ -54,6 +109,9 @@ export default function LivroPage() {
         
         const response = await elibrosApi.getLivro(livroId);
         setLivro(response);
+        
+        // Carregar avaliações
+        await carregarAvaliacoes();
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido ao carregar livro';
         setError(errorMessage);
@@ -314,72 +372,114 @@ export default function LivroPage() {
             />
           </section>
         )}
+
+        {/* Seção de Comentários */}
         <section className='flex justify-start'>
           <div className='flex flex-row mt-16 items-center'>
-            <h2 className=' mt-8 mr-15 text-2xl font-medium mb-8 text-left'>Comentarios</h2>
-              <form className='flex flex-row gap-12 items-center ml-8'>
-                <div className='flex flex-row items-center'>
-                  <img src="/icons/Bplus.svg" alt="Ordenar" className="w-4 h-4 mr-2" />
-                  <p>mais recente</p>
-                </div>
-                <div className='flex flex-row items-center'>
-                  <img src="/icons/Bplus.svg" alt="Ordenar" className="w-4 h-4 mr-2" />
-                  <p>mais antigo</p>
-                </div>
-                <div className='flex flex-row items-center'>
-                  <img src="/icons/Bplus.svg" alt="Ordenar" className="w-4 h-4 mr-2" />
-                  <p>mais popular</p>
-                </div>
-                <div className='flex flex-row items-center'>
-                  <img src="/icons/Bplus.svg" alt="Ordenar" className="w-4 h-4 mr-2" />
-                  <p>menos popular</p>
-                </div>
-              </form>
+            <h2 className='mt-8 mr-15 text-2xl font-medium mb-8 text-left'>Comentários</h2>
           </div>
         </section>
+
         <section className="mt-8">
           <div className="space-y-8">
-                {/* Campo de comentário */}
-                <div className="bg-white rounded-xl shadow p-6 w-full h-70">
-                  <form className="relative">
-                    <textarea
-                      value={comentario}
-                      onChange={(e) => setComentario(e.target.value.slice(0, maxCaracteres))}
-                      placeholder="Escreva seu comentário..."
-                      className="w-full h-54 bg-gray-100 rounded-lg p-4 text-gray-700 resize-none outline-none"
-                      maxLength={maxCaracteres}
-                    />
-                    <button
-                      type="submit"
-                      className="absolute bottom-4 right-4 text-gray-400 hover:text-gray-700"
-                      disabled={comentario.trim().length === 0}
-                      title="Enviar"
-                    >
-                      <img src="/icons/Envio.svg" alt="Enviar" className="w-5 h-5" />
-                    </button>
-                  </form>
-                  <div className="flex justify-end text-gray-400 text-sm mt-1">
-                    {comentario.length}/{maxCaracteres}
-                  </div>
-                </div>
+            {/* Campo de comentário */}
+            <div className="bg-white rounded-xl shadow p-6 w-full">
+              <form onSubmit={handleEnviarComentario} className="relative">
+                <textarea
+                  value={comentario}
+                  onChange={(e) => setComentario(e.target.value.slice(0, maxCaracteres))}
+                  placeholder={isAuthenticated ? "Escreva seu comentário..." : "Faça login para comentar..."}
+                  className="w-full h-32 bg-gray-100 rounded-lg p-4 text-gray-700 resize-none outline-none"
+                  maxLength={maxCaracteres}
+                  disabled={!isAuthenticated || enviandoComentario}
+                />
+                <button
+                  type="submit"
+                  className="absolute bottom-4 right-4 text-gray-400 hover:text-gray-700 disabled:opacity-50"
+                  disabled={!isAuthenticated || comentario.trim().length === 0 || enviandoComentario}
+                  title="Enviar"
+                >
+                  <img src="/icons/Envio.svg" alt="Enviar" className="w-5 h-5" />
+                </button>
+              </form>
+              <div className="flex justify-between text-gray-400 text-sm mt-1">
+                <span>
+                  {!isAuthenticated && "Você precisa estar logado para comentar"}
+                  {enviandoComentario && "Enviando comentário..."}
+                </span>
+                <span>{comentario.length}/{maxCaracteres}</span>
+              </div>
+            </div>
 
-                {/* Comentário exibido */}
-                <div className="bg-white rounded-xl shadow p-6 flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-full bg-[#3B362B] flex-shrink-0 mt-1"></div>
+            {/* Loading das avaliações */}
+            {loadingAvaliacoes && (
+              <div className="text-center py-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FFD147] mx-auto mb-2"></div>
+                <p className="text-gray-600">Carregando comentários...</p>
+              </div>
+            )}
+
+            {/* Lista de avaliações */}
+            {avaliacoes.length > 0 ? (
+              avaliacoes.map((avaliacao) => (
+                <div key={avaliacao.id} className="bg-white rounded-xl shadow p-6 flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-full bg-[#3B362B] flex-shrink-0 mt-1 flex items-center justify-center">
+                    <span className="text-white text-sm font-medium">
+                      {avaliacao.usuario_nome.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
                   <div className="flex-1">
-                    <div className="font-medium text-lg mt-2 mb-1 text-[#3B362B]">Rafael Todeinho</div>
+                    <div className="font-medium text-lg mt-2 mb-1 text-[#3B362B]">
+                      {avaliacao.usuario_nome}
+                    </div>
+                    <div className="text-gray-500 text-xs mb-2">
+                      {new Date(avaliacao.data_publicacao).toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
                     <div className="text-gray-700 text-base leading-relaxed">
-                      {comentarios[0].comentario}
+                      {avaliacao.texto}
                     </div>
                   </div>
-                  <div className="flex items-end h-full justify-end mt-54">
-                    <button className="text-gray-400 hover:text-[#3B362B] flex gap-1">
-                      <img src="/icons/Like.svg" alt="Curtir" className="w-5 h-5" />
-                      <span className="text-sm">{comentarios[0].curtidas}</span>
+                  <div className="flex items-end h-full justify-end">
+                    <button 
+                      onClick={() => handleCurtirAvaliacao(avaliacao.id, avaliacao.usuario_curtiu)}
+                      className={`flex gap-1 items-center transition-colors ${
+                        avaliacao.usuario_curtiu 
+                          ? 'text-[#3B362B]' 
+                          : 'text-gray-400 hover:text-[#3B362B]'
+                      } ${!avaliacao.pode_curtir ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      disabled={!avaliacao.pode_curtir}
+                      title={
+                        !isAuthenticated 
+                          ? 'Faça login para curtir' 
+                          : !avaliacao.pode_curtir 
+                            ? 'Você não pode curtir sua própria avaliação'
+                            : avaliacao.usuario_curtiu 
+                              ? 'Remover curtida' 
+                              : 'Curtir'
+                      }
+                    >
+                      <img 
+                        src="/icons/Like.svg" 
+                        alt="Curtir" 
+                        className={`w-5 h-5 ${avaliacao.usuario_curtiu ? 'filter-none' : ''}`} 
+                      />
+                      <span className="text-sm">{avaliacao.curtidas}</span>
                     </button>
                   </div>
                 </div>
+              ))
+            ) : !loadingAvaliacoes && (
+              <div className="text-center py-8 text-gray-500">
+                <p>Nenhum comentário ainda. Seja o primeiro a comentar!</p>
               </div>
+            )}
+          </div>
         </section>
       </main>
 
