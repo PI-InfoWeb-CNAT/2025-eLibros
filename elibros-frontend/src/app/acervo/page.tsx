@@ -202,12 +202,12 @@ export default function AcervoPage() {
               <select
                 value={filters.author}
                 onChange={(e) => handleFilterChange('author', e.target.value)}
-                className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
+                className="bg-transparent border-none text-base focus:outline-none cursor-pointer w-45"
               >
                 <option value="">Autor(a)</option>
                 {autores.map((autor) => (
                   <option key={autor.id} value={autor.nome}>
-                    {autor.nome}
+                    {autor.nome.length > 18 ? autor.nome.slice(0, 15) + '...' : autor.nome}
                   </option>
                 ))}
               </select>
@@ -216,7 +216,7 @@ export default function AcervoPage() {
               <select
                 value={filters.year}
                 onChange={(e) => handleFilterChange('year', e.target.value)}
-                className="bg-transparent border-none text-base focus:outline-none cursor-pointer"
+                className="bg-transparent border-none text-base focus:outline-none cursor-pointer w-45"
               >
                 <option value="">Ano de publicação</option>
                 <option value="1960">&lt;= 1960</option>
@@ -269,7 +269,7 @@ export default function AcervoPage() {
             {livros.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {livros.map((livro) => (
-                  <div key={livro.id} className="group">
+                  <div key={livro.id} className="group w-80">
                     <a href={`/livro/${livro.id}`} className="block">
                       <div className="flex h-48 bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-4">
                         {/* Imagem do livro */}
@@ -277,7 +277,7 @@ export default function AcervoPage() {
                           <img
                             src={livro.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'}
                             alt={livro.titulo}
-                            className="w-20 h-32 rounded object-cover"
+                            className="w-24 h-40 rounded object-cover"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
