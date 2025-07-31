@@ -22,8 +22,8 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section className="px-4 md:px-20 flex flex-col lg:flex-row justify-between items-center gap-8 mb-12">
-          <figure className="flex-shrink-0">
+        <section className="px-4 md:px-12 flex flex-col lg:flex-row justify-between items-center gap-8 mb-12">
+          <figure className="flex-shrink-0 lg:w-2/5 flex justify-center items-center">
             <img src="/marca.svg" alt="eLibros Marca" className="w-64 md:w-80" />
           </figure>
           
