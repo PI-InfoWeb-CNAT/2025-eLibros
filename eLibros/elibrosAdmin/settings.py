@@ -99,13 +99,11 @@ ROOT_URLCONF = "elibrosAdmin.urls"
 WSGI_APPLICATION = "elibrosAdmin.wsgi.application"
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
-# Templates preservados apenas como referência para implementação em React
-# API REST pura - templates não são renderizados
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],  # API REST pura
-        "APP_DIRS": False,  # Desabilitado - apenas API
+        "DIRS": [BASE_DIR / "templates"],  # Incluir diretório de templates
+        "APP_DIRS": True,  # Habilitar para Django admin funcionar
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -219,9 +217,7 @@ if 'CODESPACE_NAME' in os.environ:
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Next.js development server
-    "http://localhost:3001",  # Next.js alternative port
     "http://127.0.0.1:3000",
-    "http://127.0.0.1:3001",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -255,7 +251,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 if 'CODESPACE_NAME' in os.environ:
     CORS_ALLOWED_ORIGINS.append(f'https://{codespace_name}-3000.{codespace_domain}')
-    CORS_ALLOWED_ORIGINS.append(f'https://{codespace_name}-3001.{codespace_domain}')
 
 
 AUTHENTICATION_BACKENDS = (
