@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { Header, Footer } from '../../components';
 import BooksCarousel from '../../components/BooksCarousel';
 import { elibrosApi, Livro } from '../../services/api';
@@ -50,7 +51,7 @@ export default function AcervoPage() {
     await performSearch();
   };
 
-  const performSearch = async () => {
+  const performSearch = useCallback(async () => {
     setLoading(true);
     try {
       const response = await elibrosApi.pesquisarLivros(
@@ -84,14 +85,14 @@ export default function AcervoPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchTerm, filters]);
 
   // Executar busca quando filtros mudarem (apenas se já pesquisou antes)
   useEffect(() => {
     if (hasSearched) {
       performSearch();
     }
-  }, [filters]);
+  }, [filters, hasSearched, performSearch]);
 
   const handleFilterChange = (filterName: string, value: string) => {
     setFilters(prev => ({
@@ -267,16 +268,18 @@ export default function AcervoPage() {
             </div>
 
             {livros.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-8">
                 {livros.map((livro) => (
-                  <div key={livro.id} className="group w-80">
+                  <div key={livro.id} className="group w-72">
                     <a href={`/livro/${livro.id}`} className="block">
-                      <div className="flex h-48 bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-4">
+                      <div className="flex h-56 bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-4">
                         {/* Imagem do livro */}
                         <div className="flex-shrink-0 mr-4">
-                          <img
+                          <Image
                             src={livro.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'}
                             alt={livro.titulo}
+                            width={96}
+                            height={160}
                             className="w-24 h-40 rounded object-cover"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
@@ -295,11 +298,18 @@ export default function AcervoPage() {
                             }}>
                               {livro.titulo}
                             </h3>
-                            <p className="text-xs text-gray-600 mb-2">
-                              {Array.isArray(livro.autores) ? livro.autores.join(', ') : livro.autores}
+                            <p className="text-xs text-gray-600 mb-2 h-8 overflow-hidden" style={{
+                              display: '-webkit-box',
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: 'vertical' as const,
+                            }}>
+                              {(() => {
+                                const autoresText = Array.isArray(livro.autores) ? livro.autores.join(', ') : livro.autores;
+                                return autoresText.length > 50 ? autoresText.slice(0, 47) + '...' : autoresText;
+                              })()}
                             </p>
                             {livro.generos && livro.generos.length > 0 && (
-                              <p className="text-xs text-gray-500 mb-2">
+                              <p className="text-xs text-gray-500 mb-2 h-4 overflow-hidden">
                                 {livro.generos.slice(0, 2).join(', ')}
                               </p>
                             )}

@@ -58,7 +58,7 @@ export const useCartAPI = () => {
   };
 
   // Adicionar item ao carrinho (APENAS SE LOGADO)
-  const addToCart = async (livro: any, quantidade: number = 1): Promise<void> => {
+  const addToCart = async (livro: CartItem['livro'], quantidade: number = 1): Promise<void> => {
     console.log('➕ cartAPI.addToCart - isAuthenticated:', isAuthenticated);
     console.log('📚 Livro:', { id: livro.id, titulo: livro.titulo });
     console.log('📊 Quantidade:', quantidade);

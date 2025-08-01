@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { elibrosApi, Livro } from '../services/api';
@@ -147,14 +148,17 @@ export default function BooksCarousel({
             {books.map((book) => (
               <SwiperSlide key={book.id}>
                 {/* Layout horizontal com altura fixa para alinhamento */}
-                <div className="p-2 h-52 w-full">
+                <div className="p-2 h-64 w-full">
                   <div className="flex h-full items-start">
                     {/* Imagem à esquerda com tamanho fixo */}
-                    <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-3">
-                      <img 
+                    <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-4">
+                      <Image 
                         src={book.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
                         alt={book.titulo}
-                        className="w-24 h-36 rounded object-cover"
+                        width={128}
+                        height={192}
+                        className="rounded object-cover"
+                        style={{ width: '8rem', height: '12rem' }}
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
@@ -163,7 +167,7 @@ export default function BooksCarousel({
                     </a>
                     
                     {/* Informações à direita com altura fixa */}
-                    <div className="flex-1 flex flex-col justify-between h-36">
+                    <div className="flex-1 flex flex-col justify-between h-48">
                       <div className="space-y-1">
                         {/* Título com altura fixa e limite de caracteres */}
                         <h3 className="text-sm font-semibold leading-tight overflow-hidden h-10" style={{

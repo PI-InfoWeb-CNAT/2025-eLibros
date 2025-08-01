@@ -1,4 +1,5 @@
 // Serviço simplificado para comunicação com a API Django
+import { CartItem } from '../utils/cartAPI';
 
 // Configurações da API
 const API_CONFIG = {
@@ -144,7 +145,7 @@ class ElibrosApiService {
               errorDetails = fieldErrors;
             }
           }
-        } catch (e) {
+        } catch {
           // Se não conseguir parsear o JSON, usar status original
         }
         throw new Error(`API Error: ${errorDetails}`);
@@ -184,7 +185,7 @@ class ElibrosApiService {
     autores: { id: number; nome: string }[];
     termo_pesquisa: string;
   }> {
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     if (busca) params.append('pesquisa', busca);
     if (genero) params.append('genero', genero);
     if (autor) params.append('autor', autor);
@@ -302,7 +303,7 @@ class ElibrosApiService {
   }
 
   // ==================== CARRINHO ====================
-  async getCarrinho(): Promise<any> {
+  async getCarrinho(): Promise<{ results: unknown[] }> {
     return this.makeRequest('/carrinhos/');
   }
 
@@ -311,7 +312,7 @@ class ElibrosApiService {
     item_id?: number;
     quantidade?: number;
     acao: 'adicionar' | 'remover' | 'atualizar' | 'limpar';
-  }): Promise<any> {
+  }): Promise<CartItem> {
     return this.makeRequest('/carrinhos/atualizar_carrinho/', {
       method: 'POST',
       body: JSON.stringify(dados),

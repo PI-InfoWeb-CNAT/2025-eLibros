@@ -1,8 +1,8 @@
 "use client";
 
+import Image from 'next/image';
 import { Header, Footer, ProtectedRoute } from '../../components';
 import { useAuth } from '../../contexts/AuthContext';
-import { useState } from 'react';
 
 export default function PerfilPage() {
   const { user, logout } = useAuth();
@@ -31,9 +31,11 @@ export default function PerfilPage() {
             {/* Primeira seção */}
             <div className="flex gap-16">
               <figure className="w-[18%] m-0">
-                <img 
+                <Image 
                   src="/usuario.png" 
                   alt="Profile Picture"
+                  width={200}
+                  height={200}
                   className="w-full aspect-square rounded-full object-cover"
                 />
               </figure>

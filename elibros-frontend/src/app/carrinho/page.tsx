@@ -1,16 +1,14 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Header, Footer } from '../../components';
 import { useCart } from '../../contexts/CartContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { CartItem } from '../../utils/cartAPI';
 
 export default function CarrinhoPage() {
-  const router = useRouter();
-  const { isAuthenticated, isInitialized } = useAuth();
+  const { isInitialized } = useAuth();
   const { 
     items: cartItems, 
     isLoading: loading, 
@@ -270,9 +268,11 @@ export default function CarrinhoPage() {
 
                       {/* Book Image */}
                       <figure className="flex-shrink-0">
-                        <img 
+                        <Image 
                           src={item.livro.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
                           alt={item.livro.titulo}
+                          width={160}
+                          height={240}
                           className="w-40 h-auto rounded"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;

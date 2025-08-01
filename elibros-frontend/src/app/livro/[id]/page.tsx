@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { Header, Footer, BooksCarousel } from '../../../components';
 import { elibrosApi, Livro, Avaliacao } from '../../../services/api';
 import { useCart } from '../../../contexts/CartContext';
 import { useAuth } from '../../../contexts/AuthContext';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 
 export default function LivroPage() {
   const params = useParams();
   const router = useRouter();
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { addToCart, canUseCart } = useCart();
   const [livro, setLivro] = useState<Livro | null>(null);
   const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([]);
@@ -26,7 +26,7 @@ export default function LivroPage() {
   const livroId = typeof params.id === 'string' ? parseInt(params.id, 10) : null;
 
   // Função para carregar avaliações
-  const carregarAvaliacoes = async () => {
+  const carregarAvaliacoes = useCallback(async () => {
     if (!livroId) return;
     
     try {
@@ -38,7 +38,7 @@ export default function LivroPage() {
     } finally {
       setLoadingAvaliacoes(false);
     }
-  };
+  }, [livroId]);
 
   // Função para enviar comentário/avaliação
   const handleEnviarComentario = async (e: React.FormEvent) => {
@@ -67,9 +67,9 @@ export default function LivroPage() {
       setComentario('');
       await carregarAvaliacoes(); // Recarregar avaliações
       alert('Comentário enviado com sucesso!');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Erro ao enviar comentário:', err);
-      const message = err?.message || 'Erro ao enviar comentário';
+      const message = err instanceof Error ? err.message : 'Erro ao enviar comentário';
       alert(message);
     } finally {
       setEnviandoComentario(false);
@@ -90,9 +90,9 @@ export default function LivroPage() {
         await elibrosApi.curtirAvaliacao(avaliacaoId);
       }
       await carregarAvaliacoes(); // Recarregar avaliações
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Erro ao curtir avaliação:', err);
-      const message = err?.message || 'Erro ao curtir avaliação';
+      const message = err instanceof Error ? err.message : 'Erro ao curtir avaliação';
       alert(message);
     }
   };
@@ -124,7 +124,7 @@ export default function LivroPage() {
     };
 
     fetchLivro();
-  }, [livroId]);
+  }, [livroId, carregarAvaliacoes]);
 
   const formatPreco = (preco: string) => {
     const [reais, centavos] = preco.split('.');
@@ -149,7 +149,7 @@ export default function LivroPage() {
       try {
         await addToCart(livro, quantity);
         alert(`${livro.titulo} adicionado ao carrinho!`);
-      } catch (error) {
+      } catch {
         alert('Erro ao adicionar ao carrinho. Tente novamente.');
       }
     }
@@ -166,7 +166,7 @@ export default function LivroPage() {
       try {
         await addToCart(livro, quantity);
         router.push('/carrinho');
-      } catch (error) {
+      } catch {
         alert('Erro ao adicionar ao carrinho. Tente novamente.');
       }
     }
@@ -241,9 +241,11 @@ export default function LivroPage() {
         <section className="flex flex-col lg:flex-row gap-8 lg:gap-20 mt-12">
           {/* Imagem do livro */}
           <figure className="flex-shrink-0">
-            <img 
+            <Image 
               src={livro.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
               alt={livro.titulo}
+              width={288}
+              height={384}
               className="w-72 h-auto rounded-lg object-cover mx-auto lg:mx-0"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
@@ -540,9 +542,11 @@ export default function LivroPage() {
                               : 'Curtir'
                       }
                     >
-                      <img 
+                      <Image 
                         src="/icons/Like.svg" 
                         alt="Curtir" 
+                        width={20}
+                        height={20}
                         className={`w-5 h-5 ${avaliacao.usuario_curtiu ? 'filter-none' : ''}`} 
                       />
                       <span className="text-sm">{avaliacao.curtidas}</span>

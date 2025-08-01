@@ -1,14 +1,18 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "../contexts/AuthContext";
 import { useCart } from "../contexts/CartContext";
 import { useState, useEffect } from "react";
 
-interface AuthenticatedHeaderProps {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface AuthenticatedHeaderProps {
+  // Props podem ser adicionadas aqui no futuro
+}
 
 export default function AuthenticatedHeader({}: AuthenticatedHeaderProps) {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const { totalItems } = useCart();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -43,21 +47,21 @@ export default function AuthenticatedHeader({}: AuthenticatedHeaderProps) {
     <header className="px-4 md:px-20 py-4 border-b-8 border-[#FFD147] flex justify-between items-center bg-[#1C1607]">
       {/* Logo */}
       <h1>
-        <a href="/" className="flex">
-          <img src="/logo.png" alt="eLibros" className="w-48 md:w-52" />
-        </a>
+        <Link href="/" className="flex">
+          <Image src="/logo.png" alt="eLibros" width={208} height={60} className="w-48 md:w-52" />
+        </Link>
       </h1>
       
       {/* Navigation */}
       <nav className="flex">
         <ul className="flex gap-4 items-center list-none">
           <li>
-            <a 
+            <Link 
               href="/" 
               className="text-white px-1 relative nav-link-normal before:content-[''] before:absolute before:w-full before:h-px before:bottom-0 before:left-0 before:bg-[#FFD147] before:invisible before:scale-x-0 before:transition-all before:duration-200 hover:before:visible hover:before:scale-x-100"
             >
               Início
-            </a>
+            </Link>
           </li>
           <li>
             <a 
@@ -71,7 +75,7 @@ export default function AuthenticatedHeader({}: AuthenticatedHeaderProps) {
           {/* Cart */}
           <li>
             <a href="/carrinho" className="relative text-white flex items-center" id="carrinho">
-              <img src="/carrinho.svg" alt="Carrinho" className="w-6 h-6 brightness-0 invert" />
+              <Image src="/carrinho.svg" alt="Carrinho" width={24} height={24} className="w-6 h-6 brightness-0 invert" />
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-2 bg-[#FFD147] text-[#1C1607] text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                   {totalItems > 9 ? '+9' : totalItems}
@@ -87,9 +91,11 @@ export default function AuthenticatedHeader({}: AuthenticatedHeaderProps) {
               onMouseLeave={() => setIsDropdownOpen(false)}
             >
               <div className="w-10 h-10 rounded-full overflow-hidden cursor-pointer">
-                <img 
+                <Image 
                   src="/usuario.png" 
                   alt="Perfil"
+                  width={40}
+                  height={40}
                   className="w-full h-full object-cover"
                 />
               </div>

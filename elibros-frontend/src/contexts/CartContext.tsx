@@ -1,14 +1,15 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { CartItem, useCartAPI } from '../utils/cartAPI';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useCartAPI, CartItem } from '../utils/cartAPI';
 import { useAuth } from './AuthContext';
+import { Livro } from '../services/api';
 
 interface CartContextType {
   items: CartItem[];
   totalItems: number;
   totalPrice: number;
-  addToCart: (livro: any, quantidade?: number) => Promise<void>;
+  addToCart: (livro: Livro, quantidade?: number) => Promise<void>;
   removeFromCart: (itemId: number) => Promise<void>;
   updateQuantity: (itemId: number, quantidade: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -34,6 +35,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(false);
   
   const { isAuthenticated, isInitialized } = useAuth();
+  
+  // Criar uma instância estável do cartAPI
   const cartAPI = useCartAPI();
 
   // Só pode usar carrinho se estiver autenticado
@@ -69,8 +72,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setTotalPrice(totalPriceCount);
   };
 
-  // Atualizar carrinho (APENAS SE AUTENTICADO)
-  const refreshCart = async () => {
+    // Atualizar carrinho (APENAS SE AUTENTICADO)
+  const refreshCart = useCallback(async () => {
     console.log('🔄 refreshCart chamado:', { isInitialized, isAuthenticated });
     
     if (!isInitialized) return;
@@ -79,7 +82,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('❌ Usuário não autenticado, limpando carrinho');
       // Limpar dados se não autenticado
       setItems([]);
-      calculateTotals([]);
+      setTotalItems(0);
+      setTotalPrice(0);
       return;
     }
     
@@ -94,14 +98,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('❌ Erro ao atualizar carrinho:', error);
       // Em caso de erro, limpar carrinho
       setItems([]);
-      calculateTotals([]);
+      setTotalItems(0);
+      setTotalPrice(0);
     } finally {
       setIsLoading(false);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInitialized, isAuthenticated]); // cartAPI removido intencionalmente para evitar loop
 
   // Adicionar item ao carrinho (APENAS SE AUTENTICADO)
-  const addToCart = async (livro: any, quantidade: number = 1) => {
+  const addToCart = async (livro: Livro, quantidade: number = 1) => {
     console.log('➕ addToCart chamado:', { isAuthenticated, livro: livro?.titulo, quantidade });
     
     if (!isAuthenticated) {
@@ -186,9 +192,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       // Se não autenticado, limpar dados do carrinho
       setItems([]);
-      calculateTotals([]);
+      setTotalItems(0);
+      setTotalPrice(0);
     }
-  }, [isAuthenticated, isInitialized]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isInitialized]); // refreshCart removido intencionalmente para evitar loop
 
   const value: CartContextType = {
     items,

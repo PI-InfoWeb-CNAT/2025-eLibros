@@ -1,9 +1,14 @@
 "use client";
 
+import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../contexts/AuthContext';
 import AuthenticatedHeader from './AuthenticatedHeader';
 
-interface HeaderProps {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface HeaderProps {
+  // Props podem ser adicionadas aqui no futuro
+}
 
 export default function Header({}: HeaderProps) {
   const { isAuthenticated, isInitialized } = useAuth();
@@ -13,20 +18,20 @@ export default function Header({}: HeaderProps) {
     return (
       <header className="px-4 md:px-20 py-4 border-b-8 border-[#FFD147] flex flex-col md:flex-row justify-between items-center bg-[#1C1607]">
         <h1>
-          <a href="/" className="flex">
-            <img src="/logo.png" alt="eLibros" className="w-48 md:w-52" />
-          </a>
+          <Link href="/" className="flex">
+            <Image src="/logo.png" alt="eLibros" width={208} height={60} className="w-48 md:w-52" priority/>
+          </Link>
         </h1>
         
         <nav className="mt-4 md:mt-0">
           <ul className="flex gap-4 md:gap-6 items-center">
             <li>
-              <a 
+              <Link 
                 href="/" 
                 className="text-white px-2 py-1 relative opacity-70"
               >
                 Início
-              </a>
+              </Link>
             </li>
             <li>
               <a 
@@ -62,20 +67,20 @@ export default function Header({}: HeaderProps) {
   return (
     <header className="px-4 md:px-20 py-4 border-b-8 border-[#FFD147] flex flex-col md:flex-row justify-between items-center bg-[#1C1607]">
       <h1>
-        <a href="/" className="flex">
-          <img src="/logo.png" alt="eLibros" className="w-48 md:w-52" />
-        </a>
+        <Link href="/" className="flex">
+          <Image src="/logo.png" alt="eLibros" width={208} height={60} className="w-48 md:w-52" />
+        </Link>
       </h1>
       
       <nav className="mt-4 md:mt-0">
         <ul className="flex gap-4 md:gap-6 items-center">
           <li>
-            <a 
+            <Link 
               href="/" 
               className="text-white px-2 py-1 border-b border-[#FFD147] relative group hover:before:visible hover:before:scale-x-100 before:content-[''] before:absolute before:w-full before:h-px before:bottom-0 before:left-0 before:bg-[#FFD147] before:invisible before:scale-x-0 before:transition-all before:duration-200"
             >
               Início
-            </a>
+            </Link>
           </li>
           <li>
             <a 

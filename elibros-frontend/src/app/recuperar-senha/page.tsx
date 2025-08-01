@@ -36,7 +36,7 @@ export default function RecuperarSenhaPage() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       setIsSuccess(true);
-    } catch (error) {
+    } catch {
       setErrors(['Erro ao enviar email de recuperação. Tente novamente.']);
     } finally {
       setIsLoading(false);
