@@ -1,6 +1,7 @@
 "use client";
 
-import { Header, Footer, BooksCarousel} from '../components';
+import Image from 'next/image';
+import { Header, Footer, BooksCarousel } from '../components';
 
 export default function Home() {
   return (
@@ -14,20 +15,27 @@ export default function Home() {
           style={{ backgroundImage: "url('/banner.png')" }}
         >
           <p className="text-[#FFFFF5] text-left text-base md:text-lg font-light max-w-lg">
-            "Há sonhos que devem permanecer nas <br />
+            &quot;Há sonhos que devem permanecer nas <br />
             gavetas, nos cofres, trancados até o <br />
             nosso fim. E por isso passíveis de serem <br />
-            sonhados a vida inteira." - Hilda Hilst
+            sonhados a vida inteira.&quot; - Hilda Hilst
           </p>
         </section>
 
         {/* About Section */}
         <section className="px-4 md:px-12 flex flex-col lg:flex-row justify-between items-center gap-8 mb-12">
-          <figure className="flex-shrink-0 lg:w-2/5 flex justify-center items-center">
-            <img src="/marca.svg" alt="eLibros Marca" className="w-64 md:w-80" />
+          <figure className="flex justify-center items-center">
+            <Image 
+              src="/marca.svg" 
+              alt="eLibros Marca" 
+              width={300} 
+              height={150}
+              className="w-[200px] md:w-[300px] lg:w-[400px] xl:w-[500px]"
+              priority
+            />
           </figure>
           
-          <div className="flex flex-col w-full lg:w-3/5 gap-6">
+          <div className="flex flex-col w-full gap-6">
             <div className="w-full">
               <h2 className="text-[#1C1607] text-2xl md:text-3xl font-medium mb-4">
                 Conheça o eLibros
@@ -39,7 +47,7 @@ export default function Home() {
             
             <div className="flex flex-col md:flex-row justify-between gap-6">
               <div className="flex flex-col w-full md:w-2/5">
-                <img src="/icons/missao.svg" alt="Missão" className="w-5 h-5 mb-2" />
+                <Image src="/icons/missao.svg" alt="Missão" width={20} height={20} className="w-5 h-5 mb-2" />
                 <h3 className="text-lg font-medium mb-1">Missão</h3>
                 <p className="text-sm font-light">
                   Aumentar a visibilidade dos livros nacionais!
@@ -47,7 +55,7 @@ export default function Home() {
               </div>
               
               <div className="flex flex-col w-full md:w-2/5">
-                <img src="/icons/visao.svg" alt="Visão" className="w-5 h-5 mb-2" />
+                <Image src="/icons/visao.svg" alt="Visão" width={20} height={20} className="w-5 h-5 mb-2" />
                 <h3 className="text-lg font-medium mb-1">Visão</h3>
                 <p className="text-sm font-light">
                   Vender livros brasileiros em escala internacional.
@@ -90,14 +98,14 @@ export default function Home() {
           <div className="flex flex-col md:flex-row gap-6 md:gap-12">
             <div className="flex items-center text-[#473b1d] text-lg">
               <figure className="pr-3">
-                <img src="/icons/email.svg" alt="Email" className="h-5" />
+                <Image src="/icons/email.svg" alt="Email" width={20} height={20} className="h-5" />
               </figure>
               <p>elibros@entregadores.com</p>
             </div>
             
             <div className="flex items-center text-[#473b1d] text-lg">
               <figure className="pr-3">
-                <img src="/icons/fone.svg" alt="Telefone" className="h-5" />
+                <Image src="/icons/fone.svg" alt="Telefone" width={20} height={20} className="h-5" />
               </figure>
               <p>Disque (84) 4005-9832</p>
             </div>

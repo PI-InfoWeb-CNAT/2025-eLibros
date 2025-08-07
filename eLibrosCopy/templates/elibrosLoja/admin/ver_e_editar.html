@@ -1,0 +1,73 @@
+{% extends "./_base.html" %}
+{% load static %}
+
+{% block title %}{{h2}}{% endblock %}
+
+{% block content %}
+<main class='manter-livro'>
+    <div>
+        <div>
+            <h2>{{h2}}</h2>
+            <a href="/admin/{{classe}}">Voltar</a> <!--manter livros-->
+        </div>
+        <form class="form-livro">
+            
+            {% for field in fields %}
+            <div>
+                {% if field.name != 'genero_literario' and field.name != 'categoria' %}
+                    <label for="{{ field.name }}">{{ field.verbose_name }}:</label>
+                    {% if field.name == "sinopse" %}
+                        <textarea rows="6" id="sinopse" disabled>{{ field.value }}</textarea>
+                    {% else %}
+                        {% if field.is_list %}
+                            {% for item in field.value %}
+                                <input id="{{ field.name }}" type="text" value="{{ item }}" {% if disabled %} disabled {% endif %}>
+                            {% endfor %}
+                        {% else %}
+                            <input id="{{ field.name }}" type="text" value="{{ field.value }}" {% if disabled %} disabled {% endif %}>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+        </form>
+    </div>
+    <div>
+        {% if classe == 'livro' %}
+            <figure>
+                {% if instancia.capa %}
+                    <img class="capa" src={{instancia.capa.url}}>         
+                {% else %}
+                    <img src="{% static 'images/placeholder.png' %}">            
+                {% endif %}
+            </figure>
+        
+            <h3>Categorias</h3>
+        
+            <div>
+                {% for field in fields %}
+                    {% if field.name == "categoria" %}
+
+                        {% for categoria in field.value %}
+                            <p>{{categoria}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div> 
+            <h3>Gêneros</h3>
+            <div>
+                {% for field in fields %}
+                    {% if field.name == "genero_literario" %}
+                        {% for genero in field.value %}
+                            <p>{{genero}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</main>
+
+{% endblock content %}
+

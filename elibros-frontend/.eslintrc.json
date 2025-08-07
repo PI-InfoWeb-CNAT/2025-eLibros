@@ -1,0 +1,1 @@
+{  "extends": ["next/core-web-vitals", "next/typescript"],  "rules": {    "@next/next/no-img-element": "warn",    "@next/next/no-html-link-for-pages": "warn",    "react-hooks/exhaustive-deps": "warn"  }}

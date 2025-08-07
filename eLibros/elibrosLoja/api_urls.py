@@ -1,42 +1,47 @@
 from django.urls import path, include
+from django.urls.resolvers import URLPattern, URLResolver
+from typing import List, Union
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-    TokenVerifyView,
-)
+from rest_framework_simplejwt.views import TokenVerifyView
 
-from . import api_views
+# Importar views JWT customizadas
+from accounts.jwt_views import CustomTokenObtainPairView, CustomTokenRefreshView
+
+from . import views
+from .views import (
+    LivroViewSet, AutorViewSet, CategoriaViewSet, GeneroViewSet,
+    ClienteViewSet, CarrinhoViewSet, AvaliacaoViewSet, PedidoViewSet,
+    UsuarioViewSet
+)
 
 # Registrar ViewSets no router
 router = DefaultRouter()
-router.register(r'livros', api_views.LivroViewSet)
-router.register(r'autores', api_views.AutorViewSet)
-router.register(r'categorias', api_views.CategoriaViewSet)
-router.register(r'generos', api_views.GeneroViewSet)
-router.register(r'carrinho', api_views.CarrinhoViewSet, basename='carrinho')
-router.register(r'pedidos', api_views.PedidoViewSet, basename='pedido')
-router.register(r'cliente', api_views.ClienteViewSet, basename='cliente')
+router.register(r'livros', LivroViewSet)
+router.register(r'autores', AutorViewSet)
+router.register(r'categorias', CategoriaViewSet)
+router.register(r'generos', GeneroViewSet)
+router.register(r'usuarios', UsuarioViewSet)
+router.register(r'cliente', ClienteViewSet, basename='cliente')
+router.register(r'carrinhos', CarrinhoViewSet, basename='carrinho')
+router.register(r'avaliacoes', AvaliacaoViewSet, basename='avaliacao')
+router.register(r'pedidos', PedidoViewSet, basename='pedido')
 
-urlpatterns = [
-    # JWT Authentication
-    path('auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+# Tipo: Lista, que pode conter URLPattern (um url individual) e URLResolver (aponta para outro conjunto de URLs)
+urlpatterns: List[Union[URLPattern, URLResolver]] = [
+    # Autenticação JWT customizada - PRIORITÁRIA
+    path('auth/login/', CustomTokenObtainPairView.as_view(), name='custom_token_obtain_pair'),
+    path('auth/refresh/', CustomTokenRefreshView.as_view(), name='custom_token_refresh'),
     path('auth/verify/', TokenVerifyView.as_view(), name='token_verify'),
     
-    # ViewSets URLs
+    # ViewSets URLs - inclui endpoints customizados do UsuarioViewSet
+    # POST /api/usuarios/ - Criar conta
+    # POST /api/usuarios/login/ - Login alternativo (usar JWT acima preferencialmente)
+    # POST /api/usuarios/logout/ - Logout
+    # POST /api/usuarios/reset_password/ - Solicitar reset de senha
+    # POST /api/usuarios/password_reset_confirmation/ - Confirmar reset de senha
     path('', include(router.urls)),
     
-    # Custom endpoints baseados nas suas views existentes
-    path('inicio/', api_views.inicio, name='api_inicio'),
-    path('livros/destaque/', api_views.livros_destaque, name='livros_destaque'),
-    path('livros/lancamentos/', api_views.livros_lancamentos, name='livros_lancamentos'),
-    path('estatisticas/', api_views.estatisticas, name='estatisticas'),
-    
-    # Endpoints específicos dos ViewSets que simulam suas URLs existentes
-    # /api/v1/livros/explorar/?pesquisa=termo&genero=fiction&autor=nome
-    # /api/v1/livros/acervo/
-    # /api/v1/carrinho/atualizar_carrinho/
-    # /api/v1/carrinho/aplicar_cupom/
-    # /api/v1/pedidos/meus_pedidos/
+    # Custom endpoints que não estão nos ViewSets
+    path('inicio/', views.inicio, name='api_inicio'),
+    path('estatisticas/', views.estatisticas, name='estatisticas'),
 ]

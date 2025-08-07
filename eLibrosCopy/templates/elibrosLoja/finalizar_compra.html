@@ -1,0 +1,164 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Finalizar compra{% endblock title %}
+{% block content %}
+<main>
+    <form action="{% url 'finalizar_compra_postback' %}" method="POST" id="finalizar-compra-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <section class="compra">
+        <h1>Finalizar compra</h1>
+        <div>
+            <div class="compra">
+                <h2>1</h2>
+                <div>
+                        <h3>Endereço de entrega</h3>
+                        <div style="display: flex; gap: 3em;">
+                            <label class="custom-radio">
+                                <input type="radio" name="endereco_tipo" value="meu_endereco" checked>
+                                <span class="radio-mark"></span>
+                                Meu endereço
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="endereco_tipo" value="outro_endereco">
+                                <span class="radio-mark"></span>
+                                Outro
+                            </label>
+
+                            <div class="outroendereco" style="margin-top: -1em;">
+                                <label>
+                                    CEP:
+                                    <input type="text"
+                                        name="cep"
+                                        class="sem-borda" 
+                                        placeholder="_____-___"
+                                        pattern="\d{5}-?\d{3}"
+                                        maxlength="9"
+                                        style="width: 7em;">
+                                </label>
+                                <label>
+                                    Complemento:
+                                    <input type="text" class="sem-borda" name="complemento" size="40"
+                                        placeholder="_____________________________">
+                                </label><br>
+                                <label>
+                                    Rua:
+                                    <input type="text" class="sem-borda" name="rua" size="55"
+                                        placeholder="_______________________________________">
+                                </label>
+                                <label>
+                                    Número:
+                                    <input type="number" class="sem-borda" name="numero" style="width: 3em;" placeholder="____">
+                                </label><br>
+                                <label>
+                                    Estado:
+                                    <select name="estado">
+                                        <option value="-1"></option>
+                                        <option value="RN">RN</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    Cidade:
+                                    <input type="text" class="sem-borda" name="cidade" size="50"
+                                        placeholder="____________________________________">
+                                </label>
+                            </div>
+                              
+                        </div>             
+                        
+                </div>
+            </div>
+            <div class="compra">
+                <h2>2</h2>
+                <div>
+                    <h3>Método de pagamento</h3>
+                    <div style="display: flex; gap: 5em;" id="pagamento">
+                        <button type="button">Crédito<img src="{% static 'images/icons/credito.svg' %}" width="20"></button>
+                        <button type="button">Débito<img src="{% static 'images/icons/debito.svg' %}" width="20"></button>
+                        <button type="button">Boleto<img src="{% static 'images/icons/boleto.svg' %}" width="20"></button>
+                        <button type="button">PIX<img src="{% static 'images/icons/pix.svg' %}" width="20"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="compra">
+                <h2>3</h2>
+                <div>
+                    <h3>Ofertas</h3>
+                    <div id="cupom-section">
+                        <input type="text" name="codigo_cupom" placeholder="Insira o código do cupom">
+                        <button type="button" id="aplicar-cupom">Inserir cupom</button>                          
+                    
+                        <div id="cupom-aplicado" style="display: none;">
+                            <button class="cupom-tag" type="button">
+                                <span id="codigo-cupom"></span>
+                                <img src="{% static 'images/icons/x.svg' %}" width="20" class="remove-cupom">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="compra">
+                <h2>4</h2>
+                <div>
+                    <h3>Itens e envio</h3>
+                    <div class="itens">
+                        <div>
+                            <figure>
+                                {% for item in items %}
+                                <img src="{{ item.livro.capa.url }}" alt="{{ item.livro.titulo }}">
+                                {% endfor %}
+                            </figure>
+                            <div>
+                                <p>
+                                    <span class="moeda-cart-p">R$</span>
+                                    <b><span class="preco-maior-cart-p">{{ subtotal }}</b>
+                                </p>
+                                <p>{{ quantia_itens }} itens no pedido</p>
+                            </div>
+                        </div>
+                        <p>Ao finalizar o pedido a entrega será estimada para sexta-feira</p>
+                    </div>
+                </div>
+            </div>
+            <div id="final">
+                <div id="total">
+                    <span class="valores">
+                        <p>Subtotal</p>
+                        <p>R$ {{ subtotal }}</p>
+                    </span>
+
+                    <span class="valores">
+                        <p>Desconto</p>
+                        {% if desconto == 0 %}
+                        <p>---</p>
+                        {% else %}
+                        <p>- R$ {{ desconto }}</p>
+                        {% endif %}
+                    </span>
+
+                    <span class="valores">
+                        <p>Frete</p>
+                        <p>R$ {{ frete }}</p>
+                    </span>
+
+                    <span class="valores">
+                        <p>Valor Total</p>
+                        <p>R$ {{ valor_total }}</p>
+                    </span>
+                </div>
+                <button type="submit" id="finalizar">Finalizar pedido</button>
+            </div>
+        </div>
+    </section>
+    </form>
+</main>
+{% block javascript %}
+
+<script src="{% static 'js/cupom.js' %}">
+</script>
+<script src="{% static 'js/cep.js' %}"></script>
+
+<script src="{% static 'js/base.js' %}"></script>
+{% endblock javascript %}
+
+
+{% endblock content %}

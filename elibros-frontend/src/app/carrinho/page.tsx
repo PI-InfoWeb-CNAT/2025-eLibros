@@ -1,61 +1,165 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Header, Footer } from '../../components';
-import { cartUtils, CartItem } from '../../utils/cart';
+import { useCart } from '../../contexts/CartContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function CarrinhoPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { isInitialized } = useAuth();
+  const { 
+    items: cartItems, 
+    isLoading: loading, 
+    updateQuantity, 
+    removeFromCart, 
+    canUseCart 
+  } = useCart();
+  
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Set<number>>(new Set());
 
-  useEffect(() => {
-    // Carregar itens do carrinho
-    const items = cartUtils.getCartItems();
-    setCartItems(items);
-    setLoading(false);
+  // Mostrar loading enquanto não inicializou ou está carregando
+  if (!isInitialized || loading) {
+    return (
+      <div className="min-h-screen bg-[#FFFFF5] font-['Poppins'] text-[#1C1607] flex flex-col">
+        <Header />
+        <main className="flex-1 px-4 md:px-20 py-8">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-3xl font-bold mb-8">Carrinho de Compras</h1>
+            <div className="space-y-4">
+              {/* Skeleton para lista de itens */}
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white rounded-lg shadow-sm border p-4 animate-pulse">
+                  <div className="flex space-x-4">
+                    <div className="w-16 h-20 bg-gray-300 rounded"></div>
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                      <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+                      <div className="h-4 bg-gray-300 rounded w-1/4"></div>
+                    </div>
+                    <div className="w-24 h-8 bg-gray-300 rounded"></div>
+                  </div>
+                </div>
+              ))}
+              
+              {/* Skeleton para resumo */}
+              <div className="bg-white rounded-lg shadow-sm border p-6 animate-pulse">
+                <div className="space-y-3">
+                  <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+                  <div className="h-4 bg-gray-300 rounded w-1/4"></div>
+                  <div className="h-8 bg-gray-300 rounded w-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
-    // Escutar mudanças no carrinho
-    const handleCartUpdate = () => {
-      const updatedItems = cartUtils.getCartItems();
-      setCartItems(updatedItems);
-    };
-
-    window.addEventListener('cartUpdated', handleCartUpdate);
-    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
-  }, []);
+  // Se não pode usar carrinho, mostrar mensagem discreta (sem redirecionar)
+  if (!canUseCart) {
+    return (
+      <div className="min-h-screen bg-[#FFFFF5] font-['Poppins'] text-[#1C1607] flex flex-col">
+        <Header />
+        <main className="flex-1 px-4 md:px-20 py-8">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-3xl font-bold mb-8">Carrinho de Compras</h1>
+            
+            {/* Estado vazio elegante */}
+            <div className="bg-white rounded-lg shadow-sm border p-12 text-center">
+              <div className="max-w-md mx-auto">
+                {/* Ícone do carrinho */}
+                <div className="w-20 h-20 mx-auto mb-6 text-gray-400">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z"/>
+                    <path d="M9 8V17H11V8H9ZM13 8V17H15V8H13Z"/>
+                  </svg>
+                </div>
+                
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  Seu carrinho está aguardando
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Faça login para visualizar e gerenciar os itens do seu carrinho de compras.
+                </p>
+                
+                <div className="space-y-3">
+                  <Link 
+                    href="/login" 
+                    className="w-full bg-[#C5A572] text-white px-6 py-3 rounded-lg hover:bg-[#b8966a] transition-colors inline-block font-medium"
+                  >
+                    Entrar na minha conta
+                  </Link>
+                  <Link 
+                    href="/register" 
+                    className="w-full border border-[#C5A572] text-[#C5A572] px-6 py-3 rounded-lg hover:bg-[#C5A572] hover:text-white transition-colors inline-block font-medium"
+                  >
+                    Criar conta gratuita
+                  </Link>
+                </div>
+                
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <p className="text-sm text-gray-500">
+                    Continue navegando nossa{' '}
+                    <Link href="/livros" className="text-[#C5A572] hover:underline">
+                      coleção de livros
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   const formatPreco = (preco: string) => {
     const [reais, centavos] = preco.split('.');
     return { reais, centavos: centavos || '00' };
   };
 
-  const handleQuantityChange = (itemId: number, delta: number) => {
+  const handleQuantityChange = async (itemId: number, delta: number) => {
     const item = cartItems.find(item => item.id === itemId);
     if (item) {
       const newQuantity = item.quantidade + delta;
       if (newQuantity > 0) {
-        cartUtils.updateQuantity(itemId, newQuantity);
+        try {
+          await updateQuantity(itemId, newQuantity);
+        } catch (error) {
+          console.error('Erro ao atualizar quantidade:', error);
+        }
       }
     }
   };
 
-  const handleQuantityInput = (itemId: number, value: string) => {
+  const handleQuantityInput = async (itemId: number, value: string) => {
     const quantity = parseInt(value, 10);
     if (!isNaN(quantity) && quantity >= 1) {
-      cartUtils.updateQuantity(itemId, quantity);
+      try {
+        await updateQuantity(itemId, quantity);
+      } catch (error) {
+        console.error('Erro ao atualizar quantidade:', error);
+      }
     }
   };
 
-  const handleRemoveItem = (itemId: number) => {
-    cartUtils.removeFromCart(itemId);
-    setSelectedItems(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(itemId);
-      return newSet;
-    });
+  const handleRemoveItem = async (itemId: number) => {
+    try {
+      await removeFromCart(itemId);
+      setSelectedItems(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(itemId);
+        return newSet;
+      });
+    } catch (error) {
+      console.error('Erro ao remover item:', error);
+    }
   };
 
   const handleSelectAll = () => {
@@ -164,9 +268,11 @@ export default function CarrinhoPage() {
 
                       {/* Book Image */}
                       <figure className="flex-shrink-0">
-                        <img 
+                        <Image 
                           src={item.livro.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
                           alt={item.livro.titulo}
+                          width={160}
+                          height={240}
                           className="w-40 h-auto rounded"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;

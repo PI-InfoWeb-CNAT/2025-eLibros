@@ -1,0 +1,77 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}eLibros - Livro{% endblock title %}
+{% block content %}
+<main>
+    <section class="livro">
+        <figure>
+            {% if livro.capa %}
+            <img src="{{ livro.capa.url }}" width="100px">
+            {% else %}
+            <img src="{% static 'images/placeholder.png' %}" width="100px">
+            {% endif %}
+        </figure>
+        <div class="livro_info">
+            <div class="livro_header">
+                <h2>{{ livro.titulo }} <span>{{ livro.editora }} - {{ livro.ano_de_publicacao }}</span></h2>
+                <p>Escrito por {{ livro.get_autores_display }}</p>
+            </div>
+            <div class="livro_descricao">
+                <p>{{ livro.sinopse }}</p>
+            </div>
+        </div>
+        <div class="compra">
+            <div>
+                <p>
+                    <span class="moeda">R$</span>
+                    {% if preco_com_desconto != None %}
+                        {% with preco_parts=preco_com_desconto|split_decimal %}
+                            <b><span class="preco-maior">{{ preco_parts.0 }}</span><span class="preco-menor">{{ preco_parts.1 }}</span></b>
+                        {% endwith %}
+                    {% else %}
+
+                        {% with preco_parts=livro.preco|split_decimal %}
+                            <b><span class="preco-maior">{{ preco_parts.0 }}</span><span class="preco-menor">{{ preco_parts.1 }}</span></b>
+                        {% endwith %}
+                    {% endif %}
+                </p>
+                {% if preco_com_desconto != None %}
+                    <p>De:<s>{{ livro.preco }}</s></p>
+                {% endif %}
+                
+                <p><span>Entrega GRÁTIS:</span> Chega entre XX - XX de Mês</p>
+                <p>
+                    <img src="{% static 'images/local.png' %}">
+                    {% if cliente.endereco == None %}
+                    <a href="#">Adicionar local</a>
+                    {% else %}
+                    <a href="#">Entregar em {{ cliente.endereco }}</a>
+                    {% endif %}
+                </p>
+                <p>Em estoque <span>{{ livro.quantidade }} restante(s)</span></p>
+                <div class="quantity-input">
+                    <button class="quantity-btn minus">-</button>
+                    <input type="number" id="quantity" value="1" min="1" max="99">
+                    <button class="quantity-btn plus">+</button>
+                </div>
+                <div class="botoes">
+                    <button data-id="{{ livro.id }}" data-action="adicionarAoCarrinho" class="botaoAdicionarAoCarrinho">
+                        <img src="{% static 'images/carrinho.png' %}">
+                        <p>Adicionar</p>
+                    </button>
+                    <button data-id="{{ livro.id }}" data-action="comprarAgora" class="botaoComprarAgora">Comprar Agora</button>
+
+                    <button><img src="{% static 'images/caminhao.png' %}">
+                        <p>Calcular Frete</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    const cartUpdateUrl = "{% url 'atualizar_carrinho' %}";
+    var csrfToken = "{{ csrf_token }}";
+</script>
+{% endblock content %}

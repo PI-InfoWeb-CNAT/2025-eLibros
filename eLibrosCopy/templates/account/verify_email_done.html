@@ -1,0 +1,22 @@
+{% extends './_base.html' %}
+{% load static %}
+
+{% block title %}eLibros{% endblock %}
+
+{% block content %}
+<header class="headerlogin">
+  <h1><a href="{% url 'inicio' %}"><img src="{% static 'images/logoacesso.png' %}" alt="logo eLibros"></a></h1>
+</header>
+
+<main>
+  <section class="secao-autenticacao">
+    <div class="left-wrapper-mail">
+      <h3>Verifique seu email</h3>
+      <p>Para garantirmos que você possui acesso ao seu email cadastrado, enviamos uma mensagem com instruções para
+        verificar sua conta.</p>
+      <a href="/accounts/login" class="btn-verify-mail">Voltar para página de login</a>
+    </div>
+  </section>
+</main>
+
+{% endblock content %}

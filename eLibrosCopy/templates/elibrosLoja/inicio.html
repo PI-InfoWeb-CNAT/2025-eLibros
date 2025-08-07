@@ -1,0 +1,102 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}eLibros - Início{% endblock title %}
+{% block content %}
+
+<main>
+    <section class="banner">
+        <p>“Há sonhos que devem permanecer nas <br>gavetas, nos cofres, trancados até o <br>nosso fim. E por isso
+            passíveis de serem <br>sonhados a vida inteira.” - Hilda Hilst</p>
+    </section>
+    <section class="sobre">
+        <figure>
+            <img src="{% static 'images/marca.svg' %}">
+        </figure>
+        <div class="wrap">
+            <h2>Conheça o eLibros</h2>
+            <p>Livraria digital brasileira onde você pode encontrar os seus escritores nacionais favoritos, ou até ir
+                atrás de descobrir novos!</p>
+            <div>
+                <img src="{% static 'images/icons/missao.svg' %}">
+                <h3>Missão</h3>
+                <p>Aumentar a visibilidade dos livros nacionais!</p>
+            </div>
+            <div>
+                <img src="{% static 'images/icons/visao.svg' %}">
+                <h3>Visão</h3>
+                <p>Vender livros brasileiros em escala internacional.</p>
+            </div>
+        </div>
+    </section>
+    <section class="info">
+        <div>
+            <h3>+5Mi acessos</h3>
+            <p>Desde 2023, conseguimos juntar mais de 5,000,000 acessos em nossa loja</p>
+        </div>
+        <div>
+            <h3>26 estados</h3>
+            <p>Atualmente, somos capazes de entregar suas compras em qualquer estado do país</p>
+        </div>
+        <div>
+            <h3>+10mil livros</h3>
+            <p>Nossa coleção conta com mais de 10,000 livros de inúmeros autores diferentes</p>
+        </div>
+    </section>
+    <section class="contato">
+        <h2>
+            Contate-nos
+        </h2>
+        <div id="divisor"></div>
+        <div>
+            <div>
+                <figure><img src="{% static 'images/icons/email.svg' %}"></figure>
+                <p>elibros@entregadores.com</p>
+            </div>
+            <div>
+                <figure><img src="{% static 'images/icons/fone.svg' %}"></figure>
+                <p>Disque (84) 4005-9832</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="livros">
+        <h2>Indicações eLibros</h2>
+        <div class="swiper {{catOUgen_clean}}" data-category="{{catOUgen_clean}}">
+            <div class="swiper-wrapper">
+                {% for livro in livros %}
+                <div class="swiper-slide">              
+                    <a href="{% url 'livro' id=livro.id %}">
+                    <div>
+                        <figure>
+                            {% if livro.capa %}
+                            <img src="{{ livro.capa.url }}">
+                            {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" width="100px">
+                            {% endif %}
+                        </figure>
+                        <div>
+                            <h3>
+                                {{ livro.get_titulo_display }}
+                                {% if livro.subtitulo %}<br><span>{{ livro.get_subtitulo_display }}</span>
+                                {% endif %}
+                            </h3>
+                            <p>{{ livro.get_primeiro_autor }}</p>
+                            <p>R$ {{ livro.preco }}</p>
+                            <a href="{% url 'livro' id=livro.id %}" class="livro_botao_comprar">Comprar</a>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                {% endfor %}   
+            </div>
+            
+            
+            <div class="swiper-pagination" id="swiper-pagination-{{catOUgen_clean}}"></div>
+            <div class="swiper-button-prev" id="swiper-button-prev-{{catOUgen_clean}}"></div>
+            <div class="swiper-button-next" id="swiper-button-next-{{catOUgen_clean}}"></div>
+        </div>
+            <p><a href="{% url 'acervo' %}" style="color: black; text-decoration: underline; margin-top: 3em; font-size: 18px;">Ver mais</a></p>
+    </section>
+</main>
+
+{% endblock content %}

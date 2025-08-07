@@ -21,12 +21,15 @@ INSTALLED_APPS = [
     # Third-party
     "django_extensions",
     'simple_history',
-    "accounts",
+    
     "elibrosLoja",
+    
+    "accounts.apps.AccountsConfig",
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',  # Para blacklist de tokens
     'corsheaders',
-
 ]
 
 # Django REST Framework configuration
@@ -51,6 +54,28 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,  # Blacklist do token antigo após rotação
+    'UPDATE_LAST_LOGIN': True,
+    
+    # Algoritmo de assinatura
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    
+    # Claims customizados
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    
+    # Headers
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    
+    # Token em cookies (opcional)
+    'AUTH_COOKIE': None,  # 'access_token'
+    'AUTH_COOKIE_DOMAIN': None,
+    'AUTH_COOKIE_SECURE': False,
+    'AUTH_COOKIE_HTTP_ONLY': True,
+    'AUTH_COOKIE_PATH': '/',
+    'AUTH_COOKIE_SAMESITE': 'Lax',
 }
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
@@ -74,13 +99,11 @@ ROOT_URLCONF = "elibrosAdmin.urls"
 WSGI_APPLICATION = "elibrosAdmin.wsgi.application"
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
-# Templates preservados apenas como referência para implementação em React
-# API REST pura - templates não são renderizados
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],  # API REST pura
-        "APP_DIRS": False,  # Desabilitado - apenas API
+        "DIRS": [BASE_DIR / "templates"],  # Incluir diretório de templates
+        "APP_DIRS": True,  # Habilitar para Django admin funcionar
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -194,9 +217,7 @@ if 'CODESPACE_NAME' in os.environ:
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Next.js development server
-    "http://localhost:3001",  # Next.js alternative port
     "http://127.0.0.1:3000",
-    "http://127.0.0.1:3001",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -230,7 +251,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 if 'CODESPACE_NAME' in os.environ:
     CORS_ALLOWED_ORIGINS.append(f'https://{codespace_name}-3000.{codespace_domain}')
-    CORS_ALLOWED_ORIGINS.append(f'https://{codespace_name}-3001.{codespace_domain}')
 
 
 AUTHENTICATION_BACKENDS = (
