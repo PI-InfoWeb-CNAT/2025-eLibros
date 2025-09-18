@@ -8,6 +8,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   isInitialized: boolean;
+  isAdmin: boolean;
   login: (credentials: LoginRequest) => Promise<void>;
   register: (userData: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
@@ -21,6 +22,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     // Verificar se há um usuário logado ao carregar a página
@@ -38,11 +40,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (currentUser && isAuth) {
           setUser(currentUser);
           setIsAuthenticated(true);
-          console.log('✅ Usuário autenticado:', currentUser.username);
+          // Verificar se é admin (staff ou superuser)
+          const adminStatus = currentUser.is_staff || currentUser.is_superuser || false;
+          setIsAdmin(adminStatus);
+          console.log('✅ Usuário autenticado:', currentUser.username, 'Admin:', adminStatus);
         } else {
           // Limpar estados
           setUser(null);
           setIsAuthenticated(false);
+          setIsAdmin(false);
           console.log('❌ Usuário não autenticado');
         }
       } catch (error) {
@@ -104,6 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isAuthenticated,
     isLoading,
     isInitialized,
+    isAdmin,
     login,
     register,
     logout,

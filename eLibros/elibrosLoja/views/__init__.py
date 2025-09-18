@@ -7,6 +7,7 @@ from .GeneroViewSet import GeneroViewSet
 from .LivroViewSet import LivroViewSet
 from .PedidoViewSet import PedidoViewSet
 from .UsuarioViewSet import UsuarioViewSet
+from .AdminViewSet import AdminViewSet
 
 from ..serializers import (
     GeneroSerializer,

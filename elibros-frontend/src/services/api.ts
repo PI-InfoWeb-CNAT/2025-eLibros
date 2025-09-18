@@ -41,6 +41,8 @@ export interface Usuario {
   date_joined: string;
   is_active: boolean;
   email_is_verified: boolean;
+  is_staff?: boolean;
+  is_superuser?: boolean;
 }
 
 export interface LoginRequest {
