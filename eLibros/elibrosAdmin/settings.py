@@ -250,6 +250,8 @@ CORS_ALLOWED_METHODS = [
 CORS_ALLOW_ALL_ORIGINS = True
 
 if 'CODESPACE_NAME' in os.environ:
+    codespace_name = os.environ['CODESPACE_NAME']
+    codespace_domain = os.environ.get('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN', 'app.github.dev')
     CORS_ALLOWED_ORIGINS.append(f'https://{codespace_name}-3000.{codespace_domain}')
 
 

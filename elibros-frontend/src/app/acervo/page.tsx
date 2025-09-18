@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Header, Footer } from '../../components';
 import BooksCarousel from '../../components/BooksCarousel';
 import { elibrosApi, Livro } from '../../services/api';
+import { getImageProps } from '../../utils/imageUtils';
 
 interface Genero {
   id: number;
@@ -276,15 +277,10 @@ export default function AcervoPage() {
                         {/* Imagem do livro */}
                         <div className="flex-shrink-0 mr-4">
                           <Image
-                            src={livro.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'}
-                            alt={livro.titulo}
+                            {...getImageProps(livro.capa, livro.titulo)}
                             width={96}
                             height={160}
                             className="w-24 h-40 rounded object-cover"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
-                            }}
                           />
                         </div>
                         

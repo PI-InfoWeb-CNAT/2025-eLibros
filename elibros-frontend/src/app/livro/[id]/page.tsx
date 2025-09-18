@@ -7,6 +7,7 @@ import { Header, Footer, BooksCarousel } from '../../../components';
 import { elibrosApi, Livro, Avaliacao } from '../../../services/api';
 import { useCart } from '../../../contexts/CartContext';
 import { useAuth } from '../../../contexts/AuthContext';
+import { getImageProps } from '../../../utils/imageUtils';
 
 export default function LivroPage() {
   const params = useParams();
@@ -242,15 +243,10 @@ export default function LivroPage() {
           {/* Imagem do livro */}
           <figure className="flex-shrink-0">
             <Image 
-              src={livro.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
-              alt={livro.titulo}
+              {...getImageProps(livro.capa, livro.titulo)}
               width={288}
               height={384}
               className="w-72 h-auto rounded-lg object-cover mx-auto lg:mx-0"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
-              }}
             />
           </figure>
 

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Header, Footer } from '../../components';
 import { useCart } from '../../contexts/CartContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { getImageProps } from '../../utils/imageUtils';
 
 export default function CarrinhoPage() {
   const { isInitialized } = useAuth();
@@ -269,15 +270,10 @@ export default function CarrinhoPage() {
                       {/* Book Image */}
                       <figure className="flex-shrink-0">
                         <Image 
-                          src={item.livro.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
-                          alt={item.livro.titulo}
+                          {...getImageProps(item.livro.capa, item.livro.titulo)}
                           width={160}
                           height={240}
                           className="w-40 h-auto rounded"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
-                          }}
                         />
                       </figure>
 

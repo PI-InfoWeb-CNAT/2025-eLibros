@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { elibrosApi, Livro } from '../services/api';
+import { getImageProps } from '../utils/imageUtils';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -153,16 +154,11 @@ export default function BooksCarousel({
                     {/* Imagem à esquerda com tamanho fixo */}
                     <a href={`/livro/${book.id}`} className="flex-shrink-0 mr-4">
                       <Image 
-                        src={book.capa || 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem'} 
-                        alt={book.titulo}
+                        {...getImageProps(book.capa, book.titulo)}
                         width={128}
                         height={192}
                         className="rounded object-cover"
                         style={{ width: '8rem', height: '12rem' }}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = 'https://placehold.co/300x400/e0e0e0/808080?text=Sem+Imagem';
-                        }}
                       />
                     </a>
                     
