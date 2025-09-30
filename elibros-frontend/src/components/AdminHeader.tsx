@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,91 +9,148 @@ import { useRouter } from 'next/navigation';
 export default function AdminHeader() {
   const { user, logout } = useAuth();
   const router = useRouter();
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleLogout = async () => {
-    await logout();
-    router.push('/login');
+    try {
+      await logout();
+      router.push('/login');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
   };
 
+  // Fechar dropdown quando clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('#dropdown-admin')) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
   return (
-    <header className="bg-[#1C1607] text-white py-4 px-6">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <Image
-            src="/icons/logo.svg"
-            alt="eLibros Logo"
-            width={40}
-            height={40}
-            className="w-10 h-10"
-          />
-          <span className="text-xl font-bold text-[#FFD147]">ELIBROS</span>
-        </div>
+    <header className="px-4 md:px-20 py-4 border-b-8 border-[#FFD147] flex flex-col md:flex-row justify-between items-center bg-[#1C1607]">
+      {/* Logo */}
+      <h1>
+        <Link href="/admin" className="flex">
+          <Image src="/logo.png" alt="eLibros" width={208} height={60} className="w-48 md:w-52" />
+        </Link>
+      </h1>
+      
+      {/* Navigation */}
+      <nav className="mt-4 md:mt-0">
+        <ul className="flex flex-wrap gap-4 md:gap-6 items-center">
+          <li>
+            <Link 
+              href="/admin" 
+              className="text-white px-2 py-1 relative group hover:before:visible hover:before:scale-x-100 before:content-[''] before:absolute before:w-full before:h-px before:bottom-0 before:left-0 before:bg-[#FFD147] before:invisible before:scale-x-0 before:transition-all before:duration-200"
+            >
+              Início
+            </Link>
+          </li>
+          <li>
+            <Link 
+              href="/admin/livros" 
+              className="text-white px-2 py-1 relative group hover:before:visible hover:before:scale-x-100 before:content-[''] before:absolute before:w-full before:h-px before:bottom-0 before:left-0 before:bg-[#FFD147] before:invisible before:scale-x-0 before:transition-all before:duration-200"
+            >
+              Livros
+            </Link>
+          </li>
+          <li>
+            <Link 
+              href="/admin/clientes" 
+              className="text-white px-2 py-1 relative group hover:before:visible hover:before:scale-x-100 before:content-[''] before:absolute before:w-full before:h-px before:bottom-0 before:left-0 before:bg-[#FFD147] before:invisible before:scale-x-0 before:transition-all before:duration-200"
+            >
+              Clientes
+            </Link>
+          </li>
+          <li>
+            <Link 
+              href="/admin/pedidos" 
+              className="text-white px-2 py-1 relative group hover:before:visible hover:before:scale-x-100 before:content-[''] before:absolute before:w-full before:h-px before:bottom-0 before:left-0 before:bg-[#FFD147] before:invisible before:scale-x-0 before:transition-all before:duration-200"
+            >
+              Pedidos
+            </Link>
+          </li>
+          <li>
+            <Link 
+              href="/admin/generos" 
+              className="text-white px-2 py-1 relative group hover:before:visible hover:before:scale-x-100 before:content-[''] before:absolute before:w-full before:h-px before:bottom-0 before:left-0 before:bg-[#FFD147] before:invisible before:scale-x-0 before:transition-all before:duration-200"
+            >
+              Gêneros
+            </Link>
+          </li>
+          <li>
+            <Link 
+              href="/admin/categorias" 
+              className="text-white px-2 py-1 relative group hover:before:visible hover:before:scale-x-100 before:content-[''] before:absolute before:w-full before:h-px before:bottom-0 before:left-0 before:bg-[#FFD147] before:invisible before:scale-x-0 before:transition-all before:duration-200"
+            >
+              Categorias
+            </Link>
+          </li>
+          <li>
+            <Link 
+              href="/admin/cupons" 
+              className="text-white px-2 py-1 relative group hover:before:visible hover:before:scale-x-100 before:content-[''] before:absolute before:w-full before:h-px before:bottom-0 before:left-0 before:bg-[#FFD147] before:invisible before:scale-x-0 before:transition-all before:duration-200"
+            >
+              Cupons
+            </Link>
+          </li>
 
-        {/* Navigation Menu */}
-        <nav className="hidden md:flex items-center gap-8">
-          <Link href="/admin" className="hover:text-[#FFD147] transition-colors">
-            Início
-          </Link>
-          <Link href="/admin/clientes" className="hover:text-[#FFD147] transition-colors">
-            Clientes
-          </Link>
-          <Link href="/admin/pedidos" className="hover:text-[#FFD147] transition-colors">
-            Pedidos
-          </Link>
-          <Link href="/admin/generos" className="hover:text-[#FFD147] transition-colors">
-            Gêneros
-          </Link>
-          <Link href="/admin/categorias" className="hover:text-[#FFD147] transition-colors">
-            Categorias
-          </Link>
-        </nav>
-
-        {/* User Profile */}
-        <div className="relative">
-          <button
-            onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-            className="flex items-center gap-2 hover:text-[#FFD147] transition-colors"
-          >
-            <div className="w-8 h-8 bg-[#FFD147] rounded-full flex items-center justify-center text-[#1C1607] font-semibold">
-              {user?.nome?.[0] || user?.username?.[0] || 'A'}
-            </div>
-            <span className="hidden md:inline">{user?.nome || user?.username || 'Admin'}</span>
-          </button>
-
-          {/* Dropdown Menu */}
-          {isProfileMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-              <div className="px-4 py-2 border-b border-gray-200">
-                <p className="text-sm font-medium text-gray-900">{user?.nome || user?.username}</p>
-                <p className="text-sm text-gray-500">{user?.email}</p>
+          {/* User Dropdown */}
+          <li id="dropdown-admin" className="relative">
+            <div 
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              onMouseLeave={() => setIsDropdownOpen(false)}
+            >
+              <div className="w-10 h-10 rounded-full overflow-hidden cursor-pointer">
+                <Image 
+                  src="/usuario.png" 
+                  alt="Perfil"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <Link
-                href="/admin/perfil"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                onClick={() => setIsProfileMenuOpen(false)}
+              
+              {/* Dropdown Menu */}
+              <ul 
+                className={`
+                  absolute right-0 top-full mt-1 bg-[#1C1607] min-w-max px-3 py-1 rounded-sm flex flex-col gap-0 transition-all duration-200
+                  ${isDropdownOpen ? 'visible opacity-100' : 'invisible opacity-0'}
+                `}
               >
-                Meu Perfil
-              </Link>
-              <Link
-                href="/admin/configuracoes"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                onClick={() => setIsProfileMenuOpen(false)}
-              >
-                Configurações
-              </Link>
-              <hr className="my-1" />
-              <button
-                onClick={handleLogout}
-                className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-              >
-                Sair
-              </button>
+                <li className="w-full">
+                  <Link 
+                    href="/admin/perfil" 
+                    className="text-white px-2 py-2 block w-full hover:text-[#FFD147] transition-all duration-200"
+                  >
+                    Meu perfil
+                  </Link>
+                </li>
+                <li className="w-full border-t border-[#3B362B]">
+                  <button 
+                    onClick={handleLogout}
+                    className="text-white px-2 py-2 block w-full text-left hover:text-red-400 transition-all duration-200"
+                  >
+                    Sair
+                  </button>
+                </li>
+              </ul>
             </div>
-          )}
-        </div>
-      </div>
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 }
