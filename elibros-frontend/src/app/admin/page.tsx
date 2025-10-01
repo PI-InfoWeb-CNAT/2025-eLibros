@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import AdminProtectedRoute from '../../components/AdminProtectedRoute';
-import AdminLayout from '../../components/AdminLayout';
-import { useAuth } from '../../contexts/AuthContext';
-import { useAdminStats, useRecentActivities } from '../../hooks/useAdmin';
+import AdminProtectedRoute from '@/components/AdminProtectedRoute';
+import AdminLayout from '@/components/AdminLayout';
+import { useAuth } from '@/contexts/AuthContext';
+import { useAdminStats } from '@/hooks/useAdmin';
 
 interface AdminCardProps {
   title: string;
@@ -39,7 +39,6 @@ function AdminCard({ title, icon, href }: AdminCardProps) {
 export default function AdminPage() {
   const { user } = useAuth();
   const { stats, loading: statsLoading, error: statsError } = useAdminStats();
-  const { activities, loading: activitiesLoading, error: activitiesError } = useRecentActivities();
 
   const getDisplayName = () => {
     if (user?.nome && user.nome !== 'Nome não informado') {
@@ -141,46 +140,6 @@ export default function AdminPage() {
             />
           </div>
 
-          {!activitiesLoading && activities && (
-            <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white rounded-lg shadow-sm border p-6">
-                <h3 className="text-lg font-medium mb-4">Pedidos Recentes</h3>
-                <div className="space-y-3">
-                  {activities.recent_orders.map((order: any) => (
-                    <div key={order.id} className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <div>
-                        <p className="font-medium">{order.numero_pedido}</p>
-                        <p className="text-sm text-gray-600">{order.cliente_nome}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-medium">R$ {order.valor_total}</p>
-                        <p className="text-sm text-gray-600">{order.status}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow-sm border p-6">
-                <h3 className="text-lg font-medium mb-4">Clientes Recentes</h3>
-                <div className="space-y-3">
-                  {activities.recent_clients.map((client: any) => (
-                    <div key={client.id} className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <div>
-                        <p className="font-medium">{client.nome}</p>
-                        <p className="text-sm text-gray-600">{client.email}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm text-gray-600">
-                          {new Date(client.data_cadastro).toLocaleDateString('pt-BR')}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </AdminLayout>
     </AdminProtectedRoute>
