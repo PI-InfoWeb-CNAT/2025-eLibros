@@ -1,6 +1,5 @@
 import { elibrosApi, ApiResponse } from './api';
-
-import {Livro} from '@/types/livro';
+import { Livro } from '@/types';
 
 class LivroApiService {
 
