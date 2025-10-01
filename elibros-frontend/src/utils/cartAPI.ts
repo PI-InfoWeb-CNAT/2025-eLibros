@@ -1,32 +1,16 @@
 // Hook para carrinho com API apenas para usuários autenticados
 import { useAuth } from '../contexts/AuthContext';
 import { elibrosApi } from '../services/api';
+import { carrinhoApi } from '../services/carrinhoApiService';
+import { ItemCarrinho } from '@/types/itemCarrinho';
+import { Carrinho } from '@/types/carrinho';
 
-export interface CartItem {
-  id: number;
-  livro: {
-    id: number;
-    titulo: string;
-    capa: string;
-    preco: string;
-    autores: string[];
-  };
-  quantidade: number;
-}
-
-export interface CarrinhoAPI {
-  id: number;
-  cliente: number;
-  criado_em: string;
-  atualizado_em: string;
-  itens: CartItem[];
-}
 
 export const useCartAPI = () => {
   const { isAuthenticated } = useAuth();
 
   // Buscar carrinho do usuário autenticado (APENAS SE LOGADO)
-  const fetchCart = async (): Promise<CartItem[]> => {
+  const fetchCart = async (): Promise<ItemCarrinho[]> => {
     console.log('🔍 fetchCart - isAuthenticated:', isAuthenticated);
     
     if (!isAuthenticated) {
@@ -35,11 +19,11 @@ export const useCartAPI = () => {
 
     try {
       console.log('📡 Fazendo request para getCarrinho...');
-      const response = await elibrosApi.getCarrinho();
+      const response = await carrinhoApi.getCarrinho();
       console.log('📦 Resposta da API:', response);
 
       if (response.results && response.results.length > 0) {
-        const carrinho = response.results[0] as CarrinhoAPI;
+        const carrinho = response.results[0] as Carrinho;
         console.log('✅ Carrinho encontrado:', carrinho);
         console.log('📦 Itens do carrinho:', carrinho.itens);
         
@@ -58,7 +42,7 @@ export const useCartAPI = () => {
   };
 
   // Adicionar item ao carrinho (APENAS SE LOGADO)
-  const addToCart = async (livro: CartItem['livro'], quantidade: number = 1): Promise<void> => {
+  const addToCart = async (livro: ItemCarrinho['livro'], quantidade: number = 1): Promise<void> => {
     console.log('➕ cartAPI.addToCart - isAuthenticated:', isAuthenticated);
     console.log('📚 Livro:', { id: livro.id, titulo: livro.titulo });
     console.log('📊 Quantidade:', quantidade);
@@ -69,7 +53,7 @@ export const useCartAPI = () => {
 
     try {
       console.log('📡 Enviando para atualizarCarrinho...');
-      const result = await elibrosApi.atualizarCarrinho({
+      const result = await carrinhoApi.atualizarCarrinho({
         livro_id: livro.id,
         quantidade: quantidade,
         acao: 'adicionar'
@@ -90,13 +74,13 @@ export const useCartAPI = () => {
     try {
       if (quantidade <= 0) {
         // Remover item
-        await elibrosApi.atualizarCarrinho({
+        await carrinhoApi.atualizarCarrinho({
           item_id: itemId,
           acao: 'remover'
         });
       } else {
         // Atualizar quantidade
-        await elibrosApi.atualizarCarrinho({
+        await carrinhoApi.atualizarCarrinho({
           item_id: itemId,
           quantidade: quantidade,
           acao: 'atualizar'
@@ -115,7 +99,7 @@ export const useCartAPI = () => {
     }
 
     try {
-      await elibrosApi.atualizarCarrinho({
+      await carrinhoApi.atualizarCarrinho({
         item_id: itemId,
         acao: 'remover'
       });
@@ -132,7 +116,7 @@ export const useCartAPI = () => {
     }
 
     try {
-      await elibrosApi.atualizarCarrinho({
+      await carrinhoApi.atualizarCarrinho({
         acao: 'limpar'
       });
     } catch (error) {
