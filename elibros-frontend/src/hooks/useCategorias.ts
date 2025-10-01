@@ -10,11 +10,26 @@ export function useCategorias() {
   const fetchCategorias = useCallback(async () => {
     try {
       setIsLoading(true);
+      setError(null);
       const data = await categoriaApi.getAll();
       setCategorias(data);
-      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao carregar categorias');
+      let errorMessage = 'Erro ao carregar categorias';
+      
+      if (err instanceof Error) {
+        if (err.message.includes('401') || err.message.includes('token')) {
+          errorMessage = 'Erro de autenticação. Faça login novamente.';
+        } else if (err.message.includes('500')) {
+          errorMessage = 'Erro interno do servidor. Tente novamente mais tarde.';
+        } else if (err.message.includes('conexão') || err.message.includes('fetch')) {
+          errorMessage = 'Erro de conexão. Verifique sua internet.';
+        } else {
+          errorMessage = err.message;
+        }
+      }
+      
+      setError(errorMessage);
+      console.error('Erro ao carregar categorias:', err);
     } finally {
       setIsLoading(false);
     }
@@ -25,7 +40,17 @@ export function useCategorias() {
       await categoriaApi.delete(id);
       await fetchCategorias(); // Recarrega a lista após deletar
     } catch (err) {
-      throw new Error(err instanceof Error ? err.message : 'Erro ao excluir categoria');
+      let errorMessage = 'Erro ao excluir categoria';
+      
+      if (err instanceof Error) {
+        if (err.message.includes('401') || err.message.includes('token')) {
+          errorMessage = 'Erro de autenticação. Faça login novamente.';
+        } else {
+          errorMessage = err.message;
+        }
+      }
+      
+      throw new Error(errorMessage);
     }
   }, [fetchCategorias]);
 

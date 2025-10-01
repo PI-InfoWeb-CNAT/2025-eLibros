@@ -20,6 +20,35 @@ class ElibrosApiService {
     return token ? { 'Authorization': `Bearer ${token}` } : {};
   }
 
+  // Método para limpar dados de autenticação
+  private clearAuthData(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('user');
+    }
+  }
+
+  // Método para verificar se o token é válido
+  async verifyToken(): Promise<boolean> {
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+      if (!token) return false;
+
+      const response = await fetch(`${API_BASE_URL}/auth/verify/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      return response.ok;
+    } catch {
+      return false;
+    }
+  }
+
   async makeRequest<T>(
     endpoint: string,
     options: RequestInit & { skipAuth?: boolean } = {}
@@ -51,8 +80,18 @@ class ElibrosApiService {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
+        // Se for erro 401 (token inválido), limpar dados de auth
+        if (response.status === 401 && !options.skipAuth) {
+          console.log('🔑 Token inválido, limpando dados de autenticação');
+          this.clearAuthData();
+          // Recarregar a página para atualizar o estado de autenticação
+          if (typeof window !== 'undefined') {
+            window.location.href = '/login';
+          }
+        }
+
         // Tentar obter detalhes do erro
-        let errorDetails = `${response.status} ${response.statusText}`;
+        let errorDetails = `${response.status}`;
         try {
           const errorData = await response.json();
           if (errorData.detail) {
@@ -70,6 +109,7 @@ class ElibrosApiService {
           }
         } catch {
           // Se não conseguir parsear o JSON, usar status original
+          errorDetails = `${response.status} ${response.statusText}`;
         }
         throw new Error(`API Error: ${errorDetails}`);
       }

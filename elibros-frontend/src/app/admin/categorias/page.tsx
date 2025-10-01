@@ -133,145 +133,186 @@ function DeleteConfirmModal({ isOpen, onClose, onConfirm, categoriaNome }: Delet
   );
 }
 
-export default function CategoriasPage() {
+export default function CategoriasAdminPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState<'nome' | '-nome'>('nome');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategoria, setEditingCategoria] = useState<Categoria | undefined>();
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; categoria?: Categoria }>({ isOpen: false });
-  const [formModalOpen, setFormModalOpen] = useState(false);
 
   const {
     categorias,
-    isLoading,
-    error: loadingError,
+    isLoading: loading,
+    error,
     refreshCategorias,
     deleteCategoria
   } = useCategorias();
 
   const filteredCategorias = useMemo(() => {
     return categorias.filter(categoria => {
-      const matchesSearch = searchTerm === '' || 
+      const matchesSearch = !searchTerm || 
         categoria.nome.toLowerCase().includes(searchTerm.toLowerCase());
+      
       return matchesSearch;
     });
   }, [categorias, searchTerm]);
 
   const handleAddCategoria = () => {
     setEditingCategoria(undefined);
-    setFormModalOpen(true);
+    setIsModalOpen(true);
   };
 
   const handleEditCategoria = (categoria: Categoria) => {
     setEditingCategoria(categoria);
-    setFormModalOpen(true);
+    setIsModalOpen(true);
   };
 
-  const handleDeleteClick = (categoria: Categoria) => {
+  const handleDeleteCategoria = (categoria: Categoria) => {
     setDeleteModal({ isOpen: true, categoria });
   };
 
-  const handleDeleteConfirm = async () => {
-    if (!deleteModal.categoria) return;
-
-    try {
+  const confirmDelete = async () => {
+    if (deleteModal.categoria) {
       await deleteCategoria(deleteModal.categoria.id);
-      setDeleteModal({ isOpen: false, categoria: undefined });
-    } catch (error) {
-      console.error('Erro ao excluir categoria:', error);
+      setDeleteModal({ isOpen: false });
     }
+  };
+
+  const handleModalSuccess = () => {
+    refreshCategorias();
   };
 
   return (
     <AdminProtectedRoute>
       <AdminLayout>
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">Gerenciar Categorias</h1>
+        <div className="max-w-none mx-0 px-20 py-20">
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-6">
+            <h1 className="text-3xl font-light text-gray-900">Categorias</h1>
             <button
               onClick={handleAddCategoria}
-              className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
+              className="bg-[#876950] text-white px-6 py-2 rounded-full hover:bg-[#6d5440] transition-colors"
             >
-              Adicionar Categoria
+              + Adicionar categoria
             </button>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-4 border-b border-gray-200">
-              <input
-                type="text"
-                placeholder="Buscar categorias..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              />
+          {/* Search and Filters */}
+          <div className="mb-12">
+            <div className="flex gap-4 items-center">
+              {/* Search Bar */}
+              <div className="relative w-full max-w-md">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <img src="/icons/lupa.svg" alt="Pesquisar" className="w-4 h-4 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Pesquise por nome..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-[#F4F4F4] rounded-full focus:outline-none placeholder-gray-500"
+                />
+              </div>
+
+              {/* Sort */}
+              <div className="relative">
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value as 'nome' | '-nome')}
+                  className="px-3 py-2 pr-8 bg-transparent text-sm appearance-none focus:outline-none"
+                >
+                  <option value="nome">A-Z</option>
+                  <option value="-nome">Z-A</option>
+                </select>
+                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
             </div>
-
-            {loadingError && (
-              <div className="p-4 bg-red-50 border-b border-red-200">
-                <p className="text-red-600">{loadingError}</p>
-              </div>
-            )}
-
-            {isLoading ? (
-              <div className="p-4 text-center text-gray-500">Carregando...</div>
-            ) : filteredCategorias.length === 0 ? (
-              <div className="p-4 text-center text-gray-500">
-                Nenhuma categoria encontrada.
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nome
-                      </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Ações
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {filteredCategorias.map((categoria) => (
-                      <tr key={categoria.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-700">
-                          {categoria.nome}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <button
-                            onClick={() => handleEditCategoria(categoria)}
-                            className="text-amber-600 hover:text-amber-800 mx-2"
-                          >
-                            Editar
-                          </button>
-                          <button
-                            onClick={() => handleDeleteClick(categoria)}
-                            className="text-red-600 hover:text-red-800 mx-2"
-                          >
-                            Excluir
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
           </div>
 
-          <CategoriaModal
-            isOpen={formModalOpen}
-            onClose={() => setFormModalOpen(false)}
-            categoria={editingCategoria}
-            onSuccess={refreshCategorias}
-          />
+          {/* Loading State */}
+          {loading && (
+            <div className="p-8 text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600 mx-auto"></div>
+              <p className="mt-2 text-gray-600">Carregando categorias...</p>
+            </div>
+          )}
 
-          <DeleteConfirmModal
-            isOpen={deleteModal.isOpen}
-            onClose={() => setDeleteModal({ isOpen: false, categoria: undefined })}
-            onConfirm={handleDeleteConfirm}
-            categoriaNome={deleteModal.categoria?.nome || ''}
-          />
+          {/* Error State */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <p className="text-red-600">{error}</p>
+              <button
+                onClick={refreshCategorias}
+                className="mt-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Tentar novamente
+              </button>
+            </div>
+          )}
+
+          {/* Categorias List */}
+          {!loading && !error && (
+            <div>
+              {filteredCategorias.length === 0 ? (
+                <div className="p-8 text-center">
+                  <p className="text-gray-600">
+                    {searchTerm
+                      ? 'Nenhuma categoria encontrada com os filtros aplicados.'
+                      : 'Nenhuma categoria cadastrada ainda.'
+                    }
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-8">
+                  {filteredCategorias.map((categoria) => (
+                    <div key={categoria.id} className="flex items-center">
+                      <div className="w-80">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="font-medium text-gray-900">{categoria.nome}</h3>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleEditCategoria(categoria)}
+                          className="px-6 py-2 bg-[#FFCD35] text-black rounded-full hover:bg-[#e6b82f] transition-colors text-sm font-medium"
+                        >
+                          Editar
+                        </button>
+                        
+                        <button
+                          onClick={() => handleDeleteCategoria(categoria)}
+                          className="px-6 py-2 bg-[#FF4E4E] text-white rounded-full hover:bg-[#e63946] transition-colors text-sm font-medium"
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
+
+        {/* Modals */}
+        <CategoriaModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          categoria={editingCategoria}
+          onSuccess={handleModalSuccess}
+        />
+
+        <DeleteConfirmModal
+          isOpen={deleteModal.isOpen}
+          onClose={() => setDeleteModal({ isOpen: false })}
+          onConfirm={confirmDelete}
+          categoriaNome={deleteModal.categoria?.nome || ''}
+        />
       </AdminLayout>
     </AdminProtectedRoute>
   );

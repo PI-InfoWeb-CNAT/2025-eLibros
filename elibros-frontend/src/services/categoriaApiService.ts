@@ -1,56 +1,53 @@
-import { ApiResponse } from '@/services/api';
+import { elibrosApi } from '@/services/api';
 import { Categoria, CategoriaCreateInput, CategoriaUpdateInput } from '@/types/categoria';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+class CategoriaApiService {
+  private endpoint = '/categorias';
 
-function getAuthHeaders(): Record<string, string> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
-  return token ? { 'Authorization': `Bearer ${token}` } : {};
+  async getAll(): Promise<Categoria[]> {
+    try {
+      const response = await elibrosApi.makeRequest<{ results: Categoria[] }>(`${this.endpoint}/`);
+      return response.results;
+    } catch (error) {
+      console.error('Erro ao carregar categorias:', error);
+      throw new Error('Falha ao carregar categorias');
+    }
+  }
+
+  async create(data: CategoriaCreateInput): Promise<Categoria> {
+    try {
+      return await elibrosApi.makeRequest<Categoria>(`${this.endpoint}/`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.error('Erro ao criar categoria:', error);
+      throw new Error('Falha ao criar categoria');
+    }
+  }
+
+  async update(id: number, data: CategoriaUpdateInput): Promise<Categoria> {
+    try {
+      return await elibrosApi.makeRequest<Categoria>(`${this.endpoint}/${id}/`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.error('Erro ao atualizar categoria:', error);
+      throw new Error('Falha ao atualizar categoria');
+    }
+  }
+
+  async delete(id: number): Promise<void> {
+    try {
+      await elibrosApi.makeRequest<void>(`${this.endpoint}/${id}/`, {
+        method: 'DELETE',
+      });
+    } catch (error) {
+      console.error('Erro ao deletar categoria:', error);
+      throw new Error('Falha ao deletar categoria');
+    }
+  }
 }
 
-export const categoriaApi = {
-  getAll: async (): Promise<Categoria[]> => {
-    const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/categorias/`, { headers });
-    if (!response.ok) throw new Error('Falha ao carregar categorias');
-    const data: ApiResponse<Categoria> = await response.json();
-    return data.results;
-  },
-
-  create: async (data: CategoriaCreateInput): Promise<Categoria> => {
-    const headers = {
-      ...getAuthHeaders(),
-      'Content-Type': 'application/json',
-    };
-    const response = await fetch(`${API_BASE_URL}/categorias/`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error('Falha ao criar categoria');
-    return response.json();
-  },
-
-  update: async (id: number, data: CategoriaUpdateInput): Promise<Categoria> => {
-    const headers = {
-      ...getAuthHeaders(),
-      'Content-Type': 'application/json',
-    };
-    const response = await fetch(`${API_BASE_URL}/categorias/${id}/`, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error('Falha ao atualizar categoria');
-    return response.json();
-  },
-
-  delete: async (id: number): Promise<void> => {
-    const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/categorias/${id}/`, {
-      method: 'DELETE',
-      headers,
-    });
-    if (!response.ok) throw new Error('Falha ao excluir categoria');
-  },
-};
+export const categoriaApi = new CategoriaApiService();

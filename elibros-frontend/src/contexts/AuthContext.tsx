@@ -41,12 +41,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
         
         if (currentUser && isAuth) {
-          setUser(currentUser);
-          setIsAuthenticated(true);
-          // Verificar se é admin (staff ou superuser)
-          const adminStatus = currentUser.is_staff || currentUser.is_superuser || false;
-          setIsAdmin(adminStatus);
-          console.log('✅ Usuário autenticado:', currentUser.username, 'Admin:', adminStatus);
+          // Verificar se o token ainda é válido
+          const isTokenValid = await elibrosApi.verifyToken();
+          
+          if (isTokenValid) {
+            setUser(currentUser);
+            setIsAuthenticated(true);
+            // Verificar se é admin (staff ou superuser)
+            const adminStatus = currentUser.is_staff || currentUser.is_superuser || false;
+            setIsAdmin(adminStatus);
+            console.log('✅ Usuário autenticado:', currentUser.username, 'Admin:', adminStatus);
+          } else {
+            // Token inválido, limpar dados
+            console.log('🔑 Token inválido, limpando dados');
+            localStorage.removeItem('user');
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            setUser(null);
+            setIsAuthenticated(false);
+            setIsAdmin(false);
+          }
         } else {
           // Limpar estados
           setUser(null);
@@ -62,6 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem('refresh_token');
         setUser(null);
         setIsAuthenticated(false);
+        setIsAdmin(false);
       } finally {
         setIsLoading(false);
         setIsInitialized(true);
@@ -70,9 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     checkAuth();
-  }, []);
-
-  const login = async (credentials: LoginRequest) => {
+  }, []);  const login = async (credentials: LoginRequest) => {
     try {
       const response = await authApi.login(credentials);
       setUser(response.user);

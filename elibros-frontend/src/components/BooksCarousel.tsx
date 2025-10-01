@@ -51,9 +51,25 @@ export default function BooksCarousel({
         const randomizedBooks = shuffleArray(response.results);
         setBooks(randomizedBooks);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido ao carregar livros';
+        let errorMessage = 'Erro desconhecido ao carregar livros';
+        
+        if (err instanceof Error) {
+          if (err.message.includes('500')) {
+            errorMessage = 'Erro interno do servidor. Tente novamente mais tarde.';
+          } else if (err.message.includes('401') || err.message.includes('token')) {
+            errorMessage = 'Erro de autenticação. Faça login novamente.';
+          } else if (err.message.includes('conexão') || err.message.includes('fetch')) {
+            errorMessage = 'Erro de conexão. Verifique sua internet.';
+          } else {
+            errorMessage = err.message;
+          }
+        }
+        
         setError(errorMessage);
         console.error('Erro ao buscar livros:', err);
+        
+        // Em caso de erro, usar dados mock para não quebrar a interface
+        setBooks([]);
       } finally {
         setLoading(false);
       }
