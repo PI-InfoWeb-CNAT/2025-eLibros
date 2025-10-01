@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import AdminProtectedRoute from '../../../components/AdminProtectedRoute';
-import AdminLayout from '../../../components/AdminLayout';
-import { useCupons } from '../../../hooks/useCupons';
-import { cupomApi, Cupom } from '../../../services/cupomApi';
+import AdminProtectedRoute from '@/components/AdminProtectedRoute';
+import AdminLayout from '@/components/AdminLayout';
+import { useCupons } from '@/hooks/useCupons';
+import { cupomApi } from '@/services/cupomApiService';
+import { Cupom } from '@/types/cupom';
 
 interface CupomModalProps {
   isOpen: boolean;

@@ -3,8 +3,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { Header, Footer, BooksCarousel } from '../../../components';
-import { elibrosApi, Livro, Avaliacao } from '../../../services/api';
+import { Header, Footer, BooksCarousel } from '@/components';
+import { livroApi, avaliacaoApi } from '@/services';
+import { Livro, Avaliacao } from '@/types';
 import { useCart } from '../../../contexts/CartContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import { getImageProps } from '../../../utils/imageUtils';
@@ -32,7 +33,7 @@ export default function LivroPage() {
     
     try {
       setLoadingAvaliacoes(true);
-      const avaliacoesData = await elibrosApi.getAvaliacoesLivro(livroId);
+      const avaliacoesData = await avaliacaoApi.getAvaliacoesLivro(livroId);
       setAvaliacoes(avaliacoesData);
     } catch (err) {
       console.error('Erro ao carregar avaliações:', err);
@@ -64,7 +65,7 @@ export default function LivroPage() {
 
     try {
       setEnviandoComentario(true);
-      await elibrosApi.criarAvaliacao(livroId, { texto: comentario.trim() });
+      await avaliacaoApi.criarAvaliacao(livroId, { texto: comentario.trim() });
       setComentario('');
       await carregarAvaliacoes(); // Recarregar avaliações
       alert('Comentário enviado com sucesso!');
@@ -86,9 +87,9 @@ export default function LivroPage() {
 
     try {
       if (usuarioCurtiu) {
-        await elibrosApi.removerCurtidaAvaliacao(avaliacaoId);
+        await avaliacaoApi.removerCurtidaAvaliacao(avaliacaoId);
       } else {
-        await elibrosApi.curtirAvaliacao(avaliacaoId);
+        await avaliacaoApi.curtirAvaliacao(avaliacaoId);
       }
       await carregarAvaliacoes(); // Recarregar avaliações
     } catch (err: unknown) {
@@ -110,7 +111,7 @@ export default function LivroPage() {
         setLoadingLivro(true);
         setError(null);
         
-        const response = await elibrosApi.getLivro(livroId);
+        const response = await livroApi.getLivro(livroId);
         setLivro(response);
         
         // Carregar avaliações em paralelo para acelerar

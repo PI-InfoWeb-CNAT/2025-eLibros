@@ -1,8 +1,8 @@
 "use client";
 
 import Image from 'next/image';
-import { Header, Footer, ProtectedRoute } from '../../components';
-import { useAuth } from '../../contexts/AuthContext';
+import { Header, Footer, ProtectedRoute } from '@/components';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function PerfilPage() {
   const { user, logout } = useAuth();
