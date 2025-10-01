@@ -5,6 +5,9 @@ export type { Cliente, ClienteUpdateData, ClienteListResponse, ClienteStats } fr
 export type { Cupom, CupomCreateData, CupomUpdateData, CupomListResponse, CupomStats } from './cupom';
 export type { Endereco } from './endereco';
 export type { ItemCarrinho } from './itemCarrinho';
-export type { Livro } from './livro';
+export type { Livro, LivroCreateData, LivroUpdateData, LivroListResponse } from './livro';
+export type { Autor } from './autor';
+export type { Categoria } from './categoria';
+export type { GeneroLiterario } from './generoLiterario';
 export type { Pedido, PedidoCreateData, PedidoUpdateData, PedidoListResponse, PedidoStats } from './pedido';
 export type { Usuario } from './usuario';
