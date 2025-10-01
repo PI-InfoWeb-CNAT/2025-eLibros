@@ -114,7 +114,22 @@ class ElibrosApiService {
         throw new Error(`API Error: ${errorDetails}`);
       }
 
-      return response.json();
+      // Para operações DELETE ou respostas sem conteúdo, verificar se há JSON
+      const contentType = response.headers.get('content-type');
+      if (response.status === 204 || !contentType?.includes('application/json')) {
+        return {} as T; // Retorna objeto vazio para operações sem conteúdo
+      }
+
+      const text = await response.text();
+      if (!text.trim()) {
+        return {} as T; // Retorna objeto vazio se não há conteúdo
+      }
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        return {} as T; // Retorna objeto vazio se não conseguir parsear JSON
+      }
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === 'AbortError') {

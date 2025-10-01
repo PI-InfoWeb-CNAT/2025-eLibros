@@ -408,7 +408,7 @@ export default function CuponsAdminPage() {
                 <div className="space-y-8">
                   {filteredCupons.map((cupom) => (
                     <div key={cupom.id} className="flex items-center">
-                      <div className="min-w-0 flex-shrink-0">
+                      <div className="w-80">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="font-medium text-gray-900">{cupom.codigo}</h3>
                           {getStatusBadge(cupom)}
@@ -419,7 +419,7 @@ export default function CuponsAdminPage() {
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-2 ml-16">
+                      <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleEditCupom(cupom)}
                           className="px-6 py-2 bg-[#FFCD35] text-black rounded-full hover:bg-[#e6b82f] transition-colors text-sm font-medium"
