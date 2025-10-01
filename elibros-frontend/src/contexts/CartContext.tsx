@@ -129,7 +129,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     try {
       console.log('📡 Enviando para API...');
-      await cartAPI.addToCart(livro, quantidade);
+      // Garantir que os campos obrigatórios estejam presentes
+      const livroFormatado = {
+        id: livro.id,
+        titulo: livro.titulo,
+        capa: livro.capa || '', // Garantir que capa nunca seja undefined
+        preco: livro.preco,
+        autores: livro.autores
+      };
+      await cartAPI.addToCart(livroFormatado, quantidade);
       console.log('✅ Item adicionado, atualizando carrinho...');
       await refreshCart();
     } catch (error) {

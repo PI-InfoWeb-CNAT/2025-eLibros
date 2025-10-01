@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Header, Footer } from '../../components';
 import BooksCarousel from '../../components/BooksCarousel';
-import { elibrosApi, Livro } from '../../services/api';
 import { getImageProps } from '../../utils/imageUtils';
+import { Livro } from '@/types/livro';
+import { livroApi } from '@/services';
 
 interface Genero {
   id: number;
@@ -37,7 +38,7 @@ export default function AcervoPage() {
   useEffect(() => {
     const loadFilterOptions = async () => {
       try {
-        const response = await elibrosApi.pesquisarLivros();
+        const response = await livroApi.pesquisarLivros();
         setGeneros(response.generos);
         setAutores(response.autores);
       } catch (error) {
@@ -55,7 +56,7 @@ export default function AcervoPage() {
   const performSearch = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await elibrosApi.pesquisarLivros(
+      const response = await livroApi.pesquisarLivros(
         searchTerm || undefined,
         filters.genre || undefined,
         filters.author || undefined,
@@ -74,7 +75,7 @@ export default function AcervoPage() {
             resultados = resultados.sort((a, b) => b.titulo.localeCompare(a.titulo));
             break;
           case 'mais-vendidos':
-            resultados = resultados.sort((a, b) => b.qtd_vendidos - a.qtd_vendidos);
+            resultados = resultados.sort((a, b) => (b.qtd_vendidos ?? 0) - (a.qtd_vendidos ?? 0));
             break;
         }
       }
