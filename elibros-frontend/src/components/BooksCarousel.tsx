@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-import { elibrosApi, Livro } from '../services/api';
-import { getImageProps } from '../utils/imageUtils';
+import { Livro } from '@/types/livro';
+import { livroApi } from '../services/livroApiService';
+import { getImageProps } from '@/utils/imageUtils';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -45,7 +46,7 @@ export default function BooksCarousel({
         setError(null);
         
         // Usando o endpoint correto que retorna todos os livros
-        const response = await elibrosApi.getLivros();
+        const response = await livroApi.getLivros();
         // Embaralhando os livros para mostrar de forma aleatória
         const randomizedBooks = shuffleArray(response.results);
         setBooks(randomizedBooks);
