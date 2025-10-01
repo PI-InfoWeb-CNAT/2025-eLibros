@@ -73,27 +73,27 @@ export default function AdminPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
               <div className="bg-white p-4 rounded-lg shadow-sm border">
                 <p className="text-sm text-gray-600">Livros</p>
-                <p className="text-2xl font-bold text-blue-600">{stats.total_livros}</p>
+                <p className="text-2xl font-bold text-[#FFCD35]">{stats.total_livros}</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-sm border">
                 <p className="text-sm text-gray-600">Clientes</p>
-                <p className="text-2xl font-bold text-green-600">{stats.total_clientes}</p>
+                <p className="text-2xl font-bold text-[#FFCD35]">{stats.total_clientes}</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-sm border">
                 <p className="text-sm text-gray-600">Pedidos</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.total_pedidos}</p>
+                <p className="text-2xl font-bold text-[#FFCD35]">{stats.total_pedidos}</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-sm border">
                 <p className="text-sm text-gray-600">Gêneros</p>
-                <p className="text-2xl font-bold text-purple-600">{stats.total_generos}</p>
+                <p className="text-2xl font-bold text-[#FFCD35]">{stats.total_generos}</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-sm border">
                 <p className="text-sm text-gray-600">Categorias</p>
-                <p className="text-2xl font-bold text-indigo-600">{stats.total_categorias}</p>
+                <p className="text-2xl font-bold text-[#FFCD35]">{stats.total_categorias}</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-sm border">
                 <p className="text-sm text-gray-600">Admins</p>
-                <p className="text-2xl font-bold text-red-600">{stats.total_administradores}</p>
+                <p className="text-2xl font-bold text-[#FFCD35]">{stats.total_administradores}</p>
               </div>
             </div>
           ) : statsError ? (

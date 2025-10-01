@@ -36,7 +36,13 @@ export default function AdminProtectedRoute({
           setIsAdmin(true);
         } catch (error) {
           console.error('Erro ao verificar status de admin:', error);
-          router.push('/');
+          // Se for erro de token, redirecionar para login
+          if (error instanceof Error && error.message.includes('token')) {
+            console.log('🔑 Erro de token, redirecionando para login');
+            router.push('/login');
+          } else {
+            router.push('/');
+          }
         }
       } else if (!isLoading && !isAuthenticated) {
         console.log('❌ Usuário não autenticado, redirecionando para login');

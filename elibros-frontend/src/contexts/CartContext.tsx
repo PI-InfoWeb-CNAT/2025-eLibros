@@ -1,9 +1,13 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { useCartAPI, CartItem } from '../utils/cartAPI';
+import { useCartAPI } from '../utils/cartAPI';
 import { useAuth } from './AuthContext';
-import { Livro } from '../services/api';
+import { Livro } from '@/types/livro';
+import { ItemCarrinho } from '@/types/itemCarrinho';
+
+// Alias para melhor clareza
+type CartItem = ItemCarrinho;
 
 interface CartContextType {
   items: CartItem[];
@@ -96,10 +100,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       calculateTotals(cartItems || []);
     } catch (error) {
       console.error('❌ Erro ao atualizar carrinho:', error);
-      // Em caso de erro, limpar carrinho
-      setItems([]);
-      setTotalItems(0);
-      setTotalPrice(0);
+      
+      // Se for erro de token, não limpar carrinho (deixar para AuthContext lidar)
+      if (error instanceof Error && error.message.includes('token')) {
+        console.log('🔑 Erro de token, AuthContext irá lidar com isso');
+        // Não fazer nada, deixar o AuthContext limpar tudo
+      } else {
+        // Para outros erros, limpar carrinho
+        setItems([]);
+        setTotalItems(0);
+        setTotalPrice(0);
+      }
     } finally {
       setIsLoading(false);
     }
