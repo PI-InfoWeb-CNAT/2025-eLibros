@@ -3,6 +3,7 @@ from .AvaliacaoViewSet import AvaliacaoViewSet
 from .CarrinhoViewSet import CarrinhoViewSet
 from .CategoriaViewSet import CategoriaViewSet
 from .ClienteViewSet import ClienteViewSet
+from .CupomViewSet import CupomViewSet
 from .GeneroViewSet import GeneroViewSet
 from .LivroViewSet import LivroViewSet
 from .PedidoViewSet import PedidoViewSet

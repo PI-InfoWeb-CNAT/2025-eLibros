@@ -11,7 +11,7 @@ from . import views
 from .views import (
     LivroViewSet, AutorViewSet, CategoriaViewSet, GeneroViewSet,
     ClienteViewSet, CarrinhoViewSet, AvaliacaoViewSet, PedidoViewSet,
-    UsuarioViewSet, AdminViewSet
+    UsuarioViewSet, AdminViewSet, CupomViewSet
 )
 
 # Registrar ViewSets no router
@@ -25,6 +25,7 @@ router.register(r'cliente', ClienteViewSet, basename='cliente')
 router.register(r'carrinhos', CarrinhoViewSet, basename='carrinho')
 router.register(r'avaliacoes', AvaliacaoViewSet, basename='avaliacao')
 router.register(r'pedidos', PedidoViewSet, basename='pedido')
+router.register(r'cupons', CupomViewSet, basename='cupom')
 router.register(r'admin', AdminViewSet, basename='admin')
 
 # Tipo: Lista, que pode conter URLPattern (um url individual) e URLResolver (aponta para outro conjunto de URLs)
