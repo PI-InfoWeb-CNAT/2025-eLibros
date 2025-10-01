@@ -1,9 +1,9 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { adminApi } from '../services/adminApi';
+import { adminApi } from '@/services/adminApiService';
 
 interface AdminProtectedRouteProps {
   children: ReactNode;
