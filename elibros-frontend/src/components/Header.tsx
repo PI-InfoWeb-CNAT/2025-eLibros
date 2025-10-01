@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import AuthenticatedHeader from './AuthenticatedHeader';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

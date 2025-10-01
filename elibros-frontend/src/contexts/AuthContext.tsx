@@ -1,7 +1,10 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { elibrosApi, Usuario, LoginRequest, RegisterRequest } from '../services/api';
+import { elibrosApi} from '../services/api';
+import { authApi } from '../services/authApiService';
+import { Usuario } from '@/types/usuario';
+import { LoginRequest, RegisterRequest } from '@/types/auth';
 
 interface AuthContextType {
   user: Usuario | null;
@@ -28,9 +31,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Verificar se há um usuário logado ao carregar a página
     const checkAuth = async () => {
       try {
-        const currentUser = elibrosApi.getCurrentUser();
-        const isAuth = elibrosApi.isAuthenticated();
-        
+        const currentUser = authApi.getCurrentUser();
+        const isAuth = authApi.isAuthenticated();
+
         console.log('🔐 AuthContext DEBUG:', {
           currentUser: currentUser?.username || 'null',
           isAuth,
@@ -71,7 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (credentials: LoginRequest) => {
     try {
-      const response = await elibrosApi.login(credentials);
+      const response = await authApi.login(credentials);
       setUser(response.user);
       setIsAuthenticated(true);
     } catch (error) {
@@ -81,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (userData: RegisterRequest) => {
     try {
-      await elibrosApi.register(userData);
+      await authApi.register(userData);
       // Após o registro, fazer login automaticamente
       await login({ email: userData.email, password: userData.password });
     } catch (error) {
@@ -91,7 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
-      await elibrosApi.logout();
+      await authApi.logout();
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
     } finally {
@@ -101,7 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const refreshUser = () => {
-    const currentUser = elibrosApi.getCurrentUser();
+    const currentUser = authApi.getCurrentUser();
     setUser(currentUser);
   };
 

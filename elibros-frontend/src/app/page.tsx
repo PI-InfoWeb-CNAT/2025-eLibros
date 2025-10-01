@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { Header, Footer, BooksCarousel } from '../components';
+import { Header, Footer, BooksCarousel } from '@/components';
 
 export default function Home() {
   return (

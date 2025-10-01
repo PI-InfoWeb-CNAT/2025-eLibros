@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { cupomApi, Cupom, CupomCreateData, CupomUpdateData, CupomStats } from '../services/cupomApi';
+import { cupomApi } from '../services/cupomApiService';
+import { Cupom, CupomCreateData, CupomUpdateData, CupomStats } from '@/types/cupom';
 
 export interface UseCuponsOptions {
   search?: string;
