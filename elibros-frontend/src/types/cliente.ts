@@ -18,15 +18,7 @@ export interface ClienteUpdateData {
     genero?: 'F' | 'M' | 'NB' | 'PND' | 'NI';
     dt_nasc?: string;
   };
-  endereco?: {
-    cep?: string;
-    rua?: string;
-    numero?: string;
-    complemento?: string;
-    cidade?: string;
-    estado?: string; // Note: API usa 'estado' mas model usa 'uf'
-    bairro?: string;
-  };
+  endereco?: Partial<Endereco> | null;
 }
 
 export interface ClienteListResponse {
