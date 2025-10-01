@@ -3,9 +3,28 @@ import { Endereco } from './endereco';
 
 export interface Cliente {
   id: number;
+  nome: string;
+  email: string;
+  username: string;
+  cpf?: string;
+  telefone?: string;
+  data_nascimento?: string;
+  genero?: string;
+  data_cadastro: string;
+  is_active: boolean;
+  foto_de_perfil?: string | null;
+  endereco?: {
+    id: number;
+    cep: string;
+    rua: string;
+    numero: string;
+    complemento?: string;
+    bairro: string;
+    cidade: string;
+    uf: string;
+  } | null;
+  // Mantendo compatibilidade com estrutura antiga
   user: Usuario;
-  endereco: Endereco | null;
-  criado_por: number | null;
 }
 
 export interface ClienteUpdateData {

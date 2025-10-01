@@ -130,3 +130,238 @@ class AdminViewSet(viewsets.ViewSet):
                 {'error': f'Erro ao buscar atividades recentes: {str(e)}'}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    
+    @action(detail=False, methods=['GET'])
+    def clientes(self, request: Request) -> Response:
+        """Listar todos os clientes para administradores"""
+        try:
+            clientes = Cliente.objects.select_related('user', 'endereco').all()
+            
+            clientes_data = []
+            for cliente in clientes:
+                cliente_data = {
+                    'id': cliente.id,
+                    'nome': cliente.user.nome,
+                    'email': cliente.user.email,
+                    'username': cliente.user.username,
+                    'cpf': cliente.user.CPF,
+                    'telefone': cliente.user.telefone,
+                    'data_nascimento': cliente.user.dt_nasc,
+                    'genero': cliente.user.genero,
+                    'data_cadastro': cliente.user.date_joined,
+                    'is_active': cliente.user.is_active,
+                    'foto_de_perfil': cliente.user.foto_de_perfil.url if cliente.user.foto_de_perfil else None,
+                }
+                
+                if cliente.endereco:
+                    cliente_data['endereco'] = {
+                        'id': cliente.endereco.id,
+                        'cep': cliente.endereco.cep,
+                        'rua': cliente.endereco.rua,
+                        'numero': cliente.endereco.numero,
+                        'complemento': cliente.endereco.complemento,
+                        'bairro': cliente.endereco.bairro,
+                        'cidade': cliente.endereco.cidade,
+                        'uf': cliente.endereco.uf,
+                    }
+                else:
+                    cliente_data['endereco'] = None
+                
+                clientes_data.append(cliente_data)
+            
+            return Response(clientes_data)
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao buscar clientes: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['GET'])
+    def get_cliente(self, request: Request, pk=None) -> Response:
+        """Buscar cliente específico por ID"""
+        try:
+            cliente = Cliente.objects.select_related('user', 'endereco').get(pk=pk)
+            
+            cliente_data = {
+                'id': cliente.id,
+                'nome': cliente.user.nome,
+                'email': cliente.user.email,
+                'username': cliente.user.username,
+                'cpf': cliente.user.CPF,
+                'telefone': cliente.user.telefone,
+                'data_nascimento': cliente.user.dt_nasc,
+                'genero': cliente.user.genero,
+                'data_cadastro': cliente.user.date_joined,
+                'is_active': cliente.user.is_active,
+                'foto_de_perfil': cliente.user.foto_de_perfil.url if cliente.user.foto_de_perfil else None,
+            }
+            
+            if cliente.endereco:
+                cliente_data['endereco'] = {
+                    'id': cliente.endereco.id,
+                    'cep': cliente.endereco.cep,
+                    'rua': cliente.endereco.rua,
+                    'numero': cliente.endereco.numero,
+                    'complemento': cliente.endereco.complemento,
+                    'bairro': cliente.endereco.bairro,
+                    'cidade': cliente.endereco.cidade,
+                    'uf': cliente.endereco.uf,
+                }
+            else:
+                cliente_data['endereco'] = None
+            
+            return Response(cliente_data)
+        except Cliente.DoesNotExist:
+            return Response(
+                {'error': 'Cliente não encontrado'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao buscar cliente: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['PUT', 'PATCH'])
+    def editar_cliente(self, request: Request, pk=None) -> Response:
+        """Editar dados do cliente"""
+        try:
+            cliente = Cliente.objects.select_related('user', 'endereco').get(pk=pk)
+            
+            # Atualizar dados do usuário
+            user_data = request.data.get('user', {})
+            if 'nome' in user_data:
+                cliente.user.nome = user_data['nome']
+            if 'email' in user_data:
+                cliente.user.email = user_data['email']
+            if 'username' in user_data:
+                cliente.user.username = user_data['username']
+            if 'cpf' in user_data or 'CPF' in user_data:
+                cliente.user.CPF = user_data.get('cpf', user_data.get('CPF'))
+            if 'telefone' in user_data:
+                cliente.user.telefone = user_data['telefone']
+            if 'genero' in user_data:
+                cliente.user.genero = user_data['genero']
+            if 'dt_nasc' in user_data:
+                cliente.user.dt_nasc = user_data['dt_nasc']
+            
+            # Atualizar foto de perfil se fornecida
+            if 'foto_de_perfil' in request.FILES:
+                cliente.user.foto_de_perfil = request.FILES['foto_de_perfil']
+            
+            # Atualizar endereço
+            endereco_data = request.data.get('endereco', {})
+            if endereco_data:
+                from ..models import Endereco
+                if cliente.endereco:
+                    # Atualizar endereço existente
+                    for field, value in endereco_data.items():
+                        if field == 'uf':
+                            setattr(cliente.endereco, field, value)
+                        elif hasattr(cliente.endereco, field):
+                            setattr(cliente.endereco, field, value)
+                    cliente.endereco.save()
+                else:
+                    # Criar novo endereço
+                    endereco = Endereco.objects.create(
+                        cep=endereco_data.get('cep', ''),
+                        rua=endereco_data.get('rua', ''),
+                        numero=endereco_data.get('numero', ''),
+                        complemento=endereco_data.get('complemento', ''),
+                        cidade=endereco_data.get('cidade', ''),
+                        uf=endereco_data.get('uf', ''),
+                        bairro=endereco_data.get('bairro', '')
+                    )
+                    cliente.endereco = endereco
+            
+            cliente.user.save()
+            cliente.save()
+            
+            # Retornar dados atualizados
+            cliente_data = {
+                'id': cliente.id,
+                'nome': cliente.user.nome,
+                'email': cliente.user.email,
+                'username': cliente.user.username,
+                'cpf': cliente.user.CPF,
+                'telefone': cliente.user.telefone,
+                'data_nascimento': cliente.user.dt_nasc,
+                'genero': cliente.user.genero,
+                'data_cadastro': cliente.user.date_joined,
+                'is_active': cliente.user.is_active,
+                'foto_de_perfil': cliente.user.foto_de_perfil.url if cliente.user.foto_de_perfil else None,
+            }
+            
+            if cliente.endereco:
+                cliente_data['endereco'] = {
+                    'id': cliente.endereco.id,
+                    'cep': cliente.endereco.cep,
+                    'rua': cliente.endereco.rua,
+                    'numero': cliente.endereco.numero,
+                    'complemento': cliente.endereco.complemento,
+                    'bairro': cliente.endereco.bairro,
+                    'cidade': cliente.endereco.cidade,
+                    'uf': cliente.endereco.uf,
+                }
+            else:
+                cliente_data['endereco'] = None
+            
+            return Response(cliente_data)
+            
+        except Cliente.DoesNotExist:
+            return Response(
+                {'error': 'Cliente não encontrado'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao editar cliente: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['POST'])
+    def toggle_cliente_status(self, request: Request, pk=None) -> Response:
+        """Ativar/desativar cliente"""
+        try:
+            cliente = Cliente.objects.get(pk=pk)
+            cliente.user.is_active = not cliente.user.is_active
+            cliente.user.save()
+            
+            return Response({
+                'message': f'Cliente {"ativado" if cliente.user.is_active else "desativado"} com sucesso',
+                'is_active': cliente.user.is_active
+            })
+        except Cliente.DoesNotExist:
+            return Response(
+                {'error': 'Cliente não encontrado'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao alterar status do cliente: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['DELETE'])
+    def delete_cliente(self, request: Request, pk=None) -> Response:
+        """Excluir cliente"""
+        try:
+            cliente = Cliente.objects.get(pk=pk)
+            nome_cliente = cliente.user.nome
+            
+            # Excluir o usuário também exclui o cliente (cascata)
+            cliente.user.delete()
+            
+            return Response({
+                'message': f'Cliente "{nome_cliente}" excluído com sucesso'
+            })
+        except Cliente.DoesNotExist:
+            return Response(
+                {'error': 'Cliente não encontrado'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao excluir cliente: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

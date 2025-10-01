@@ -1050,7 +1050,7 @@ export default function LivrosAdminPage() {
                 <div className="space-y-8">
                   {filteredLivros.map((livro) => (
                     <div key={livro.id} className="flex items-center">
-                      <div className="min-w-0 flex-shrink-0">
+                      <div className="w-80">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="font-medium text-gray-900">{livro.titulo}</h3>
                         </div>
@@ -1064,10 +1064,10 @@ export default function LivrosAdminPage() {
                           <p>Estoque: {livro.quantidade}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 ml-16">
+                      <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleViewLivro(livro)}
-                          className="px-6 py-2 bg-[#6CB4F6] text-white rounded-full hover:bg-[#4a90e2] text-sm font-medium"
+                          className="px-6 py-2 bg-transparent border-2 border-[#866951] text-[#866951] rounded-full hover:bg-[#866951] hover:text-white text-sm font-medium transition-colors"
                         >
                           Ver
                         </button>

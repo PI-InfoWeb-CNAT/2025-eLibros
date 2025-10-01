@@ -10,7 +10,7 @@ import {
 // import { Usuario } from '@/types/usuario';
 
 class ClienteApiService {
-  private endpoint = '/clientes';
+  private endpoint = '/cliente';
 
   async list(params?: {
     search?: string;
@@ -18,30 +18,137 @@ class ClienteApiService {
     ordering?: string;
     page?: number;
   }): Promise<ClienteListResponse> {
-    const searchParams = new URLSearchParams();
+    // Para admin, usar o endpoint administrativo
+    const clientesData = await elibrosApi.makeRequest<any[]>('/admin/clientes/');
+    
+    // Mapear dados para a estrutura esperada pelo frontend
+    const clientes: Cliente[] = clientesData.map(clienteData => ({
+      id: clienteData.id,
+      nome: clienteData.nome,
+      email: clienteData.email,
+      username: clienteData.username,
+      cpf: clienteData.cpf,
+      telefone: clienteData.telefone,
+      data_nascimento: clienteData.data_nascimento,
+      genero: clienteData.genero,
+      data_cadastro: clienteData.data_cadastro,
+      is_active: clienteData.is_active,
+      foto_de_perfil: clienteData.foto_de_perfil,
+      endereco: clienteData.endereco,
+      // Mantendo compatibilidade com estrutura antiga
+      user: {
+        id: clienteData.id,
+        email: clienteData.email,
+        username: clienteData.username,
+        nome: clienteData.nome,
+        CPF: clienteData.cpf || '',
+        telefone: clienteData.telefone || '',
+        genero: clienteData.genero as any || 'NI',
+        dt_nasc: clienteData.data_nascimento,
+        date_joined: clienteData.data_cadastro,
+        is_active: clienteData.is_active,
+        email_is_verified: true, // Assumindo verificado
+        is_staff: false,
+        is_superuser: false,
+        foto_de_perfil: clienteData.foto_de_perfil,
+      }
+    }));
+    
+    // Aplicar filtros localmente se necessário
+    let filteredClientes = clientes;
     
     if (params?.search) {
-      searchParams.append('search', params.search);
+      const search = params.search.toLowerCase();
+      filteredClientes = filteredClientes.filter(cliente => 
+        cliente.nome.toLowerCase().includes(search) ||
+        cliente.email.toLowerCase().includes(search) ||
+        cliente.username.toLowerCase().includes(search)
+      );
     }
+    
     if (params?.is_active !== undefined) {
-      searchParams.append('is_active', params.is_active.toString());
+      filteredClientes = filteredClientes.filter(cliente => 
+        cliente.is_active === params.is_active
+      );
     }
+    
     if (params?.ordering) {
-      searchParams.append('ordering', params.ordering);
+      const [field, direction] = params.ordering.startsWith('-') 
+        ? [params.ordering.slice(1), 'desc'] 
+        : [params.ordering, 'asc'];
+      
+      filteredClientes.sort((a, b) => {
+        let aValue: any, bValue: any;
+        
+        switch (field) {
+          case 'nome':
+            aValue = a.nome;
+            bValue = b.nome;
+            break;
+          case 'email':
+            aValue = a.email;
+            bValue = b.email;
+            break;
+          case 'data_cadastro':
+            aValue = new Date(a.data_cadastro);
+            bValue = new Date(b.data_cadastro);
+            break;
+          default:
+            aValue = a.id;
+            bValue = b.id;
+        }
+        
+        if (direction === 'desc') {
+          return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+        } else {
+          return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+        }
+      });
     }
-    if (params?.page) {
-      searchParams.append('page', params.page.toString());
-    }
-
-    const url = searchParams.toString() 
-      ? `${this.endpoint}/?${searchParams.toString()}`
-      : `${this.endpoint}/`;
-
-    return elibrosApi.makeRequest<ClienteListResponse>(url);
+    
+    return {
+      count: filteredClientes.length,
+      next: null,
+      previous: null,
+      results: filteredClientes
+    };
   }
 
   async get(id: number): Promise<Cliente> {
-    return elibrosApi.makeRequest<Cliente>(`${this.endpoint}/${id}/`);
+    const clienteData = await elibrosApi.makeRequest<any>(`/admin/${id}/get_cliente/`);
+    
+    // Mapear para a estrutura esperada
+    return {
+      id: clienteData.id,
+      nome: clienteData.nome,
+      email: clienteData.email,
+      username: clienteData.username,
+      cpf: clienteData.cpf,
+      telefone: clienteData.telefone,
+      data_nascimento: clienteData.data_nascimento,
+      genero: clienteData.genero,
+      data_cadastro: clienteData.data_cadastro,
+      is_active: clienteData.is_active,
+      foto_de_perfil: clienteData.foto_de_perfil,
+      endereco: clienteData.endereco,
+      // Mantendo compatibilidade com estrutura antiga
+      user: {
+        id: clienteData.id,
+        email: clienteData.email,
+        username: clienteData.username,
+        nome: clienteData.nome,
+        CPF: clienteData.cpf || '',
+        telefone: clienteData.telefone || '',
+        genero: clienteData.genero as any || 'NI',
+        dt_nasc: clienteData.data_nascimento,
+        date_joined: clienteData.data_cadastro,
+        is_active: clienteData.is_active,
+        email_is_verified: true,
+        is_staff: false,
+        is_superuser: false,
+        foto_de_perfil: clienteData.foto_de_perfil,
+      }
+    };
   }
 
   /**
@@ -64,50 +171,98 @@ class ClienteApiService {
   /**
    * Atualiza um cliente específico (para admin)
    */
-  async update(id: number, data: ClienteUpdateData): Promise<Cliente> {
-    return elibrosApi.makeRequest<Cliente>(`${this.endpoint}/${id}/`, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-    });
+  async update(id: number, data: ClienteUpdateData | FormData): Promise<Cliente> {
+    const options: RequestInit = {
+      method: 'PUT',
+    };
+
+    if (data instanceof FormData) {
+      // Se for FormData, não definir Content-Type (deixar o browser definir com boundary)
+      options.body = data;
+    } else {
+      // Se for objeto, usar JSON
+      options.body = JSON.stringify(data);
+    }
+
+    const clienteData = await elibrosApi.makeRequest<any>(`/admin/${id}/editar_cliente/`, options);
+    
+    // Mapear para a estrutura esperada
+    return {
+      id: clienteData.id,
+      nome: clienteData.nome,
+      email: clienteData.email,
+      username: clienteData.username,
+      cpf: clienteData.cpf,
+      telefone: clienteData.telefone,
+      data_nascimento: clienteData.data_nascimento,
+      genero: clienteData.genero,
+      data_cadastro: clienteData.data_cadastro,
+      is_active: clienteData.is_active,
+      foto_de_perfil: clienteData.foto_de_perfil,
+      endereco: clienteData.endereco,
+      // Mantendo compatibilidade com estrutura antiga
+      user: {
+        id: clienteData.id,
+        email: clienteData.email,
+        username: clienteData.username,
+        nome: clienteData.nome,
+        CPF: clienteData.cpf || '',
+        telefone: clienteData.telefone || '',
+        genero: clienteData.genero as any || 'NI',
+        dt_nasc: clienteData.data_nascimento,
+        date_joined: clienteData.data_cadastro,
+        is_active: clienteData.is_active,
+        email_is_verified: true,
+        is_staff: false,
+        is_superuser: false,
+        foto_de_perfil: clienteData.foto_de_perfil,
+      }
+    };
   }
 
   /**
    * Desativa a conta do cliente (soft delete)
    */
   async deactivateAccount(id?: number): Promise<Cliente> {
-    const endpoint = id 
-      ? `${this.endpoint}/${id}/` 
-      : `${this.endpoint}/editar_perfil/`;
-    
-    return elibrosApi.makeRequest<Cliente>(endpoint, {
-      method: id ? 'PATCH' : 'PUT',
-      body: JSON.stringify({
-        user: {
-          is_active: false
-        }
-      }),
-    });
+    if (id) {
+      // Para admin, usar endpoint administrativo
+      await elibrosApi.makeRequest<{ message: string; is_active: boolean }>(`/admin/${id}/toggle_cliente_status/`, {
+        method: 'POST',
+      });
+      
+      // Retornar o cliente atualizado
+      return this.get(id);
+    } else {
+      // Para cliente logado, usar endpoint de perfil
+      return elibrosApi.makeRequest<Cliente>(`${this.endpoint}/editar_perfil/`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          user: {
+            is_active: false
+          }
+        }),
+      });
+    }
   }
 
   /**
    * Reativa a conta do cliente
    */
   async reactivateAccount(id: number): Promise<Cliente> {
-    return elibrosApi.makeRequest<Cliente>(`${this.endpoint}/${id}/`, {
-      method: 'PATCH',
-      body: JSON.stringify({
-        user: {
-          is_active: true
-        }
-      }),
+    // Para admin, usar endpoint administrativo
+    await elibrosApi.makeRequest<{ message: string; is_active: boolean }>(`/admin/${id}/toggle_cliente_status/`, {
+      method: 'POST',
     });
+    
+    // Retornar o cliente atualizado
+    return this.get(id);
   }
 
   /**
    * Remove permanentemente um cliente (hard delete)
    */
   async delete(id: number): Promise<void> {
-    return elibrosApi.makeRequest<void>(`${this.endpoint}/${id}/`, {
+    return elibrosApi.makeRequest<void>(`/admin/${id}/delete_cliente/`, {
       method: 'DELETE',
     });
   }
