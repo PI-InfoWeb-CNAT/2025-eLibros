@@ -9,6 +9,7 @@ export interface UsePedidosOptions {
   data_fim?: string;
   ordering?: string;
   autoLoad?: boolean;
+  isAdmin?: boolean;
 }
 
 export function usePedidos(options: UsePedidosOptions = {}) {
@@ -25,7 +26,8 @@ export function usePedidos(options: UsePedidosOptions = {}) {
     data_inicio,
     data_fim,
     ordering = '-data_pedido',
-    autoLoad = true
+    autoLoad = true,
+    isAdmin = false
   } = options;
 
   const loadPedidos = useCallback(async (page: number = 1) => {
@@ -40,7 +42,8 @@ export function usePedidos(options: UsePedidosOptions = {}) {
         data_inicio,
         data_fim,
         ordering,
-        page
+        page,
+        isAdmin
       };
 
       const response = await pedidoApi.list(params);
@@ -54,7 +57,7 @@ export function usePedidos(options: UsePedidosOptions = {}) {
     } finally {
       setLoading(false);
     }
-  }, [search, status, cliente, data_inicio, data_fim, ordering]);
+  }, [search, status, cliente, data_inicio, data_fim, ordering, isAdmin]);
 
   const createPedido = async (data: PedidoCreateData): Promise<boolean> => {
     try {
@@ -90,7 +93,7 @@ export function usePedidos(options: UsePedidosOptions = {}) {
   const updateStatus = async (id: number, status: Pedido['status']): Promise<boolean> => {
     try {
       setError(null);
-      const pedidoAtualizado = await pedidoApi.updateStatus(id, status);
+      const pedidoAtualizado = await pedidoApi.updateStatus(id, status, isAdmin);
       setPedidos(prev => prev.map(pedido => 
         pedido.id === id ? pedidoAtualizado : pedido
       ));
@@ -106,7 +109,7 @@ export function usePedidos(options: UsePedidosOptions = {}) {
   const cancelPedido = async (id: number, motivo?: string): Promise<boolean> => {
     try {
       setError(null);
-      const pedidoCancelado = await pedidoApi.cancel(id, motivo);
+      const pedidoCancelado = await pedidoApi.cancel(id, motivo, isAdmin);
       setPedidos(prev => prev.map(pedido => 
         pedido.id === id ? pedidoCancelado : pedido
       ));
@@ -126,14 +129,14 @@ export function usePedidos(options: UsePedidosOptions = {}) {
   const getPedidoById = useCallback(async (id: number): Promise<Pedido | null> => {
     try {
       setError(null);
-      return await pedidoApi.get(id);
+      return await pedidoApi.get(id, isAdmin);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erro ao buscar pedido';
       setError(errorMessage);
       console.error('Erro ao buscar pedido:', err);
       return null;
     }
-  }, []);
+  }, [isAdmin]);
 
   useEffect(() => {
     if (autoLoad) {
