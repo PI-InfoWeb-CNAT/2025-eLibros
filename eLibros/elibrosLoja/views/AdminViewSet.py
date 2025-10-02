@@ -361,3 +361,290 @@ class AdminViewSet(viewsets.ViewSet):
                 {'error': f'Erro ao excluir cliente: {str(e)}'}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+    @action(detail=False, methods=['GET'])
+    def pedidos(self, request: Request) -> Response:
+        """Listar todos os pedidos para administradores"""
+        try:
+            # Filtros opcionais
+            search = request.query_params.get('search', '')
+            status_filter = request.query_params.get('status', '')
+            ordering = request.query_params.get('ordering', '-data_de_pedido')
+            
+            # Query base - todos os pedidos para admins
+            pedidos = Pedido.objects.select_related('cliente__user', 'endereco').prefetch_related('itens').all()
+            
+            # Aplicar filtros
+            if search:
+                pedidos = pedidos.filter(
+                    numero_pedido__icontains=search
+                ) | pedidos.filter(
+                    cliente__user__nome__icontains=search
+                ) | pedidos.filter(
+                    cliente__user__email__icontains=search
+                )
+            
+            if status_filter:
+                # Mapear status do frontend para backend
+                status_map = {
+                    'pendente': 'PRO',
+                    'confirmado': 'CON', 
+                    'preparando': 'PRO',  # Assumindo que preparando é processamento
+                    'enviado': 'ENV',
+                    'entregue': 'ENT',
+                    'cancelado': 'CAN'
+                }
+                backend_status = status_map.get(status_filter, status_filter)
+                pedidos = pedidos.filter(status=backend_status)
+            
+            # Aplicar ordenação
+            if ordering in ['-data_de_pedido', 'data_de_pedido', '-numero_pedido', 'numero_pedido']:
+                pedidos = pedidos.order_by(ordering)
+            else:
+                pedidos = pedidos.order_by('-data_de_pedido')
+            
+            # Serializar dados no formato esperado pelo frontend
+            pedidos_data = []
+            for pedido in pedidos:
+                # Mapear status do backend para frontend
+                status_map_reverse = {
+                    'PRO': 'pendente',
+                    'CON': 'confirmado',
+                    'ENV': 'enviado', 
+                    'ENT': 'entregue',
+                    'CAN': 'cancelado'
+                }
+                
+                pedido_data = {
+                    'id': pedido.pk,
+                    'numero_pedido': pedido.numero_pedido,
+                    'cliente': {
+                        'id': pedido.cliente.pk,
+                        'nome': pedido.cliente.user.nome,
+                        'email': pedido.cliente.user.email,
+                        'telefone': pedido.cliente.user.telefone if hasattr(pedido.cliente.user, 'telefone') else None
+                    },
+                    'endereco_entrega': {
+                        'id': pedido.endereco.pk if pedido.endereco else None,
+                        'nome': pedido.cliente.user.nome,  # Nome do cliente
+                        'cep': pedido.endereco.cep if pedido.endereco else '',
+                        'logradouro': pedido.endereco.rua if pedido.endereco else '',
+                        'numero': pedido.endereco.numero if pedido.endereco else '',
+                        'complemento': pedido.endereco.complemento if pedido.endereco else '',
+                        'bairro': pedido.endereco.bairro if pedido.endereco else '',
+                        'cidade': pedido.endereco.cidade if pedido.endereco else '',
+                        'estado': pedido.endereco.uf if pedido.endereco else ''
+                    } if pedido.endereco else None,
+                    'status': status_map_reverse.get(pedido.status, 'pendente'),
+                    'valor_subtotal': float(pedido.valor_total) - float(pedido.desconto or 0),
+                    'valor_frete': 0.0,  # Assumindo que não há campo específico de frete
+                    'valor_desconto': float(pedido.desconto or 0),
+                    'valor_total': float(pedido.valor_total),
+                    'data_pedido': pedido.data_de_pedido.isoformat() if pedido.data_de_pedido else None,
+                    'data_atualizacao': pedido.data_de_pedido.isoformat() if pedido.data_de_pedido else None,  # Usando mesma data
+                    'metodo_pagamento': 'Não informado',  # Campo não existe no modelo atual
+                    'observacoes': '',  # Campo não existe no modelo atual
+                    'cupom_usado': None,  # Implementar se necessário
+                    'itens': [
+                        {
+                            'id': item.pk,
+                            'livro': {
+                                'id': item.livro.pk,
+                                'titulo': item.livro.titulo,
+                                'preco': float(item.preco),
+                                'imagem_capa': item.livro.capa.url if item.livro.capa else None
+                            },
+                            'quantidade': item.quantidade,
+                            'preco_unitario': float(item.preco),
+                            'subtotal': float(item.preco * item.quantidade)
+                        }
+                        for item in pedido.itens.all()
+                    ]
+                }
+                pedidos_data.append(pedido_data)
+            
+            # Formato de resposta esperado pelo frontend
+            response_data = {
+                'count': pedidos.count(),
+                'next': None,
+                'previous': None,
+                'results': pedidos_data
+            }
+            
+            return Response(response_data)
+            
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao buscar pedidos: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    @action(detail=True, methods=['GET'])
+    def get_pedido(self, request: Request, pk=None) -> Response:
+        """Buscar pedido específico por ID"""
+        try:
+            pedido = Pedido.objects.select_related('cliente__user', 'endereco').prefetch_related('itens').get(pk=pk)
+            
+            # Mapear status do backend para frontend
+            status_map = {
+                'PRO': 'pendente',
+                'CON': 'confirmado',
+                'ENV': 'enviado', 
+                'ENT': 'entregue',
+                'CAN': 'cancelado'
+            }
+            
+            pedido_data = {
+                'id': pedido.pk,
+                'numero_pedido': pedido.numero_pedido,
+                'cliente': {
+                    'id': pedido.cliente.pk,
+                    'nome': pedido.cliente.user.nome,
+                    'email': pedido.cliente.user.email,
+                    'telefone': pedido.cliente.user.telefone if hasattr(pedido.cliente.user, 'telefone') else None
+                },
+                'endereco_entrega': {
+                    'id': pedido.endereco.pk if pedido.endereco else None,
+                    'nome': pedido.cliente.user.nome,
+                    'cep': pedido.endereco.cep if pedido.endereco else '',
+                    'logradouro': pedido.endereco.rua if pedido.endereco else '',
+                    'numero': pedido.endereco.numero if pedido.endereco else '',
+                    'complemento': pedido.endereco.complemento if pedido.endereco else '',
+                    'bairro': pedido.endereco.bairro if pedido.endereco else '',
+                    'cidade': pedido.endereco.cidade if pedido.endereco else '',
+                    'estado': pedido.endereco.uf if pedido.endereco else ''
+                } if pedido.endereco else None,
+                'status': status_map.get(pedido.status, 'pendente'),
+                'valor_subtotal': float(pedido.valor_total) - float(pedido.desconto or 0),
+                'valor_frete': 0.0,
+                'valor_desconto': float(pedido.desconto or 0),
+                'valor_total': float(pedido.valor_total),
+                'data_pedido': pedido.data_de_pedido.isoformat() if pedido.data_de_pedido else None,
+                'data_atualizacao': pedido.data_de_pedido.isoformat() if pedido.data_de_pedido else None,
+                'metodo_pagamento': 'Não informado',
+                'observacoes': '',
+                'cupom_usado': None,
+                'itens': [
+                    {
+                        'id': item.pk,
+                        'livro': {
+                            'id': item.livro.pk,
+                            'titulo': item.livro.titulo,
+                            'preco': float(item.preco),
+                            'imagem_capa': item.livro.capa.url if item.livro.capa else None
+                        },
+                        'quantidade': item.quantidade,
+                        'preco_unitario': float(item.preco),
+                        'subtotal': float(item.preco * item.quantidade)
+                    }
+                    for item in pedido.itens.all()
+                ]
+            }
+            
+            return Response(pedido_data)
+            
+        except Pedido.DoesNotExist:
+            return Response(
+                {'error': 'Pedido não encontrado'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao buscar pedido: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    @action(detail=True, methods=['PATCH'])
+    def update_pedido_status(self, request: Request, pk=None) -> Response:
+        """Atualizar status do pedido"""
+        try:
+            pedido = Pedido.objects.get(pk=pk)
+            new_status = request.data.get('status')
+            
+            # Mapear status do frontend para backend
+            status_map = {
+                'pendente': 'PRO',
+                'confirmado': 'CON',
+                'preparando': 'PRO',
+                'enviado': 'ENV',
+                'entregue': 'ENT',
+                'cancelado': 'CAN'
+            }
+            
+            if not new_status:
+                return Response({'error': 'Status é obrigatório'}, status=400)
+                
+            backend_status = status_map.get(str(new_status))
+            if not backend_status:
+                return Response({'error': 'Status inválido'}, status=400)
+            
+            pedido.status = backend_status
+            
+            # Se for cancelamento, definir data
+            if backend_status == 'CAN':
+                from django.utils import timezone
+                pedido.data_de_cancelamento = timezone.now()
+            
+            pedido.save()
+            
+            return Response({'message': 'Status atualizado com sucesso'})
+            
+        except Pedido.DoesNotExist:
+            return Response(
+                {'error': 'Pedido não encontrado'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao atualizar status: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    @action(detail=True, methods=['PATCH'])
+    def cancelar_pedido_admin(self, request: Request, pk=None) -> Response:
+        """Cancelar pedido (admin)"""
+        try:
+            pedido = Pedido.objects.get(pk=pk)
+            motivo = request.data.get('motivo', '')
+            
+            if pedido.status not in ['ENV', 'ENT']:  # Não cancelar se já enviado/entregue
+                from django.utils import timezone
+                pedido.status = 'CAN'
+                pedido.data_de_cancelamento = timezone.now()
+                pedido.save()
+                
+                return Response({'message': f'Pedido cancelado. Motivo: {motivo}'})
+            else:
+                return Response({'error': 'Pedido não pode ser cancelado'}, status=400)
+                
+        except Pedido.DoesNotExist:
+            return Response(
+                {'error': 'Pedido não encontrado'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao cancelar pedido: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    @action(detail=False, methods=['GET'])
+    def pedidos_estatisticas(self, request: Request) -> Response:
+        """Estatísticas dos pedidos"""
+        try:
+            stats = {
+                'total_pedidos': Pedido.objects.count(),
+                'pedidos_pendentes': Pedido.objects.filter(status='PRO').count(),
+                'pedidos_confirmados': Pedido.objects.filter(status='CON').count(),
+                'pedidos_preparando': Pedido.objects.filter(status='PRO').count(),  # Assumindo mesmo que pendente
+                'pedidos_enviados': Pedido.objects.filter(status='ENV').count(),
+                'pedidos_entregues': Pedido.objects.filter(status='ENT').count(),
+                'pedidos_cancelados': Pedido.objects.filter(status='CAN').count(),
+                'valor_total_vendas': sum(float(p.valor_total) for p in Pedido.objects.filter(status__in=['CON', 'ENV', 'ENT']))
+            }
+            return Response(stats)
+        except Exception as e:
+            return Response(
+                {'error': f'Erro ao buscar estatísticas: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
