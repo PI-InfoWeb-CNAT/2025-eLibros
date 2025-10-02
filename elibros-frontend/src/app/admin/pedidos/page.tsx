@@ -11,9 +11,10 @@ interface PedidoModalProps {
   onClose: () => void;
   pedido?: Pedido;
   onSuccess: () => void;
+  mode?: 'view' | 'edit';
 }
 
-function PedidoModal({ isOpen, onClose, pedido, onSuccess }: PedidoModalProps) {
+function PedidoModal({ isOpen, onClose, pedido, onSuccess, mode = 'view' }: PedidoModalProps) {
   const [formData, setFormData] = useState({
     status: pedido?.status || 'pendente' as Pedido['status'],
     observacoes: pedido?.observacoes || '',
@@ -29,7 +30,7 @@ function PedidoModal({ isOpen, onClose, pedido, onSuccess }: PedidoModalProps) {
     setError(null);
 
     try {
-      await pedidoApi.update(pedido.id, formData);
+      await pedidoApi.update(pedido.id, formData, true); // true indica que é admin
       onSuccess();
       onClose();
     } catch (err) {
@@ -43,12 +44,13 @@ function PedidoModal({ isOpen, onClose, pedido, onSuccess }: PedidoModalProps) {
 
   const nextStatuses = pedidoApi.getNextStatuses(pedido.status);
   const canEdit = pedidoApi.canEditStatus(pedido.status);
+  const isEditMode = mode === 'edit' && canEdit;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-semibold mb-4">
-          Detalhes do Pedido #{pedido.numero_pedido}
+          {isEditMode ? 'Editar' : 'Detalhes do'} Pedido #{pedido.numero_pedido}
         </h2>
         
         {error && (
@@ -109,7 +111,7 @@ function PedidoModal({ isOpen, onClose, pedido, onSuccess }: PedidoModalProps) {
           </div>
         </div>
 
-        {canEdit && (
+        {isEditMode && (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -160,7 +162,7 @@ function PedidoModal({ isOpen, onClose, pedido, onSuccess }: PedidoModalProps) {
           </form>
         )}
 
-        {!canEdit && (
+        {!isEditMode && (
           <div className="flex gap-3 pt-4">
             <button
               onClick={onClose}
@@ -236,8 +238,10 @@ export default function PedidosAdminPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string | undefined>(undefined);
   const [sortOrder, setSortOrder] = useState<string>('-data_pedido');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [viewingPedido, setViewingPedido] = useState<Pedido | undefined>();
+  const [editingPedido, setEditingPedido] = useState<Pedido | undefined>();
   const [cancelModal, setCancelModal] = useState<{ isOpen: boolean; pedido?: Pedido }>({ isOpen: false });
 
   const { 
@@ -251,7 +255,8 @@ export default function PedidosAdminPage() {
   } = usePedidos({
     search: searchTerm,
     status: filterStatus,
-    ordering: sortOrder
+    ordering: sortOrder,
+    isAdmin: true  // Indica que é página de admin
   });
 
   const filteredPedidos = useMemo(() => {
@@ -269,7 +274,12 @@ export default function PedidosAdminPage() {
 
   const handleViewPedido = (pedido: Pedido) => {
     setViewingPedido(pedido);
-    setIsModalOpen(true);
+    setIsViewModalOpen(true);
+  };
+
+  const handleEditPedido = (pedido: Pedido) => {
+    setEditingPedido(pedido);
+    setIsEditModalOpen(true);
   };
 
   const handleCancelPedido = (pedido: Pedido) => {
@@ -287,6 +297,8 @@ export default function PedidosAdminPage() {
 
   const handleModalSuccess = () => {
     refreshPedidos();
+    setIsViewModalOpen(false);
+    setIsEditModalOpen(false);
   };
 
   const getStatusBadge = (pedido: Pedido) => {
@@ -429,6 +441,15 @@ export default function PedidosAdminPage() {
                           Ver Detalhes
                         </button>
                         
+                        {pedidoApi.canEditStatus(pedido.status) && (
+                          <button
+                            onClick={() => handleEditPedido(pedido)}
+                            className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors text-sm font-medium"
+                          >
+                            Editar
+                          </button>
+                        )}
+                        
                         {pedidoApi.canCancel(pedido.status) && (
                           <button
                             onClick={() => handleCancelPedido(pedido)}
@@ -448,10 +469,19 @@ export default function PedidosAdminPage() {
 
         {/* Modals */}
         <PedidoModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isViewModalOpen}
+          onClose={() => setIsViewModalOpen(false)}
           pedido={viewingPedido}
           onSuccess={handleModalSuccess}
+          mode="view"
+        />
+
+        <PedidoModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          pedido={editingPedido}
+          onSuccess={handleModalSuccess}
+          mode="edit"
         />
 
         <CancelConfirmModal
