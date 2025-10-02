@@ -1,22 +1,17 @@
 import { elibrosApi } from './api';
+import type { Cliente } from '../types/cliente';
 
-export interface Cliente {
+export interface EnderecoEntrega {
   id: number;
-  nome: string;
-  email: string;
-  telefone?: string;
-}
-
-export interface Endereco {
-  id: number;
-  nome: string;
+  nome?: string;
   cep: string;
   logradouro: string;
   numero: string;
   complemento?: string;
   bairro: string;
   cidade: string;
-  estado: string;
+  estado?: string;
+  uf?: string;
 }
 
 export interface ItemPedido {
@@ -36,7 +31,7 @@ export interface Pedido {
   id: number;
   numero_pedido: string;
   cliente: Cliente;
-  endereco_entrega: Endereco;
+  endereco_entrega: EnderecoEntrega;
   status: 'pendente' | 'confirmado' | 'preparando' | 'enviado' | 'entregue' | 'cancelado';
   valor_subtotal: number;
   valor_frete: number;
@@ -92,6 +87,7 @@ export interface PedidoStats {
 
 class PedidoApiService {
   private endpoint = '/pedidos';
+  private adminEndpoint = '/admin';
 
   async list(params?: {
     search?: string;
@@ -101,6 +97,7 @@ class PedidoApiService {
     data_fim?: string;
     ordering?: string;
     page?: number;
+    isAdmin?: boolean;
   }): Promise<PedidoListResponse> {
     const searchParams = new URLSearchParams();
     
@@ -126,14 +123,19 @@ class PedidoApiService {
       searchParams.append('page', params.page.toString());
     }
 
+    // Usar endpoint do admin se for admin
+    const baseEndpoint = params?.isAdmin ? `${this.adminEndpoint}/pedidos` : this.endpoint;
     const url = searchParams.toString() 
-      ? `${this.endpoint}/?${searchParams.toString()}`
-      : `${this.endpoint}/`;
+      ? `${baseEndpoint}/?${searchParams.toString()}`
+      : `${baseEndpoint}/`;
 
     return elibrosApi.makeRequest<PedidoListResponse>(url);
   }
 
-  async get(id: number): Promise<Pedido> {
+  async get(id: number, isAdmin?: boolean): Promise<Pedido> {
+    if (isAdmin) {
+      return elibrosApi.makeRequest<Pedido>(`${this.adminEndpoint}/${id}/get_pedido/`);
+    }
     return elibrosApi.makeRequest<Pedido>(`${this.endpoint}/${id}/`);
   }
 
@@ -144,28 +146,42 @@ class PedidoApiService {
     });
   }
 
-  async update(id: number, data: PedidoUpdateData): Promise<Pedido> {
+  async update(id: number, data: PedidoUpdateData, isAdmin?: boolean): Promise<Pedido> {
+    if (isAdmin) {
+      // Para admin, usar endpoint específico de update (formato correto: /admin/{id}/action/)
+      return elibrosApi.makeRequest<Pedido>(`${this.adminEndpoint}/${id}/update_pedido_status/`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      });
+    }
     return elibrosApi.makeRequest<Pedido>(`${this.endpoint}/${id}/`, {
       method: 'PATCH',
       body: JSON.stringify(data),
     });
   }
 
-  async updateStatus(id: number, status: Pedido['status']): Promise<Pedido> {
-    return elibrosApi.makeRequest<Pedido>(`${this.endpoint}/${id}/status/`, {
-      method: 'PATCH',
-      body: JSON.stringify({ status }),
-    });
+  async updateStatus(id: number, status: Pedido['status'], isAdmin?: boolean): Promise<Pedido> {
+    // Redirecionar para o método update com apenas o status
+    return this.update(id, { status }, isAdmin);
   }
 
-  async cancel(id: number, motivo?: string): Promise<Pedido> {
+  async cancel(id: number, motivo?: string, isAdmin?: boolean): Promise<Pedido> {
+    if (isAdmin) {
+      return elibrosApi.makeRequest<Pedido>(`${this.adminEndpoint}/${id}/cancelar_pedido_admin/`, {
+        method: 'PATCH',
+        body: JSON.stringify({ motivo }),
+      });
+    }
     return elibrosApi.makeRequest<Pedido>(`${this.endpoint}/${id}/cancelar/`, {
       method: 'PATCH',
       body: JSON.stringify({ motivo }),
     });
   }
 
-  async getStats(): Promise<PedidoStats> {
+  async getStats(isAdmin?: boolean): Promise<PedidoStats> {
+    if (isAdmin) {
+      return elibrosApi.makeRequest<PedidoStats>(`${this.adminEndpoint}/pedidos_estatisticas/`);
+    }
     return elibrosApi.makeRequest<PedidoStats>(`${this.endpoint}/estatisticas/`);
   }
 
