@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import AdminProtectedRoute from '@/components/AdminProtectedRoute';
 import AdminLayout from '@/components/AdminLayout';
 import { useGeneros } from '@/hooks/useGeneros';
@@ -16,10 +16,23 @@ interface GeneroModalProps {
 
 function GeneroModal({ isOpen, onClose, genero, onSuccess }: GeneroModalProps) {
   const [formData, setFormData] = useState({
-    nome: genero?.nome || '',
+    nome: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Atualizar formData quando o genero prop mudar
+  useEffect(() => {
+    if (genero) {
+      setFormData({
+        nome: genero.nome,
+      });
+    } else {
+      setFormData({
+        nome: '',
+      });
+    }
+  }, [genero]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,26 +162,70 @@ export default function GenerosAdminPage() {
   } = useGeneros();
 
   const filteredGeneros = useMemo(() => {
-    // Primeiro filtra
-    const filtered = generos.filter(genero => {
-      const matchesSearch = !searchTerm || 
-        genero.nome.toLowerCase().includes(searchTerm.toLowerCase());
+    // Se não há termo de busca, apenas ordena alfabeticamente
+    if (!searchTerm.trim()) {
+      return [...generos].sort((a, b) => {
+        if (sortOrder === 'nome') {
+          return a.nome.localeCompare(b.nome);
+        } else {
+          return b.nome.localeCompare(a.nome);
+        }
+      });
+    }
+
+    // Aplica busca com diferentes níveis de prioridade
+    const searchTermLower = searchTerm.toLowerCase();
+    
+    const searchResults = generos.map(genero => {
+      const nomeGenero = genero.nome.toLowerCase();
       
-      return matchesSearch;
-    });
-
-    // Depois ordena
-    const sorted = [...filtered].sort((a, b) => {
-      if (sortOrder === 'nome') {
-        // A-Z (crescente)
-        return a.nome.localeCompare(b.nome);
-      } else {
-        // Z-A (decrescente)
-        return b.nome.localeCompare(a.nome);
+      let priority = 0;
+      let matches = false;
+      
+      // Prioridade 1: Exact match (correspondência exata)
+      if (nomeGenero === searchTermLower) {
+        priority = 1;
+        matches = true;
       }
+      // Prioridade 2: Match string no início (começa com o termo)
+      else if (nomeGenero.startsWith(searchTermLower)) {
+        priority = 2;
+        matches = true;
+      }
+      // Prioridade 3: Include string (contém o termo)
+      else if (nomeGenero.includes(searchTermLower)) {
+        priority = 3;
+        matches = true;
+      }
+      
+      return { genero, priority, matches };
+    })
+    .filter(result => result.matches)
+    .sort((a, b) => {
+      // Primeiro ordena por prioridade (menor = mais relevante)
+      if (a.priority !== b.priority) {
+        return a.priority - b.priority;
+      }
+      
+      // Em caso de empate na prioridade, ordena alfabeticamente
+      if (sortOrder === 'nome') {
+        return a.genero.nome.localeCompare(b.genero.nome);
+      } else {
+        return b.genero.nome.localeCompare(a.genero.nome);
+      }
+    })
+    .map(result => result.genero);
+
+    console.log('🔍 Busca por gêneros realizada:', {
+      termo: searchTerm,
+      resultados: searchResults.length,
+      primeiros3: searchResults.slice(0, 3).map(g => ({
+        nome: g.nome,
+        id: g.id
+      }))
     });
 
-    return sorted;
+    return searchResults;
   }, [generos, searchTerm, sortOrder]);
 
   const handleAddGenero = () => {
