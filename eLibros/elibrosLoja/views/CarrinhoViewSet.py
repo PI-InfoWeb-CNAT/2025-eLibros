@@ -15,6 +15,7 @@ from ..serializers import (
     ItemCarrinhoSerializer,
     CupomSerializer
 )
+from ..utils import get_or_create_cliente
 
 
 class CarrinhoViewSet(viewsets.ModelViewSet[Carrinho]):
@@ -24,18 +25,10 @@ class CarrinhoViewSet(viewsets.ModelViewSet[Carrinho]):
     
     def get_queryset(self) -> Any:
         # Retorna apenas o carrinho do usuário logado
-        if hasattr(self.request.user, 'cliente'):
-            return Carrinho.objects.filter(cliente=self.request.user.cliente)
-        else:
-            # Se o usuário não tem Cliente associado, criar um
-            try:
-                cliente, created = Cliente.objects.get_or_create(user=self.request.user)
-                if created:
-                    print(f"Cliente criado automaticamente para o usuário: {self.request.user}")
-                return Carrinho.objects.filter(cliente=cliente)
-            except Exception as e:
-                print(f"Erro ao criar Cliente: {e}")
-                return Carrinho.objects.none()
+        cliente = get_or_create_cliente(self.request.user)
+        if cliente:
+            return Carrinho.objects.filter(cliente=cliente)
+        return Carrinho.objects.none()
     
     @action(detail=False, methods=['post'])
     def atualizar_carrinho(self, request: Request) -> Response:
@@ -53,14 +46,17 @@ class CarrinhoViewSet(viewsets.ModelViewSet[Carrinho]):
             quantidadeAdicionada = request.data.get('quantidadeAdicionada') or quantidade
             
             if request.user.is_authenticated:
-                # Criar Cliente se não existir
-                cliente, created = Cliente.objects.get_or_create(user=request.user)
-                if created:
-                    print(f"Cliente criado automaticamente para o usuário: {request.user}")
+                # Usar a função utilitária para obter/criar cliente
+                cliente = get_or_create_cliente(request.user)
+                if not cliente:
+                    return Response({'error': 'Não foi possível criar o cliente'}, status=400)
                 
                 carrinho, created = Carrinho.objects.get_or_create(cliente=cliente)
             else:
                 return Response({'error': 'Usuário não autenticado'}, status=401)
+            
+            # Inicializar message com valor padrão
+            message = 'Ação realizada com sucesso'
             
             if action in ['adicionarAoCarrinho', 'comprarAgora', 'adicionar']:
                 livro = Livro.objects.get(id=id_item)
@@ -100,6 +96,8 @@ class CarrinhoViewSet(viewsets.ModelViewSet[Carrinho]):
                 # Limpar todo o carrinho
                 ItemCarrinho.objects.filter(carrinho=carrinho).delete()
                 message = 'Carrinho limpo'
+            else:
+                return Response({'error': 'Ação não reconhecida'}, status=400)
             
             cart_item_count = carrinho.numero_itens
             return Response({

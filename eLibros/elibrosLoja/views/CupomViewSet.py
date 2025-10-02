@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from django.db.models import Q
 from elibrosLoja.models import Cupom, Administrador
 from elibrosLoja.serializers import CupomSerializer
+from ..utils import get_administrador_from_user, is_user_admin
 
 
 class CupomViewSet(viewsets.ModelViewSet):
@@ -22,14 +23,8 @@ class CupomViewSet(viewsets.ModelViewSet):
         if not self.request.user.is_authenticated:
             return [permissions.IsAuthenticated()]
         
-        # Verificar se é staff/superuser OU tem registro de Administrador
-        is_admin = (
-            self.request.user.is_staff or 
-            self.request.user.is_superuser or
-            Administrador.objects.filter(user=self.request.user).exists()
-        )
-        
-        if not is_admin:
+        # Usar a função utilitária para verificar se é admin
+        if not is_user_admin(self.request.user):
             return [permissions.IsAdminUser()]
         
         return [permissions.IsAuthenticated()]
@@ -56,8 +51,9 @@ class CupomViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         # Automaticamente definir o admin criador
-        if hasattr(self.request.user, 'administrador'):
-            serializer.save(criado_por=self.request.user.administrador)
+        administrador = get_administrador_from_user(self.request.user)
+        if administrador:
+            serializer.save(criado_por=administrador)
         else:
             serializer.save()
     

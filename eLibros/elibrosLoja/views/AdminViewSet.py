@@ -3,12 +3,14 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.request import Request
 from django.contrib.auth import get_user_model
+from accounts.models import Usuario
 from ..models import Administrador, Cliente, Livro, Pedido, Genero, Categoria, Cupom
 from ..serializers import (
     LivroSerializer, ClienteSerializer, GeneroSerializer, 
     CategoriaSerializer, PedidoSerializer
 )
-from typing import Any
+from ..utils import is_user_admin, get_administrador_from_user
+from typing import Any, cast
 
 User = get_user_model()
 
@@ -26,14 +28,8 @@ class AdminViewSet(viewsets.ViewSet):
         if not self.request.user.is_authenticated:
             return [permissions.IsAuthenticated()]
         
-        # Verificar se é staff/superuser OU tem registro de Administrador
-        is_admin = (
-            self.request.user.is_staff or 
-            self.request.user.is_superuser or
-            Administrador.objects.filter(user=self.request.user).exists()
-        )
-        
-        if not is_admin:
+        # Usar a função utilitária para verificar se é admin
+        if not is_user_admin(self.request.user):
             return [permissions.IsAdminUser()]
         
         return [permissions.IsAuthenticated()]
@@ -61,20 +57,20 @@ class AdminViewSet(viewsets.ViewSet):
     def user_info(self, request: Request) -> Response:
         """Informações do usuário administrador atual"""
         try:
-            user = request.user
+            # Fazer casting do usuário para o tipo Usuario
+            user = cast(Usuario, request.user)
             
             # Verificar se tem registro de Administrador
-            try:
-                admin_record = Administrador.objects.get(user=user)
+            admin_record = get_administrador_from_user(user)
+            admin_info = None
+            if admin_record:
                 admin_info = {
-                    'id': admin_record.id,
+                    'id': admin_record.pk,  # usar pk é mais seguro
                     'rg': admin_record.rg,
                 }
-            except Administrador.DoesNotExist:
-                admin_info = None
             
             user_info = {
-                'id': user.id,
+                'id': user.pk,
                 'email': user.email,
                 'username': user.username,
                 'nome': user.nome,
@@ -104,18 +100,18 @@ class AdminViewSet(viewsets.ViewSet):
             activities = {
                 'recent_orders': [
                     {
-                        'id': order.id,
+                        'id': order.pk,
                         'numero_pedido': order.numero_pedido,
                         'cliente_nome': order.cliente.user.nome,
                         'valor_total': str(order.valor_total),
                         'status': order.status,
-                        'data_pedido': order.data_pedido,
+                        'data_de_pedido': order.data_de_pedido,
                     }
                     for order in recent_orders
                 ],
                 'recent_clients': [
                     {
-                        'id': client.id,
+                        'id': client.pk,
                         'nome': client.user.nome,
                         'email': client.user.email,
                         'data_cadastro': client.user.date_joined,
@@ -140,7 +136,7 @@ class AdminViewSet(viewsets.ViewSet):
             clientes_data = []
             for cliente in clientes:
                 cliente_data = {
-                    'id': cliente.id,
+                    'id': cliente.pk,
                     'nome': cliente.user.nome,
                     'email': cliente.user.email,
                     'username': cliente.user.username,
@@ -183,7 +179,7 @@ class AdminViewSet(viewsets.ViewSet):
             cliente = Cliente.objects.select_related('user', 'endereco').get(pk=pk)
             
             cliente_data = {
-                'id': cliente.id,
+                'id': cliente.pk,
                 'nome': cliente.user.nome,
                 'email': cliente.user.email,
                 'username': cliente.user.username,
@@ -279,7 +275,7 @@ class AdminViewSet(viewsets.ViewSet):
             
             # Retornar dados atualizados
             cliente_data = {
-                'id': cliente.id,
+                'id': cliente.pk,
                 'nome': cliente.user.nome,
                 'email': cliente.user.email,
                 'username': cliente.user.username,

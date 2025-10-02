@@ -13,6 +13,7 @@ from ..models import (
 from ..serializers import (
     PedidoSerializer
 )
+from ..utils import get_cliente_from_user
 
 
 class PedidoViewSet(viewsets.ModelViewSet[Pedido]):
@@ -22,14 +23,18 @@ class PedidoViewSet(viewsets.ModelViewSet[Pedido]):
     
     def get_queryset(self) -> QuerySet[Pedido]:
         # Retorna apenas os pedidos do usuário logado
-        if hasattr(self.request.user, 'cliente'):
-            return Pedido.objects.filter(cliente=self.request.user.cliente)
+        cliente = get_cliente_from_user(self.request.user)
+        if cliente:
+            return Pedido.objects.filter(cliente=cliente)
         return Pedido.objects.none()
 
     @action(detail=False, methods=['get'])
     def meus_pedidos(self, request: Request) -> Response:
         """Endpoint baseado na sua view pedidos"""
-        cliente = Cliente.objects.get(user=request.user)
+        cliente = get_cliente_from_user(request.user)
+        if not cliente:
+            return Response({'error': 'Cliente não encontrado'}, status=404)
+            
         pedidos = Pedido.objects.filter(cliente=cliente)
         
         pedidos_data = {

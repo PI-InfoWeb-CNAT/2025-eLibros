@@ -13,6 +13,7 @@ from ..models import (
 from ..serializers import (
     ClienteSerializer
 )
+from ..utils import get_cliente_from_user
 
 
 class ClienteViewSet(viewsets.ModelViewSet[Cliente]):
@@ -22,25 +23,29 @@ class ClienteViewSet(viewsets.ModelViewSet[Cliente]):
     
     def get_queryset(self) -> QuerySet[Cliente]:
         # Retorna apenas o cliente do usuário logado
-        if hasattr(self.request.user, 'cliente'):
+        try:
             return Cliente.objects.filter(user=self.request.user)
-        return Cliente.objects.none()
+        except AttributeError:
+            return Cliente.objects.none()
 
     @action(detail=False, methods=['get'])
     def perfil(self, request: Request) -> Response:
         """Endpoint baseado na sua view perfil"""
-        try:
-            cliente = Cliente.objects.get(user=request.user)
-            serializer = ClienteSerializer(cliente)
-            return Response(serializer.data)
-        except Cliente.DoesNotExist:
+        cliente = get_cliente_from_user(request.user)
+        if not cliente:
             return Response({'error': 'Cliente não encontrado'}, status=404)
+            
+        serializer = ClienteSerializer(cliente)
+        return Response(serializer.data)
 
     @action(detail=False, methods=['put'])
     def editar_perfil(self, request: Request) -> Response:
         """Endpoint baseado na sua view editar_perfil"""
+        cliente = get_cliente_from_user(request.user)
+        if not cliente:
+            return Response({'error': 'Cliente não encontrado'}, status=404)
+        
         try:
-            cliente = Cliente.objects.get(user=request.user)
             
             # Atualizar dados do usuário
             user_data = request.data.get('user', {})
@@ -76,7 +81,5 @@ class ClienteViewSet(viewsets.ModelViewSet[Cliente]):
             serializer = ClienteSerializer(cliente)
             return Response(serializer.data)
             
-        except Cliente.DoesNotExist:
-            return Response({'error': 'Cliente não encontrado'}, status=404)
         except Exception as e:
             return Response({'error': str(e)}, status=400)
