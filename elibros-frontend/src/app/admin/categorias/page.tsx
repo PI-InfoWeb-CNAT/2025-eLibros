@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import AdminProtectedRoute from '@/components/AdminProtectedRoute';
 import AdminLayout from '@/components/AdminLayout';
 import { useCategorias } from '@/hooks/useCategorias';
@@ -16,10 +16,23 @@ interface CategoriaModalProps {
 
 function CategoriaModal({ isOpen, onClose, categoria, onSuccess }: CategoriaModalProps) {
   const [formData, setFormData] = useState({
-    nome: categoria?.nome || '',
+    nome: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Atualizar formData quando a categoria prop mudar
+  useEffect(() => {
+    if (categoria) {
+      setFormData({
+        nome: categoria.nome,
+      });
+    } else {
+      setFormData({
+        nome: '',
+      });
+    }
+  }, [categoria]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
