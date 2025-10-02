@@ -274,6 +274,9 @@ export default function PedidosAdminPage() {
   const [editingPedido, setEditingPedido] = useState<Pedido | undefined>();
   const [cancelModal, setCancelModal] = useState<{ isOpen: boolean; pedido?: Pedido }>({ isOpen: false });
 
+  // Limpar o "#" do termo de busca antes de enviar para a API
+  const apiSearchTerm = searchTerm.replace(/^#/, '');
+
   const { 
     pedidos, 
     loading, 
@@ -283,47 +286,124 @@ export default function PedidosAdminPage() {
     updateStatus,
     cancelPedido
   } = usePedidos({
-    search: searchTerm,
+    search: apiSearchTerm,
     status: filterStatus,
     ordering: sortOrder,
     isAdmin: true  // Indica que é página de admin
   });
 
   const filteredPedidos = useMemo(() => {
-    // Primeiro filtra
-    const filtered = pedidos.filter(pedido => {
-      const matchesSearch = !searchTerm || 
-        pedido.numero_pedido.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (pedido.cliente?.nome && pedido.cliente.nome.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (pedido.cliente?.email && pedido.cliente.email.toLowerCase().includes(searchTerm.toLowerCase()));
-      
-      const matchesFilter = !filterStatus || pedido.status === filterStatus;
-      
-      return matchesSearch && matchesFilter;
+    // Primeiro filtra por status
+    const statusFiltered = pedidos.filter(pedido => {
+      return !filterStatus || pedido.status === filterStatus;
     });
 
-    // Garantir ordenação por data (fallback caso a API não esteja respeitando)
-    const sorted = [...filtered].sort((a, b) => {
-      const dateA = new Date(a.data_pedido).getTime();
-      const dateB = new Date(b.data_pedido).getTime();
+    // Se não há termo de busca, apenas ordena por data
+    if (!searchTerm) {
+      const sorted = [...statusFiltered].sort((a, b) => {
+        const dateA = new Date(a.data_pedido).getTime();
+        const dateB = new Date(b.data_pedido).getTime();
+        
+        if (sortOrder === '-data_pedido') {
+          return dateB - dateA;
+        } else {
+          return dateA - dateB;
+        }
+      });
+      return sorted;
+    }
+
+    // Aplica busca com diferentes níveis de prioridade
+    const searchTermLower = searchTerm.toLowerCase();
+    
+    // Remove "#" do termo de busca se presente (para busca no número do pedido)
+    const cleanSearchTerm = searchTermLower.replace(/^#/, '');
+    
+    // Para nome e email, usamos o termo original (sem remover #)
+    const nameEmailSearchTerm = searchTermLower;
+    
+    const searchResults = statusFiltered.map(pedido => {
+      const numero = pedido.numero_pedido.toLowerCase();
+      const nomeCliente = pedido.cliente?.nome?.toLowerCase() || '';
+      const emailCliente = pedido.cliente?.email?.toLowerCase() || '';
+      
+      let priority = 0;
+      let matches = false;
+      
+      // Prioridade 1: Exact match no número do pedido (sem #)
+      if (numero === cleanSearchTerm && cleanSearchTerm.length > 0) {
+        priority = 1;
+        matches = true;
+      }
+      // Prioridade 2: Exact match em nome ou email (usando termo original)
+      else if (nomeCliente === nameEmailSearchTerm || emailCliente === nameEmailSearchTerm) {
+        priority = 2;
+        matches = true;
+      }
+      // Prioridade 3: Match string no início do número do pedido
+      else if (cleanSearchTerm.length > 0 && numero.startsWith(cleanSearchTerm)) {
+        priority = 3;
+        matches = true;
+      }
+      // Prioridade 4: Match string no início do nome
+      else if (nomeCliente.startsWith(nameEmailSearchTerm)) {
+        priority = 4;
+        matches = true;
+      }
+      // Prioridade 5: Match string no início do email
+      else if (emailCliente.startsWith(nameEmailSearchTerm)) {
+        priority = 5;
+        matches = true;
+      }
+      // Prioridade 6: Include string no número do pedido
+      else if (cleanSearchTerm.length > 0 && numero.includes(cleanSearchTerm)) {
+        priority = 6;
+        matches = true;
+      }
+      // Prioridade 7: Include string no nome
+      else if (nomeCliente.includes(nameEmailSearchTerm)) {
+        priority = 7;
+        matches = true;
+      }
+      // Prioridade 8: Include string no email
+      else if (emailCliente.includes(nameEmailSearchTerm)) {
+        priority = 8;
+        matches = true;
+      }
+      
+      return { pedido, priority, matches };
+    })
+    .filter(result => result.matches)
+    .sort((a, b) => {
+      // Primeiro ordena por prioridade (menor = mais relevante)
+      if (a.priority !== b.priority) {
+        return a.priority - b.priority;
+      }
+      
+      // Em caso de empate na prioridade, ordena por data
+      const dateA = new Date(a.pedido.data_pedido).getTime();
+      const dateB = new Date(b.pedido.data_pedido).getTime();
       
       if (sortOrder === '-data_pedido') {
-        // Mais recentes primeiro (ordem decrescente)
         return dateB - dateA;
       } else {
-        // Mais antigos primeiro (ordem crescente)
         return dateA - dateB;
       }
+    })
+    .map(result => result.pedido);
+
+    console.log('� Busca realizada:', {
+      termo: searchTerm,
+      termoLimpo: cleanSearchTerm,
+      resultados: searchResults.length,
+      primeiros3: searchResults.slice(0, 3).map(p => ({
+        numero: p.numero_pedido,
+        data: p.data_pedido
+      }))
     });
 
-    console.log('📊 Pedidos após ordenação local:', sorted.slice(0, 3).map(p => ({
-      numero: p.numero_pedido,
-      data: p.data_pedido,
-      timestamp: new Date(p.data_pedido).getTime()
-    })));
-
-    return sorted;
-  }, [pedidos, searchTerm, filterStatus, sortOrder]);
+    return searchResults;
+  }, [pedidos, searchTerm, filterStatus, sortOrder, apiSearchTerm]);
 
   const handleViewPedido = (pedido: Pedido) => {
     setViewingPedido(pedido);
@@ -401,7 +481,7 @@ export default function PedidosAdminPage() {
                 </div>
                 <input
                   type="text"
-                  placeholder="Pesquise por código..."
+                  placeholder="Pesquise por número do pedido, nome ou email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 bg-[#F4F4F4] rounded-full focus:outline-none placeholder-gray-500"
