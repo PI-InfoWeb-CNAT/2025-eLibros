@@ -243,14 +243,36 @@ function ClienteEditModal({ isOpen, onClose, cliente, onSave }: ClienteEditModal
         
         // Adicionar dados do endereço
         Object.entries(formData.endereco).forEach(([key, value]) => {
-          if (value) {
-            formDataToSend.append(`endereco[${key}]`, value);
+          if (value && value.trim() !== '') {
+            if (key === 'numero') {
+              const numeroValue = parseInt(value, 10);
+              if (!isNaN(numeroValue) && numeroValue > 0) {
+                formDataToSend.append(`endereco[${key}]`, numeroValue.toString());
+              }
+            } else {
+              formDataToSend.append(`endereco[${key}]`, value);
+            }
           }
         });
         
         success = await onSave(cliente.id, formDataToSend);
       } else {
         // Sem arquivo, usar JSON normal
+        const enderecoData: any = {};
+        // Copiar apenas campos válidos do endereço
+        Object.entries(formData.endereco).forEach(([key, value]) => {
+          if (value && value.trim() !== '') {
+            if (key === 'numero') {
+              const numeroValue = parseInt(value, 10);
+              if (!isNaN(numeroValue) && numeroValue > 0) {
+                enderecoData[key] = numeroValue;
+              }
+            } else {
+              enderecoData[key] = value;
+            }
+          }
+        });
+        
         success = await onSave(cliente.id, {
           user: {
             nome: formData.nome,
@@ -261,7 +283,7 @@ function ClienteEditModal({ isOpen, onClose, cliente, onSave }: ClienteEditModal
             genero: formData.genero,
             dt_nasc: formData.dt_nasc
           },
-          endereco: formData.endereco
+          endereco: enderecoData
         });
       }
 

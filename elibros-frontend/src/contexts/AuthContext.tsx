@@ -47,10 +47,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (isTokenValid) {
             setUser(currentUser);
             setIsAuthenticated(true);
-            // Verificar se é admin (staff ou superuser)
-            const adminStatus = currentUser.is_staff || currentUser.is_superuser || false;
-            setIsAdmin(adminStatus);
-            console.log('✅ Usuário autenticado:', currentUser.username, 'Admin:', adminStatus);
+            
+            // Verificar se é admin usando a API específica
+            try {
+              const { adminApi } = await import('../services/adminApiService');
+              const isAdminUser = await adminApi.isCurrentUserAdmin();
+              setIsAdmin(isAdminUser);
+              console.log('✅ Usuário autenticado:', currentUser.username, 'Admin:', isAdminUser);
+            } catch (adminError) {
+              console.log('⚠️ Não foi possível verificar status de admin, usando fallback:', adminError);
+              // Fallback para verificação local
+              const adminStatus = currentUser.is_staff || currentUser.is_superuser || false;
+              setIsAdmin(adminStatus);
+              console.log('✅ Usuário autenticado:', currentUser.username, 'Admin (fallback):', adminStatus);
+            }
           } else {
             // Token inválido, limpar dados
             console.log('🔑 Token inválido, limpando dados');
@@ -90,6 +100,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await authApi.login(credentials);
       setUser(response.user);
       setIsAuthenticated(true);
+      
+      // Verificar se é admin usando a API específica
+      try {
+        const { adminApi } = await import('../services/adminApiService');
+        const isAdminUser = await adminApi.isCurrentUserAdmin();
+        setIsAdmin(isAdminUser);
+        console.log('👤 Status de admin após login:', isAdminUser);
+      } catch (adminError) {
+        console.log('⚠️ Não foi possível verificar status de admin:', adminError);
+        // Fallback para verificação local
+        const adminStatus = response.user.is_staff || response.user.is_superuser || false;
+        setIsAdmin(adminStatus);
+      }
     } catch (error) {
       throw error;
     }

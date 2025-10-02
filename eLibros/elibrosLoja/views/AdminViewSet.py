@@ -252,17 +252,27 @@ class AdminViewSet(viewsets.ViewSet):
                 if cliente.endereco:
                     # Atualizar endereço existente
                     for field, value in endereco_data.items():
-                        if field == 'uf':
+                        if field == 'numero':
+                            # Tratar campo numero especialmente
+                            if value == '' or value is None:
+                                setattr(cliente.endereco, field, 1)  # s/n
+                            else:
+                                setattr(cliente.endereco, field, value)
+                        elif field == 'uf':
                             setattr(cliente.endereco, field, value)
                         elif hasattr(cliente.endereco, field):
                             setattr(cliente.endereco, field, value)
                     cliente.endereco.save()
                 else:
                     # Criar novo endereço
+                    numero_value = endereco_data.get('numero')
+                    if numero_value == '' or numero_value is None:
+                        numero_value = 1  # Valor padrão para número (s/n)
+                    
                     endereco = Endereco.objects.create(
                         cep=endereco_data.get('cep', ''),
                         rua=endereco_data.get('rua', ''),
-                        numero=endereco_data.get('numero', ''),
+                        numero=numero_value,
                         complemento=endereco_data.get('complemento', ''),
                         cidade=endereco_data.get('cidade', ''),
                         uf=endereco_data.get('uf', ''),

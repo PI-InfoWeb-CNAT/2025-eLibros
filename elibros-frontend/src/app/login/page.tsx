@@ -48,8 +48,22 @@ export default function LoginPage() {
         password: formData.password
       });
       
-      // Sucesso - redirecionar para a página inicial
-      router.push('/');
+      // Verificar se é admin para redirecionar adequadamente
+      try {
+        const { adminApi } = await import('@/services/adminApiService');
+        const isAdmin = await adminApi.isCurrentUserAdmin();
+        
+        if (isAdmin) {
+          console.log('🔑 Admin detectado, redirecionando para /admin');
+          router.push('/admin');
+        } else {
+          console.log('👤 Usuário comum, redirecionando para /');
+          router.push('/');
+        }
+      } catch (adminCheckError) {
+        console.log('⚠️ Erro ao verificar admin, redirecionando para página inicial:', adminCheckError);
+        router.push('/');
+      }
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.includes('Credenciais inválidas')) {

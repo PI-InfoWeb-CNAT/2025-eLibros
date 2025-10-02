@@ -12,17 +12,9 @@ import {
 class ClienteApiService {
   private endpoint = '/cliente';
 
-  async list(params?: {
-    search?: string;
-    is_active?: boolean;
-    ordering?: string;
-    page?: number;
-  }): Promise<ClienteListResponse> {
-    // Para admin, usar o endpoint administrativo
-    const clientesData = await elibrosApi.makeRequest<any[]>('/admin/clientes/');
-    
-    // Mapear dados para a estrutura esperada pelo frontend
-    const clientes: Cliente[] = clientesData.map(clienteData => ({
+  // Função auxiliar para mapear dados do backend para a interface Cliente
+  private mapClienteData(clienteData: any): Cliente {
+    return {
       id: clienteData.id,
       nome: clienteData.nome,
       email: clienteData.email,
@@ -52,7 +44,20 @@ class ClienteApiService {
         is_superuser: false,
         foto_de_perfil: clienteData.foto_de_perfil,
       }
-    }));
+    };
+  }
+
+  async list(params?: {
+    search?: string;
+    is_active?: boolean;
+    ordering?: string;
+    page?: number;
+  }): Promise<ClienteListResponse> {
+    // Para admin, usar o endpoint administrativo
+    const clientesData = await elibrosApi.makeRequest<any[]>('/admin/clientes/');
+    
+    // Mapear dados para a estrutura esperada pelo frontend
+    const clientes: Cliente[] = clientesData.map(clienteData => this.mapClienteData(clienteData));
     
     // Aplicar filtros localmente se necessário
     let filteredClientes = clientes;
@@ -116,39 +121,7 @@ class ClienteApiService {
 
   async get(id: number): Promise<Cliente> {
     const clienteData = await elibrosApi.makeRequest<any>(`/admin/${id}/get_cliente/`);
-    
-    // Mapear para a estrutura esperada
-    return {
-      id: clienteData.id,
-      nome: clienteData.nome,
-      email: clienteData.email,
-      username: clienteData.username,
-      cpf: clienteData.cpf,
-      telefone: clienteData.telefone,
-      data_nascimento: clienteData.data_nascimento,
-      genero: clienteData.genero,
-      data_cadastro: clienteData.data_cadastro,
-      is_active: clienteData.is_active,
-      foto_de_perfil: clienteData.foto_de_perfil,
-      endereco: clienteData.endereco,
-      // Mantendo compatibilidade com estrutura antiga
-      user: {
-        id: clienteData.id,
-        email: clienteData.email,
-        username: clienteData.username,
-        nome: clienteData.nome,
-        CPF: clienteData.cpf || '',
-        telefone: clienteData.telefone || '',
-        genero: clienteData.genero as any || 'NI',
-        dt_nasc: clienteData.data_nascimento,
-        date_joined: clienteData.data_cadastro,
-        is_active: clienteData.is_active,
-        email_is_verified: true,
-        is_staff: false,
-        is_superuser: false,
-        foto_de_perfil: clienteData.foto_de_perfil,
-      }
-    };
+    return this.mapClienteData(clienteData);
   }
 
   /**
@@ -185,39 +158,7 @@ class ClienteApiService {
     }
 
     const clienteData = await elibrosApi.makeRequest<any>(`/admin/${id}/editar_cliente/`, options);
-    
-    // Mapear para a estrutura esperada
-    return {
-      id: clienteData.id,
-      nome: clienteData.nome,
-      email: clienteData.email,
-      username: clienteData.username,
-      cpf: clienteData.cpf,
-      telefone: clienteData.telefone,
-      data_nascimento: clienteData.data_nascimento,
-      genero: clienteData.genero,
-      data_cadastro: clienteData.data_cadastro,
-      is_active: clienteData.is_active,
-      foto_de_perfil: clienteData.foto_de_perfil,
-      endereco: clienteData.endereco,
-      // Mantendo compatibilidade com estrutura antiga
-      user: {
-        id: clienteData.id,
-        email: clienteData.email,
-        username: clienteData.username,
-        nome: clienteData.nome,
-        CPF: clienteData.cpf || '',
-        telefone: clienteData.telefone || '',
-        genero: clienteData.genero as any || 'NI',
-        dt_nasc: clienteData.data_nascimento,
-        date_joined: clienteData.data_cadastro,
-        is_active: clienteData.is_active,
-        email_is_verified: true,
-        is_staff: false,
-        is_superuser: false,
-        foto_de_perfil: clienteData.foto_de_perfil,
-      }
-    };
+    return this.mapClienteData(clienteData);
   }
 
   /**

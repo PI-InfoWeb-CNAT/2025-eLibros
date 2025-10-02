@@ -1128,77 +1128,98 @@ export default function LivrosAdminPage() {
 
             {/* Content */}
             <div className="p-6">
-              {/* Título */}
-              <h1 className="text-2xl font-bold text-gray-900 mb-6">{viewModal.livro.titulo}</h1>
-
-              {/* Informações principais */}
-              <div className="space-y-3 mb-6">
-                <div>
-                  <span className="font-semibold text-gray-700">Autor(es):</span>
-                  <span className="ml-2 text-gray-600">
-                    {viewModal.livro.autores && viewModal.livro.autores.length > 0 
-                      ? viewModal.livro.autores.join(', ')
-                      : 'N/A'
-                    }
-                  </span>
-                </div>
-                
-                <div>
-                  <span className="font-semibold text-gray-700">Editora:</span>
-                  <span className="ml-2 text-gray-600">{viewModal.livro.editora || 'N/A'}</span>
-                </div>
-                
-                {viewModal.livro.ISBN && (
-                  <div>
-                    <span className="font-semibold text-gray-700">ISBN:</span>
-                    <span className="ml-2 text-gray-600">{viewModal.livro.ISBN}</span>
+              {/* Layout principal: Informações + Capa */}
+              <div className="flex flex-col md:flex-row gap-6 mb-6">
+                {/* Coluna esquerda: Título e Informações */}
+                <div className="flex-1">
+                  {/* Título */}
+                  <h1 className="text-2xl font-bold text-gray-900 mb-4">{viewModal.livro.titulo}</h1>
+                  
+                  {/* Informações principais */}
+                  <div className="space-y-3">
+                    <div>
+                      <span className="font-semibold text-gray-700">Autor(es):</span>
+                      <span className="ml-2 text-gray-600">
+                        {viewModal.livro.autores && viewModal.livro.autores.length > 0 
+                          ? viewModal.livro.autores.join(', ')
+                          : 'N/A'
+                        }
+                      </span>
+                    </div>
+                    
+                    <div>
+                      <span className="font-semibold text-gray-700">Editora:</span>
+                      <span className="ml-2 text-gray-600">{viewModal.livro.editora || 'N/A'}</span>
+                    </div>
+                    
+                    {viewModal.livro.ISBN && (
+                      <div>
+                        <span className="font-semibold text-gray-700">ISBN:</span>
+                        <span className="ml-2 text-gray-600">{viewModal.livro.ISBN}</span>
+                      </div>
+                    )}
+                    
+                    <div>
+                      <span className="font-semibold text-gray-700">Data de publicação:</span>
+                      <span className="ml-2 text-gray-600">
+                        {viewModal.livro.data_de_publicacao && viewModal.livro.data_de_publicacao !== 'N/A'
+                          ? new Date(viewModal.livro.data_de_publicacao).toLocaleDateString('pt-BR')
+                          : 'N/A'
+                        }
+                      </span>
+                    </div>
+                    
+                    <div>
+                      <span className="font-semibold text-gray-700">Preço:</span>
+                      <span className="ml-2 text-gray-600">
+                        R$ {viewModal.livro.preco 
+                          ? typeof viewModal.livro.preco === 'string' 
+                            ? parseFloat(viewModal.livro.preco).toFixed(2).replace('.', ',')
+                            : parseFloat(viewModal.livro.preco).toFixed(2).replace('.', ',')
+                          : '0,00'
+                        }
+                        {viewModal.livro.desconto && viewModal.livro.desconto !== '0' && (
+                          <span className="ml-2 text-green-600 font-medium">
+                            ({viewModal.livro.desconto}% OFF)
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    
+                    <div>
+                      <span className="font-semibold text-gray-700">Quantidade em estoque:</span>
+                      <span className="ml-2 text-gray-600">{viewModal.livro.quantidade ?? 0}</span>
+                    </div>
                   </div>
-                )}
+                </div>
                 
-                <div>
-                  <span className="font-semibold text-gray-700">Data de publicação:</span>
-                  <span className="ml-2 text-gray-600">
-                    {viewModal.livro.data_de_publicacao && viewModal.livro.data_de_publicacao !== 'N/A'
-                      ? new Date(viewModal.livro.data_de_publicacao).toLocaleDateString('pt-BR')
-                      : 'N/A'
-                    }
-                  </span>
+                {/* Coluna direita: Capa */}
+                <div className="flex justify-center md:justify-end md:items-start">
+                  <div className="w-40 h-52 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                    {viewModal.livro.capa ? (
+                      <img
+                        src={viewModal.livro.capa}
+                        alt={`Capa do livro ${viewModal.livro.titulo}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/placeholder-book.png';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        <span className="ml-2 text-sm">Sem capa</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
               {/* Separador */}
               <div className="border-t border-gray-200 my-6"></div>
-
-              {/* Preço e quantidade */}
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="font-semibold text-gray-700">Preço:</span>
-                    <span className="ml-2 text-gray-600">
-                      R$ {viewModal.livro.preco 
-                        ? typeof viewModal.livro.preco === 'string' 
-                          ? parseFloat(viewModal.livro.preco).toFixed(2).replace('.', ',')
-                          : parseFloat(viewModal.livro.preco).toFixed(2).replace('.', ',')
-                        : '0,00'
-                      }
-                    </span>
-                  </div>
-                  {viewModal.livro.desconto && viewModal.livro.desconto !== '0' && (
-                    <div className="flex items-center">
-                      <span className="font-semibold text-gray-700 mr-2">Desconto:</span>
-                      <div className="w-4 h-4 border border-gray-400 rounded bg-white flex items-center justify-center">
-                        <div className="w-2 h-2 bg-green-500 rounded-sm"></div>
-                      </div>
-                      <span className="ml-2 text-gray-600">{viewModal.livro.desconto}%</span>
-                    </div>
-                  )}
-                </div>
-                
-                <div>
-                  <span className="font-semibold text-gray-700">Quantidade em estoque:</span>
-                  <span className="ml-2 text-gray-600">{viewModal.livro.quantidade ?? 0}</span>
-                </div>
-              </div>
 
               {/* Sinopse */}
               {viewModal.livro.sinopse && (
