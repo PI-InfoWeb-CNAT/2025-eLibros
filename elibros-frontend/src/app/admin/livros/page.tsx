@@ -5,6 +5,9 @@ import AdminProtectedRoute from '../../../components/AdminProtectedRoute';
 import AdminLayout from '../../../components/AdminLayout';
 import { useLivros } from '../../../hooks/useLivros';
 import { livroApi } from '@/services';
+import { autorApi } from '@/services/autorApiService';
+import { categoriaApi } from '@/services/categoriaApiService';
+import { generoApi } from '@/services/generoApiService';
 import { Livro, Autor, Categoria, GeneroLiterario } from '@/types';
 import { elibrosApi } from '../../../services/api';
 import { useRouter } from 'next/navigation';
@@ -17,9 +20,9 @@ interface LivroModalProps {
 }
 
 function LivroModal({ isOpen, onClose, livro, onSuccess }: LivroModalProps) {
-  const { autores, loading: loadingAutores } = useAutores();
-  const { categorias, loading: loadingCategorias } = useCategorias();
-  const { generos, loading: loadingGeneros } = useGeneros();
+  const { autores, loading: loadingAutores, refreshAutores } = useAutores();
+  const { categorias, loading: loadingCategorias, refreshCategorias } = useCategorias();
+  const { generos, loading: loadingGeneros, refreshGeneros } = useGeneros();
 
   const [formData, setFormData] = useState({
     titulo: '',
@@ -43,6 +46,236 @@ function LivroModal({ isOpen, onClose, livro, onSuccess }: LivroModalProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
+  
+  // Estados para modais de criação
+  const [createAutorModal, setCreateAutorModal] = useState(false);
+  const [createCategoriaModal, setCreateCategoriaModal] = useState(false);
+  const [createGeneroModal, setCreateGeneroModal] = useState(false);
+  const [newAutorName, setNewAutorName] = useState('');
+  const [newCategoriaNome, setNewCategoriaNome] = useState('');
+  const [newGeneroName, setNewGeneroName] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
+  
+  // Estados para filtros de pesquisa
+  const [searchAutor, setSearchAutor] = useState('');
+  const [searchCategoria, setSearchCategoria] = useState('');
+  const [searchGenero, setSearchGenero] = useState('');
+
+  // Funções para filtrar listas baseado na pesquisa com priorização
+  const filteredAutores = useMemo(() => {
+    let filteredList = autores;
+    
+    // Se há pesquisa, aplica filtro de busca
+    if (searchAutor.trim()) {
+      const searchTerm = searchAutor.toLowerCase();
+      const exactMatches: Autor[] = [];
+      const partialMatches: Autor[] = [];
+      
+      autores.forEach(autor => {
+        const autorNome = autor.nome.toLowerCase();
+        if (autorNome === searchTerm) {
+          // Correspondência exata completa
+          exactMatches.push(autor);
+        } else if (autorNome.startsWith(searchTerm)) {
+          // Correspondência no início (alta prioridade)
+          exactMatches.push(autor);
+        } else if (autorNome.includes(searchTerm)) {
+          // Correspondência parcial (baixa prioridade)
+          partialMatches.push(autor);
+        }
+      });
+      
+      filteredList = [...exactMatches, ...partialMatches];
+    }
+    
+    // Separar selecionados e não selecionados
+    const selecionados: Autor[] = [];
+    const naoSelecionados: Autor[] = [];
+    
+    filteredList.forEach(autor => {
+      if (formData.autor.includes(autor.id)) {
+        selecionados.push(autor);
+      } else {
+        naoSelecionados.push(autor);
+      }
+    });
+    
+    // Ordenar cada grupo alfabeticamente
+    selecionados.sort((a, b) => a.nome.localeCompare(b.nome));
+    naoSelecionados.sort((a, b) => a.nome.localeCompare(b.nome));
+    
+    // DEBUG: Log da ordenação
+    console.log('🔄 Autores - Selecionados:', selecionados.map(a => a.nome));
+    console.log('🔄 Autores - Não selecionados:', naoSelecionados.map(a => a.nome));
+    
+    // Retornar selecionados primeiro, depois não selecionados
+    return [...selecionados, ...naoSelecionados];
+  }, [autores, searchAutor, formData.autor]);
+
+  const filteredCategorias = useMemo(() => {
+    let filteredList = categorias;
+    
+    // Se há pesquisa, aplica filtro de busca
+    if (searchCategoria.trim()) {
+      const searchTerm = searchCategoria.toLowerCase();
+      const exactMatches: Categoria[] = [];
+      const partialMatches: Categoria[] = [];
+      
+      categorias.forEach(categoria => {
+        const categoriaNome = categoria.nome.toLowerCase();
+        if (categoriaNome === searchTerm) {
+          // Correspondência exata completa
+          exactMatches.push(categoria);
+        } else if (categoriaNome.startsWith(searchTerm)) {
+          // Correspondência no início (alta prioridade)
+          exactMatches.push(categoria);
+        } else if (categoriaNome.includes(searchTerm)) {
+          // Correspondência parcial (baixa prioridade)
+          partialMatches.push(categoria);
+        }
+      });
+      
+      filteredList = [...exactMatches, ...partialMatches];
+    }
+    
+    // Separar selecionadas e não selecionadas
+    const selecionadas: Categoria[] = [];
+    const naoSelecionadas: Categoria[] = [];
+    
+    filteredList.forEach(categoria => {
+      if (formData.categoria.includes(categoria.id)) {
+        selecionadas.push(categoria);
+      } else {
+        naoSelecionadas.push(categoria);
+      }
+    });
+    
+    // Ordenar cada grupo alfabeticamente
+    selecionadas.sort((a, b) => a.nome.localeCompare(b.nome));
+    naoSelecionadas.sort((a, b) => a.nome.localeCompare(b.nome));
+    
+    // Retornar selecionadas primeiro, depois não selecionadas
+    return [...selecionadas, ...naoSelecionadas];
+  }, [categorias, searchCategoria, formData.categoria]);
+
+  const filteredGeneros = useMemo(() => {
+    let filteredList = generos;
+    
+    // Se há pesquisa, aplica filtro de busca
+    if (searchGenero.trim()) {
+      const searchTerm = searchGenero.toLowerCase();
+      const exactMatches: GeneroLiterario[] = [];
+      const partialMatches: GeneroLiterario[] = [];
+      
+      generos.forEach(genero => {
+        const generoNome = genero.nome.toLowerCase();
+        if (generoNome === searchTerm) {
+          // Correspondência exata completa
+          exactMatches.push(genero);
+        } else if (generoNome.startsWith(searchTerm)) {
+          // Correspondência no início (alta prioridade)
+          exactMatches.push(genero);
+        } else if (generoNome.includes(searchTerm)) {
+          // Correspondência parcial (baixa prioridade)
+          partialMatches.push(genero);
+        }
+      });
+      
+      filteredList = [...exactMatches, ...partialMatches];
+    }
+    
+    // Separar selecionados e não selecionados
+    const selecionados: GeneroLiterario[] = [];
+    const naoSelecionados: GeneroLiterario[] = [];
+    
+    filteredList.forEach(genero => {
+      if (formData.genero.includes(genero.id)) {
+        selecionados.push(genero);
+      } else {
+        naoSelecionados.push(genero);
+      }
+    });
+    
+    // Ordenar cada grupo alfabeticamente
+    selecionados.sort((a, b) => a.nome.localeCompare(b.nome));
+    naoSelecionados.sort((a, b) => a.nome.localeCompare(b.nome));
+    
+    // Retornar selecionados primeiro, depois não selecionados
+    return [...selecionados, ...naoSelecionados];
+  }, [generos, searchGenero, formData.genero]);
+
+  // Funções para criar novos itens
+  const handleCreateAutor = async () => {
+    if (!newAutorName.trim()) return;
+    
+    setIsCreating(true);
+    try {
+      const novoAutor = await autorApi.create({ nome: newAutorName.trim() });
+      
+      // Atualiza a lista chamando o refresh do hook
+      await refreshAutores();
+      
+      // Seleciona automaticamente o novo autor
+      setFormData({ ...formData, autor: [...formData.autor, novoAutor.id] });
+      setNewAutorName('');
+      setCreateAutorModal(false);
+      
+      console.log('✅ Autor criado e lista atualizada:', novoAutor);
+    } catch (error) {
+      console.error('Erro ao criar autor:', error);
+      setError('Erro ao criar autor. Tente novamente.');
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const handleCreateCategoria = async () => {
+    if (!newCategoriaNome.trim()) return;
+    
+    setIsCreating(true);
+    try {
+      const novaCategoria = await categoriaApi.create({ nome: newCategoriaNome.trim() });
+      
+      // Atualiza a lista chamando o refresh do hook
+      await refreshCategorias();
+      
+      // Seleciona automaticamente a nova categoria
+      setFormData({ ...formData, categoria: [...formData.categoria, novaCategoria.id] });
+      setNewCategoriaNome('');
+      setCreateCategoriaModal(false);
+      
+      console.log('✅ Categoria criada e lista atualizada:', novaCategoria);
+    } catch (error) {
+      console.error('Erro ao criar categoria:', error);
+      setError('Erro ao criar categoria. Tente novamente.');
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const handleCreateGenero = async () => {
+    if (!newGeneroName.trim()) return;
+    
+    setIsCreating(true);
+    try {
+      const novoGenero = await generoApi.create({ nome: newGeneroName.trim() });
+      
+      // Atualiza a lista chamando o refresh do hook
+      await refreshGeneros();
+      
+      // Seleciona automaticamente o novo gênero
+      setFormData({ ...formData, genero: [...formData.genero, novoGenero.id] });
+      setNewGeneroName('');
+      setCreateGeneroModal(false);
+      
+      console.log('✅ Gênero criado e lista atualizada:', novoGenero);
+    } catch (error) {
+      console.error('Erro ao criar gênero:', error);
+      setError('Erro ao criar gênero. Tente novamente.');
+    } finally {
+      setIsCreating(false);
+    }
+  };
  
   // Extrair IDs baseado nos nomes (StringRelatedField do Django)
   const extractIdsFromNames = (names: string[], sourceList: any[]): number[] => {
@@ -150,6 +383,15 @@ function LivroModal({ isOpen, onClose, livro, onSuccess }: LivroModalProps) {
       setIsLoadingData(false);
     }
   }, [livro, isOpen]);
+
+  // Limpar filtros de pesquisa quando modal abre/fecha
+  useEffect(() => {
+    if (!isOpen) {
+      setSearchAutor('');
+      setSearchCategoria('');
+      setSearchGenero('');
+    }
+  }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -492,37 +734,100 @@ function LivroModal({ isOpen, onClose, livro, onSuccess }: LivroModalProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {/* Autores */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Autores *
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Autores * 
+                        {formData.autor.length > 0 && (
+                          <span className="ml-2 px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
+                            {formData.autor.length} selecionado{formData.autor.length !== 1 ? 's' : ''}
+                          </span>
+                        )}
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setCreateAutorModal(true)}
+                        className="flex items-center gap-1 text-xs text-amber-600 hover:text-amber-700 font-medium"
+                        title="Adicionar novo autor"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Novo
+                      </button>
+                    </div>
+                    
+                    {/* Campo de pesquisa para autores */}
+                    <div className="mb-2">
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="🔍 Pesquisar autores..."
+                          value={searchAutor}
+                          onChange={(e) => setSearchAutor(e.target.value)}
+                          className="w-full px-2 py-1 pr-6 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                        />
+                        {searchAutor && (
+                          <button
+                            type="button"
+                            onClick={() => setSearchAutor('')}
+                            className="absolute right-1 top-1 text-gray-400 hover:text-gray-600 text-xs"
+                            title="Limpar pesquisa"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                      {searchAutor && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          {filteredAutores.length} de {autores.length} autores encontrados
+                        </div>
+                      )}
+                    </div>
+                    
                     <div className="max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-3 bg-gray-50">
                       {loadingAutores ? (
                         <div className="flex items-center justify-center py-4">
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-amber-600"></div>
                           <span className="ml-2 text-sm text-gray-500">Carregando autores...</span>
                         </div>
-                      ) : autores.length > 0 ? (
+                      ) : filteredAutores.length > 0 ? (
                         <div className="space-y-2">
-                          {autores.map(autor => (
-                            <label key={autor.id} className="flex items-center gap-3">
-                              <input
-                                type="checkbox"
-                                checked={formData.autor.includes(autor.id)}
-                                onChange={(e) => {
-                                  const newAutores = e.target.checked
-                                    ? [...formData.autor, autor.id]
-                                    : formData.autor.filter((id: number) => id !== autor.id);
-                                  setFormData({ ...formData, autor: newAutores });
-                                }}
-                                className="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
-                              />
-                              <span className="text-sm text-gray-700">{autor.nome}</span>
-                            </label>
-                          ))}
+                          {filteredAutores.map(autor => {
+                            const isSelected = formData.autor.includes(autor.id);
+                            return (
+                              <label 
+                                key={autor.id} 
+                                className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                                  isSelected 
+                                    ? 'bg-amber-50 border border-amber-200' 
+                                    : 'hover:bg-gray-50'
+                                }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={(e) => {
+                                    const newAutores = e.target.checked
+                                      ? [...formData.autor, autor.id]
+                                      : formData.autor.filter((id: number) => id !== autor.id);
+                                    setFormData({ ...formData, autor: newAutores });
+                                  }}
+                                  className="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
+                                />
+                                <span className={`text-sm ${isSelected ? 'text-amber-800 font-medium' : 'text-gray-700'}`}>
+                                  {isSelected && '✓ '}{autor.nome}
+                                </span>
+                              </label>
+                            );
+                          })}
                         </div>
+                      ) : autores.length > 0 ? (
+                        <p className="text-sm text-gray-500 text-center py-4">
+                          Nenhum autor encontrado com "{searchAutor}"
+                        </p>
                       ) : (
                         <p className="text-sm text-gray-500 text-center py-4">
-                          Nenhum autor encontrado
+                          Nenhum autor cadastrado
                         </p>
                       )}
                     </div>
@@ -530,37 +835,100 @@ function LivroModal({ isOpen, onClose, livro, onSuccess }: LivroModalProps) {
 
                   {/* Categorias */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Categorias *
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Categorias *
+                        {formData.categoria.length > 0 && (
+                          <span className="ml-2 px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
+                            {formData.categoria.length} selecionada{formData.categoria.length !== 1 ? 's' : ''}
+                          </span>
+                        )}
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setCreateCategoriaModal(true)}
+                        className="flex items-center gap-1 text-xs text-amber-600 hover:text-amber-700 font-medium"
+                        title="Adicionar nova categoria"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Nova
+                      </button>
+                    </div>
+                    
+                    {/* Campo de pesquisa para categorias */}
+                    <div className="mb-2">
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="🔍 Pesquisar categorias..."
+                          value={searchCategoria}
+                          onChange={(e) => setSearchCategoria(e.target.value)}
+                          className="w-full px-2 py-1 pr-6 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                        />
+                        {searchCategoria && (
+                          <button
+                            type="button"
+                            onClick={() => setSearchCategoria('')}
+                            className="absolute right-1 top-1 text-gray-400 hover:text-gray-600 text-xs"
+                            title="Limpar pesquisa"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                      {searchCategoria && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          {filteredCategorias.length} de {categorias.length} categorias encontradas
+                        </div>
+                      )}
+                    </div>
+                    
                     <div className="max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-3 bg-gray-50">
                       {loadingCategorias ? (
                         <div className="flex items-center justify-center py-4">
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-amber-600"></div>
                           <span className="ml-2 text-sm text-gray-500">Carregando categorias...</span>
                         </div>
-                      ) : categorias.length > 0 ? (
+                      ) : filteredCategorias.length > 0 ? (
                         <div className="space-y-2">
-                          {categorias.map(categoria => (
-                            <label key={categoria.id} className="flex items-center gap-3">
-                              <input
-                                type="checkbox"
-                                checked={formData.categoria.includes(categoria.id)}
-                                onChange={(e) => {
-                                  const newCategorias = e.target.checked
-                                    ? [...formData.categoria, categoria.id]
-                                    : formData.categoria.filter((id: number) => id !== categoria.id);
-                                  setFormData({ ...formData, categoria: newCategorias });
-                                }}
-                                className="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
-                              />
-                              <span className="text-sm text-gray-700">{categoria.nome}</span>
-                            </label>
-                          ))}
+                          {filteredCategorias.map(categoria => {
+                            const isSelected = formData.categoria.includes(categoria.id);
+                            return (
+                              <label 
+                                key={categoria.id} 
+                                className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                                  isSelected 
+                                    ? 'bg-amber-50 border border-amber-200' 
+                                    : 'hover:bg-gray-50'
+                                }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={(e) => {
+                                    const newCategorias = e.target.checked
+                                      ? [...formData.categoria, categoria.id]
+                                      : formData.categoria.filter((id: number) => id !== categoria.id);
+                                    setFormData({ ...formData, categoria: newCategorias });
+                                  }}
+                                  className="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
+                                />
+                                <span className={`text-sm ${isSelected ? 'text-amber-800 font-medium' : 'text-gray-700'}`}>
+                                  {isSelected && '✓ '}{categoria.nome}
+                                </span>
+                              </label>
+                            );
+                          })}
                         </div>
+                      ) : categorias.length > 0 ? (
+                        <p className="text-sm text-gray-500 text-center py-4">
+                          Nenhuma categoria encontrada com "{searchCategoria}"
+                        </p>
                       ) : (
                         <p className="text-sm text-gray-500 text-center py-4">
-                          Nenhuma categoria encontrada
+                          Nenhuma categoria cadastrada
                         </p>
                       )}
                     </div>
@@ -568,37 +936,100 @@ function LivroModal({ isOpen, onClose, livro, onSuccess }: LivroModalProps) {
 
                   {/* Gêneros */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Gêneros *
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Gêneros *
+                        {formData.genero.length > 0 && (
+                          <span className="ml-2 px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
+                            {formData.genero.length} selecionado{formData.genero.length !== 1 ? 's' : ''}
+                          </span>
+                        )}
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setCreateGeneroModal(true)}
+                        className="flex items-center gap-1 text-xs text-amber-600 hover:text-amber-700 font-medium"
+                        title="Adicionar novo gênero"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Novo
+                      </button>
+                    </div>
+                    
+                    {/* Campo de pesquisa para gêneros */}
+                    <div className="mb-2">
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="🔍 Pesquisar gêneros..."
+                          value={searchGenero}
+                          onChange={(e) => setSearchGenero(e.target.value)}
+                          className="w-full px-2 py-1 pr-6 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                        />
+                        {searchGenero && (
+                          <button
+                            type="button"
+                            onClick={() => setSearchGenero('')}
+                            className="absolute right-1 top-1 text-gray-400 hover:text-gray-600 text-xs"
+                            title="Limpar pesquisa"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                      {searchGenero && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          {filteredGeneros.length} de {generos.length} gêneros encontrados
+                        </div>
+                      )}
+                    </div>
+                    
                     <div className="max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-3 bg-gray-50">
                       {loadingGeneros ? (
                         <div className="flex items-center justify-center py-4">
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-amber-600"></div>
                           <span className="ml-2 text-sm text-gray-500">Carregando gêneros...</span>
                         </div>
-                      ) : generos.length > 0 ? (
+                      ) : filteredGeneros.length > 0 ? (
                         <div className="space-y-2">
-                          {generos.map(genero => (
-                            <label key={genero.id} className="flex items-center gap-3">
-                              <input
-                                type="checkbox"
-                                checked={formData.genero.includes(genero.id)}
-                                onChange={(e) => {
-                                  const newGeneros = e.target.checked
-                                    ? [...formData.genero, genero.id]
-                                    : formData.genero.filter((id: number) => id !== genero.id);
-                                  setFormData({ ...formData, genero: newGeneros });
-                                }}
-                                className="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
-                              />
-                              <span className="text-sm text-gray-700">{genero.nome}</span>
-                            </label>
-                          ))}
+                          {filteredGeneros.map(genero => {
+                            const isSelected = formData.genero.includes(genero.id);
+                            return (
+                              <label 
+                                key={genero.id} 
+                                className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                                  isSelected 
+                                    ? 'bg-amber-50 border border-amber-200' 
+                                    : 'hover:bg-gray-50'
+                                }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={(e) => {
+                                    const newGeneros = e.target.checked
+                                      ? [...formData.genero, genero.id]
+                                      : formData.genero.filter((id: number) => id !== genero.id);
+                                    setFormData({ ...formData, genero: newGeneros });
+                                  }}
+                                  className="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
+                                />
+                                <span className={`text-sm ${isSelected ? 'text-amber-800 font-medium' : 'text-gray-700'}`}>
+                                  {isSelected && '✓ '}{genero.nome}
+                                </span>
+                              </label>
+                            );
+                          })}
                         </div>
+                      ) : generos.length > 0 ? (
+                        <p className="text-sm text-gray-500 text-center py-4">
+                          Nenhum gênero encontrado com "{searchGenero}"
+                        </p>
                       ) : (
                         <p className="text-sm text-gray-500 text-center py-4">
-                          Nenhum gênero encontrado
+                          Nenhum gênero cadastrado
                         </p>
                       )}
                     </div>
@@ -629,6 +1060,141 @@ function LivroModal({ isOpen, onClose, livro, onSuccess }: LivroModalProps) {
           </>
         )}
       </div>
+
+      {/* Modal para criar novo autor */}
+      {createAutorModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Criar Novo Autor</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nome do Autor *
+                </label>
+                <input
+                  type="text"
+                  value={newAutorName}
+                  onChange={(e) => setNewAutorName(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                  placeholder="Digite o nome do autor"
+                  autoFocus
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCreateAutorModal(false);
+                    setNewAutorName('');
+                  }}
+                  className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  disabled={isCreating}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCreateAutor}
+                  className="flex-1 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
+                  disabled={isCreating || !newAutorName.trim()}
+                >
+                  {isCreating ? 'Criando...' : 'Criar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para criar nova categoria */}
+      {createCategoriaModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Criar Nova Categoria</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nome da Categoria *
+                </label>
+                <input
+                  type="text"
+                  value={newCategoriaNome}
+                  onChange={(e) => setNewCategoriaNome(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                  placeholder="Digite o nome da categoria"
+                  autoFocus
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCreateCategoriaModal(false);
+                    setNewCategoriaNome('');
+                  }}
+                  className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  disabled={isCreating}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCreateCategoria}
+                  className="flex-1 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
+                  disabled={isCreating || !newCategoriaNome.trim()}
+                >
+                  {isCreating ? 'Criando...' : 'Criar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para criar novo gênero */}
+      {createGeneroModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Criar Novo Gênero</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nome do Gênero *
+                </label>
+                <input
+                  type="text"
+                  value={newGeneroName}
+                  onChange={(e) => setNewGeneroName(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                  placeholder="Digite o nome do gênero"
+                  autoFocus
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCreateGeneroModal(false);
+                    setNewGeneroName('');
+                  }}
+                  className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  disabled={isCreating}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCreateGenero}
+                  className="flex-1 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
+                  disabled={isCreating || !newGeneroName.trim()}
+                >
+                  {isCreating ? 'Criando...' : 'Criar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -638,231 +1204,198 @@ function useAutores() {
   const [autores, setAutores] = useState<Autor[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let mounted = true;
-    
-    const fetchAutores = async () => {
-      try {
-        // Tenta diferentes endpoints possíveis
-        const endpoints = [
-          '/autores/',
-          '/autor/',
-          '/authors/',
-          '/livros/autores/'
-        ];
-        
-        let data = null;
-        
-        for (const endpoint of endpoints) {
-          try {
-            console.log(`🔄 Tentando endpoint: ${endpoint}`);
-            data = await elibrosApi.makeRequest<any>(endpoint, { skipAuth: true });
-            
-            // Verifica se os dados são válidos
-            if (data && Array.isArray(data)) {
-              console.log(`✅ Sucesso no endpoint: ${endpoint}`, data);
-              break;
-            } else if (data && data.results && Array.isArray(data.results)) {
-              // Se a API retornar formato { results: [] }
-              data = data.results;
-              console.log(`✅ Sucesso no endpoint (com results): ${endpoint}`, data);
-              break;
-            }
-          } catch (err) {
-            console.log(`❌ Falha no endpoint: ${endpoint}`, err);
-          }
-        }
-        
-        if (mounted) {
+  const fetchAutores = async () => {
+    setLoading(true);
+    try {
+      // Tenta diferentes endpoints possíveis
+      const endpoints = [
+        '/autores/',
+        '/autor/',
+        '/authors/',
+        '/livros/autores/'
+      ];
+      
+      let data = null;
+      
+      for (const endpoint of endpoints) {
+        try {
+          console.log(`🔄 Tentando endpoint: ${endpoint}`);
+          data = await elibrosApi.makeRequest<any>(endpoint, { skipAuth: true });
+          
+          // Verifica se os dados são válidos
           if (data && Array.isArray(data)) {
-            setAutores(data);
-          } else {
-            console.log('📭 Nenhum endpoint funcionou, usando dados mock');
-            setAutores([
-              { id: 1, nome: "Autor 1" },
-              { id: 2, nome: "Autor 2" },
-              { id: 3, nome: "Autor 3" },
-            ]);
+            console.log(`✅ Sucesso no endpoint: ${endpoint}`, data);
+            break;
+          } else if (data && data.results && Array.isArray(data.results)) {
+            // Se a API retornar formato { results: [] }
+            data = data.results;
+            console.log(`✅ Sucesso no endpoint (com results): ${endpoint}`, data);
+            break;
           }
-        }
-      } catch (err) {
-        console.error('❌ Erro geral:', err);
-        if (mounted) {
-          setAutores([
-            { id: 1, nome: "Autor Teste 1" },
-            { id: 2, nome: "Autor Teste 2" },
-            { id: 3, nome: "Autor Teste 3" },
-          ]);
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
+        } catch (err) {
+          console.log(`❌ Falha no endpoint: ${endpoint}`, err);
         }
       }
-    };
+      
+      if (data && Array.isArray(data)) {
+        setAutores(data);
+      } else {
+        console.log('📭 Nenhum endpoint funcionou, usando dados mock');
+        setAutores([
+          { id: 1, nome: "Autor 1" },
+          { id: 2, nome: "Autor 2" },
+          { id: 3, nome: "Autor 3" },
+        ]);
+      }
+    } catch (err) {
+      console.error('❌ Erro geral:', err);
+      setAutores([
+        { id: 1, nome: "Autor Teste 1" },
+        { id: 2, nome: "Autor Teste 2" },
+        { id: 3, nome: "Autor Teste 3" },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchAutores();
-
-    return () => {
-      mounted = false;
-    };
   }, []);
 
-  return { autores, loading };
+  return { autores, loading, refreshAutores: fetchAutores };
 }
 
 function useCategorias() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let mounted = true;
-    
-    const fetchCategorias = async () => {
-      try {
-        // Tenta diferentes endpoints possíveis
-        const endpoints = [
-          '/categorias/',
-          '/categoria/',
-          '/categories/',
-          '/livros/categorias/'
-        ];
-        
-        let data = null;
-        
-        for (const endpoint of endpoints) {
-          try {
-            console.log(`🔄 Tentando endpoint: ${endpoint}`);
-            data = await elibrosApi.makeRequest<any>(endpoint, { skipAuth: true });
-            
-            // Verifica se os dados são válidos
-            if (data && Array.isArray(data)) {
-              console.log(`✅ Sucesso no endpoint: ${endpoint}`, data);
-              break;
-            } else if (data && data.results && Array.isArray(data.results)) {
-              // Se a API retornar formato { results: [] }
-              data = data.results;
-              console.log(`✅ Sucesso no endpoint (com results): ${endpoint}`, data);
-              break;
-            }
-          } catch (err) {
-            console.log(`❌ Falha no endpoint: ${endpoint}`, err);
-          }
-        }
-        
-        if (mounted) {
+  const fetchCategorias = async () => {
+    setLoading(true);
+    try {
+      // Tenta diferentes endpoints possíveis
+      const endpoints = [
+        '/categorias/',
+        '/categoria/',
+        '/categories/',
+        '/livros/categorias/'
+      ];
+      
+      let data = null;
+      
+      for (const endpoint of endpoints) {
+        try {
+          console.log(`🔄 Tentando endpoint: ${endpoint}`);
+          data = await elibrosApi.makeRequest<any>(endpoint, { skipAuth: true });
+          
+          // Verifica se os dados são válidos
           if (data && Array.isArray(data)) {
-            setCategorias(data);
-          } else {
-            console.log('📭 Nenhum endpoint funcionou, usando dados mock');
-            setCategorias([
-              { id: 1, nome: "Categoria 1" },
-              { id: 2, nome: "Categoria 2" },
-              { id: 3, nome: "Categoria 3" },
-            ]);
+            console.log(`✅ Sucesso no endpoint: ${endpoint}`, data);
+            break;
+          } else if (data && data.results && Array.isArray(data.results)) {
+            // Se a API retornar formato { results: [] }
+            data = data.results;
+            console.log(`✅ Sucesso no endpoint (com results): ${endpoint}`, data);
+            break;
           }
-        }
-      } catch (err) {
-        console.error('❌ Erro geral:', err);
-        if (mounted) {
-          setCategorias([
-            { id: 1, nome: "Categoria Teste 1" },
-            { id: 2, nome: "Categoria Teste 2" },
-            { id: 3, nome: "Categoria Teste 3" },
-          ]);
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
+        } catch (err) {
+          console.log(`❌ Falha no endpoint: ${endpoint}`, err);
         }
       }
-    };
+      
+      if (data && Array.isArray(data)) {
+        setCategorias(data);
+      } else {
+        console.log('📭 Nenhum endpoint funcionou, usando dados mock');
+        setCategorias([
+          { id: 1, nome: "Categoria 1" },
+          { id: 2, nome: "Categoria 2" },
+          { id: 3, nome: "Categoria 3" },
+        ]);
+      }
+    } catch (err) {
+      console.error('❌ Erro geral:', err);
+      setCategorias([
+        { id: 1, nome: "Categoria Teste 1" },
+        { id: 2, nome: "Categoria Teste 2" },
+        { id: 3, nome: "Categoria Teste 3" },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCategorias();
-
-    return () => {
-      mounted = false;
-    };
   }, []);
 
-  return { categorias, loading };
+  return { categorias, loading, refreshCategorias: fetchCategorias };
 }
 
 function useGeneros() {
   const [generos, setGeneros] = useState<GeneroLiterario[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let mounted = true;
-    
-    const fetchGeneros = async () => {
-      try {
-        // Tenta diferentes endpoints possíveis
-        const endpoints = [
-          '/generos/',
-          '/genero/',
-          '/genres/',
-          '/livros/generos/'
-        ];
-        
-        let data = null;
-        
-        for (const endpoint of endpoints) {
-          try {
-            console.log(`🔄 Tentando endpoint: ${endpoint}`);
-            data = await elibrosApi.makeRequest<any>(endpoint, { skipAuth: true });
-            
-            // Verifica se os dados são válidos
-            if (data && Array.isArray(data)) {
-              console.log(`✅ Sucesso no endpoint: ${endpoint}`, data);
-              break;
-            } else if (data && data.results && Array.isArray(data.results)) {
-              // Se a API retornar formato { results: [] }
-              data = data.results;
-              console.log(`✅ Sucesso no endpoint (com results): ${endpoint}`, data);
-              break;
-            }
-          } catch (err) {
-            console.log(`❌ Falha no endpoint: ${endpoint}`, err);
-          }
-        }
-        
-        if (mounted) {
+  const fetchGeneros = async () => {
+    setLoading(true);
+    try {
+      // Tenta diferentes endpoints possíveis
+      const endpoints = [
+        '/generos/',
+        '/genero/',
+        '/genres/',
+        '/livros/generos/'
+      ];
+      
+      let data = null;
+      
+      for (const endpoint of endpoints) {
+        try {
+          console.log(`🔄 Tentando endpoint: ${endpoint}`);
+          data = await elibrosApi.makeRequest<any>(endpoint, { skipAuth: true });
+          
+          // Verifica se os dados são válidos
           if (data && Array.isArray(data)) {
-            setGeneros(data);
-          } else {
-            console.log('📭 Nenhum endpoint funcionou, usando dados mock');
-            setGeneros([
-              { id: 1, nome: "Gênero 1" },
-              { id: 2, nome: "Gênero 2" },
-              { id: 3, nome: "Gênero 3" },
-            ]);
+            console.log(`✅ Sucesso no endpoint: ${endpoint}`, data);
+            break;
+          } else if (data && data.results && Array.isArray(data.results)) {
+            // Se a API retornar formato { results: [] }
+            data = data.results;
+            console.log(`✅ Sucesso no endpoint (com results): ${endpoint}`, data);
+            break;
           }
-        }
-      } catch (err) {
-        console.error('❌ Erro geral:', err);
-        if (mounted) {
-          setGeneros([
-            { id: 1, nome: "Gênero Teste 1" },
-            { id: 2, nome: "Gênero Teste 2" },
-            { id: 3, nome: "Gênero Teste 3" },
-          ]);
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
+        } catch (err) {
+          console.log(`❌ Falha no endpoint: ${endpoint}`, err);
         }
       }
-    };
+      
+      if (data && Array.isArray(data)) {
+        setGeneros(data);
+      } else {
+        console.log('📭 Nenhum endpoint funcionou, usando dados mock');
+        setGeneros([
+          { id: 1, nome: "Gênero 1" },
+          { id: 2, nome: "Gênero 2" },
+          { id: 3, nome: "Gênero 3" },
+        ]);
+      }
+    } catch (err) {
+      console.error('❌ Erro geral:', err);
+      setGeneros([
+        { id: 1, nome: "Gênero Teste 1" },
+        { id: 2, nome: "Gênero Teste 2" },
+        { id: 3, nome: "Gênero Teste 3" },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchGeneros();
-
-    return () => {
-      mounted = false;
-    };
   }, []);
 
-  return { generos, loading };
+  return { generos, loading, refreshGeneros: fetchGeneros };
 }
 
 interface DeleteConfirmModalProps {

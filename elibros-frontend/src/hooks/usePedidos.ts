@@ -46,7 +46,20 @@ export function usePedidos(options: UsePedidosOptions = {}) {
         isAdmin
       };
 
+      console.log('🔄 Carregando pedidos com parâmetros:', params);
+      console.log('📅 Ordenação solicitada:', ordering);
+
       const response = await pedidoApi.list(params);
+      
+      console.log('✅ Pedidos recebidos da API:', response.results.length);
+      console.log('📊 Primeiros 3 pedidos (para verificar ordem):', 
+        response.results.slice(0, 3).map(p => ({
+          id: p.id, 
+          numero: p.numero_pedido, 
+          data: p.data_pedido
+        }))
+      );
+      
       setPedidos(response.results);
       setTotalCount(response.count);
       setCurrentPage(page);
@@ -93,15 +106,31 @@ export function usePedidos(options: UsePedidosOptions = {}) {
   const updateStatus = async (id: number, status: Pedido['status']): Promise<boolean> => {
     try {
       setError(null);
+      console.log('🔄 Atualizando status do pedido:', { id, status, isAdmin });
+      
       const pedidoAtualizado = await pedidoApi.updateStatus(id, status, isAdmin);
-      setPedidos(prev => prev.map(pedido => 
-        pedido.id === id ? pedidoAtualizado : pedido
-      ));
+      console.log('✅ Pedido atualizado recebido da API:', pedidoAtualizado);
+      
+      // Verificar se os dados estão completos
+      if (!pedidoAtualizado.cliente) {
+        console.warn('⚠️ ATENÇÃO: Pedido retornado sem dados do cliente!');
+      }
+      if (!pedidoAtualizado.valor_total) {
+        console.warn('⚠️ ATENÇÃO: Pedido retornado sem valor total!');
+      }
+      
+      setPedidos(prev => prev.map(pedido => {
+        if (pedido.id === id) {
+          console.log('🔄 Substituindo pedido no estado:', { antigo: pedido, novo: pedidoAtualizado });
+          return pedidoAtualizado;
+        }
+        return pedido;
+      }));
       return true;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erro ao atualizar status do pedido';
       setError(errorMessage);
-      console.error('Erro ao atualizar status do pedido:', err);
+      console.error('❌ Erro ao atualizar status do pedido:', err);
       return false;
     }
   };

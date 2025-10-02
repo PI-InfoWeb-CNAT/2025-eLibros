@@ -149,13 +149,53 @@ export default function CategoriasAdminPage() {
   } = useCategorias();
 
   const filteredCategorias = useMemo(() => {
-    return categorias.filter(categoria => {
-      const matchesSearch = !searchTerm || 
-        categoria.nome.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!searchTerm.trim()) {
+      // Sem pesquisa, aplica apenas a ordenação alfabética
+      return [...categorias].sort((a, b) => {
+        if (sortOrder === 'nome') {
+          return a.nome.localeCompare(b.nome);
+        } else {
+          return b.nome.localeCompare(a.nome);
+        }
+      });
+    }
+    
+    const searchTermLower = searchTerm.toLowerCase();
+    const exactMatches: Categoria[] = [];
+    const startsWithMatches: Categoria[] = [];
+    const includesMatches: Categoria[] = [];
+    
+    categorias.forEach(categoria => {
+      const categoriaNome = categoria.nome.toLowerCase();
       
-      return matchesSearch;
+      if (categoriaNome === searchTermLower) {
+        // Correspondência exata completa (maior prioridade)
+        exactMatches.push(categoria);
+      } else if (categoriaNome.startsWith(searchTermLower)) {
+        // Correspondência no início (alta prioridade)
+        startsWithMatches.push(categoria);
+      } else if (categoriaNome.includes(searchTermLower)) {
+        // Correspondência parcial (baixa prioridade)
+        includesMatches.push(categoria);
+      }
     });
-  }, [categorias, searchTerm]);
+    
+    // Ordenar alfabeticamente dentro de cada grupo
+    const sortFunction = (a: Categoria, b: Categoria) => {
+      if (sortOrder === 'nome') {
+        return a.nome.localeCompare(b.nome);
+      } else {
+        return b.nome.localeCompare(a.nome);
+      }
+    };
+    
+    exactMatches.sort(sortFunction);
+    startsWithMatches.sort(sortFunction);
+    includesMatches.sort(sortFunction);
+    
+    // Retorna na ordem: exato → começa com → contém
+    return [...exactMatches, ...startsWithMatches, ...includesMatches];
+  }, [categorias, searchTerm, sortOrder]);
 
   const handleAddCategoria = () => {
     setEditingCategoria(undefined);

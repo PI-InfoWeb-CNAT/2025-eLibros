@@ -243,14 +243,18 @@ function ClienteEditModal({ isOpen, onClose, cliente, onSave }: ClienteEditModal
         
         // Adicionar dados do endereço
         Object.entries(formData.endereco).forEach(([key, value]) => {
-          if (value && value.trim() !== '') {
+          // Verificar se o valor é válido (não null, undefined, ou string vazia)
+          const isValidValue = value !== null && value !== undefined && 
+            (typeof value === 'string' ? value.trim() !== '' : value !== '');
+          
+          if (isValidValue) {
             if (key === 'numero') {
-              const numeroValue = parseInt(value, 10);
+              const numeroValue = typeof value === 'string' ? parseInt(value, 10) : Number(value);
               if (!isNaN(numeroValue) && numeroValue > 0) {
                 formDataToSend.append(`endereco[${key}]`, numeroValue.toString());
               }
             } else {
-              formDataToSend.append(`endereco[${key}]`, value);
+              formDataToSend.append(`endereco[${key}]`, typeof value === 'string' ? value.trim() : String(value));
             }
           }
         });
@@ -261,14 +265,18 @@ function ClienteEditModal({ isOpen, onClose, cliente, onSave }: ClienteEditModal
         const enderecoData: any = {};
         // Copiar apenas campos válidos do endereço
         Object.entries(formData.endereco).forEach(([key, value]) => {
-          if (value && value.trim() !== '') {
+          // Verificar se o valor é válido (não null, undefined, ou string vazia)
+          const isValidValue = value !== null && value !== undefined && 
+            (typeof value === 'string' ? value.trim() !== '' : value !== '');
+          
+          if (isValidValue) {
             if (key === 'numero') {
-              const numeroValue = parseInt(value, 10);
+              const numeroValue = typeof value === 'string' ? parseInt(value, 10) : Number(value);
               if (!isNaN(numeroValue) && numeroValue > 0) {
                 enderecoData[key] = numeroValue;
               }
             } else {
-              enderecoData[key] = value;
+              enderecoData[key] = typeof value === 'string' ? value.trim() : value;
             }
           }
         });

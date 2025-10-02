@@ -35,6 +35,9 @@ export function useCupons(options: UseCuponsOptions = {}) {
         page
       };
 
+      // DEBUG: Ver parâmetros enviados para a API
+      console.log('🌐 Enviando parâmetros para API cupons:', params);
+
       const response = await cupomApi.list(params);
       setCupons(response.results);
       setTotalCount(response.count);

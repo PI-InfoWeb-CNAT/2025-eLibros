@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import AdminProtectedRoute from '@/components/AdminProtectedRoute';
 import AdminLayout from '@/components/AdminLayout';
 import { useCupons } from '@/hooks/useCupons';
@@ -16,15 +16,45 @@ interface CupomModalProps {
 
 function CupomModal({ isOpen, onClose, cupom, onSuccess }: CupomModalProps) {
   const [formData, setFormData] = useState({
-    codigo: cupom?.codigo || '',
-    valor: cupom?.valor || 0,
-    tipo_valor: cupom?.tipo_valor || '1' as '1' | '2',
-    ativo: cupom?.ativo ?? true,
-    data_inicio: cupom?.data_inicio ? cupom.data_inicio.split('T')[0] : '',
-    data_fim: cupom?.data_fim ? cupom.data_fim.split('T')[0] : '',
+    codigo: '',
+    valor: 0,
+    tipo_valor: '1' as '1' | '2',
+    ativo: true,
+    data_inicio: '',
+    data_fim: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // useEffect para atualizar formData quando cupom mudar
+  useEffect(() => {
+    console.log('🔍 CupomModal - Cupom recebido:', cupom);
+    
+    if (cupom) {
+      const newFormData = {
+        codigo: cupom.codigo || '',
+        valor: cupom.valor || 0,
+        tipo_valor: cupom.tipo_valor || '1',
+        ativo: cupom.ativo ?? true,
+        data_inicio: cupom.data_inicio ? cupom.data_inicio.split('T')[0] : '',
+        data_fim: cupom.data_fim ? cupom.data_fim.split('T')[0] : '',
+      };
+      
+      console.log('📝 Atualizando formData com:', newFormData);
+      setFormData(newFormData);
+    } else {
+      // Se não há cupom (novo cupom), reseta o formulário
+      console.log('🆕 Resetando formulário para novo cupom');
+      setFormData({
+        codigo: '',
+        valor: 0,
+        tipo_valor: '1',
+        ativo: true,
+        data_inicio: '',
+        data_fim: '',
+      });
+    }
+  }, [cupom]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -228,6 +258,13 @@ export default function CuponsAdminPage() {
   const [editingCupom, setEditingCupom] = useState<Cupom | undefined>();
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; cupom?: Cupom }>({ isOpen: false });
 
+  // DEBUG: Ver os parâmetros sendo passados para o hook
+  console.log('🔍 Parâmetros do filtro:', {
+    search: searchTerm,
+    ativo: filterAtivo,
+    ordering: sortOrder
+  });
+
   const { 
     cupons, 
     loading, 
@@ -242,15 +279,60 @@ export default function CuponsAdminPage() {
   });
 
   const filteredCupons = useMemo(() => {
-    return cupons.filter(cupom => {
-      const matchesSearch = !searchTerm || 
-        cupom.codigo.toLowerCase().includes(searchTerm.toLowerCase());
+    // DEBUG: Ver cupons recebidos da API
+    console.log('📦 Cupons recebidos da API:', cupons.length);
+    console.log('📋 Status dos cupons:', cupons.map(c => ({ codigo: c.codigo, ativo: c.ativo })));
+    
+    // O filtro de status já é aplicado no hook useCupons através do parâmetro 'ativo'
+    // Aqui só precisamos aplicar a lógica de busca e ordenação
+    
+    if (!searchTerm.trim()) {
+      // Sem pesquisa, aplica apenas a ordenação alfabética
+      return cupons.sort((a, b) => {
+        if (sortOrder === 'codigo') {
+          return a.codigo.localeCompare(b.codigo);
+        } else {
+          return b.codigo.localeCompare(a.codigo);
+        }
+      });
+    }
+    
+    const searchTermLower = searchTerm.toLowerCase();
+    const exactMatches: Cupom[] = [];
+    const startsWithMatches: Cupom[] = [];
+    const includesMatches: Cupom[] = [];
+    
+    cupons.forEach(cupom => {
+      const cupomCodigo = cupom.codigo.toLowerCase();
       
-      const matchesFilter = filterAtivo === undefined || cupom.ativo === filterAtivo;
-      
-      return matchesSearch && matchesFilter;
+      if (cupomCodigo === searchTermLower) {
+        // Correspondência exata completa (maior prioridade)
+        exactMatches.push(cupom);
+      } else if (cupomCodigo.startsWith(searchTermLower)) {
+        // Correspondência no início (alta prioridade)
+        startsWithMatches.push(cupom);
+      } else if (cupomCodigo.includes(searchTermLower)) {
+        // Correspondência parcial (baixa prioridade)
+        includesMatches.push(cupom);
+      }
     });
-  }, [cupons, searchTerm, filterAtivo]);
+    
+    // Ordenar alfabeticamente dentro de cada grupo
+    const sortFunction = (a: Cupom, b: Cupom) => {
+      if (sortOrder === 'codigo') {
+        return a.codigo.localeCompare(b.codigo);
+      } else {
+        return b.codigo.localeCompare(a.codigo);
+      }
+    };
+    
+    exactMatches.sort(sortFunction);
+    startsWithMatches.sort(sortFunction);
+    includesMatches.sort(sortFunction);
+    
+    // Retorna na ordem: exato → começa com → contém
+    return [...exactMatches, ...startsWithMatches, ...includesMatches];
+  }, [cupons, searchTerm, sortOrder]);
 
   const handleAddCupom = () => {
     setEditingCupom(undefined);
@@ -258,6 +340,7 @@ export default function CuponsAdminPage() {
   };
 
   const handleEditCupom = (cupom: Cupom) => {
+    console.log('✏️ Editando cupom:', cupom);
     setEditingCupom(cupom);
     setIsModalOpen(true);
   };
@@ -277,6 +360,7 @@ export default function CuponsAdminPage() {
 
   const handleModalSuccess = () => {
     refreshCupons();
+    setEditingCupom(undefined); // Limpa o cupom em edição
   };
 
   const formatData = (dataString: string) => {
@@ -337,7 +421,15 @@ export default function CuponsAdminPage() {
                   value={filterAtivo === undefined ? 'all' : filterAtivo ? 'true' : 'false'}
                   onChange={(e) => {
                     const value = e.target.value;
-                    setFilterAtivo(value === 'all' ? undefined : value === 'true');
+                    console.log('🔍 Valor selecionado no filtro:', value);
+                    
+                    if (value === 'all') {
+                      setFilterAtivo(undefined);
+                    } else if (value === 'true') {
+                      setFilterAtivo(true);
+                    } else if (value === 'false') {
+                      setFilterAtivo(false);
+                    }
                   }}
                   className="px-3 py-2 pr-8 bg-transparent text-sm appearance-none focus:outline-none"
                 >
@@ -445,7 +537,10 @@ export default function CuponsAdminPage() {
         {/* Modals */}
         <CupomModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingCupom(undefined); // Limpa o cupom em edição ao fechar
+          }}
           cupom={editingCupom}
           onSuccess={handleModalSuccess}
         />

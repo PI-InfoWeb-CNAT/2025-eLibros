@@ -9,18 +9,41 @@ import { pedidoApi, Pedido } from '../../../services/pedidoApiService';
 interface PedidoModalProps {
   isOpen: boolean;
   onClose: () => void;
-  pedido?: Pedido;
+  pedido: Pedido | null;
   onSuccess: () => void;
+  onUpdateStatus?: (id: number, status: Pedido['status']) => Promise<boolean>;
   mode?: 'view' | 'edit';
 }
 
-function PedidoModal({ isOpen, onClose, pedido, onSuccess, mode = 'view' }: PedidoModalProps) {
+function PedidoModal({ isOpen, onClose, pedido, onSuccess, onUpdateStatus, mode = 'view' }: PedidoModalProps) {
   const [formData, setFormData] = useState({
     status: pedido?.status || 'pendente' as Pedido['status'],
     observacoes: pedido?.observacoes || '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Detectar se a API está usando códigos ou formato por extenso
+  const isUsingCodes = pedido?.status && ['PRO', 'CON', 'ENV', 'ENT', 'CAN'].includes(pedido.status);
+  
+  console.log('🔍 Modal - Status do pedido:', pedido?.status, 'Usando códigos:', isUsingCodes);
+  
+  // Opções de status baseadas no formato detectado
+  const statusOptions = isUsingCodes ? [
+    { value: 'PRO', label: 'Em processamento' },
+    { value: 'CON', label: 'Confirmado' },
+    { value: 'ENV', label: 'Enviado' },
+    { value: 'ENT', label: 'Entregue' },
+    { value: 'CAN', label: 'Cancelado' }
+  ] : [
+    { value: 'pendente', label: 'Em processamento' },
+    { value: 'confirmado', label: 'Confirmado' },
+    { value: 'enviado', label: 'Enviado' },
+    { value: 'entregue', label: 'Entregue' },
+    { value: 'cancelado', label: 'Cancelado' }
+  ];
+  
+  console.log('📋 Opções de status disponíveis:', statusOptions);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,8 +53,14 @@ function PedidoModal({ isOpen, onClose, pedido, onSuccess, mode = 'view' }: Pedi
     setError(null);
 
     try {
-      await pedidoApi.update(pedido.id, formData, true); // true indica que é admin
-      onSuccess();
+      // Se apenas o status mudou e temos a função de updateStatus, usamos ela
+      if (formData.status !== pedido.status && onUpdateStatus) {
+        await onUpdateStatus(pedido.id, formData.status);
+      } else {
+        // Caso contrário, usa a atualização completa
+        await pedidoApi.update(pedido.id, formData, true); // true indica que é admin
+        onSuccess();
+      }
       onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao atualizar pedido');
@@ -63,9 +92,9 @@ function PedidoModal({ isOpen, onClose, pedido, onSuccess, mode = 'view' }: Pedi
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div>
             <h3 className="font-medium text-gray-900 mb-2">Cliente</h3>
-            <p className="text-sm text-gray-600">{pedido.cliente.nome}</p>
-            <p className="text-sm text-gray-600">{pedido.cliente.email}</p>
-            {pedido.cliente.telefone && (
+            <p className="text-sm text-gray-600">{pedido.cliente?.nome || 'Cliente não encontrado'}</p>
+            <p className="text-sm text-gray-600">{pedido.cliente?.email || 'E-mail não disponível'}</p>
+            {pedido.cliente?.telefone && (
               <p className="text-sm text-gray-600">{pedido.cliente.telefone}</p>
             )}
           </div>
@@ -99,8 +128,8 @@ function PedidoModal({ isOpen, onClose, pedido, onSuccess, mode = 'view' }: Pedi
         <div className="mb-6">
           <h3 className="font-medium text-gray-900 mb-2">Itens do Pedido</h3>
           <div className="space-y-2">
-            {pedido.itens.map((item) => (
-              <div key={item.id} className="flex justify-between items-center py-2 border-b border-gray-100">
+            {pedido.itens.map((item, index) => (
+              <div key={item.id || `item-${index}`} className="flex justify-between items-center py-2 border-b border-gray-100">
                 <div>
                   <p className="text-sm font-medium">{item.livro.titulo}</p>
                   <p className="text-xs text-gray-600">Qtd: {item.quantidade} x {pedidoApi.formatValor(item.preco_unitario)}</p>
@@ -122,9 +151,10 @@ function PedidoModal({ isOpen, onClose, pedido, onSuccess, mode = 'view' }: Pedi
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as Pedido['status'] })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
               >
-                <option value={pedido.status}>{pedidoApi.formatStatus(pedido.status)}</option>
-                {nextStatuses.map(status => (
-                  <option key={status} value={status}>{pedidoApi.formatStatus(status)}</option>
+                {statusOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -260,17 +290,40 @@ export default function PedidosAdminPage() {
   });
 
   const filteredPedidos = useMemo(() => {
-    return pedidos.filter(pedido => {
+    // Primeiro filtra
+    const filtered = pedidos.filter(pedido => {
       const matchesSearch = !searchTerm || 
         pedido.numero_pedido.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        pedido.cliente.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        pedido.cliente.email.toLowerCase().includes(searchTerm.toLowerCase());
+        (pedido.cliente?.nome && pedido.cliente.nome.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (pedido.cliente?.email && pedido.cliente.email.toLowerCase().includes(searchTerm.toLowerCase()));
       
       const matchesFilter = !filterStatus || pedido.status === filterStatus;
       
       return matchesSearch && matchesFilter;
     });
-  }, [pedidos, searchTerm, filterStatus]);
+
+    // Garantir ordenação por data (fallback caso a API não esteja respeitando)
+    const sorted = [...filtered].sort((a, b) => {
+      const dateA = new Date(a.data_pedido).getTime();
+      const dateB = new Date(b.data_pedido).getTime();
+      
+      if (sortOrder === '-data_pedido') {
+        // Mais recentes primeiro (ordem decrescente)
+        return dateB - dateA;
+      } else {
+        // Mais antigos primeiro (ordem crescente)
+        return dateA - dateB;
+      }
+    });
+
+    console.log('📊 Pedidos após ordenação local:', sorted.slice(0, 3).map(p => ({
+      numero: p.numero_pedido,
+      data: p.data_pedido,
+      timestamp: new Date(p.data_pedido).getTime()
+    })));
+
+    return sorted;
+  }, [pedidos, searchTerm, filterStatus, sortOrder]);
 
   const handleViewPedido = (pedido: Pedido) => {
     setViewingPedido(pedido);
@@ -296,12 +349,15 @@ export default function PedidosAdminPage() {
   };
 
   const handleModalSuccess = () => {
-    refreshPedidos();
+    // Não precisamos mais do refreshPedidos() porque o updateStatus já atualiza o estado local
     setIsViewModalOpen(false);
     setIsEditModalOpen(false);
   };
 
   const getStatusBadge = (pedido: Pedido) => {
+    // DEBUG: Ver status de cada pedido
+    console.log('🔍 Status do pedido', pedido.numero_pedido, ':', pedido.status);
+    
     const colorClass = pedidoApi.getStatusColor(pedido.status);
     return (
       <span className={`px-2 py-1 rounded-full text-xs ${colorClass}`}>
@@ -311,11 +367,10 @@ export default function PedidosAdminPage() {
   };
 
   const statusOptions = [
-    { value: '', label: 'Status' },
-    { value: 'pendente', label: 'Pendente' },
+    { value: '', label: 'Todos os Status' },
+    { value: 'pendente', label: 'Em processamento' },
     { value: 'confirmado', label: 'Confirmado' },
-    { value: 'preparando', label: 'Preparando' },
-    { value: 'caminho', label: 'A caminho' },
+    { value: 'enviado', label: 'Enviado' },
     { value: 'entregue', label: 'Entregue' },
     { value: 'cancelado', label: 'Cancelado' }
   ];
@@ -331,6 +386,13 @@ export default function PedidosAdminPage() {
 
           {/* Search and Filters */}
           <div className="mb-12">
+            {/* Indicador da ordenação atual */}
+            <div className="mb-4 text-sm text-gray-600">
+              <span className="bg-gray-100 px-3 py-1 rounded-full">
+                Ordenação: {sortOrder === '-data_pedido' ? 'Mais recentes' : ' Mais antigos'}
+              </span>
+            </div>
+            
             <div className="flex gap-4 items-center">
               {/* Search Bar */}
               <div className="relative w-full max-w-md">
@@ -350,8 +412,11 @@ export default function PedidosAdminPage() {
               <div className="relative">
                 <select
                   value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value)}
-                  className="px-3 py-2 pr-8 bg-transparent text-sm appearance-none focus:outline-none"
+                  onChange={(e) => {
+                    console.log('🔄 Alterando ordenação para:', e.target.value);
+                    setSortOrder(e.target.value);
+                  }}
+                  className="px-3 py-2 pr-8 bg-transparent text-sm appearance-none focus:outline-none border border-gray-200 rounded"
                 >
                   <option value="-data_pedido">Mais recentes</option>
                   <option value="data_pedido">Mais antigos</option>
@@ -418,17 +483,17 @@ export default function PedidosAdminPage() {
                 </div>
               ) : (
                 <div className="space-y-8">
-                  {filteredPedidos.map((pedido) => (
-                    <div key={pedido.id} className="flex items-center">
+                  {filteredPedidos.map((pedido, index) => (
+                    <div key={pedido.id || `pedido-${index}`} className="flex items-center">
                       <div className="min-w-0 flex-shrink-0">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="font-medium text-gray-900">#{pedido.numero_pedido}</h3>
                           {getStatusBadge(pedido)}
                         </div>
                         <div className="text-sm text-gray-600 space-y-1">
-                          <p>Cliente: {pedido.cliente.nome}</p>
+                          <p>Cliente: {pedido.cliente?.nome || 'Cliente não encontrado'}</p>
                           <p>Valor: {pedidoApi.formatValor(pedido.valor_total)}</p>
-                          <p>Data: {pedidoApi.formatData(pedido.data_pedido)}</p>
+                          <p>Data: <span className="font-medium">{pedidoApi.formatData(pedido.data_pedido)}</span></p>
                           <p>Pagamento: {pedido.metodo_pagamento}</p>
                         </div>
                       </div>
@@ -471,16 +536,18 @@ export default function PedidosAdminPage() {
         <PedidoModal
           isOpen={isViewModalOpen}
           onClose={() => setIsViewModalOpen(false)}
-          pedido={viewingPedido}
+          pedido={viewingPedido || null}
           onSuccess={handleModalSuccess}
+          onUpdateStatus={updateStatus}
           mode="view"
         />
 
         <PedidoModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
-          pedido={editingPedido}
+          pedido={editingPedido || null}
           onSuccess={handleModalSuccess}
+          onUpdateStatus={updateStatus}
           mode="edit"
         />
 

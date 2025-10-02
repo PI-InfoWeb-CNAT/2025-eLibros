@@ -30,6 +30,9 @@ class CupomApiService {
       ? `${this.endpoint}/?${searchParams.toString()}`
       : `${this.endpoint}/`;
 
+    // DEBUG: Ver URL sendo chamada
+    console.log('🔗 URL da API cupons:', url);
+
     return elibrosApi.makeRequest<CupomListResponse>(url);
   }
 

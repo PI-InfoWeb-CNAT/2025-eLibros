@@ -7,13 +7,38 @@ import {
   ClienteStats,
 } from '@/types/cliente';
 
+// Configuração para URLs de media
+const MEDIA_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1').replace('/api/v1', '');
+
 // import { Usuario } from '@/types/usuario';
 
 class ClienteApiService {
   private endpoint = '/cliente';
 
+  // Função auxiliar para construir URL completa da foto
+  private buildImageUrl(imagePath: string | null): string | undefined {
+    if (!imagePath) return undefined;
+    
+    // Se já for uma URL completa, retorna como está
+    if (imagePath.startsWith('http')) return imagePath;
+    
+    // Se o path já começa com /media/, usar diretamente
+    if (imagePath.startsWith('/media/')) {
+      return `${MEDIA_BASE_URL}${imagePath}`;
+    }
+    
+    // Se não tem barra inicial, adicionar /media/
+    const cleanPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
+    return `${MEDIA_BASE_URL}/media/${cleanPath}`;
+  }
+
   // Função auxiliar para mapear dados do backend para a interface Cliente
   private mapClienteData(clienteData: any): Cliente {
+    // Debug temporário
+    console.log('🐛 Raw foto_de_perfil:', clienteData.foto_de_perfil);
+    console.log('🐛 MEDIA_BASE_URL:', MEDIA_BASE_URL);
+    console.log('🐛 Built image URL:', this.buildImageUrl(clienteData.foto_de_perfil));
+    
     return {
       id: clienteData.id,
       nome: clienteData.nome,
@@ -25,7 +50,7 @@ class ClienteApiService {
       genero: clienteData.genero,
       data_cadastro: clienteData.data_cadastro,
       is_active: clienteData.is_active,
-      foto_de_perfil: clienteData.foto_de_perfil,
+      foto_de_perfil: this.buildImageUrl(clienteData.foto_de_perfil),
       endereco: clienteData.endereco,
       // Mantendo compatibilidade com estrutura antiga
       user: {
@@ -42,7 +67,7 @@ class ClienteApiService {
         email_is_verified: true, // Assumindo verificado
         is_staff: false,
         is_superuser: false,
-        foto_de_perfil: clienteData.foto_de_perfil,
+        foto_de_perfil: this.buildImageUrl(clienteData.foto_de_perfil),
       }
     };
   }

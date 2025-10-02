@@ -149,13 +149,27 @@ export default function GenerosAdminPage() {
   } = useGeneros();
 
   const filteredGeneros = useMemo(() => {
-    return generos.filter(genero => {
+    // Primeiro filtra
+    const filtered = generos.filter(genero => {
       const matchesSearch = !searchTerm || 
         genero.nome.toLowerCase().includes(searchTerm.toLowerCase());
       
       return matchesSearch;
     });
-  }, [generos, searchTerm]);
+
+    // Depois ordena
+    const sorted = [...filtered].sort((a, b) => {
+      if (sortOrder === 'nome') {
+        // A-Z (crescente)
+        return a.nome.localeCompare(b.nome);
+      } else {
+        // Z-A (decrescente)
+        return b.nome.localeCompare(a.nome);
+      }
+    });
+
+    return sorted;
+  }, [generos, searchTerm, sortOrder]);
 
   const handleAddGenero = () => {
     setEditingGenero(undefined);

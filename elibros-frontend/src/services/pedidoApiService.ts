@@ -32,7 +32,7 @@ export interface Pedido {
   numero_pedido: string;
   cliente: Cliente;
   endereco_entrega: EnderecoEntrega;
-  status: 'pendente' | 'confirmado' | 'preparando' | 'enviado' | 'entregue' | 'cancelado';
+  status: 'PRO' | 'CAN' | 'CON' | 'ENV' | 'ENT' | 'pendente' | 'confirmado' | 'enviado' | 'entregue' | 'cancelado';  // Aceita ambos os formatos
   valor_subtotal: number;
   valor_frete: number;
   valor_desconto: number;
@@ -62,7 +62,7 @@ export interface PedidoCreateData {
 }
 
 export interface PedidoUpdateData {
-  status?: Pedido['status'];
+  status?: Pedido['status'];  // 'PRO' | 'CAN' | 'CON' | 'ENV' | 'ENT'
   observacoes?: string;
   endereco_entrega_id?: number;
 }
@@ -147,35 +147,65 @@ class PedidoApiService {
   }
 
   async update(id: number, data: PedidoUpdateData, isAdmin?: boolean): Promise<Pedido> {
-    if (isAdmin) {
-      // Para admin, usar endpoint específico de update (formato correto: /admin/{id}/action/)
-      return elibrosApi.makeRequest<Pedido>(`${this.adminEndpoint}/${id}/update_pedido_status/`, {
-        method: 'PATCH',
-        body: JSON.stringify(data),
-      });
+    try {
+      if (isAdmin) {
+        // Para admin, usar endpoint específico de update
+        await elibrosApi.makeRequest<Pedido>(`${this.adminEndpoint}/${id}/update_pedido_status/`, {
+          method: 'PATCH',
+          body: JSON.stringify(data),
+        });
+        
+        // Buscar o pedido completo após a atualização para garantir dados íntegros
+        return await this.get(id, isAdmin);
+      } else {
+        // Para cliente normal, o endpoint já retorna o pedido completo
+        return elibrosApi.makeRequest<Pedido>(`${this.endpoint}/${id}/`, {
+          method: 'PATCH',
+          body: JSON.stringify(data),
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar pedido:', error);
+      throw error;
     }
-    return elibrosApi.makeRequest<Pedido>(`${this.endpoint}/${id}/`, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-    });
   }
 
   async updateStatus(id: number, status: Pedido['status'], isAdmin?: boolean): Promise<Pedido> {
-    // Redirecionar para o método update com apenas o status
-    return this.update(id, { status }, isAdmin);
+    try {
+      // Primeiro, atualiza o status
+      await this.update(id, { status }, isAdmin);
+      
+      // Depois, busca o pedido completo para garantir que temos todos os dados
+      const pedidoCompleto = await this.get(id, isAdmin);
+      return pedidoCompleto;
+    } catch (error) {
+      console.error('Erro ao atualizar status do pedido:', error);
+      throw error;
+    }
   }
 
   async cancel(id: number, motivo?: string, isAdmin?: boolean): Promise<Pedido> {
-    if (isAdmin) {
-      return elibrosApi.makeRequest<Pedido>(`${this.adminEndpoint}/${id}/cancelar_pedido_admin/`, {
-        method: 'PATCH',
-        body: JSON.stringify({ motivo }),
-      });
+    try {
+      // Primeiro, cancela o pedido
+      if (isAdmin) {
+        await elibrosApi.makeRequest<Pedido>(`${this.adminEndpoint}/${id}/cancelar_pedido_admin/`, {
+          method: 'PATCH',
+          body: JSON.stringify({ motivo }),
+        });
+      } else {
+        await elibrosApi.makeRequest<Pedido>(`${this.endpoint}/${id}/cancelar/`, {
+          method: 'PATCH',
+          body: JSON.stringify({ motivo }),
+        });
+      }
+      
+      // Depois, busca o pedido completo para garantir que temos todos os dados
+      const pedidoCompleto = await this.get(id, isAdmin);
+      return pedidoCompleto;
+    } catch (error) {
+      console.error('Erro ao cancelar pedido:', error);
+      throw error;
     }
-    return elibrosApi.makeRequest<Pedido>(`${this.endpoint}/${id}/cancelar/`, {
-      method: 'PATCH',
-      body: JSON.stringify({ motivo }),
-    });
   }
 
   async getStats(isAdmin?: boolean): Promise<PedidoStats> {
@@ -186,66 +216,130 @@ class PedidoApiService {
   }
 
   // Métodos auxiliares
-  formatStatus(status: Pedido['status']): string {
+  formatStatus(status: Pedido['status'] | undefined | null): string {
+    if (!status) {
+      return 'Status desconhecido';
+    }
+    
+    // DEBUG: Ver que status está chegando da API
+    console.log('🔍 Status recebido:', status, 'Tipo:', typeof status);
+    
     const statusMap = {
-      'pendente': 'Pendente',
+      'PRO': 'Em processamento',
+      'CAN': 'Cancelado', 
+      'CON': 'Confirmado',
+      'ENV': 'Enviado',
+      'ENT': 'Entregue',
+      // Adicionar possíveis variações que podem vir da API
+      'pendente': 'Em processamento',
       'confirmado': 'Confirmado',
-      'preparando': 'Preparando',
       'enviado': 'Enviado',
       'entregue': 'Entregue',
       'cancelado': 'Cancelado'
-    };
-    return statusMap[status] || status;
+    } as const;
+    
+    const resultado = statusMap[status as keyof typeof statusMap] || status;
+    console.log('📋 Status formatado:', resultado);
+    return resultado;
   }
 
   getStatusColor(status: Pedido['status']): string {
     const colorMap = {
+      // Status do Django (códigos)
+      'PRO': 'text-yellow-600 bg-yellow-100',      // Em processamento - amarelo
+      'CON': 'text-blue-600 bg-blue-100',          // Confirmado - azul  
+      'ENV': 'text-orange-600 bg-orange-100',      // Enviado - laranja
+      'ENT': 'text-green-600 bg-green-100',        // Entregue - verde
+      'CAN': 'text-red-600 bg-red-100',            // Cancelado - vermelho
+      // Possíveis variações da API (por extenso)
       'pendente': 'text-yellow-600 bg-yellow-100',
       'confirmado': 'text-blue-600 bg-blue-100',
-      'preparando': 'text-purple-600 bg-purple-100',
-      'enviado': 'text-orange-600 bg-orange-100',
+      'enviado': 'text-orange-600 bg-orange-100', 
       'entregue': 'text-green-600 bg-green-100',
       'cancelado': 'text-red-600 bg-red-100'
-    };
-    return colorMap[status] || 'text-gray-600 bg-gray-100';
+    } as const;
+    return colorMap[status as keyof typeof colorMap] || 'text-gray-600 bg-gray-100';
   }
 
-  formatValor(valor: number): string {
-    return `R$ ${valor.toFixed(2)}`;
+  formatValor(valor: number | undefined | null): string {
+    if (valor === null || valor === undefined || isNaN(valor)) {
+      return 'R$ 0,00';
+    }
+    return `R$ ${valor.toFixed(2).replace('.', ',')}`;
   }
 
-  formatData(dataString: string): string {
-    return new Date(dataString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  formatData(dataString: string | undefined | null): string {
+    if (!dataString) {
+      return 'Data não disponível';
+    }
+    
+    try {
+      const date = new Date(dataString);
+      if (isNaN(date.getTime())) {
+        return 'Data inválida';
+      }
+      
+      return date.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      return 'Data inválida';
+    }
   }
 
-  formatDataSimples(dataString: string): string {
-    return new Date(dataString).toLocaleDateString('pt-BR');
+  formatDataSimples(dataString: string | undefined | null): string {
+    if (!dataString) {
+      return 'Data não disponível';
+    }
+    
+    try {
+      const date = new Date(dataString);
+      if (isNaN(date.getTime())) {
+        return 'Data inválida';
+      }
+      
+      return date.toLocaleDateString('pt-BR');
+    } catch (error) {
+      return 'Data inválida';
+    }
   }
 
   canEditStatus(status: Pedido['status']): boolean {
-    return !['entregue', 'cancelado'].includes(status);
+    return !['ENT', 'CAN', 'entregue', 'cancelado'].includes(status);  // Não pode editar se Entregue ou Cancelado
   }
 
   canCancel(status: Pedido['status']): boolean {
-    return !['entregue', 'cancelado'].includes(status);
+    return !['ENT', 'CAN', 'entregue', 'cancelado'].includes(status);  // Não pode cancelar se Entregue ou Cancelado
   }
 
   getNextStatuses(currentStatus: Pedido['status']): Pedido['status'][] {
-    const statusFlow: Record<Pedido['status'], Pedido['status'][]> = {
-      'pendente': ['confirmado', 'cancelado'],
-      'confirmado': ['preparando', 'cancelado'],
-      'preparando': ['enviado', 'cancelado'],
-      'enviado': ['entregue'],
-      'entregue': [],
-      'cancelado': []
+    // Normalizar o status atual para os códigos do Django
+    const normalizeStatus = (status: string): string => {
+      const statusMap: Record<string, string> = {
+        'pendente': 'PRO',
+        'confirmado': 'CON', 
+        'enviado': 'ENV',
+        'entregue': 'ENT',
+        'cancelado': 'CAN'
+      };
+      return statusMap[status] || status;
     };
-    return statusFlow[currentStatus] || [];
+
+    const normalized = normalizeStatus(currentStatus);
+    
+    const statusFlow: Record<string, string[]> = {
+      'PRO': ['CON', 'CAN'],  // Em processamento -> Confirmado ou Cancelado
+      'CON': ['ENV', 'CAN'],  // Confirmado -> Enviado ou Cancelado  
+      'ENV': ['ENT'],         // Enviado -> Entregue
+      'ENT': [],              // Entregue (final)
+      'CAN': []               // Cancelado (final)
+    };
+    
+    return (statusFlow[normalized] || []) as Pedido['status'][];
   }
 }
 
