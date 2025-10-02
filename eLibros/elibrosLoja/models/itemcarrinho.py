@@ -27,7 +27,7 @@ class ItemCarrinho(models.Model):
             self.criado_por = Administrador.objects.get(user=value)
 
     def __str__(self):
-        return f"{self.quantidade}x {self.livro.titulo}"
+        return f"{self.quantidade}x {self.livro.titulo} - {self.livro.preco}"
     
     def save(self, *args, **kwargs):
         if not self.preco:
