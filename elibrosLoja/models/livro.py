@@ -19,7 +19,11 @@ class Livro(models.Model):
     ISBN = models.CharField(unique=True, max_length=15)
     data_de_publicacao = models.DateField(null=True, blank=True, validators=[nao_e_no_futuro], verbose_name='Data de Publicação')
     ano_de_publicacao = models.IntegerField(null=True, blank=True, validators=[nao_negativo, nao_nulo, nao_e_no_futuro], verbose_name='Ano de Publicação')
-    capa = models.ImageField(upload_to='capas/', null=True, blank=True, verbose_name='Capa')
+    
+    # URL da capa armazenada no ImageKit.io
+    capa_url = models.URLField(blank=True, null=True, max_length=500, verbose_name='URL da Capa')
+    capa_file_id = models.CharField(blank=True, null=True, max_length=100, verbose_name='ImageKit File ID')
+    
     sinopse = models.TextField(blank=True, null=True, verbose_name='Sinopse')
     genero = models.ManyToManyField(Genero, related_name="Genero_Literario_do_Livro", blank=True)
     categoria = models.ManyToManyField(Categoria, related_name="Categoria_do_Livro", blank=True)
@@ -107,8 +111,8 @@ class Livro(models.Model):
             return self.titulo
 
     def img_preview(self): #new
-        if self.capa:
-            return mark_safe(f'<img src="{self.capa.url}" width="100"/>')
+        if self.capa_url:
+            return mark_safe(f'<img src="{self.capa_url}" width="100"/>')
         else:
             placeholder_url = settings.STATIC_URL + 'images/placeholder.png'
             return mark_safe(f'<img src="{placeholder_url}" width="100"/>')

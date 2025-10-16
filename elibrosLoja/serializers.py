@@ -12,6 +12,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
 from django.utils.crypto import get_random_string
+from utils.imagekit_config import upload_image_to_imagekit, delete_image_from_imagekit
+from utils.imagekit_serializers import ImageKitUploadMixin, ImageKitImageField
 
 
 class AutorSerializer(serializers.ModelSerializer[Autor]):
@@ -37,38 +39,60 @@ class LivroSerializer(serializers.ModelSerializer[Livro]):
     autores = serializers.StringRelatedField(source='autor', many=True, read_only=True)  # type: ignore
     categorias = serializers.StringRelatedField(source='categoria', many=True, read_only=True)  # type: ignore
     generos = serializers.StringRelatedField(source='genero', many=True, read_only=True)  # type: ignore
-    capa = serializers.SerializerMethodField()
+    capa_url = serializers.URLField(read_only=True)
     
     class Meta: 
         model = Livro
         fields = ['id', 'titulo', 'subtitulo', 'autores', 'editora', 'ISBN', 
-                 'data_de_publicacao', 'ano_de_publicacao', 'capa', 'sinopse',
+                 'data_de_publicacao', 'ano_de_publicacao', 'capa_url', 'sinopse',
                  'generos', 'categorias', 'preco', 'desconto', 'quantidade', 
                  'qtd_vendidos']
+
+
+class LivroCreateSerializer(ImageKitUploadMixin, serializers.ModelSerializer[Livro]):
+    """Serializer para criar/editar livros com upload de capa para ImageKit"""
+    capa = ImageKitImageField(required=False, allow_null=True, write_only=True)
     
-    def get_capa(self, obj: Livro) -> str | None:
-        """Retorna a URL completa da capa"""
-        if obj.capa:
-            # Se estivermos no Codespace, usar a URL pública
-            if 'CODESPACE_NAME' in os.environ:
-                codespace_name = os.getenv("CODESPACE_NAME")
-                codespace_domain = os.getenv("GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN")
-                # Usar a mesma URL base que a API mas sem o /api/v1
-                return f'https://{codespace_name}-8000.{codespace_domain}{obj.capa.url}'
-            else:
-                # Para desenvolvimento local
-                request = self.context.get('request')
-                if request:
-                    return request.build_absolute_uri(obj.capa.url)
-                return obj.capa.url
-        return None
-
-
-class LivroCreateSerializer(serializers.ModelSerializer[Livro]):
-    """Serializer para criar/editar livros"""
     class Meta:
         model = Livro
         fields = '__all__'
+    
+    def create(self, validated_data: dict[str, Any]) -> Livro:
+        capa_file = validated_data.pop('capa', None)
+        livro = super().create(validated_data)
+        
+        # Upload da capa para ImageKit
+        if capa_file:
+            upload_data = self.handle_imagekit_upload(
+                image_file=capa_file,
+                folder='livros',
+                instance=None,
+                url_field='capa_url',
+                file_id_field='capa_file_id'
+            )
+            for field, value in upload_data.items():
+                setattr(livro, field, value)
+            livro.save()
+        
+        return livro
+    
+    def update(self, instance: Livro, validated_data: dict[str, Any]) -> Livro:
+        capa_file = validated_data.pop('capa', None)
+        
+        # Upload da nova capa para ImageKit (deleta a antiga automaticamente)
+        if capa_file:
+            upload_data = self.handle_imagekit_upload(
+                image_file=capa_file,
+                folder='livros',
+                instance=instance,
+                url_field='capa_url',
+                file_id_field='capa_file_id'
+            )
+            for field, value in upload_data.items():
+                validated_data[field] = value
+        
+        return super().update(instance, validated_data)
+
 
 
 class EnderecoSerializer(serializers.ModelSerializer[Endereco]):
@@ -118,9 +142,12 @@ class PedidoSerializer(serializers.ModelSerializer[Pedido]):
 
 
 class UsuarioSerializer(serializers.ModelSerializer[Usuario]):
+    foto_de_perfil_url = serializers.URLField(read_only=True)
+    
     class Meta:
         model = Usuario
-        fields = ['id', 'email', 'username', 'nome', 'CPF', 'telefone', 'genero', 'dt_nasc', 'date_joined', 'is_active', 'email_is_verified']
+        fields = ['id', 'email', 'username', 'nome', 'CPF', 'telefone', 'genero', 
+                 'dt_nasc', 'date_joined', 'is_active', 'email_is_verified', 'foto_de_perfil_url']
         read_only_fields = ['id', 'date_joined', 'is_active']
 
 
@@ -147,6 +174,33 @@ class UsuarioCreateSerializer(serializers.ModelSerializer[Usuario]):
         user.set_password(password)
         user.save()
         return user
+
+
+class UsuarioUpdateSerializer(ImageKitUploadMixin, serializers.ModelSerializer[Usuario]):
+    """Serializer para atualizar perfil do usuário com upload de foto para ImageKit"""
+    foto_de_perfil = ImageKitImageField(required=False, allow_null=True, write_only=True)
+    
+    class Meta:
+        model = Usuario
+        fields = ['email', 'username', 'nome', 'CPF', 'telefone', 'genero', 
+                 'dt_nasc', 'foto_de_perfil']
+    
+    def update(self, instance: Usuario, validated_data: dict[str, Any]) -> Usuario:
+        foto_file = validated_data.pop('foto_de_perfil', None)
+        
+        # Upload da nova foto para ImageKit (deleta a antiga automaticamente)
+        if foto_file:
+            upload_data = self.handle_imagekit_upload(
+                image_file=foto_file,
+                folder='perfis',
+                instance=instance,
+                url_field='foto_de_perfil_url',
+                file_id_field='foto_de_perfil_file_id'
+            )
+            for field, value in upload_data.items():
+                validated_data[field] = value
+        
+        return super().update(instance, validated_data)
     
 class UsuarioLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()

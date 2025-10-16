@@ -12,7 +12,7 @@ class CustomUserChangeForm(UserChangeForm):
             "username",
             "nome",
             "CPF",
-            "foto_de_perfil",
+            "foto_de_perfil_url",
             'genero',
             'dt_nasc',
             'telefone',

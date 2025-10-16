@@ -13,6 +13,7 @@ from accounts.models import Usuario
 from ..serializers import (
     UsuarioSerializer,
     UsuarioCreateSerializer,
+    UsuarioUpdateSerializer,
     UsuarioLoginSerializer,
     UsuarioLogoutSerializer,
     PasswordResetSerializer,
@@ -38,6 +39,8 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self) -> Any:
         if self.action == 'create':
             return UsuarioCreateSerializer
+        elif self.action in ['update', 'partial_update']:
+            return UsuarioUpdateSerializer
         elif self.action == 'login':
             return UsuarioLoginSerializer
         elif self.action == 'logout':
@@ -136,4 +139,47 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             'user': UsuarioSerializer(user).data,
             'refresh': str(refresh),
             'access': str(refresh.access_token),
+        }, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['POST'], permission_classes=[IsAuthenticated])
+    def upload_foto_perfil(self, request: Request) -> Response:
+        """
+        Endpoint para upload de foto de perfil via ImageKit.
+        Recebe: foto_de_perfil (arquivo de imagem)
+        """
+        from utils.imagekit_config import upload_image_to_imagekit, delete_image_from_imagekit
+        
+        user = request.user
+        foto = request.FILES.get('foto_de_perfil')
+        
+        if not foto:
+            return Response({
+                'error': 'Nenhuma foto foi enviada.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Deletar foto antiga se existir
+        if user.foto_de_perfil_file_id:
+            delete_image_from_imagekit(user.foto_de_perfil_file_id)
+        
+        # Upload da nova foto
+        upload_result = upload_image_to_imagekit(
+            file=foto,
+            file_name=foto.name,
+            folder='perfis',
+            tags=['perfil', f'user_{user.id}']
+        )
+        
+        if not upload_result:
+            return Response({
+                'error': 'Erro ao fazer upload da foto.'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        # Atualizar usuário
+        user.foto_de_perfil_url = upload_result['url']
+        user.foto_de_perfil_file_id = upload_result['file_id']
+        user.save()
+        
+        return Response({
+            'message': 'Foto de perfil atualizada com sucesso.',
+            'foto_url': upload_result['url']
         }, status=status.HTTP_200_OK)

@@ -122,3 +122,46 @@ class LivroViewSet(viewsets.ModelViewSet[Livro]):
         livros = Livro.objects.order_by('-ano_de_publicacao')[:8]
         serializer = self.get_serializer(livros, many=True)
         return Response(serializer.data)
+    
+    @action(detail=True, methods=['POST'], permission_classes=[IsAuthenticated])
+    def upload_capa(self, request: Request, pk=None) -> Response:
+        """
+        Endpoint para upload de capa de livro via ImageKit.
+        Recebe: capa (arquivo de imagem)
+        """
+        from utils.imagekit_config import upload_image_to_imagekit, delete_image_from_imagekit
+        
+        livro = self.get_object()
+        capa = request.FILES.get('capa')
+        
+        if not capa:
+            return Response({
+                'error': 'Nenhuma capa foi enviada.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Deletar capa antiga se existir
+        if livro.capa_file_id:
+            delete_image_from_imagekit(livro.capa_file_id)
+        
+        # Upload da nova capa
+        upload_result = upload_image_to_imagekit(
+            file=capa,
+            file_name=capa.name,
+            folder='livros',
+            tags=['capa', f'livro_{livro.id}', livro.ISBN]
+        )
+        
+        if not upload_result:
+            return Response({
+                'error': 'Erro ao fazer upload da capa.'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        # Atualizar livro
+        livro.capa_url = upload_result['url']
+        livro.capa_file_id = upload_result['file_id']
+        livro.save()
+        
+        return Response({
+            'message': 'Capa do livro atualizada com sucesso.',
+            'capa_url': upload_result['url']
+        }, status=status.HTTP_200_OK)

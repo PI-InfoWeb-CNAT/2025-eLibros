@@ -26,7 +26,9 @@ class Usuario(AbstractUser):
 
     objects = CustomUserManager()
 
-    foto_de_perfil = models.ImageField(upload_to='fotos_de_perfil/', blank=True, null=True)
+    # URL da foto armazenada no ImageKit.io
+    foto_de_perfil_url = models.URLField(blank=True, null=True, max_length=500, verbose_name='URL da Foto de Perfil')
+    foto_de_perfil_file_id = models.CharField(blank=True, null=True, max_length=100, verbose_name='ImageKit File ID')
     
 
 
@@ -53,8 +55,8 @@ class Usuario(AbstractUser):
         }
     
     def perfil_preview(self):
-        if self.foto_de_perfil:
-            return mark_safe(f'<img src="{self.foto_de_perfil.url}" width="100">')
+        if self.foto_de_perfil_url:
+            return mark_safe(f'<img src="{self.foto_de_perfil_url}" width="100">')
         else:
             foto_padrao_url = settings.STATIC_URL + 'images/usuario.png'
             return mark_safe(f'<img src="{foto_padrao_url}" width="100">')

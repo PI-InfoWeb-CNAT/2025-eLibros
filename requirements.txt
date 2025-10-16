@@ -21,6 +21,7 @@ sqlparse
 typing_extensions
 urllib3
 whitenoise
+imagekitio
 dj-database-url
 six
 django-simple-history
