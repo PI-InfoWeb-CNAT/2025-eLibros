@@ -1,13 +1,5 @@
-#!/bin/bash
-
-# Script para desenvolvimento - ativa venv e roda o servidor
-# Uso: ./scripts/dev.sh
-
 echo "🛠️  Modo Desenvolvimento - eLibros API"
 echo "======================================"
-
-# Ativar ambiente virtual
-source /workspaces/2025-eLibros/.venv/bin/activate
 
 # Ir para o diretório do Django
 cd /workspaces/2025-eLibros/eLibros
