@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -115,12 +116,23 @@ TEMPLATES = [
     },
 ]
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "eLibrosDB",
+
+# Configuração do banco de dados Neon/PostgreSQL
+
+
+NEON_DB_URL = os.getenv("NEON_DB_PROD") or os.getenv("NEON_DB_DEV")
+if NEON_DB_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(NEON_DB_URL, conn_max_age=600, ssl_require=True)
     }
-}
+else:
+    # Fallback para sqlite se não houver variável de ambiente
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "eLibrosDB",
+        }
+    }
 
 # DATABASES = {
 #     'default': {
