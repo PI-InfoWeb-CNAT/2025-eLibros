@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 
 from django.db.models import QuerySet
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 from ..models import (
     Cliente, Pedido
@@ -20,6 +21,7 @@ class PedidoViewSet(viewsets.ModelViewSet[Pedido]):
     """ViewSet para gerenciar pedidos - baseado na sua PedidoViews"""
     serializer_class = PedidoSerializer
     permission_classes = [IsAuthenticated]
+    lookup_value_regex = '[0-9]+'  # Apenas números inteiros para pk
     
     def get_queryset(self) -> QuerySet[Pedido]:
         # Retorna apenas os pedidos do usuário logado

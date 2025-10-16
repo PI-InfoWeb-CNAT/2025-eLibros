@@ -3,6 +3,7 @@ from django.urls.resolvers import URLPattern, URLResolver
 from typing import List, Union
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenVerifyView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 # Importar views JWT customizadas
 from accounts.jwt_views import CustomTokenObtainPairView, CustomTokenRefreshView
@@ -30,6 +31,11 @@ router.register(r'admin', AdminViewSet, basename='admin')
 
 # Tipo: Lista, que pode conter URLPattern (um url individual) e URLResolver (aponta para outro conjunto de URLs)
 urlpatterns: List[Union[URLPattern, URLResolver]] = [
+    # OpenAPI/Swagger Documentation
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    
     # Autenticação JWT customizada - PRIORITÁRIA
     path('auth/login/', CustomTokenObtainPairView.as_view(), name='custom_token_obtain_pair'),
     path('auth/refresh/', CustomTokenRefreshView.as_view(), name='custom_token_refresh'),

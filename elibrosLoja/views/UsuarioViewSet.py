@@ -19,8 +19,41 @@ from ..serializers import (
     PasswordResetSerializer,
     PasswordResetConfirmSerializer
 )
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiResponse
 
 
+@extend_schema_view(
+    list=extend_schema(
+        tags=['Usuários'],
+        summary='Listar usuários',
+        description='Lista todos os usuários cadastrados (requer autenticação de admin)'
+    ),
+    retrieve=extend_schema(
+        tags=['Usuários'],
+        summary='Detalhes do usuário',
+        description='Retorna detalhes de um usuário específico (requer autenticação)'
+    ),
+    create=extend_schema(
+        tags=['Usuários'],
+        summary='Criar conta',
+        description='Cria uma nova conta de usuário (público)'
+    ),
+    update=extend_schema(
+        tags=['Usuários'],
+        summary='Atualizar usuário',
+        description='Atualiza todos os dados de um usuário (requer autenticação)'
+    ),
+    partial_update=extend_schema(
+        tags=['Usuários'],
+        summary='Atualizar parcialmente usuário',
+        description='Atualiza alguns campos de um usuário (requer autenticação)'
+    ),
+    destroy=extend_schema(
+        tags=['Usuários'],
+        summary='Deletar usuário',
+        description='Remove um usuário (requer autenticação)'
+    ),
+)
 class UsuarioViewSet(viewsets.ModelViewSet):
     """
     ViewSet para operações relacionadas ao usuário.
@@ -51,6 +84,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             return PasswordResetConfirmSerializer
         return UsuarioSerializer
     
+    @extend_schema(
+        tags=['Autenticação'],
+        summary='Login de usuário',
+        description='Autentica um usuário e retorna tokens JWT de acesso e refresh'
+    )
     @action(detail=False, methods=['POST'], permission_classes=[AllowAny])
     def login(self, request: Request) -> Response:
         """Endpoint para login do usuário"""
@@ -66,6 +104,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             'access': str(refresh.access_token),
         }, status=status.HTTP_200_OK)
     
+    @extend_schema(
+        tags=['Autenticação'],
+        summary='Logout de usuário',
+        description='Invalida o refresh token do usuário (blacklist)'
+    )
     @action(detail=False, methods=['POST'], permission_classes=[IsAuthenticated])
     def logout(self, request: Request) -> Response:
         """Endpoint para logout do usuário"""
@@ -77,6 +120,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             'message': 'Logout realizado com sucesso.'
         }, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        tags=['Autenticação'],
+        summary='Solicitar reset de senha',
+        description='Envia email com código OTP para redefinição de senha'
+    )
     @action(detail=False, methods=['POST'], permission_classes=[AllowAny])
     def reset_password(self, request: Request) -> Response:
         """Endpoint para redefinição de senha do usuário"""
@@ -120,6 +168,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             'email': email
         }, status=status.HTTP_200_OK)
     
+    @extend_schema(
+        tags=['Autenticação'],
+        summary='Confirmar reset de senha',
+        description='Confirma o código OTP e redefine a senha do usuário'
+    )
     @action(detail=False, methods=['POST'], permission_classes=[AllowAny])
     def password_reset_confirmation(self, request: Request) -> Response:
         """
@@ -141,6 +194,28 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             'access': str(refresh.access_token),
         }, status=status.HTTP_200_OK)
     
+    @extend_schema(
+        tags=['Usuários'],
+        summary='Upload de foto de perfil',
+        description='Faz upload da foto de perfil do usuário para o ImageKit.io',
+        request={
+            'multipart/form-data': {
+                'type': 'object',
+                'properties': {
+                    'foto_de_perfil': {
+                        'type': 'string',
+                        'format': 'binary',
+                        'description': 'Arquivo de imagem da foto de perfil'
+                    }
+                }
+            }
+        },
+        responses={
+            200: OpenApiResponse(description='Foto atualizada com sucesso'),
+            400: OpenApiResponse(description='Nenhuma foto foi enviada'),
+            500: OpenApiResponse(description='Erro ao fazer upload')
+        }
+    )
     @action(detail=False, methods=['POST'], permission_classes=[IsAuthenticated])
     def upload_foto_perfil(self, request: Request) -> Response:
         """

@@ -33,3 +33,4 @@ django-filter
 django-filter-stubs
 django-allauth
 dj-rest-auth[with_social]
+drf-spectacular

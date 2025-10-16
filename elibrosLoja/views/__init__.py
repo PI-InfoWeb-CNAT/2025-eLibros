@@ -23,6 +23,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny 
 from rest_framework.request import Request
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 
 '''
@@ -45,6 +46,17 @@ permissoes_admin_elibros = {
     }
 '''
 
+@extend_schema(
+    tags=['Utilidades'],
+    summary='Página inicial da API',
+    description='Retorna livros em destaque e gêneros disponíveis para a página inicial',
+    responses={
+        200: OpenApiResponse(
+            description='Lista de livros indicados e gêneros',
+            response=dict
+        )
+    }
+)
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def inicio(request: Request) -> Response:
@@ -64,6 +76,17 @@ def inicio(request: Request) -> Response:
         'generos': GeneroSerializer(generos, many=True).data,
     })
 
+@extend_schema(
+    tags=['Utilidades'],
+    summary='Estatísticas gerais',
+    description='Retorna estatísticas básicas da loja como total de livros, autores, categorias e gêneros',
+    responses={
+        200: OpenApiResponse(
+            description='Estatísticas da loja',
+            response=dict
+        )
+    }
+)
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def estatisticas(request: Request) -> Response:

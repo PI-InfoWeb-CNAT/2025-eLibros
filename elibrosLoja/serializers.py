@@ -8,6 +8,8 @@ from .models import (
 from accounts.models import Usuario
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
@@ -287,10 +289,16 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         user.save()
         return user
 
+
 class AvaliacaoSerializer(serializers.ModelSerializer[Avaliacao]):
     """Serializer para leitura de avaliações"""
     
-    usuario_nome = serializers.ReadOnlyField()
+    @extend_schema_field(OpenApiTypes.STR)
+    def get_usuario_nome(self, obj: Avaliacao) -> str:
+        """Retorna o nome do usuário"""
+        return obj.usuario_nome
+    
+    usuario_nome = serializers.SerializerMethodField()
     usuario_id = serializers.ReadOnlyField(source='usuario.id')
     usuario_username = serializers.ReadOnlyField(source='usuario.username')
     livro_titulo = serializers.ReadOnlyField(source='livro.titulo')

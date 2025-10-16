@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status, permissions
+from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -11,8 +11,15 @@ from ..serializers import (
 )
 from ..utils import is_user_admin, get_administrador_from_user
 from typing import Any, cast
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 User = get_user_model()
+
+# Serializer simples para respostas administrativas
+class AdminResponseSerializer(serializers.Serializer):
+    """Serializer genérico para respostas administrativas"""
+    message = serializers.CharField(required=False)
+    error = serializers.CharField(required=False)
 
 class AdminViewSet(viewsets.ViewSet):
     """
@@ -20,6 +27,12 @@ class AdminViewSet(viewsets.ViewSet):
     Requer que o usuário seja staff ou superuser
     """
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = AdminResponseSerializer  # Adicionar serializer_class padrão
+    lookup_value_regex = '[0-9]+'  # Apenas números inteiros para pk
+    
+    # Definir um queryset vazio para ajudar o router a inferir tipos
+    # Usamos o modelo Cliente como referência para os endpoints relacionados
+    queryset = Cliente.objects.none()
     
     def get_permissions(self):
         """
@@ -172,8 +185,12 @@ class AdminViewSet(viewsets.ViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
+    @extend_schema(
+        parameters=[OpenApiParameter(name='pk', type=OpenApiTypes.INT, location=OpenApiParameter.PATH)],
+        responses={200: ClienteSerializer}
+    )
     @action(detail=True, methods=['GET'])
-    def get_cliente(self, request: Request, pk=None) -> Response:
+    def get_cliente(self, request: Request, pk: int = None) -> Response:
         """Buscar cliente específico por ID"""
         try:
             cliente = Cliente.objects.select_related('user', 'endereco').get(pk=pk)
@@ -218,8 +235,13 @@ class AdminViewSet(viewsets.ViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
+    @extend_schema(
+        parameters=[OpenApiParameter(name='pk', type=OpenApiTypes.INT, location=OpenApiParameter.PATH)],
+        request=ClienteSerializer,
+        responses={200: ClienteSerializer}
+    )
     @action(detail=True, methods=['PUT', 'PATCH'])
-    def editar_cliente(self, request: Request, pk=None) -> Response:
+    def editar_cliente(self, request: Request, pk: int = None) -> Response:
         """Editar dados do cliente"""
         try:
             cliente = Cliente.objects.select_related('user', 'endereco').get(pk=pk)
@@ -325,8 +347,12 @@ class AdminViewSet(viewsets.ViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
+    @extend_schema(
+        parameters=[OpenApiParameter(name='pk', type=OpenApiTypes.INT, location=OpenApiParameter.PATH)],
+        responses={200: AdminResponseSerializer}
+    )
     @action(detail=True, methods=['POST'])
-    def toggle_cliente_status(self, request: Request, pk=None) -> Response:
+    def toggle_cliente_status(self, request: Request, pk: int = None) -> Response:
         """Ativar/desativar cliente"""
         try:
             cliente = Cliente.objects.get(pk=pk)
@@ -348,8 +374,12 @@ class AdminViewSet(viewsets.ViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
+    @extend_schema(
+        parameters=[OpenApiParameter(name='pk', type=OpenApiTypes.INT, location=OpenApiParameter.PATH)],
+        responses={200: AdminResponseSerializer}
+    )
     @action(detail=True, methods=['DELETE'])
-    def delete_cliente(self, request: Request, pk=None) -> Response:
+    def delete_cliente(self, request: Request, pk: int = None) -> Response:
         """Excluir cliente"""
         try:
             cliente = Cliente.objects.get(pk=pk)
@@ -489,8 +519,12 @@ class AdminViewSet(viewsets.ViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    @extend_schema(
+        parameters=[OpenApiParameter(name='pk', type=OpenApiTypes.INT, location=OpenApiParameter.PATH)],
+        responses={200: PedidoSerializer}
+    )
     @action(detail=True, methods=['GET'])
-    def get_pedido(self, request: Request, pk=None) -> Response:
+    def get_pedido(self, request: Request, pk: int = None) -> Response:
         """Buscar pedido específico por ID"""
         try:
             pedido = Pedido.objects.select_related('cliente__user', 'endereco').prefetch_related('itens').get(pk=pk)
@@ -564,8 +598,12 @@ class AdminViewSet(viewsets.ViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    @extend_schema(
+        parameters=[OpenApiParameter(name='pk', type=OpenApiTypes.INT, location=OpenApiParameter.PATH)],
+        responses={200: AdminResponseSerializer}
+    )
     @action(detail=True, methods=['PATCH'])
-    def update_pedido_status(self, request: Request, pk=None) -> Response:
+    def update_pedido_status(self, request: Request, pk: int = None) -> Response:
         """Atualizar status do pedido"""
         try:
             pedido = Pedido.objects.get(pk=pk)
@@ -610,8 +648,12 @@ class AdminViewSet(viewsets.ViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    @extend_schema(
+        parameters=[OpenApiParameter(name='pk', type=OpenApiTypes.INT, location=OpenApiParameter.PATH)],
+        responses={200: AdminResponseSerializer}
+    )
     @action(detail=True, methods=['PATCH'])
-    def cancelar_pedido_admin(self, request: Request, pk=None) -> Response:
+    def cancelar_pedido_admin(self, request: Request, pk: int = None) -> Response:
         """Cancelar pedido (admin)"""
         try:
             pedido = Pedido.objects.get(pk=pk)

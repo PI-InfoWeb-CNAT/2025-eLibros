@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',  # Para blacklist de tokens
     'corsheaders',
+    'drf_spectacular',  # OpenAPI/Swagger documentation
 ]
 
 # Django REST Framework configuration
@@ -47,6 +48,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # JWT Settings
@@ -315,3 +317,81 @@ LOGGING = {
 #         return response
 
 # MIDDLEWARE.append("elibrosAdmin.settings.Custom404ErrorMiddleware")
+
+# drf-spectacular Settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'eLibros API',
+    'DESCRIPTION': 'API REST para o sistema de livraria online eLibros - Desenvolvido com Django REST Framework',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    
+    # Autenticação
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SECURITY': [
+        {
+            'bearerAuth': []
+        }
+    ],
+    
+    # Schema customization
+    'SCHEMA_PATH_PREFIX': r'/api/v1',
+    'SCHEMA_PATH_PREFIX_TRIM': True,
+    
+    # Configurações de UI
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+        'defaultModelsExpandDepth': 1,
+        'defaultModelExpandDepth': 1,
+        'defaultModelRendering': 'model',
+        'displayRequestDuration': True,
+        'docExpansion': 'list',
+        'filter': True,
+        'showExtensions': True,
+        'showCommonExtensions': True,
+        'tryItOutEnabled': True,
+    },
+    
+    # Configurações de componentes
+    'COMPONENT_NO_READ_ONLY_REQUIRED': True,
+    
+    # Tags e agrupamento
+    'TAGS': [
+        {'name': 'Autenticação', 'description': 'Endpoints de login, logout e gerenciamento de tokens JWT'},
+        {'name': 'Usuários', 'description': 'Gerenciamento de usuários e perfis'},
+        {'name': 'Livros', 'description': 'Catálogo de livros e operações relacionadas'},
+        {'name': 'Autores', 'description': 'Gerenciamento de autores'},
+        {'name': 'Categorias', 'description': 'Categorias de livros'},
+        {'name': 'Gêneros', 'description': 'Gêneros literários'},
+        {'name': 'Clientes', 'description': 'Perfil de clientes e informações'},
+        {'name': 'Carrinhos', 'description': 'Carrinho de compras'},
+        {'name': 'Pedidos', 'description': 'Gerenciamento de pedidos'},
+        {'name': 'Avaliações', 'description': 'Avaliações e comentários de livros'},
+        {'name': 'Cupons', 'description': 'Cupons de desconto'},
+        {'name': 'Admin', 'description': 'Endpoints administrativos'},
+        {'name': 'Utilidades', 'description': 'Endpoints utilitários e estatísticas'},
+    ],
+    
+    # Informações de contato e licença
+    'CONTACT': {
+        'name': 'Equipe eLibros',
+        'email': 'noreply.elibros@gmail.com',
+    },
+    'LICENSE': {
+        'name': 'MIT License',
+    },
+    
+    # Servidores
+    'SERVERS': [
+        {
+            'url': 'http://localhost:8000',
+            'description': 'Servidor de Desenvolvimento',
+        },
+        {
+            'url': 'https://two025-elibros.onrender.com',
+            'description': 'Servidor de Produção',
+        },
+    ],
+}
+

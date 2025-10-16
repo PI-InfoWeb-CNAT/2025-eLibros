@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 
 from django.db.models import QuerySet
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 from ..models import (
     Cliente
@@ -20,6 +21,7 @@ class ClienteViewSet(viewsets.ModelViewSet[Cliente]):
     """ViewSet para gerenciar cliente - baseado na sua ClienteViews"""
     serializer_class = ClienteSerializer
     permission_classes = [IsAuthenticated]
+    lookup_value_regex = '[0-9]+'  # Apenas números inteiros para pk
     
     def get_queryset(self) -> QuerySet[Cliente]:
         # Retorna apenas o cliente do usuário logado

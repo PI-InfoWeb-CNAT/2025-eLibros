@@ -14,12 +14,46 @@ from typing import Any, Type, cast
 from ..serializers import (
     LivroSerializer, LivroCreateSerializer, GeneroSerializer, AutorSerializer, CategoriaSerializer
 )
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiResponse
+from drf_spectacular.types import OpenApiTypes
 
 # def remove_special_characters(text):
 #   special_chars = re.compile(r'[^a-zA-Z0-9]')
 #   return special_chars.sub('', text)
 
 
+@extend_schema_view(
+    list=extend_schema(
+        tags=['Livros'],
+        summary='Listar livros',
+        description='Lista todos os livros disponíveis no catálogo com paginação'
+    ),
+    retrieve=extend_schema(
+        tags=['Livros'],
+        summary='Detalhes do livro',
+        description='Retorna detalhes completos de um livro específico'
+    ),
+    create=extend_schema(
+        tags=['Livros'],
+        summary='Criar livro',
+        description='Cria um novo livro no catálogo (requer autenticação de admin)'
+    ),
+    update=extend_schema(
+        tags=['Livros'],
+        summary='Atualizar livro',
+        description='Atualiza todos os dados de um livro (requer autenticação de admin)'
+    ),
+    partial_update=extend_schema(
+        tags=['Livros'],
+        summary='Atualizar parcialmente livro',
+        description='Atualiza alguns campos de um livro (requer autenticação de admin)'
+    ),
+    destroy=extend_schema(
+        tags=['Livros'],
+        summary='Deletar livro',
+        description='Remove um livro do catálogo (requer autenticação de admin)'
+    ),
+)
 class LivroViewSet(viewsets.ModelViewSet[Livro]):
     """ViewSet para gerenciar livros - baseado na sua LivroViews"""
     queryset = Livro.objects.all()
@@ -43,6 +77,17 @@ class LivroViewSet(viewsets.ModelViewSet[Livro]):
             permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
+    @extend_schema(
+        tags=['Livros'],
+        summary='Explorar livros',
+        description='Busca e filtra livros por título, autor, gênero e data de publicação',
+        parameters=[
+            OpenApiParameter(name='pesquisa', description='Termo de busca para título ou autor', type=OpenApiTypes.STR),
+            OpenApiParameter(name='genero', description='Nome do gênero literário', type=OpenApiTypes.STR),
+            OpenApiParameter(name='autor', description='Nome do autor', type=OpenApiTypes.STR),
+            OpenApiParameter(name='data', description='Década de publicação ou "+" para livros recentes', type=OpenApiTypes.STR),
+        ]
+    )
     @action(detail=False, methods=['get'], permission_classes=[AllowAny])
     def explorar(self, request: Request) -> Response:
         """Endpoint baseado na sua view explorar"""
@@ -82,6 +127,11 @@ class LivroViewSet(viewsets.ModelViewSet[Livro]):
             'termo_pesquisa': busca,
         })
 
+    @extend_schema(
+        tags=['Livros'],
+        summary='Acervo por categorias',
+        description='Retorna livros organizados por categorias, gêneros e autores disponíveis'
+    )
     @action(detail=False, methods=['get'], permission_classes=[AllowAny])
     def acervo(self, request: Request) -> Response:
         """Endpoint baseado na sua view acervo"""
@@ -103,6 +153,11 @@ class LivroViewSet(viewsets.ModelViewSet[Livro]):
             'autores': AutorSerializer(Autor.objects.all(), many=True).data,
         })
 
+    @extend_schema(
+        tags=['Livros'],
+        summary='Livros em destaque',
+        description='Retorna os livros em destaque (categoria "Indicações do eLibros") ou os mais vendidos'
+    )
     @action(detail=False, methods=['GET'], permission_classes=[AllowAny])
     def destaque(self, request: Request) -> Response:
         """Retorna livros em destaque - usando categoria indicações"""
@@ -116,6 +171,11 @@ class LivroViewSet(viewsets.ModelViewSet[Livro]):
         serializer = self.get_serializer(livros, many=True)
         return Response(serializer.data)
     
+    @extend_schema(
+        tags=['Livros'],
+        summary='Últimos lançamentos',
+        description='Retorna os últimos livros adicionados ao catálogo (ordenados por ano de publicação)'
+    )
     @action(detail=False, methods=['GET'], permission_classes=[AllowAny])
     def lancamentos(self, request: Request) -> Response:
         """Retorna os últimos livros adicionados"""
@@ -123,6 +183,28 @@ class LivroViewSet(viewsets.ModelViewSet[Livro]):
         serializer = self.get_serializer(livros, many=True)
         return Response(serializer.data)
     
+    @extend_schema(
+        tags=['Livros'],
+        summary='Upload de capa do livro',
+        description='Faz upload da capa de um livro para o ImageKit.io (requer autenticação)',
+        request={
+            'multipart/form-data': {
+                'type': 'object',
+                'properties': {
+                    'capa': {
+                        'type': 'string',
+                        'format': 'binary',
+                        'description': 'Arquivo de imagem da capa'
+                    }
+                }
+            }
+        },
+        responses={
+            200: OpenApiResponse(description='Capa atualizada com sucesso'),
+            400: OpenApiResponse(description='Nenhuma capa foi enviada'),
+            500: OpenApiResponse(description='Erro ao fazer upload')
+        }
+    )
     @action(detail=True, methods=['POST'], permission_classes=[IsAuthenticated])
     def upload_capa(self, request: Request, pk=None) -> Response:
         """
