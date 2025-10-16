@@ -2,8 +2,13 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
+
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
+
+def health_check(request):
+    """Endpoint simples para health check"""
+    return JsonResponse({"status": "ok"}, status=200)
 
 def api_root(request):
     """Página raiz redirecionando para a documentação da API"""
@@ -156,6 +161,9 @@ urlpatterns = [
     
     # Página raiz mostrando informações da API
     path("", api_root),
+
+    # Health check endpoint
+    path("health/", health_check),
     
     # Redirecionar qualquer outra rota para a API ou frontend
     path("accounts/", lambda request: redirect("/api/v1/")),
