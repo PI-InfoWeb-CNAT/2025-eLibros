@@ -122,7 +122,7 @@ TEMPLATES = [
 # Configuração do banco de dados Neon/PostgreSQL
 
 
-NEON_DB_URL = os.getenv("NEON_DB_PROD") or os.getenv("NEON_DB_DEV")
+NEON_DB_URL = os.getenv("NEON_DB_DEV") # Substitua pelo nome da variável de ambiente de acordo com a necessidade
 if NEON_DB_URL:
     DATABASES = {
         "default": dj_database_url.parse(NEON_DB_URL, conn_max_age=600, ssl_require=True)
