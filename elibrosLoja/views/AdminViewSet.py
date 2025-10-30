@@ -191,7 +191,7 @@ class AdminViewSet(viewsets.ViewSet):
         responses={200: ClienteSerializer}
     )
     @action(detail=True, methods=['GET'])
-    def get_cliente(self, request: Request, pk: int = None) -> Response:
+    def get_cliente(self, request: Request, pk: int) -> Response:
         """Buscar cliente específico por ID"""
         try:
             cliente = Cliente.objects.select_related('user', 'endereco').get(pk=pk)
@@ -242,7 +242,7 @@ class AdminViewSet(viewsets.ViewSet):
         responses={200: ClienteSerializer}
     )
     @action(detail=True, methods=['PUT', 'PATCH'])
-    def editar_cliente(self, request: Request, pk: int = None) -> Response:
+    def editar_cliente(self, request: Request, pk: int) -> Response:
         """Editar dados do cliente"""
         try:
             cliente = Cliente.objects.select_related('user', 'endereco').get(pk=pk)
@@ -353,7 +353,7 @@ class AdminViewSet(viewsets.ViewSet):
         responses={200: AdminResponseSerializer}
     )
     @action(detail=True, methods=['POST'])
-    def toggle_cliente_status(self, request: Request, pk: int = None) -> Response:
+    def toggle_cliente_status(self, request: Request, pk: int) -> Response:
         """Ativar/desativar cliente"""
         try:
             cliente = Cliente.objects.get(pk=pk)
@@ -380,7 +380,7 @@ class AdminViewSet(viewsets.ViewSet):
         responses={200: AdminResponseSerializer}
     )
     @action(detail=True, methods=['DELETE'])
-    def delete_cliente(self, request: Request, pk: int = None) -> Response:
+    def delete_cliente(self, request: Request, pk: int) -> Response:
         """Excluir cliente"""
         try:
             cliente = Cliente.objects.get(pk=pk)
@@ -525,7 +525,7 @@ class AdminViewSet(viewsets.ViewSet):
         responses={200: PedidoSerializer}
     )
     @action(detail=True, methods=['GET'])
-    def get_pedido(self, request: Request, pk: int = None) -> Response:
+    def get_pedido(self, request: Request, pk: int) -> Response:
         """Buscar pedido específico por ID"""
         try:
             pedido = Pedido.objects.select_related('cliente__user', 'endereco').prefetch_related('itens').get(pk=pk)
@@ -604,7 +604,7 @@ class AdminViewSet(viewsets.ViewSet):
         responses={200: AdminResponseSerializer}
     )
     @action(detail=True, methods=['PATCH'])
-    def update_pedido_status(self, request: Request, pk: int = None) -> Response:
+    def update_pedido_status(self, request: Request, pk: int) -> Response:
         """Atualizar status do pedido"""
         try:
             pedido = Pedido.objects.get(pk=pk)
@@ -654,7 +654,7 @@ class AdminViewSet(viewsets.ViewSet):
         responses={200: AdminResponseSerializer}
     )
     @action(detail=True, methods=['PATCH'])
-    def cancelar_pedido_admin(self, request: Request, pk: int = None) -> Response:
+    def cancelar_pedido_admin(self, request: Request, pk: int) -> Response:
         """Cancelar pedido (admin)"""
         try:
             pedido = Pedido.objects.get(pk=pk)
