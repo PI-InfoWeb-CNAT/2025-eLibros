@@ -54,29 +54,67 @@ def upload_image_to_imagekit(
         return None
     
     try:
+        import base64
+        from io import BytesIO
+        
         file_to_upload = None
-        # Caso já seja bytes/bytearray, embrulhar em BytesIO
+        file_size = 0
+        
+        # CORREÇÃO: O SDK do ImageKit aceita 3 formatos:
+        # 1. URL (string começando com http)
+        # 2. Base64 string (data:image/...)
+        # 3. File-like object (BufferedReader)
+        # Quando recebemos bytes ou arquivo uploadado, precisamos converter para base64
         if isinstance(file, (bytes, bytearray)):
-            import io
-            file_to_upload = io.BytesIO(file)
-            file_to_upload.name = file_name
-            file_to_upload.seek(0)
+            # Converter para base64
+            file_base64 = base64.b64encode(file).decode('utf-8')
+            # Detectar o tipo MIME
+            if file_name.lower().endswith('.jpg') or file_name.lower().endswith('.jpeg'):
+                mime_type = 'image/jpeg'
+            elif file_name.lower().endswith('.png'):
+                mime_type = 'image/png'
+            elif file_name.lower().endswith('.gif'):
+                mime_type = 'image/gif'
+            elif file_name.lower().endswith('.webp'):
+                mime_type = 'image/webp'
+            else:
+                mime_type = 'image/jpeg'  # default
+            
+            file_to_upload = f"data:{mime_type};base64,{file_base64}"
+            file_size = len(file)
         # Caso seja um objeto com método read, usar o próprio objeto (ex: InMemoryUploadedFile, SpooledTemporaryFile)
-        elif hasattr(file, 'read'):
+        elif hasattr(file, 'read'):          
             try:
-                # garantir ponteiro no início
                 file.seek(0)
-            except Exception:
-                pass
-            file_to_upload = file
-        else:
-            # fallback: passar como está (pode ser um caminho ou outro tipo aceito pela SDK)
+                file_content = file.read()
+                
+                # Converter para base64
+                file_base64 = base64.b64encode(file_content).decode('utf-8')
+                
+                # Detectar o tipo MIME do arquivo
+                mime_type = 'image/jpeg'
+                if hasattr(file, 'content_type'):
+                    mime_type = file.content_type
+                elif file_name.lower().endswith('.png'):
+                    mime_type = 'image/png'
+                elif file_name.lower().endswith('.gif'):
+                    mime_type = 'image/gif'
+                elif file_name.lower().endswith('.webp'):
+                    mime_type = 'image/webp'
+                elif file_name.lower().endswith(('.jpg', '.jpeg')):
+                    mime_type = 'image/jpeg'
+                
+                file_to_upload = f"data:{mime_type};base64,{file_base64}"
+            except Exception as e:
+                print(f"[DEBUG] Erro ao ler arquivo: {str(e)}")
+                raise
+        else:     
             file_to_upload = file
         
-        # Fazer upload
         options = UploadFileRequestOptions(
             folder=folder,
-            use_unique_file_name=True
+            use_unique_file_name=True,
+            tags=tags or []
         )
         
         result = imagekit.upload_file(
@@ -86,12 +124,36 @@ def upload_image_to_imagekit(
         )
         
         if result:
-            # Acessar atributos do UploadFileResult
-            url = getattr(result, 'url', None) or result.get('url') if isinstance(result, dict) else None
-            file_id = getattr(result, 'file_id', None) or getattr(result, 'fileId', None) or (result.get('file_id') if isinstance(result, dict) else None) or (result.get('fileId') if isinstance(result, dict) else None)
+            url = None
+            file_id = None
+            name = None
+            file_path = None
+            thumbnail = None
+            
+            # URL
+            url = getattr(result, 'url', None) or (result.get('url') if isinstance(result, dict) else None)
+            
+            # File ID (pode ser file_id ou fileId)
+            file_id = (getattr(result, 'file_id', None) or 
+                      getattr(result, 'fileId', None) or 
+                      (result.get('file_id') if isinstance(result, dict) else None) or 
+                      (result.get('fileId') if isinstance(result, dict) else None))
+            
+            # Name
             name = getattr(result, 'name', None) or (result.get('name') if isinstance(result, dict) else None)
-            file_path = getattr(result, 'file_path', None) or getattr(result, 'filePath', None) or (result.get('file_path') if isinstance(result, dict) else None)
-            thumbnail = getattr(result, 'thumbnail_url', None) or (result.get('thumbnail_url') if isinstance(result, dict) else None) or url
+            
+            # File Path
+            file_path = (getattr(result, 'file_path', None) or 
+                        getattr(result, 'filePath', None) or 
+                        (result.get('file_path') if isinstance(result, dict) else None) or
+                        (result.get('filePath') if isinstance(result, dict) else None))
+            
+            # Thumbnail
+            thumbnail = (getattr(result, 'thumbnail_url', None) or 
+                        getattr(result, 'thumbnailUrl', None) or
+                        (result.get('thumbnail_url') if isinstance(result, dict) else None) or 
+                        (result.get('thumbnailUrl') if isinstance(result, dict) else None) or 
+                        url)
 
             return {
                 'url': url,
@@ -101,10 +163,11 @@ def upload_image_to_imagekit(
                 'thumbnail_url': thumbnail,
             }
         
+        print(f"[DEBUG] Resultado do upload é None ou inválido")
         return None
         
     except Exception as e:
-        print(f"Erro ao fazer upload para ImageKit: {str(e)}")
+        print(f"[ERROR] Erro ao fazer upload para ImageKit: {str(e)}")
         import traceback
         traceback.print_exc()
         return None
