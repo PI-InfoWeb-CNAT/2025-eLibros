@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 
 from django.db.models import QuerySet
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
 
 from ..models import (
     Cliente
