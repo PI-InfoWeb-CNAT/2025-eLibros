@@ -62,12 +62,11 @@ class LivroCreateSerializer(ImageKitUploadMixin, serializers.ModelSerializer[Liv
     def create(self, validated_data: dict[str, Any]) -> Livro:
         capa_file = validated_data.pop('capa', None)
         livro = super().create(validated_data)
-        
-        # Upload da capa para ImageKit
+        # Upload da capa para ImageKit na pasta correta
         if capa_file:
             upload_data = self.handle_imagekit_upload(
                 image_file=capa_file,
-                folder='livros',
+                folder='elibros/capas',
                 instance=None,
                 url_field='capa_url',
                 file_id_field='capa_file_id'
@@ -75,24 +74,21 @@ class LivroCreateSerializer(ImageKitUploadMixin, serializers.ModelSerializer[Liv
             for field, value in upload_data.items():
                 setattr(livro, field, value)
             livro.save()
-        
         return livro
     
     def update(self, instance: Livro, validated_data: dict[str, Any]) -> Livro:
         capa_file = validated_data.pop('capa', None)
-        
         # Upload da nova capa para ImageKit (deleta a antiga automaticamente)
         if capa_file:
             upload_data = self.handle_imagekit_upload(
                 image_file=capa_file,
-                folder='livros',
+                folder='elibros/capas',
                 instance=instance,
                 url_field='capa_url',
                 file_id_field='capa_file_id'
             )
             for field, value in upload_data.items():
                 validated_data[field] = value
-        
         return super().update(instance, validated_data)
 
 
