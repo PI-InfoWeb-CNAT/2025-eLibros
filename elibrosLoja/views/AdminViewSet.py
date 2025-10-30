@@ -11,7 +11,8 @@ from ..serializers import (
 )
 from ..utils import is_user_admin, get_administrador_from_user
 from typing import Any, cast
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
 
 User = get_user_model()
 
