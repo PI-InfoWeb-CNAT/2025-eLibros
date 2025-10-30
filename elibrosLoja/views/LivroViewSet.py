@@ -230,7 +230,7 @@ class LivroViewSet(viewsets.ModelViewSet[Livro]):
             file=capa,
             file_name=capa.name,
             folder='livros',
-            tags=['capa', f'livro_{livro.id}', livro.ISBN]
+            tags=['capa', f'livro_{livro.id}', livro.ISBN] # type: ignore
         )
         
         if not upload_result:

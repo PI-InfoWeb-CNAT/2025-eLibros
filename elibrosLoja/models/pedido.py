@@ -10,7 +10,8 @@ from elibrosLoja.models.endereco import Endereco
 import random
 
 class Pedido(models.Model):
-
+    
+    @staticmethod
     def gerar_numero_pedido():
         numero_pedido = ""
         for i in range(12):

@@ -9,7 +9,7 @@ from elibrosLoja.models.administrador import Administrador
 from simple_history.models import HistoricalRecords
 
 from django.conf import settings
-from django.utils.html import mark_safe
+from django.utils.html import mark_safe # type: ignore
 
 class Livro(models.Model):
     titulo = models.CharField(null=False, max_length=200, verbose_name='Título')
@@ -63,11 +63,11 @@ class Livro(models.Model):
     def get_autores_display(self):
         autores = self.autor.all()
         return ", ".join([autor.nome for autor in autores]) if autores else "Sem autor"
-    get_autores_display.short_description = 'Autores'
+    get_autores_display.short_description = 'Autores' # type: ignore
 
     def get_primeiro_autor(self):
         # return f'{self.autor.first()}...'
-        autor = self.autor.first().nome
+        autor = self.autor.first().nome # type: ignore
         if len(autor) > 20:
             while len(autor) > 20:
                 palavras = autor.split(" ")

@@ -3,6 +3,7 @@ Configuração e utilitários para integração com ImageKit.io
 """
 import os
 from typing import Optional, Dict, Any
+from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
 
 # Configuração do ImageKit - inicialização lazy para evitar erros quando variáveis não estão definidas
 _imagekit_instance = None
@@ -63,31 +64,33 @@ def upload_image_to_imagekit(
             file_content = file
         
         # Fazer upload
+        options = UploadFileRequestOptions(
+            folder=folder,
+            use_unique_file_name=True
+        )
+        
         result = imagekit.upload_file(
             file=file_content,
             file_name=file_name,
-            options={
-                "folder": folder,
-                "tags": tags or [],
-                "use_unique_file_name": True,
-                "response_fields": ["url", "fileId", "name", "filePath", "thumbnailUrl"]
-            }
+            options=options
         )
         
-        if result and hasattr(result, 'response_metadata'):
-            response = result.response_metadata
+        if result:
+            # Acessar atributos do UploadFileResult
             return {
-                'url': response.url,
-                'file_id': response.file_id,
-                'name': response.name,
-                'file_path': response.file_path,
-                'thumbnail_url': getattr(response, 'thumbnail_url', response.url),
+                'url': result.url,
+                'file_id': result.file_id,
+                'name': result.name,
+                'file_path': result.file_path,
+                'thumbnail_url': getattr(result, 'thumbnail_url', result.url),
             }
         
         return None
         
     except Exception as e:
         print(f"Erro ao fazer upload para ImageKit: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return None
 
 

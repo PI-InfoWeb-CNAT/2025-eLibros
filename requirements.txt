@@ -23,6 +23,7 @@ urllib3
 whitenoise
 imagekitio
 dj-database-url
+python-dotenv
 six
 django-simple-history
 django-extensions
