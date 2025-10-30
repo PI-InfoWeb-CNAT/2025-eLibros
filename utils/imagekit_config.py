@@ -54,14 +54,24 @@ def upload_image_to_imagekit(
         return None
     
     try:
-        # Ler o conteúdo do arquivo
-        if hasattr(file, 'read'):
-            file_content = file.read()
-            # Voltar o ponteiro para o início se for um arquivo
-            if hasattr(file, 'seek'):
+        file_to_upload = None
+        # Caso já seja bytes/bytearray, embrulhar em BytesIO
+        if isinstance(file, (bytes, bytearray)):
+            import io
+            file_to_upload = io.BytesIO(file)
+            file_to_upload.name = file_name
+            file_to_upload.seek(0)
+        # Caso seja um objeto com método read, usar o próprio objeto (ex: InMemoryUploadedFile, SpooledTemporaryFile)
+        elif hasattr(file, 'read'):
+            try:
+                # garantir ponteiro no início
                 file.seek(0)
+            except Exception:
+                pass
+            file_to_upload = file
         else:
-            file_content = file
+            # fallback: passar como está (pode ser um caminho ou outro tipo aceito pela SDK)
+            file_to_upload = file
         
         # Fazer upload
         options = UploadFileRequestOptions(
@@ -70,19 +80,25 @@ def upload_image_to_imagekit(
         )
         
         result = imagekit.upload_file(
-            file=file_content,
+            file=file_to_upload,
             file_name=file_name,
             options=options
         )
         
         if result:
             # Acessar atributos do UploadFileResult
+            url = getattr(result, 'url', None) or result.get('url') if isinstance(result, dict) else None
+            file_id = getattr(result, 'file_id', None) or getattr(result, 'fileId', None) or (result.get('file_id') if isinstance(result, dict) else None) or (result.get('fileId') if isinstance(result, dict) else None)
+            name = getattr(result, 'name', None) or (result.get('name') if isinstance(result, dict) else None)
+            file_path = getattr(result, 'file_path', None) or getattr(result, 'filePath', None) or (result.get('file_path') if isinstance(result, dict) else None)
+            thumbnail = getattr(result, 'thumbnail_url', None) or (result.get('thumbnail_url') if isinstance(result, dict) else None) or url
+
             return {
-                'url': result.url,
-                'file_id': result.file_id,
-                'name': result.name,
-                'file_path': result.file_path,
-                'thumbnail_url': getattr(result, 'thumbnail_url', result.url),
+                'url': url,
+                'file_id': file_id,
+                'name': name,
+                'file_path': file_path,
+                'thumbnail_url': thumbnail,
             }
         
         return None
