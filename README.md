@@ -7,9 +7,9 @@
 Trabalho feito por alunos do 3º ano de Informática para Internet no IFRN-CNAT para a disciplina 'Projeto Integrador',
 que posteriormente no 4º ano de Informática para Internet o readaptaram para a disciplina 'Projeto de Desenvolvimento de Sistemas para Internet'.
 
-
 ## Artefatos do projeto
 
+- [Documentação swagger da api](https://two025-elibros.onrender.com/api/v1/docs/)
 - [Documento de visão](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/doc_de_visao.md)
 - [Diagrama de casos de uso](https://github.com/PI-InfoWeb-CNAT/2025-eLibros/blob/main/docs/diagramas/apoo/eLibros%20-%20CDU.drawio.png)
 - [Diagrama ER Completo](https://github.com/PI-InfoWeb-CNAT/2024-eLibros/blob/main/docs/diagramas/banco%20de%20dados/Diagram%20ER%20intermedi%C3%A1rio%20eLibros.png)
