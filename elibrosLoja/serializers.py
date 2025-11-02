@@ -14,7 +14,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
 from django.utils.crypto import get_random_string
-from utils.imagekit_config import upload_image_to_imagekit, delete_image_from_imagekit
 from utils.imagekit_serializers import ImageKitUploadMixin, ImageKitImageField
 
 
