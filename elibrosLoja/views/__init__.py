@@ -9,6 +9,11 @@ from .LivroViewSet import LivroViewSet
 from .PedidoViewSet import PedidoViewSet
 from .UsuarioViewSet import UsuarioViewSet
 from .AdminViewSet import AdminViewSet
+from .FreteViews import (
+    CalcularFreteLivroView,
+    CalcularFreteCarrinhoView,
+    CalcularFreteCepView
+)
 
 from ..serializers import (
     GeneroSerializer,

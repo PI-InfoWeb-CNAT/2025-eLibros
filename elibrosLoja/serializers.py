@@ -367,3 +367,69 @@ class EstatisticasLivroSerializer(serializers.Serializer[dict[str, Any]]):
     
     total_avaliacoes = serializers.IntegerField()
     avaliacoes_recentes = AvaliacaoSerializer(many=True)
+
+
+# ============================================
+# SERIALIZERS DE FRETE
+# ============================================
+
+class CalcularFreteLivroSerializer(serializers.Serializer[dict[str, Any]]):
+    """Serializer para entrada do cálculo de frete de um livro."""
+    
+    cep = serializers.CharField(
+        max_length=9,
+        min_length=8,
+        help_text="CEP de destino (com ou sem hífen). Ex: 01310-100 ou 01310100"
+    )
+    quantidade = serializers.IntegerField(
+        min_value=1,
+        max_value=100,
+        default=1,
+        required=False,
+        help_text="Quantidade de exemplares do livro"
+    )
+
+
+class CalcularFreteCarrinhoSerializer(serializers.Serializer[dict[str, Any]]):
+    """Serializer para entrada do cálculo de frete do carrinho."""
+    
+    cep = serializers.CharField(
+        max_length=9,
+        min_length=8,
+        help_text="CEP de destino (com ou sem hífen). Ex: 01310-100 ou 01310100"
+    )
+
+
+class OpcaoFreteSerializer(serializers.Serializer[dict[str, Any]]):
+    """Serializer para uma opção de frete."""
+    
+    tipo = serializers.CharField(help_text="Tipo do frete: economico, padrao ou expresso")
+    nome = serializers.CharField(help_text="Nome amigável do tipo de frete")
+    preco = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        help_text="Preço do frete em R$"
+    )
+    prazo_dias_min = serializers.IntegerField(help_text="Prazo mínimo em dias úteis")
+    prazo_dias_max = serializers.IntegerField(help_text="Prazo máximo em dias úteis")
+    descricao = serializers.CharField(help_text="Descrição da opção de frete")
+
+
+class ResultadoFreteSerializer(serializers.Serializer[dict[str, Any]]):
+    """Serializer para o resultado do cálculo de frete."""
+    
+    cep_destino = serializers.CharField(help_text="CEP de destino formatado")
+    cep_valido = serializers.BooleanField(help_text="Indica se o CEP é válido")
+    regiao = serializers.CharField(help_text="Região do Brasil identificada")
+    peso_total_kg = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        help_text="Peso total estimado em kg"
+    )
+    quantidade_itens = serializers.IntegerField(help_text="Quantidade total de itens")
+    opcoes = OpcaoFreteSerializer(many=True, help_text="Opções de frete disponíveis")
+    mensagem = serializers.CharField(
+        allow_null=True,
+        required=False,
+        help_text="Mensagem adicional (frete grátis, erros, etc.)"
+    )

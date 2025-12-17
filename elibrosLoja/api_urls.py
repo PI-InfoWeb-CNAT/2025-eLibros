@@ -12,7 +12,8 @@ from . import views
 from .views import (
     LivroViewSet, AutorViewSet, CategoriaViewSet, GeneroViewSet,
     ClienteViewSet, CarrinhoViewSet, AvaliacaoViewSet, PedidoViewSet,
-    UsuarioViewSet, AdminViewSet, CupomViewSet
+    UsuarioViewSet, AdminViewSet, CupomViewSet,
+    CalcularFreteLivroView, CalcularFreteCarrinhoView, CalcularFreteCepView
 )
 
 # Registrar ViewSets no router
@@ -52,4 +53,12 @@ urlpatterns: List[Union[URLPattern, URLResolver]] = [
     # Custom endpoints que não estão nos ViewSets
     path('inicio/', views.inicio, name='api_inicio'),
     path('estatisticas/', views.estatisticas, name='estatisticas'),
+    
+    # Endpoints de Frete
+    # POST /api/frete/calcular/ - Calcular frete genérico por CEP
+    # POST /api/frete/livro/<id>/ - Calcular frete de um livro específico
+    # POST /api/frete/carrinho/ - Calcular frete do carrinho (requer autenticação)
+    path('frete/calcular/', CalcularFreteCepView.as_view(), name='frete_calcular'),
+    path('frete/livro/<int:livro_id>/', CalcularFreteLivroView.as_view(), name='frete_livro'),
+    path('frete/carrinho/', CalcularFreteCarrinhoView.as_view(), name='frete_carrinho'),
 ]
