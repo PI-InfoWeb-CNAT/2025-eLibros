@@ -1,16 +1,17 @@
 """
 Configuração e utilitários para integração com ImageKit.io
+Compatível com imagekitio v5.0.0+
 """
 import os
 from typing import Optional, Dict, Any
-from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
 
 # Configuração do ImageKit - inicialização lazy para evitar erros quando variáveis não estão definidas
 _imagekit_instance = None
+_imagekit_url_endpoint = None
 
 def get_imagekit():
     """Retorna instância do ImageKit (lazy initialization)"""
-    global _imagekit_instance
+    global _imagekit_instance, _imagekit_url_endpoint
     if _imagekit_instance is None:
         from imagekitio import ImageKit
         
@@ -21,11 +22,11 @@ def get_imagekit():
             # Retornar None se as credenciais não estiverem configuradas
             return None
         
+        # API v5.0.0+ usa apenas private_key
         _imagekit_instance = ImageKit(
             private_key=private_key,
-            public_key='public_Iq6eqMKcdckCLNSaXJOegCGbJwQ=',
-            url_endpoint=f"https://ik.imagekit.io/{imagekit_id}"
         )
+        _imagekit_url_endpoint = f"https://ik.imagekit.io/{imagekit_id}"
     
     return _imagekit_instance
 
@@ -111,16 +112,18 @@ def upload_image_to_imagekit(
         else:     
             file_to_upload = file
         
-        options = UploadFileRequestOptions(
-            folder=folder,
-            use_unique_file_name=True,
-            tags=tags or []
-        )
+        options = {}
+        if folder:
+            options['folder'] = folder
+        if tags:
+            options['tags'] = tags
+        options['use_unique_file_name'] = True
         
-        result = imagekit.upload_file(
+        # API v5.0.0+ usa files.upload()
+        result = imagekit.files.upload(
             file=file_to_upload,
             file_name=file_name,
-            options=options
+            **options
         )
         
         if result:
@@ -189,7 +192,8 @@ def delete_image_from_imagekit(file_id: str) -> bool:
         return False
     
     try:
-        result = imagekit.delete_file(file_id)
+        # API v5.0.0+ usa files.delete()
+        imagekit.files.delete(file_id=file_id)
         return True
     except Exception as e:
         print(f"Erro ao deletar arquivo do ImageKit: {str(e)}")
@@ -210,17 +214,26 @@ def get_imagekit_url(
     Returns:
         URL completa da imagem
     """
+    global _imagekit_url_endpoint
+    
+    # Garantir que o ImageKit foi inicializado para obter o endpoint
     imagekit = get_imagekit()
-    if not imagekit:
+    if not imagekit or not _imagekit_url_endpoint:
         print("ImageKit não configurado. Defina IMAGEKIT_PRIVATE_KEY e IMAGEKIT_ID")
         return ""
     
     try:
-        url_obj = imagekit.url({
-            "path": file_path,
-            "transformation": transformation or []
-        })
-        return url_obj
+        # Na API v5.0.0+, construímos a URL manualmente
+        # Transformações no formato: tr:w-300,h-200
+        if transformation:
+            tr_parts = []
+            for tr in transformation:
+                for key, value in tr.items():
+                    tr_parts.append(f"{key}-{value}")
+            tr_string = ",".join(tr_parts)
+            return f"{_imagekit_url_endpoint}/tr:{tr_string}/{file_path}"
+        else:
+            return f"{_imagekit_url_endpoint}/{file_path}"
     except Exception as e:
         print(f"Erro ao gerar URL do ImageKit: {str(e)}")
         return ""
