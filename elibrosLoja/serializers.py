@@ -12,6 +12,7 @@ from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+from .utils import get_cliente_from_user
 
 from django.utils.crypto import get_random_string
 from utils.imagekit_serializers import ImageKitUploadMixin, ImageKitImageField
@@ -194,8 +195,8 @@ class PedidoCreateSerializer(serializers.Serializer[dict[str, Any]]):
     def create(self, validated_data: dict[str, Any]) -> Pedido:
         from django.utils import timezone
         from datetime import timedelta
-        from ..models import Livro
-        from ..utils import get_cliente_from_user
+       
+       
         
         request = self.context.get('request')
         if not request or not request.user.is_authenticated:
