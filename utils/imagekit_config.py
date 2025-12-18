@@ -59,57 +59,33 @@ def upload_image_to_imagekit(
         from io import BytesIO
         
         file_to_upload = None
-        file_size = 0
         
-        # CORREÇÃO: O SDK do ImageKit aceita 3 formatos:
-        # 1. URL (string começando com http)
-        # 2. Base64 string (data:image/...)
-        # 3. File-like object (BufferedReader)
-        # Quando recebemos bytes ou arquivo uploadado, precisamos converter para base64
+        # O SDK do ImageKit v5.0.0+ aceita:
+        # 1. bytes diretamente
+        # 2. File-like object (BufferedReader, BytesIO, etc)
+        # 3. PathLike
+        
         if isinstance(file, (bytes, bytearray)):
-            # Converter para base64
-            file_base64 = base64.b64encode(file).decode('utf-8')
-            # Detectar o tipo MIME
-            if file_name.lower().endswith('.jpg') or file_name.lower().endswith('.jpeg'):
-                mime_type = 'image/jpeg'
-            elif file_name.lower().endswith('.png'):
-                mime_type = 'image/png'
-            elif file_name.lower().endswith('.gif'):
-                mime_type = 'image/gif'
-            elif file_name.lower().endswith('.webp'):
-                mime_type = 'image/webp'
-            else:
-                mime_type = 'image/jpeg'  # default
+            # Já são bytes, enviar diretamente
+            file_to_upload = file
             
-            file_to_upload = f"data:{mime_type};base64,{file_base64}"
-            file_size = len(file)
-        # Caso seja um objeto com método read, usar o próprio objeto (ex: InMemoryUploadedFile, SpooledTemporaryFile)
-        elif hasattr(file, 'read'):          
+        elif hasattr(file, 'read'):
+            # É um file object (InMemoryUploadedFile, SpooledTemporaryFile, etc)
             try:
                 file.seek(0)
                 file_content = file.read()
-                
-                # Converter para base64
-                file_base64 = base64.b64encode(file_content).decode('utf-8')
-                
-                # Detectar o tipo MIME do arquivo
-                mime_type = 'image/jpeg'
-                if hasattr(file, 'content_type'):
-                    mime_type = file.content_type
-                elif file_name.lower().endswith('.png'):
-                    mime_type = 'image/png'
-                elif file_name.lower().endswith('.gif'):
-                    mime_type = 'image/gif'
-                elif file_name.lower().endswith('.webp'):
-                    mime_type = 'image/webp'
-                elif file_name.lower().endswith(('.jpg', '.jpeg')):
-                    mime_type = 'image/jpeg'
-                
-                file_to_upload = f"data:{mime_type};base64,{file_base64}"
+                # Converter para bytes
+                file_to_upload = file_content
+                file.seek(0)  # Reset para caso precise reler
             except Exception as e:
                 print(f"[DEBUG] Erro ao ler arquivo: {str(e)}")
                 raise
-        else:     
+        else:
+            # Caso seja uma string ou outro tipo, tentar converter
+            if isinstance(file, str):
+                # Se for base64 ou caminho, não é suportado diretamente
+                print(f"[ERROR] Tipo de arquivo não suportado: {type(file)}")
+                return None
             file_to_upload = file
         
         options = {}
@@ -119,7 +95,7 @@ def upload_image_to_imagekit(
             options['tags'] = tags
         options['use_unique_file_name'] = True
         
-        # API v5.0.0+ usa files.upload()
+        # API v5.0.0+ usa files.upload() com bytes
         result = imagekit.files.upload(
             file=file_to_upload,
             file_name=file_name,
