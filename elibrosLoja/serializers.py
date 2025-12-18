@@ -132,10 +132,204 @@ class PedidoSerializer(serializers.ModelSerializer[Pedido]):
     cliente = ClienteSerializer(read_only=True)
     cupom = CupomSerializer(read_only=True)
     endereco = EnderecoSerializer(read_only=True)
+    itens = ItemCarrinhoSerializer(many=True, read_only=True)
     
     class Meta:
         model = Pedido
         fields = '__all__'
+
+
+class PedidoCreateSerializer(serializers.Serializer[dict[str, Any]]):
+    """Serializer para criar um pedido a partir do carrinho ou itens específicos"""
+    
+    # Opção 1: Criar pedido a partir do carrinho existente
+    usar_carrinho = serializers.BooleanField(default=True, required=False)
+    
+    # Opção 2: Criar pedido com itens específicos (se usar_carrinho=False)
+    itens = serializers.ListField(
+        child=serializers.DictField(child=serializers.IntegerField()),
+        required=False,
+        help_text="Lista de dicts com 'livro_id' e 'quantidade'"
+    )
+    
+    # Endereço
+    endereco_id = serializers.IntegerField(required=False, help_text="ID de endereço existente")
+    endereco_novo = EnderecoSerializer(required=False, help_text="Dados para criar novo endereço")
+    
+    # Cupom de desconto (opcional)
+    codigo_cupom = serializers.CharField(required=False, allow_blank=True, max_length=50)
+    
+    # Dados de frete
+    tipo_frete = serializers.ChoiceField(
+        choices=['SEDEX', 'PAC'],
+        default='PAC',
+        help_text="Tipo de frete escolhido"
+    )
+    valor_frete = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.0)
+    prazo_entrega = serializers.IntegerField(default=7, help_text="Prazo de entrega em dias")
+    
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        usar_carrinho = attrs.get('usar_carrinho', True)
+        
+        # Validar que pelo menos uma opção de itens foi fornecida
+        if usar_carrinho:
+            # Verificar se o cliente tem carrinho
+            request = self.context.get('request')
+            if not request or not request.user.is_authenticated:
+                raise serializers.ValidationError("Usuário não autenticado")
+        else:
+            # Validar que itens foram fornecidos
+            if not attrs.get('itens'):
+                raise serializers.ValidationError("Forneça 'itens' quando usar_carrinho=False")
+        
+        # Validar endereço
+        if not attrs.get('endereco_id') and not attrs.get('endereco_novo'):
+            raise serializers.ValidationError("Forneça 'endereco_id' ou 'endereco_novo'")
+        
+        if attrs.get('endereco_id') and attrs.get('endereco_novo'):
+            raise serializers.ValidationError("Forneça apenas 'endereco_id' OU 'endereco_novo', não ambos")
+        
+        return attrs
+    
+    def create(self, validated_data: dict[str, Any]) -> Pedido:
+        from django.utils import timezone
+        from datetime import timedelta
+        from ..models import Livro
+        from ..utils import get_cliente_from_user
+        
+        request = self.context.get('request')
+        if not request or not request.user.is_authenticated:
+            raise serializers.ValidationError("Usuário não autenticado")
+        
+        cliente = get_cliente_from_user(request.user)
+        if not cliente:
+            raise serializers.ValidationError("Cliente não encontrado")
+        
+        # 1. Processar endereço
+        endereco_id = validated_data.get('endereco_id')
+        endereco_novo_data = validated_data.get('endereco_novo')
+        
+        if endereco_id:
+            try:
+                endereco = Endereco.objects.get(pk=endereco_id)
+            except Endereco.DoesNotExist:
+                raise serializers.ValidationError({"endereco_id": "Endereço não encontrado"})
+        else:
+            # Criar novo endereço
+            endereco_serializer = EnderecoSerializer(data=endereco_novo_data)
+            endereco_serializer.is_valid(raise_exception=True)
+            endereco = endereco_serializer.save()
+        
+        # 2. Processar cupom (se fornecido)
+        cupom = None
+        desconto_valor = 0.0
+        codigo_cupom = validated_data.get('codigo_cupom', '').strip()
+        
+        if codigo_cupom:
+            try:
+                cupom = Cupom.objects.get(codigo=codigo_cupom, ativo=True)
+                # Verificar validade
+                if not cupom.get_validade:
+                    raise serializers.ValidationError({"codigo_cupom": "Cupom expirado"})
+            except Cupom.DoesNotExist:
+                raise serializers.ValidationError({"codigo_cupom": "Cupom inválido"})
+        
+        # 3. Processar itens do pedido
+        usar_carrinho = validated_data.get('usar_carrinho', True)
+        itens_pedido = []
+        valor_subtotal = 0.0
+        quantia_itens = 0
+        
+        if usar_carrinho:
+            # Pegar itens do carrinho do cliente
+            try:
+                carrinho = Carrinho.objects.get(cliente=cliente)
+                itens_carrinho = carrinho.items_do_carrinho.all()
+                
+                if not itens_carrinho.exists():
+                    raise serializers.ValidationError("Carrinho vazio")
+                
+                for item in itens_carrinho:
+                    itens_pedido.append(item)
+                    valor_subtotal += float(item.preco * item.quantidade)
+                    quantia_itens += item.quantidade
+                    
+            except Carrinho.DoesNotExist:
+                raise serializers.ValidationError("Carrinho não encontrado")
+        else:
+            # Criar itens a partir da lista fornecida
+            itens_data = validated_data.get('itens', [])
+            
+            for item_data in itens_data:
+                livro_id = item_data.get('livro_id')
+                quantidade = item_data.get('quantidade', 1)
+                
+                try:
+                    livro = Livro.objects.get(pk=livro_id)
+                except Livro.DoesNotExist:
+                    raise serializers.ValidationError(f"Livro com ID {livro_id} não encontrado")
+                
+                # Verificar estoque
+                if livro.quantidade < quantidade:
+                    raise serializers.ValidationError(
+                        f"Estoque insuficiente para '{livro.titulo}'. Disponível: {livro.quantidade}"
+                    )
+                
+                # Criar item do carrinho temporário
+                item_carrinho = ItemCarrinho.objects.create(
+                    livro=livro,
+                    quantidade=quantidade,
+                    preco=livro.preco
+                )
+                itens_pedido.append(item_carrinho)
+                valor_subtotal += float(livro.preco * quantidade)
+                quantia_itens += quantidade
+        
+        # 4. Calcular desconto
+        if cupom:
+            if cupom.tipo_valor == "1":  # Porcentagem
+                desconto_valor = valor_subtotal * (cupom.valor / 100.0)
+            else:  # Valor fixo
+                desconto_valor = float(cupom.valor)
+        
+        # 5. Calcular valor total
+        valor_frete = float(validated_data.get('valor_frete', 0.0))
+        valor_total = valor_subtotal - desconto_valor + valor_frete
+        
+        # 6. Calcular datas
+        prazo_entrega = validated_data.get('prazo_entrega', 7)
+        data_pedido = timezone.now()
+        entrega_estimada = data_pedido + timedelta(days=prazo_entrega)
+        
+        # 7. Criar pedido
+        pedido = Pedido.objects.create(
+            cliente=cliente,
+            endereco=endereco,
+            status='PRO',  # Processamento
+            data_de_pedido=data_pedido,
+            entrega_estimada=entrega_estimada,
+            valor_total=valor_total,
+            desconto=desconto_valor,
+            quantia_itens=quantia_itens
+        )
+        
+        # 8. Adicionar itens ao pedido
+        pedido.itens.set(itens_pedido)
+        
+        # 9. Atualizar estoque dos livros
+        for item in itens_pedido:
+            livro = item.livro
+            livro.quantidade -= item.quantidade
+            livro.qtd_vendidos += item.quantidade
+            livro.save()
+        
+        # 10. Limpar carrinho se foi usado
+        if usar_carrinho:
+            carrinho.items_do_carrinho.clear()
+            carrinho.total = 0
+            carrinho.save()
+        
+        return pedido
 
 
 class UsuarioSerializer(serializers.ModelSerializer[Usuario]):
