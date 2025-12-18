@@ -4,6 +4,8 @@ from django.utils.html import format_html
 from simple_history.admin import SimpleHistoryAdmin
 from .models.historical_admin import CustomSimpleHistoryAdmin
 from django.core.exceptions import ObjectDoesNotExist
+from django import forms
+from utils.imagekit_config import upload_image_to_imagekit, delete_image_from_imagekit
 
 class ClienteAdmin(CustomSimpleHistoryAdmin):
     def save_model(self, request, obj, form, change):
@@ -24,11 +26,42 @@ class EnderecoAdmin(SimpleHistoryAdmin):
     pass
     # list_display = ['cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'uf',]
 
+class LivroAdminForm(forms.ModelForm):
+    """Formulário customizado para upload de capa via ImageKit"""
+    capa = forms.ImageField(
+        required=False, 
+        label='Capa do Livro',
+        help_text='Envie uma imagem para a capa do livro (será salva no ImageKit.io)'
+    )
+    
+    class Meta:
+        model = Livro
+        fields = '__all__'
+
 class LivroAdmin(CustomSimpleHistoryAdmin):
-    readonly_fields = ['img_preview']
+    form = LivroAdminForm
+    readonly_fields = ['img_preview', 'capa_url', 'capa_file_id']
     
     list_display = ['titulo','img_preview', 'get_autores_display', 'editora', 'preco', 'get_generos', 'get_categorias']
 
+    fieldsets = (
+        ('Informações Básicas', {
+            'fields': ('titulo', 'subtitulo', 'autor', 'editora', 'ISBN')
+        }),
+        ('Publicação', {
+            'fields': ('data_de_publicacao', 'ano_de_publicacao')
+        }),
+        ('Capa', {
+            'fields': ('capa', 'img_preview', 'capa_url', 'capa_file_id'),
+            'description': 'Faça upload da capa do livro. A imagem será armazenada no ImageKit.io'
+        }),
+        ('Conteúdo', {
+            'fields': ('sinopse', 'genero', 'categoria')
+        }),
+        ('Preços e Estoque', {
+            'fields': ('preco', 'desconto', 'quantidade', 'qtd_vendidos')
+        }),
+    )
 
     def get_generos(self, obj):
         return ", ".join([genero.nome for genero in obj.genero.all()])
@@ -47,6 +80,38 @@ class LivroAdmin(CustomSimpleHistoryAdmin):
         if not obj.pk:
             obj.criado_por = administrador
         obj._history_user = administrador
+        
+        # Processar upload da capa para ImageKit
+        capa_file = form.cleaned_data.get('capa')
+        if capa_file:
+            # Se está editando um livro existente, pegar o file_id antigo do banco
+            old_file_id = None
+            if change and obj.pk:
+                try:
+                    old_livro = Livro.objects.get(pk=obj.pk)
+                    old_file_id = old_livro.capa_file_id
+                except Livro.DoesNotExist:
+                    pass
+            
+            # Deletar capa antiga do ImageKit se existir
+            if old_file_id:
+                delete_image_from_imagekit(old_file_id)
+            
+            # Fazer upload da nova capa
+            upload_result = upload_image_to_imagekit(
+                file=capa_file,
+                file_name=capa_file.name,
+                folder='livros',
+                tags=['capa', f'livro_{obj.ISBN}']
+            )
+            
+            if upload_result:
+                obj.capa_url = upload_result['url']
+                obj.capa_file_id = upload_result['file_id']
+            else:
+                from django.contrib import messages
+                messages.warning(request, 'Erro ao fazer upload da capa para o ImageKit.io')
+        
         super().save_model(request, obj, form, change)
 
         if form.cleaned_data.get('autor'):

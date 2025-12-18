@@ -4,6 +4,7 @@ from django.db.models import Q
 
 from rest_framework.response import Response
 from rest_framework import viewsets, status, filters, serializers
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -58,6 +59,7 @@ class LivroViewSet(viewsets.ModelViewSet[Livro]):
     """ViewSet para gerenciar livros - baseado na sua LivroViews"""
     queryset = Livro.objects.all()
     serializer_class = LivroSerializer
+    parser_classes = [MultiPartParser, FormParser, JSONParser]  # Aceitar multipart para upload de imagens
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['categoria', 'genero', 'autor']
     search_fields = ['titulo', 'autor__nome', 'categoria__nome']
